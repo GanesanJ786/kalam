@@ -1,0 +1,25 @@
+.login-container {
+    width: 50%;
+    margin: auto;
+    background-color: #f1f1f1;
+  }
+  .logo-header {
+    height: 40vh;
+    color: #fff;
+    background-image: url("../../assets/logo/kalamLogoName.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+  }
+  .login-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 50vh;
+    justify-content: center;
+  }
+  ::ng-deep .login-content .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #f1f1f1;
+    padding: 0;
+  }
+  

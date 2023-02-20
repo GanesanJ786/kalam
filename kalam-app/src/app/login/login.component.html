@@ -1,0 +1,31 @@
+<div class="login-container">
+    <div class="logo-header">
+        
+    </div>
+    <form [formGroup]="signInForm" #form="ngForm">
+        <div class="login-content">
+            <mat-form-field appearance="fill">
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Password</mat-label>
+                <input type="password" matInput formControlName="password">
+            </mat-form-field>
+              <!-- <mat-form-field appearance="fill">
+                <mat-label>Select</mat-label>
+                <mat-select>
+                  <mat-option value="one">First option</mat-option>
+                  <mat-option value="two">Second option</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                <mat-label>Textarea</mat-label>
+                <textarea matInput></textarea>
+              </mat-form-field> -->
+              <button mat-raised-button color="primary" (click)="onSubmit()">Login</button>
+              
+        </div>
+    </form>
+   
+</div>
