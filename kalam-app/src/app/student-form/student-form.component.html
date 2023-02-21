@@ -1,0 +1,142 @@
+<div class="sf-container">
+    <div class="sf-header">PLAYER DETAILS FORM</div>
+    <form [formGroup]="studentForm" #form="ngForm">
+       
+        <div class="sf-content">
+                <mat-form-field appearance="fill">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name">
+                </mat-form-field>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="dob" (dateChange)="dateSelected('change', $event)">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                          </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Age</mat-label>
+                        <input matInput formControlName="age">
+                    </mat-form-field>
+                </div>
+                <div class="brk-field">
+                    <mat-radio-group formControlName="gender" style="margin-top: 1rem;">
+                        <mat-radio-button value="male" style="margin-right: 1rem;">Male</mat-radio-button>
+                        <mat-radio-button  value="female">Female</mat-radio-button>
+                      </mat-radio-group>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Aadhar</mat-label>
+                        <input matInput formControlName="aadharNum">
+                    </mat-form-field>
+                </div>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 50%;">
+                        <mat-label>Father's / Guardian Name</mat-label>
+                        <input matInput formControlName="fatherName">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Occupation</mat-label>
+                        <input matInput formControlName="fatherOcc">
+                    </mat-form-field>
+                </div>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 50%;">
+                        <mat-label>Mother's / Guardian Name</mat-label>
+                        <input matInput formControlName="motherName">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Occupation</mat-label>
+                        <input matInput formControlName="motherOcc">
+                    </mat-form-field>
+                </div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Email ID</mat-label>
+                    <input matInput formControlName="emailId">
+                </mat-form-field>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 50%;">
+                        <mat-label>Mobile Number</mat-label>
+                        <input matInput formControlName="mobileNum">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Whats App Number</mat-label>
+                        <input matInput formControlName="whatsappNum">
+                    </mat-form-field>
+                </div>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 50%;">
+                        <mat-label>Emergency Contact Person</mat-label>
+                        <input matInput formControlName="emgContactName">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Number</mat-label>
+                        <input matInput formControlName="emgContactNum">
+                    </mat-form-field>
+                </div>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 50%;">
+                        <mat-label>School / Institution Name</mat-label>
+                        <input matInput formControlName="institutionName">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>STD</mat-label>
+                        <input matInput formControlName="institutionNum">
+                    </mat-form-field>
+                </div>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 50%;">
+                        <mat-label>Previous Academy Played</mat-label>
+                        <input matInput formControlName="preAcademyPlayed">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 42%;">
+                        <mat-label>Playing Position</mat-label>
+                        <mat-select formControlName="playingPostion">
+                            <mat-option value="goalkeeper">Goalkeeper</mat-option>
+                            <mat-option value="defenders">Defenders</mat-option>
+                            <mat-option value="outsideFullback">Outside fullback</mat-option>
+                            <mat-option value="centralDefenders">Central Defenders</mat-option>
+                            <mat-option value="midfielders">Midfielders</mat-option>
+                            <mat-option value="forwards">Forwards</mat-option>
+                            <mat-option value="centerForward">Center Forward</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Any Medical Issue</mat-label>
+                    <input matInput formControlName="anyMedicalIssue">
+                </mat-form-field>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 30%;">
+                        <mat-label>Jersy Size</mat-label>
+                        <input matInput formControlName="jersySize">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 30%;">
+                        <mat-label>Height</mat-label>
+                        <input matInput formControlName="height" placeholder="Cm">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 30%;">
+                        <mat-label>Weight</mat-label>
+                        <input matInput formControlName="weight">
+                    </mat-form-field>
+                </div>
+                <mat-form-field appearance="fill">
+                    <mat-label>Address</mat-label>
+                    <textarea matInput></textarea>
+                </mat-form-field>
+                    <!-- <mat-form-field appearance="fill">
+                    <mat-label>Select</mat-label>
+                    <mat-select>
+                        <mat-option value="one">First option</mat-option>
+                        <mat-option value="two">Second option</mat-option>
+                    </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                    <mat-label>Textarea</mat-label>
+                    <textarea matInput></textarea>
+                    </mat-form-field> -->
+                <button mat-raised-button color="primary" (click)="onSubmit()">Login</button>
+        </div>
+    </form>
+</div>

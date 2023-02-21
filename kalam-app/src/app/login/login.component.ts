@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 interface UserLogin {
   username: string;
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
   signInForm!: FormGroup;
   userLogin: UserLogin;
 
-  constructor() {
+  constructor(private router: Router) {
     this.userLogin = {} as UserLogin;
    }
 
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
       ]),
       password: new FormControl(this.userLogin.password, [
         Validators.required,
-        Validators.minLength(15),
+        Validators.minLength(1),
+        Validators.maxLength(6),
       ]),
     });
   }
@@ -45,6 +47,8 @@ export class LoginComponent implements OnInit {
     this.userLogin = this.signInForm.value;
     console.info('Username:', this.userLogin.username);
     console.info('Password:', this.userLogin.password);
+
+    this.router.navigate([`/student-form`]);
   }
 
 }
