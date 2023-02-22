@@ -2,7 +2,6 @@
     width: 100%;
     margin: auto;
     background-color: #f1f1f1;
-    padding: 0.5rem 0.5rem;
     height: 100%;
     box-sizing: border-box;
   }
@@ -16,19 +15,37 @@
     justify-content: center;
     align-items: center;
     box-shadow: 0px 5px 5px -6px;
+    background-position: 1rem;
+    background-color: #ffffff;
   }
   .sf-content {
     display: flex;
     flex-direction: column;
-    padding-top: 1rem;
-    height: calc(90vh - 1rem);
+    padding: 1rem 1rem 0 1rem;
+    height: 80vh;
     box-sizing: border-box;
     overflow: auto;
+  }
+  .sf-footer {
+    display: flex;
+    height: 10vh;
+    justify-content: space-around;
+    align-items: center;
   }
   .brk-field {
     display: flex;
     align-items: start;
     justify-content: space-between;
+  }
+  .arrowRight {
+    position: absolute;
+    right: 1px;
+    top: 0.3rem;
+  }
+  .arrowLeft {
+    position: absolute;
+    left: 1px;
+    top: 0.3rem;
   }
   ::ng-deep .sf-content .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: #f1f1f1;

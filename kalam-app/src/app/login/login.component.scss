@@ -4,7 +4,7 @@
     background-color: #f1f1f1;
   }
   .logo-header {
-    height: 40vh;
+    height: 30vh;
     color: #fff;
     background-image: url("../../assets/logo/kalamLogoName.png");
     background-repeat: no-repeat;
@@ -15,8 +15,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 60vh;
+    height: 50vh;
     justify-content: center;
+  }
+  .login-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 20vh;
+    justify-content: start;
   }
   ::ng-deep .login-content .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: #f1f1f1;

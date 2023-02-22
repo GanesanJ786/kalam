@@ -3,7 +3,8 @@
     <form [formGroup]="studentForm" #form="ngForm">
        
         <div class="sf-content">
-                <mat-form-field appearance="fill">
+            <div *ngIf="form1">
+                <mat-form-field appearance="fill" style="width: 100%;">
                     <mat-label>Name</mat-label>
                     <input matInput formControlName="name">
                 </mat-form-field>
@@ -31,6 +32,10 @@
                         <input matInput formControlName="aadharNum">
                     </mat-form-field>
                 </div>
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-label>Email ID</mat-label>
+                    <input matInput formControlName="emailId">
+                </mat-form-field>
                 <div class="brk-field">
                     <mat-form-field appearance="fill" style="width: 50%;">
                         <mat-label>Father's / Guardian Name</mat-label>
@@ -51,10 +56,6 @@
                         <input matInput formControlName="motherOcc">
                     </mat-form-field>
                 </div>
-                <mat-form-field appearance="fill">
-                    <mat-label>Email ID</mat-label>
-                    <input matInput formControlName="emailId">
-                </mat-form-field>
                 <div class="brk-field">
                     <mat-form-field appearance="fill" style="width: 50%;">
                         <mat-label>Mobile Number</mat-label>
@@ -65,6 +66,9 @@
                         <input matInput formControlName="whatsappNum">
                     </mat-form-field>
                 </div>
+            </div>
+
+            <div *ngIf="form2">
                 <div class="brk-field">
                     <mat-form-field appearance="fill" style="width: 50%;">
                         <mat-label>Emergency Contact Person</mat-label>
@@ -103,7 +107,7 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" style="width: 100%;">
                     <mat-label>Any Medical Issue</mat-label>
                     <input matInput formControlName="anyMedicalIssue">
                 </mat-form-field>
@@ -121,22 +125,21 @@
                         <input matInput formControlName="weight">
                     </mat-form-field>
                 </div>
-                <mat-form-field appearance="fill">
+                <mat-form-field appearance="fill" style="width: 100%;">
                     <mat-label>Address</mat-label>
-                    <textarea matInput></textarea>
+                    <textarea matInput formControlName="address"></textarea>
                 </mat-form-field>
-                    <!-- <mat-form-field appearance="fill">
-                    <mat-label>Select</mat-label>
-                    <mat-select>
-                        <mat-option value="one">First option</mat-option>
-                        <mat-option value="two">Second option</mat-option>
-                    </mat-select>
-                    </mat-form-field>
-                    <mat-form-field appearance="fill">
-                    <mat-label>Textarea</mat-label>
-                    <textarea matInput></textarea>
-                    </mat-form-field> -->
-                <button mat-raised-button color="primary" (click)="onSubmit()">Login</button>
+            </div>
+               
+        </div>
+        <div class="sf-footer">
+            <button *ngIf="form1" (click)="form1Submit()" [disabled]="form1Validation" style="width: 50%;" mat-raised-button color="primary">NEXT 
+                <span class="arrowRight"><mat-icon>keyboard_arrow_right</mat-icon></span>
+            </button>
+            <button *ngIf="form2" (click)="prevForm()" style="width: 30%;" mat-raised-button>
+                <span class="arrowLeft"><mat-icon>keyboard_arrow_left</mat-icon></span> BACK
+            </button>
+            <button *ngIf="form2" [disabled]="form2Validation" style="width: 40%;" mat-raised-button color="primary" (click)="onSubmit()">SUBMIT</button>
         </div>
     </form>
 </div>
