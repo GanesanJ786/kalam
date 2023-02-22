@@ -3,7 +3,7 @@
     <form [formGroup]="signInForm" #form="ngForm">
         <div class="login-content">
             <mat-form-field appearance="fill">
-                <mat-label>Username</mat-label>
+                <mat-label>Email Address</mat-label>
                 <input matInput formControlName="username">
             </mat-form-field>
             <mat-form-field appearance="fill">
@@ -27,6 +27,9 @@
    
       <div class="login-footer">
          <button mat-raised-button color="primary" (click)="onSubmit()">Login</button>
+         <div style="margin-top: 1rem;">
+            Don't have an account? <button (click)="signUp()" mat-button color="primary" style="padding: 0;min-width: auto;">Sign Up</button>
+         </div>
       </div>
   </form>
 </div>

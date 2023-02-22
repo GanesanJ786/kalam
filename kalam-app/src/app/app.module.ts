@@ -18,12 +18,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 
 import { StudentFormComponent } from './student-form/student-form.component';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    StudentFormComponent
+    StudentFormComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,

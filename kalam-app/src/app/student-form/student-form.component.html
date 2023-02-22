@@ -9,7 +9,7 @@
                     <input matInput formControlName="name">
                 </mat-form-field>
                 <div class="brk-field">
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" style="width:50%">
                         <mat-label>Date of Birth</mat-label>
                         <input matInput [matDatepicker]="picker" formControlName="dob" (dateChange)="dateSelected('change', $event)">
                         <mat-hint>MM/DD/YYYY</mat-hint>
@@ -133,7 +133,7 @@
                
         </div>
         <div class="sf-footer">
-            <button *ngIf="form1" (click)="form1Submit()" [disabled]="form1Validation" style="width: 50%;" mat-raised-button color="primary">NEXT 
+            <button (click)="form1Submit()" [disabled]="form1Validation" style="width: 50%;" mat-raised-button color="primary">NEXT 
                 <span class="arrowRight"><mat-icon>keyboard_arrow_right</mat-icon></span>
             </button>
             <button *ngIf="form2" (click)="prevForm()" style="width: 30%;" mat-raised-button>

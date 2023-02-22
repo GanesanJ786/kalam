@@ -1,0 +1,77 @@
+<div class="rf-container">
+    <div class="rf-header">REGISTRATION FORM</div>
+    <form [formGroup]="registrationForm" #form="ngForm">
+        <div class="rf-content">
+            <div>
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-label>Name</mat-label>
+                    <input matInput formControlName="name">
+                </mat-form-field>
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-label>Email ID</mat-label>
+                    <input matInput formControlName="emailId">
+                </mat-form-field>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 45%;">
+                        <mat-label>Password</mat-label>
+                        <input matInput type="password" formControlName="password">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 45%;">
+                        <mat-label>Confirm Password</mat-label>
+                        <input matInput formControlName="confirmPassword">
+                    </mat-form-field>
+                </div>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width:45%">
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="dob" (dateChange)="dateSelected('change', $event)">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                          </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 45%;">
+                        <mat-label>Aadhar</mat-label>
+                        <input matInput formControlName="aadharNum">
+                    </mat-form-field>
+                </div>
+                <div class="brk-field">
+                    <mat-radio-group formControlName="gender" style="margin-top: 1rem;width: 50%;">
+                        <mat-radio-button value="male" style="margin-right: 1rem;">Male</mat-radio-button>
+                        <mat-radio-button  value="female">Female</mat-radio-button>
+                    </mat-radio-group>
+                    <mat-form-field appearance="fill" style="width: 45%;">
+                        <mat-label>To Coach</mat-label>
+                        <mat-select formControlName="toCoach" multiple>
+                          <mat-option *ngFor="let sport of sports" [value]="sports">{{sport}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 45%;">
+                        <mat-label>Whats App Number</mat-label>
+                        <input matInput formControlName="whatsappNum">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 45%;">
+                        <mat-label>Reg Number(if any)</mat-label>
+                        <input matInput formControlName="academyNum">
+                    </mat-form-field>
+                </div>
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-label>Academy Name</mat-label>
+                    <input matInput formControlName="academyName">
+                </mat-form-field>
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-label>Address</mat-label>
+                    <textarea matInput formControlName="address"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="rf-footer">
+            <button (click)="back()" style="width: 30%;" mat-raised-button>
+                <span class="arrowLeft"><mat-icon>keyboard_arrow_left</mat-icon></span> BACK
+            </button>
+            <button  style="width: 40%;" mat-raised-button color="primary" (click)="onSubmit()">CREATE</button>
+        </div>
+    </form>
+</div>
