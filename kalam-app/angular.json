@@ -106,6 +106,16 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "@angular/fire:deploy",
+          "options": {
+            "prerender": false,
+            "ssr": false,
+            "browserTarget": "kalam-app:build:production",
+            "firebaseProject": "kalam-in",
+            "firebaseHostingSite": "kalam-in"
+          }
         }
       }
     }

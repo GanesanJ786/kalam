@@ -1,5 +1,14 @@
 {
   "projects": {
     "default": "kalam-in"
+  },
+  "targets": {
+    "kalam-in": {
+      "hosting": {
+        "kalam-app": [
+          "kalam-in"
+        ]
+      }
+    }
   }
 }

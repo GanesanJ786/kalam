@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
+import { KalamService } from 'src/app/kalam.service';
+import { StudentDetails } from '../student-form/student-form.component';
+
 interface UserLogin {
   username: string;
   password: string;
@@ -17,7 +20,7 @@ export class LoginComponent implements OnInit {
   signInForm!: FormGroup;
   userLogin: UserLogin;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private kalamService: KalamService) {
     this.userLogin = {} as UserLogin;
    }
 
@@ -34,6 +37,15 @@ export class LoginComponent implements OnInit {
         Validators.maxLength(6),
       ]),
     });
+    this.kalamService.getStudentDetails().subscribe((res: any) => {
+      let data = res.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      console.log(data)
+    })
   }
 
   onSubmit(): void {

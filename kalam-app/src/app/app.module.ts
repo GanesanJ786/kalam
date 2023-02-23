@@ -19,6 +19,8 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { StudentFormComponent } from './student-form/student-form.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import { SignUpComponent } from './sign-up/sign-up.component';
     MatNativeDateModule,
     MatSelectModule,
     MatRadioModule,
-    MatIconModule
+    MatIconModule,
+    AngularFireModule.initializeApp(environment.firebase)
   ],
   providers: [],
   bootstrap: [AppComponent]

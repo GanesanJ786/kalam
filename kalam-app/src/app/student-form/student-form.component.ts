@@ -3,7 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import * as moment from 'moment';
 
-interface StudentDetails {
+import { KalamService } from '../kalam.service';
+
+export interface StudentDetails {
+  id?: string;
   name: string;
   dob: string;
   age: string;
@@ -43,7 +46,7 @@ export class StudentFormComponent implements OnInit {
   form1Validation: boolean = true;
   form2Validation: boolean = true;
 
-  constructor() {
+  constructor(private kalamService: KalamService) {
     this.studentDetails = {} as StudentDetails;
   }
 
@@ -107,7 +110,7 @@ export class StudentFormComponent implements OnInit {
     
   }
   onSubmit(): void {
-
+    this.kalamService.setStudentDetails(this.studentForm.value);
   }
 
   form1Submit(): void {
