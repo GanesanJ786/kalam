@@ -60,7 +60,7 @@ export class LoginComponent implements OnInit {
     console.info('Username:', this.userLogin.username);
     console.info('Password:', this.userLogin.password);
 
-    this.router.navigate([`/student-form`]);
+    this.router.navigate([`/home`]);
   }
 
   signUp(){

@@ -37,3 +37,57 @@ $kalam-app-theme: mat.define-light-theme((
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.rf-container {
+  width: 100%;
+  margin: auto;
+  background-color: #f1f1f1;
+  height: 100%;
+  box-sizing: border-box;
+}
+.rf-header {
+  height: 10vh;
+  color: #000;
+  background-image: url("assets/logo/kalamLogoName.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 5px 5px -6px;
+  background-position: 1rem;
+  background-color: #ffffff;
+}
+.rf-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1rem 0 1rem;
+  height: 70vh;
+  box-sizing: border-box;
+  overflow: auto;
+  justify-content: center;
+}
+.content-top {
+  justify-content: start;
+}
+.custm-logo {
+  background-size: 2.5rem 3rem;
+  background-position: 0.5rem;
+  flex-direction: column;
+}
+.rf-footer {
+  display: flex;
+  height: 10vh;
+  justify-content: space-around;
+  align-items: center;
+}
+.brk-field {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+.arrowLeft {
+  position: absolute;
+  left: 1px;
+  top: 0.3rem;
+}

@@ -1,0 +1,28 @@
+.profile-img {
+    height: 6rem;
+    width: 6rem;
+}
+.team-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border: 1px solid #d7d7d7;
+    border-radius: 10px;
+    font-weight: 500;
+    margin-left: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+.student-info {
+    font-size: 0.7rem;
+}
+.position-style {
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+}
+.team-info {
+    margin-top: 0.5rem;
+}

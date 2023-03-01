@@ -1,0 +1,17 @@
+.user-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+}
+.profile-img {
+    height: 10rem;
+    width: 10rem;
+}
+.user-info {
+    font-size: 0.7rem;
+}
+.edit-profile {
+    padding-top: 3rem;
+}
