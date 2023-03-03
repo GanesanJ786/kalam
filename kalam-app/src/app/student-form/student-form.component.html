@@ -3,13 +3,16 @@
     <form [formGroup]="studentForm" #form="ngForm">
        
         <div class="sf-content">
+            <div class="gotoHome">
+                <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
+            </div>
             <div *ngIf="form1">
                 <mat-form-field appearance="fill" style="width: 100%;">
                     <mat-label>Name</mat-label>
-                    <input matInput formControlName="name">
+                    <input matInput formControlName="name" appAadharNumber [alphabetOnly]="true">
                 </mat-form-field>
                 <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width:50%">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Date of Birth</mat-label>
                         <input matInput [matDatepicker]="picker" formControlName="dob" (dateChange)="dateSelected('change', $event)">
                         <mat-hint>MM/DD/YYYY</mat-hint>
@@ -17,19 +20,19 @@
                           </mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" style="width:45%" *ngIf="studentForm.controls['dob'].value">
                         <mat-label>Age</mat-label>
                         <input matInput formControlName="age">
                     </mat-form-field>
                 </div>
                 <div class="brk-field">
-                    <mat-radio-group formControlName="gender" style="margin-top: 1rem;">
+                    <mat-radio-group formControlName="gender" style="margin-top: 1rem;width:50%">
                         <mat-radio-button value="male" style="margin-right: 1rem;">Male</mat-radio-button>
                         <mat-radio-button  value="female">Female</mat-radio-button>
                       </mat-radio-group>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Aadhar</mat-label>
-                        <input matInput formControlName="aadharNum">
+                        <input matInput formControlName="aadharNum" minlength="14" maxlength="14" appAadharNumber>
                     </mat-form-field>
                 </div>
                 <mat-form-field appearance="fill" style="width: 100%;">
@@ -37,64 +40,64 @@
                     <input matInput formControlName="emailId">
                 </mat-form-field>
                 <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width: 50%;">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Father's / Guardian Name</mat-label>
-                        <input matInput formControlName="fatherName">
+                        <input matInput formControlName="fatherName" appAadharNumber [alphabetOnly]="true">
                     </mat-form-field>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Occupation</mat-label>
                         <input matInput formControlName="fatherOcc">
                     </mat-form-field>
                 </div>
                 <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width: 50%;">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Mother's / Guardian Name</mat-label>
-                        <input matInput formControlName="motherName">
+                        <input matInput formControlName="motherName" appAadharNumber [alphabetOnly]="true">
                     </mat-form-field>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Occupation</mat-label>
                         <input matInput formControlName="motherOcc">
                     </mat-form-field>
                 </div>
                 <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width: 50%;">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Mobile Number</mat-label>
-                        <input matInput formControlName="mobileNum">
+                        <input matInput formControlName="mobileNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Whats App Number</mat-label>
-                        <input matInput formControlName="whatsappNum">
+                        <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
                 </div>
             </div>
 
             <div *ngIf="form2">
                 <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width: 50%;">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Emergency Contact Person</mat-label>
-                        <input matInput formControlName="emgContactName">
+                        <input matInput formControlName="emgContactName" appAadharNumber [alphabetOnly]="true">
                     </mat-form-field>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Number</mat-label>
-                        <input matInput formControlName="emgContactNum">
+                        <input matInput formControlName="emgContactNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
                 </div>
                 <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width: 50%;">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>School / Institution Name</mat-label>
                         <input matInput formControlName="institutionName">
                     </mat-form-field>
-                    <mat-form-field appearance="fill">
+                    <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>STD</mat-label>
-                        <input matInput formControlName="institutionNum">
+                        <input matInput formControlName="institutionNum" maxlength="11" minlength="10" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
                 </div>
                 <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width: 50%;">
+                    <mat-form-field appearance="fill" style="width: 45%;">
                         <mat-label>Previous Academy Played</mat-label>
                         <input matInput formControlName="preAcademyPlayed">
                     </mat-form-field>
-                    <mat-form-field appearance="fill" style="width: 42%;">
+                    <mat-form-field appearance="fill" style="width: 45%;">
                         <mat-label>Playing Position</mat-label>
                         <mat-select formControlName="playingPostion">
                             <mat-option value="goalkeeper">Goalkeeper</mat-option>
@@ -114,15 +117,15 @@
                 <div class="brk-field">
                     <mat-form-field appearance="fill" style="width: 30%;">
                         <mat-label>Jersy Size</mat-label>
-                        <input matInput formControlName="jersySize">
+                        <input matInput formControlName="jersySize" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
                     <mat-form-field appearance="fill" style="width: 30%;">
                         <mat-label>Height</mat-label>
-                        <input matInput formControlName="height" placeholder="Cm">
+                        <input matInput formControlName="height" placeholder="Cm" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
                     <mat-form-field appearance="fill" style="width: 30%;">
                         <mat-label>Weight</mat-label>
-                        <input matInput formControlName="weight">
+                        <input matInput formControlName="weight" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
                 </div>
                 <mat-form-field appearance="fill" style="width: 100%;">
@@ -133,7 +136,7 @@
                
         </div>
         <div class="sf-footer">
-            <button (click)="form1Submit()" [disabled]="form1Validation" style="width: 50%;" mat-raised-button color="primary">NEXT 
+            <button *ngIf="form1" (click)="form1Submit()" [disabled]="form1Validation" style="width: 50%;" mat-raised-button color="primary">NEXT 
                 <span class="arrowRight"><mat-icon>keyboard_arrow_right</mat-icon></span>
             </button>
             <button *ngIf="form2" (click)="prevForm()" style="width: 30%;" mat-raised-button>

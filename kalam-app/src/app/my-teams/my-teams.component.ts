@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-my-teams',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MyTeamsComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
+  ageType = undefined;
 
+  
   ngOnInit(): void {
   }
 
+  newStudent() {
+    this.router.navigate([`/student-form`]);
+  }
 }

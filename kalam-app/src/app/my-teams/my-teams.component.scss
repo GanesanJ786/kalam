@@ -26,3 +26,13 @@
 .team-info {
     margin-top: 0.5rem;
 }
+.ageGroup {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+::ng-deep .ageGroup .mat-form-field-appearance-fill .mat-form-field-flex {
+    background-color: #f1f1f1;
+    padding: 0;
+  }

@@ -1,4 +1,19 @@
-<div class="position-style"> Goalkeeper </div>
+<div class="ageGroup">
+    <mat-form-field appearance="fill" style="width: 45%;">
+        <mat-label>Age Group</mat-label>
+        <mat-select [(ngModel)]="ageType">
+            <mat-option value="u-15">Under-15</mat-option>
+            <mat-option value="u-16">Under-16</mat-option>
+            <mat-option value="u-19">Under-19</mat-option>
+            <mat-option value="u-23">Under-23</mat-option>
+            <mat-option value="open">Open</mat-option>
+        </mat-select>
+    </mat-form-field>
+    <button mat-raised-button color="primary" (click)="newStudent()">Add Student</button>
+</div>
+
+<div *ngIf="ageType">
+    <div class="position-style"> Goalkeeper </div>
 <div class="team-list">
     <div>
         <img class="profile-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
@@ -132,4 +147,5 @@
             </div>
         </div>
     </div>
+</div>
 </div>

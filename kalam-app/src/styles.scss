@@ -69,7 +69,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 .content-top {
   justify-content: start;
-  height: 80vh;
+  height: auto;
+  background-color: #f1f1f1;
 }
 .custm-logo {
   background-size: 2.5rem 3rem;

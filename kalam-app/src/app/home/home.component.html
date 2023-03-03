@@ -7,7 +7,7 @@
     </div>
         <div class="rf-content content-top">
             <div>
-                <mat-tab-group>
+                <mat-tab-group [selectedIndex]="tabIndex">
                     <mat-tab label="My Profile">
                       <ng-template matTabContent>
                         <!-- Content 1 - Loaded: {{getTimeLoaded(1) | date:'medium'}} -->

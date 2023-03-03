@@ -9,6 +9,8 @@ export class HomeComponent implements OnInit {
 
   constructor() { }
   tabLoadTimes: Date[] = [];
+  tabIndex:number = 0;
+
   ngOnInit(): void {
   }
   getTimeLoaded(index: number) {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Router } from '@angular/router';
 import * as moment from 'moment';
 
 import { KalamService } from '../kalam.service';
@@ -9,7 +10,7 @@ export interface StudentDetails {
   id?: string;
   name: string;
   dob: string;
-  age: string;
+  age: number;
   gender: string;
   aadharNum: string;
   fatherName: string;
@@ -30,6 +31,8 @@ export interface StudentDetails {
   height: string;
   weight: string;
   address: string;
+  kalamId?: string;
+  underAge?: string;
 }
 
 @Component({
@@ -46,7 +49,7 @@ export class StudentFormComponent implements OnInit {
   form1Validation: boolean = true;
   form2Validation: boolean = true;
 
-  constructor(private kalamService: KalamService) {
+  constructor(private kalamService: KalamService, private router: Router) {
     this.studentDetails = {} as StudentDetails;
   }
 
@@ -54,14 +57,14 @@ export class StudentFormComponent implements OnInit {
     this.studentForm = new FormGroup({
       name: new FormControl(this.studentDetails.name,[Validators.required]),
       dob: new FormControl(this.studentDetails.dob, [Validators.required]),
-      age: new FormControl(this.studentDetails.age,[Validators.required]),
+      age: new FormControl(0,[Validators.required]),
       gender: new FormControl(this.studentDetails.gender, [Validators.required]),
       aadharNum: new FormControl(this.studentDetails.aadharNum,[Validators.required]),
       fatherName: new FormControl(this.studentDetails.fatherName, [Validators.required]),
       motherName: new FormControl(this.studentDetails.motherName,[Validators.required]),
       fatherOcc: new FormControl(this.studentDetails.fatherOcc, [Validators.required]),
       motherOcc: new FormControl(this.studentDetails.motherOcc,[Validators.required]),
-      emailId: new FormControl(this.studentDetails.emailId, [Validators.required]),
+      emailId: new FormControl(this.studentDetails.emailId, [Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
       mobileNum: new FormControl(this.studentDetails.mobileNum,[Validators.required]),
       whatsappNum: new FormControl(this.studentDetails.whatsappNum, [Validators.required]),
       emgContactName: new FormControl(this.studentDetails.emgContactName,[Validators.required]),
@@ -110,7 +113,30 @@ export class StudentFormComponent implements OnInit {
     
   }
   onSubmit(): void {
-    this.kalamService.setStudentDetails(this.studentForm.value);
+    let studentForm: StudentDetails = {...this.studentForm.value};
+    let obj = {...this.studentForm.value}
+    studentForm.kalamId = obj.aadharNum.replaceAll("-",'');
+    studentForm.underAge = this.underAgeCalc(studentForm.age);
+    studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
+    console.log(studentForm)
+    //this.kalamService.setStudentDetails(studentForm);
+  }
+
+  underAgeCalc(val: number) {
+    let type = ""
+    if(val <= 15) {
+      type = 'u-15';
+    }else if(val == 16) {
+      type = 'u-16';
+    }else if(val <= 19) {
+      type = 'u-19';
+    }else if(val <= 23) {
+      type = 'u-23';
+    }else {
+      type = 'open'
+    }
+
+    return type
   }
 
   form1Submit(): void {
@@ -127,11 +153,18 @@ export class StudentFormComponent implements OnInit {
     //this.studentForm.get('age').se
     //let val = moment(event.value).format("MM/DD/YYYY");
     let year = moment.duration(moment().diff(event.value)).years();
-    if(year) {
+    if(year > 0) {
       this.studentForm.get("age")?.patchValue(year);
     }else {
       this.studentForm.get("age")?.patchValue(0);
+      setTimeout(() => {
+        this.studentForm.get("age")?.setErrors({'incorrect': true});
+        this.studentForm.controls['age'].markAsTouched();
+      }, 10);
     }
-    
+  }
+
+  gotoHome() {
+    this.router.navigate([`/home`]);
   }
 }

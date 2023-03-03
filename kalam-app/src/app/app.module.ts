@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'
@@ -25,6 +25,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { HomeComponent } from './home/home.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { MyTeamsComponent } from './my-teams/my-teams.component';
+import { AadharNumberDirective } from './aadhar-number.directive';
 
 @NgModule({
   declarations: [
@@ -34,12 +35,14 @@ import { MyTeamsComponent } from './my-teams/my-teams.component';
     SignUpComponent,
     HomeComponent,
     MyProfileComponent,
-    MyTeamsComponent
+    MyTeamsComponent,
+    AadharNumberDirective
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatInputModule,
