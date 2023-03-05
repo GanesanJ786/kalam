@@ -1,4 +1,7 @@
 import { NgModule } from '@angular/core';
+import {
+  HTTP_INTERCEPTORS
+} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -17,6 +20,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { StudentFormComponent } from './student-form/student-form.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -26,6 +31,8 @@ import { HomeComponent } from './home/home.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { MyTeamsComponent } from './my-teams/my-teams.component';
 import { AadharNumberDirective } from './aadhar-number.directive';
+import { LoaderInterceptor } from './loader.interceptor';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +43,8 @@ import { AadharNumberDirective } from './aadhar-number.directive';
     HomeComponent,
     MyProfileComponent,
     MyTeamsComponent,
-    AadharNumberDirective
+    AadharNumberDirective,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -54,9 +62,17 @@ import { AadharNumberDirective } from './aadhar-number.directive';
     MatRadioModule,
     MatIconModule,
     MatTabsModule,
+    MatSnackBarModule,
+    MatProgressSpinnerModule,
     AngularFireModule.initializeApp(environment.firebase)
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoaderInterceptor,
+      multi: true,
+    }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

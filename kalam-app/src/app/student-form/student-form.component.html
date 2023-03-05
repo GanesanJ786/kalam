@@ -7,6 +7,12 @@
                 <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
             </div>
             <div *ngIf="form1">
+                <div class="form-group" style="text-align: center;">
+                    <img *ngIf="selectedImage" [src]="imgSrc" width="60" height="80" (click)="fileUploader.click()">
+                    <img *ngIf="selectedImage == null" [src]="imgSrc" width="80" height="80" (click)="fileUploader.click()">
+                    <div class="pPic">Upload Profile Picture *</div>
+                </div>
+                <input type="file" style="display: none;" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
                 <mat-form-field appearance="fill" style="width: 100%;">
                     <mat-label>Name</mat-label>
                     <input matInput formControlName="name" appAadharNumber [alphabetOnly]="true">

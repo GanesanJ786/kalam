@@ -1,7 +1,7 @@
 <div class="ageGroup">
     <mat-form-field appearance="fill" style="width: 45%;">
         <mat-label>Age Group</mat-label>
-        <mat-select [(ngModel)]="ageType">
+        <mat-select [(ngModel)]="ageType" (ngModelChange)="underSelection()">
             <mat-option value="u-15">Under-15</mat-option>
             <mat-option value="u-16">Under-16</mat-option>
             <mat-option value="u-19">Under-19</mat-option>
@@ -12,140 +12,29 @@
     <button mat-raised-button color="primary" (click)="newStudent()">Add Student</button>
 </div>
 
-<div *ngIf="ageType">
-    <div class="position-style"> Goalkeeper </div>
-<div class="team-list">
-    <div>
-        <img class="profile-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
-    </div>
-    <div class="team-info">
-        Ganesan Jayakumar
-        <div class="student-info">
+<div *ngIf="ageType"> 
+    <div *ngFor="let student of studentList; let index = index">
+        <div class="position-style" *ngIf="!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion">{{getSportLabel(student.playingPostion)}}</div>
+        <div class="team-list">
             <div>
-                Kalam ID: #00786
+                <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
+                <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
             </div>
-            <div>
-                Age: 12, Under 12
-            </div>
-            <div>
-                Ranking: 1
-            </div>
-        </div>
-    </div>
-</div>
-<div class="team-list">
-    <div>
-        <img class="profile-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
-    </div>
-    <div class="team-info">
-        Raju
-        <div class="student-info">
-            <div>
-                Kalam ID: #0078658
-            </div>
-            <div>
-                Age: 12, Under 12
-            </div>
-            <div>
-                Ranking: 2
+            <div class="team-info">
+                {{student.name}}
+                <div class="student-info">
+                    <div>
+                        Kalam ID: {{student.kalamId}}
+                    </div>
+                    <div>
+                        Age: {{student.age}}, {{getUnderAgeLabel(student.underAge)}}
+                    </div>
+                    <!-- <div>
+                        Ranking: 1
+                    </div> -->
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="position-style"> Forwards </div>
-<div class="team-list">
-    <div>
-        <img class="profile-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
-    </div>
-    <div>
-        Kavin
-        <div class="student-info">
-            <div>
-                Kalam ID: #00876
-            </div>
-            <div>
-                Age: 12, Under 12
-            </div>
-            <div>
-                Ranking: 1
-            </div>
-        </div>
-    </div>
-</div>
-<div class="team-list">
-    <div>
-        <img class="profile-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
-    </div>
-    <div>
-        Kumar
-        <div class="student-info">
-            <div>
-                Kalam ID: #00876
-            </div>
-            <div>
-                Age: 12, Under 12
-            </div>
-            <div>
-                Ranking: 2
-            </div>
-        </div>
-    </div>
-</div>
-<div class="team-list">
-    <div>
-        <img class="profile-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
-    </div>
-    <div>
-        Duraisamy
-        <div class="student-info">
-            <div>
-                Kalam ID: #00876
-            </div>
-            <div>
-                Age: 12, Under 12
-            </div>
-            <div>
-                Ranking: 3
-            </div>
-        </div>
-    </div>
-</div>
-<div class="team-list">
-    <div>
-        <img class="profile-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
-    </div>
-    <div>
-        Kamal
-        <div class="student-info">
-            <div>
-                Kalam ID: #00876
-            </div>
-            <div>
-                Age: 12, Under 12
-            </div>
-            <div>
-                Ranking: 4
-            </div>
-        </div>
-    </div>
-</div>
-<div class="team-list">
-    <div>
-        <img class="profile-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
-    </div>
-    <div>
-        Ravi
-        <div class="student-info">
-            <div>
-                Kalam ID: #00876
-            </div>
-            <div>
-                Age: 12, Under 12
-            </div>
-            <div>
-                Ranking: 5
-            </div>
-        </div>
-    </div>
-</div>
+    <div *ngIf="studentList?.length == 0" style="margin-top: 20vh;text-align: center;"> No Students Added</div>
 </div>

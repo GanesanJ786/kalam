@@ -1,17 +1,20 @@
 <div class="user-details">
     <div>
-        <img class="profile-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
+        <img class="profile-img" *ngIf="coachDetails.imageUrl; else dummyImg" [src]="coachDetails.imageUrl" alt="profile image"/>
+        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
     </div>
     <div>
-        Ganesan Jayakumar
+        {{coachDetails.name}}
     </div>
     <div class="user-info">
-        Kalam ID: #001786
+        Kalam ID: {{coachDetails.kalamId}}
     </div>
-    <div class="user-info">
-        To Coach: Football
+    <div class="user-info" *ngIf="coachDetails?.toCoach">
+        To Coach: {{coachDetails.toCoach.join(', ')}}
     </div>
-    <div class="edit-profile">
-        <button mat-raised-button color="primary" (click)="editProfile()">Edit Profile</button>
-    </div>
+    
+</div>
+<div class="edit-profile">
+    <!-- <button mat-raised-button color="primary" (click)="editProfile()">Edit Profile</button> -->
+    <button mat-raised-button (click)="logout()">Logout</button>
 </div>

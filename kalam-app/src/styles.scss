@@ -9,6 +9,8 @@
 // Be sure that you only ever include this mixin once!
 @include mat.core();
 
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
@@ -67,7 +69,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   overflow: auto;
   justify-content: center;
 }
-.content-top {
+.content-top, .content-footer {
   justify-content: start;
   height: auto;
   background-color: #f1f1f1;
@@ -92,4 +94,8 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   position: absolute;
   left: 1px;
   top: 0.3rem;
+}
+.red-snackbar {
+  background: #ee334e;
+  color: #fff;
 }

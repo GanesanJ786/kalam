@@ -1,11 +1,17 @@
 <div class="rf-container">
     <div class="rf-header">REGISTRATION FORM</div>
     <form [formGroup]="registrationForm" #form="ngForm">
-        <div class="rf-content">
+        <div class="rf-content content-top">
             <div>
+                <div class="form-group" style="text-align: center;">
+                    <img *ngIf="selectedImage" [src]="imgSrc" width="60" height="80" (click)="fileUploader.click()">
+                    <img *ngIf="selectedImage == null" [src]="imgSrc" width="80" height="80" (click)="fileUploader.click()">
+                    <div class="pPic">Upload Profile Picture *</div>
+                </div>
+                <input type="file" style="display: none;" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
                 <mat-form-field appearance="fill" style="width: 100%;">
                     <mat-label>Name</mat-label>
-                    <input matInput formControlName="name">
+                    <input matInput formControlName="name" appAadharNumber [alphabetOnly]="true">
                 </mat-form-field>
                 <mat-form-field appearance="fill" style="width: 100%;">
                     <mat-label>Email ID</mat-label>
@@ -32,7 +38,7 @@
                     </mat-form-field>
                     <mat-form-field appearance="fill" style="width: 45%;">
                         <mat-label>Aadhar</mat-label>
-                        <input matInput formControlName="aadharNum">
+                        <input matInput formControlName="aadharNum" minlength="14" maxlength="14" appAadharNumber>
                     </mat-form-field>
                 </div>
                 <div class="brk-field">
@@ -43,14 +49,14 @@
                     <mat-form-field appearance="fill" style="width: 45%;">
                         <mat-label>To Coach</mat-label>
                         <mat-select formControlName="toCoach" multiple>
-                          <mat-option *ngFor="let sport of sports" [value]="sports">{{sport}}</mat-option>
+                          <mat-option *ngFor="let sport of sports" [value]="sport.sportValue">{{sport.sportName}}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="brk-field">
                     <mat-form-field appearance="fill" style="width: 45%;">
                         <mat-label>Whats App Number</mat-label>
-                        <input matInput formControlName="whatsappNum">
+                        <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
                     <mat-form-field appearance="fill" style="width: 45%;">
                         <mat-label>Reg Number(if any)</mat-label>
@@ -67,7 +73,7 @@
                 </mat-form-field>
             </div>
         </div>
-        <div class="rf-footer">
+        <div class="rf-footer content-footer">
             <button (click)="back()" style="width: 30%;" mat-raised-button>
                 <span class="arrowLeft"><mat-icon>keyboard_arrow_left</mat-icon></span> BACK
             </button>

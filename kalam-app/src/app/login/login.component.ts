@@ -3,11 +3,22 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { KalamService } from 'src/app/kalam.service';
-import { StudentDetails } from '../student-form/student-form.component';
+import { RegistrationDetails } from '../sign-up/sign-up.component';
+import {
+  MatSnackBar,
+  MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
+import { LoaderService } from '../loader.service';
 
-interface UserLogin {
+export interface UserLogin {
   username: string;
   password: string;
+}
+
+export interface StudentData {
+  coachId: string;
+  underAge: string;
 }
 
 @Component({
@@ -20,32 +31,24 @@ export class LoginComponent implements OnInit {
   signInForm!: FormGroup;
   userLogin: UserLogin;
 
-  constructor(private router: Router, private kalamService: KalamService) {
+  constructor(private router: Router, 
+    private loaderService: LoaderService,
+    private _snackBar: MatSnackBar,
+    private kalamService: KalamService) {
     this.userLogin = {} as UserLogin;
    }
 
   ngOnInit(): void {
     this.signInForm = new FormGroup({
       username: new FormControl(this.userLogin.username, [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(20),
+        Validators.required, 
+        Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
       ]),
       password: new FormControl(this.userLogin.password, [
-        Validators.required,
-        Validators.minLength(1),
-        Validators.maxLength(6),
+        Validators.required
       ]),
     });
-    this.kalamService.getStudentDetails().subscribe((res: any) => {
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
-      console.log(data)
-    })
+    this.kalamService.setCoachData({} as RegistrationDetails);
   }
 
   onSubmit(): void {
@@ -55,12 +58,29 @@ export class LoginComponent implements OnInit {
       }
       return;
     }
-
-    this.userLogin = this.signInForm.value;
-    console.info('Username:', this.userLogin.username);
-    console.info('Password:', this.userLogin.password);
-
-    this.router.navigate([`/home`]);
+    this.loaderService.show();
+    this.kalamService.loginDetails(this.signInForm.value).subscribe((res: any) => {
+      this.loaderService.hide();
+      let data = res.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      if(data.length > 0) {
+        //sessionStorage.setItem('coachDetails', JSON.stringify(data));
+        this.kalamService.setCoachData(data[0]);
+        this.router.navigate([`/home`]);
+      }else {
+        this._snackBar.open('Invalid username or password', '', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          duration: 5000,
+          panelClass: ['red-snackbar']
+        });
+      }
+    });
+    
   }
 
   signUp(){

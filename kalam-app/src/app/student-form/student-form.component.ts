@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
+import { finalize } from 'rxjs/operators';
 
 import { KalamService } from '../kalam.service';
+import { LoaderService } from '../loader.service';
 
 export interface StudentDetails {
   id?: string;
@@ -33,6 +36,8 @@ export interface StudentDetails {
   address: string;
   kalamId?: string;
   underAge?: string;
+  imageUrl: string;
+  coachId: string;
 }
 
 @Component({
@@ -48,13 +53,18 @@ export class StudentFormComponent implements OnInit {
   form2: boolean = false;
   form1Validation: boolean = true;
   form2Validation: boolean = true;
+  selectedImage: any = null;
+  imgSrc: string = "./assets/images/upload.png";
 
-  constructor(private kalamService: KalamService, private router: Router) {
+  constructor(private kalamService: KalamService, private router: Router,
+    private loaderService: LoaderService,
+    private storage: AngularFireStorage) {
     this.studentDetails = {} as StudentDetails;
   }
 
   ngOnInit(): void {
     this.studentForm = new FormGroup({
+      imageUrl: new FormControl(this.studentDetails.imageUrl, []),
       name: new FormControl(this.studentDetails.name,[Validators.required]),
       dob: new FormControl(this.studentDetails.dob, [Validators.required]),
       age: new FormControl(0,[Validators.required]),
@@ -112,16 +122,48 @@ export class StudentFormComponent implements OnInit {
     });
     
   }
-  onSubmit(): void {
+  formData(url?: string): void {
     let studentForm: StudentDetails = {...this.studentForm.value};
     let obj = {...this.studentForm.value}
     studentForm.kalamId = obj.aadharNum.replaceAll("-",'');
     studentForm.underAge = this.underAgeCalc(studentForm.age);
     studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
-    console.log(studentForm)
-    //this.kalamService.setStudentDetails(studentForm);
+    studentForm['imageUrl'] = url ? url : '';
+    studentForm['coachId'] = this.kalamService.getCoachData().kalamId;
+    //console.log(studentForm)
+    this.kalamService.setStudentDetails(studentForm);
+    this.loaderService.hide();
+    this.router.navigate([`/home`]);
   }
 
+  onSubmit() {
+    this.loaderService.show();
+    if(this.selectedImage) {
+      var filePath = `student/${this.studentForm.value.name}_${this.studentForm.value.aadharNum}_${new Date().getTime()}`;
+      const fileRef = this.storage.ref(filePath);
+      this.storage.upload(filePath,this.selectedImage).snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            this.formData(url);
+          });
+        })
+      ).subscribe();
+    }else {
+      this.formData();
+    }
+  }
+  showPreview(event:any) {
+    if(event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e:any) => this.imgSrc = e.target.result;
+      reader.readAsDataURL(event.target.files[0]);
+      this.selectedImage = event.target.files[0];
+    }else {
+      this.imgSrc = "./assets/images/upload.png";
+      this.selectedImage = null;
+    }
+  }
+  
   underAgeCalc(val: number) {
     let type = ""
     if(val <= 15) {

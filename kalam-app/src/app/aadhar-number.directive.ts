@@ -81,5 +81,5 @@ function numberOnlyFormat(value: string): string {
 }
 
 function alphabetOnlyFormat(value: string): string {
-  return value.replace(/[^a-zA-Z]*/g, '');
+  return value.replace(/[^a-zA-Z ]*/g, '');
 }
