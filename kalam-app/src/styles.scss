@@ -37,13 +37,14 @@ $kalam-app-theme: mat.define-light-theme((
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
+html, body { min-height: 100vh; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 .rf-container {
   width: 100%;
   margin: auto;
   background-color: #f1f1f1;
+  min-height: 100vh;
   height: 100%;
   box-sizing: border-box;
 }

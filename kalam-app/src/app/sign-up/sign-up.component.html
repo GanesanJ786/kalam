@@ -58,19 +58,34 @@
                         <mat-label>Whats App Number</mat-label>
                         <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
-                    <mat-form-field appearance="fill" style="width: 45%;">
+                    <mat-radio-group formControlName="academyOwned" style="margin-top: 1rem;width: 50%;" (change)="academyOwnedSelection()">
+                        <mat-radio-button value="Y" style="margin-right: 1rem;">Owner</mat-radio-button>
+                        <mat-radio-button  value="N">Employee</mat-radio-button>
+                    </mat-radio-group>
+                    
+                </div>
+                <div *ngIf="registrationForm.controls['academyOwned'].value == 'Y'">
+                    <mat-form-field appearance="fill" style="width: 100%;">
                         <mat-label>Reg Number(if any)</mat-label>
                         <input matInput formControlName="academyNum">
                     </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Academy Name</mat-label>
+                        <input matInput formControlName="academyName">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Address</mat-label>
+                        <textarea matInput formControlName="address"></textarea>
+                    </mat-form-field>
                 </div>
-                <mat-form-field appearance="fill" style="width: 100%;">
-                    <mat-label>Academy Name</mat-label>
-                    <input matInput formControlName="academyName">
-                </mat-form-field>
-                <mat-form-field appearance="fill" style="width: 100%;">
-                    <mat-label>Address</mat-label>
-                    <textarea matInput formControlName="address"></textarea>
-                </mat-form-field>
+                <div *ngIf="registrationForm.controls['academyOwned'].value == 'N'">
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Select Academy</mat-label>
+                        <mat-select formControlName="academyName" (selectionChange)="academySelection()">
+                            <mat-option *ngFor="let academy of academyList" [value]="academy.value">{{academy.key}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
         </div>
         <div class="rf-footer content-footer">

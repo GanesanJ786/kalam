@@ -49,4 +49,8 @@ export class KalamService {
   studentList(query:StudentData) {
     return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${query.coachId}`).where("underAge", "==", `${query.underAge}`)).snapshotChanges();
   }
+
+  getAllAcademy() {
+    return this.fireStore.collection('coachDetails').snapshotChanges();
+  }
 }

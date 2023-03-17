@@ -30,6 +30,8 @@ export interface RegistrationDetails {
   toCoach: any;
   address: string;
   kalamId: string;
+  academyOwned: string;
+  academyId?: string;
 }
 
 interface Sports {
@@ -50,6 +52,7 @@ export class SignUpComponent implements OnInit {
     private storage: AngularFireStorage, 
     private _snackBar: MatSnackBar) {
     this.registerDeatils = {} as RegistrationDetails;
+    this.getAcademyNames();
    }
   registrationForm!: FormGroup;
   registerDeatils: RegistrationDetails
@@ -64,6 +67,8 @@ export class SignUpComponent implements OnInit {
   imgSrc: string = "./assets/images/upload.png";
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
   verticalPosition: MatSnackBarVerticalPosition = 'top';
+  academyList: any = [];
+  ownerList: any = [];
 
   ngOnInit(): void {
     this.registrationForm = new FormGroup({
@@ -79,8 +84,47 @@ export class SignUpComponent implements OnInit {
       academyName: new FormControl(this.registerDeatils.academyName,[Validators.required]),
       academyNum: new FormControl(this.registerDeatils.academyNum, []),
       toCoach: new FormControl(this.registerDeatils.toCoach,[Validators.required]),
-      address: new FormControl(this.registerDeatils.address, [Validators.required])
+      address: new FormControl(this.registerDeatils.address, [Validators.required]),
+      academyOwned: new FormControl(this.registerDeatils.academyOwned, [Validators.required]),
+      academyId: new FormControl(this.registerDeatils.academyId, [])
     });
+  }
+
+  getAcademyNames() {
+    this.kalamService.getAllAcademy().subscribe((res: any) => {
+      let data = res.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      //console.log(data);
+      this.academyList = [];
+      this.ownerList = data.filter((res: any) => res.academyOwned == 'Y');
+      this.ownerList.forEach((element:any) => {
+        let obj = {
+          value:element.academyName,
+          key:element.academyName
+        }
+        this.academyList.push(obj);
+      });
+    });
+  }
+
+  academySelection() {
+    const ownerData = this.ownerList.filter((res:any) => res.academyName == this.registrationForm.value.academyName)[0];
+    this.registrationForm.patchValue({
+      address: ownerData.address,
+      academyId: `A${ownerData.kalamId}`
+    })
+  }
+
+  academyOwnedSelection() {
+    this.registrationForm.patchValue({
+      academyName: "",
+      address: "",
+      academyId: ""
+    })
   }
 
   onSubmit(){
