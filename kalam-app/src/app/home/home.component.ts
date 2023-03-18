@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { KalamService } from '../kalam.service';
 
 @Component({
   selector: 'app-home',
@@ -7,11 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private kalamService: KalamService) { }
   tabLoadTimes: Date[] = [];
   tabIndex:number = 0;
+  academyName: string = '';
 
   ngOnInit(): void {
+    this.academyName = this.kalamService.getCoachData().academyName;
   }
   getTimeLoaded(index: number) {
     if (!this.tabLoadTimes[index]) {

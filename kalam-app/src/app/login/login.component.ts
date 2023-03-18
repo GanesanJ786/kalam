@@ -17,7 +17,7 @@ export interface UserLogin {
 }
 
 export interface StudentData {
-  coachId: string;
+  coachId: string | undefined;
   underAge: string;
 }
 
@@ -68,8 +68,8 @@ export class LoginComponent implements OnInit {
         }
       });
       if(data.length > 0) {
-        //sessionStorage.setItem('coachDetails', JSON.stringify(data));
-        this.kalamService.setCoachData(data[0]);
+        sessionStorage.setItem('coachDetails', JSON.stringify(data[0]));
+        //this.kalamService.setCoachData(data[0]);
         this.router.navigate([`/home`]);
       }else {
         this._snackBar.open('Invalid username or password', '', {

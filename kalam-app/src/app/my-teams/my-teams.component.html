@@ -1,12 +1,8 @@
-<div class="ageGroup">
+<div class="ageGroup" *ngIf="underCategory">
     <mat-form-field appearance="fill" style="width: 45%;">
         <mat-label>Age Group</mat-label>
         <mat-select [(ngModel)]="ageType" (ngModelChange)="underSelection()">
-            <mat-option value="u-15">Under-15</mat-option>
-            <mat-option value="u-16">Under-16</mat-option>
-            <mat-option value="u-19">Under-19</mat-option>
-            <mat-option value="u-23">Under-23</mat-option>
-            <mat-option value="open">Open</mat-option>
+            <mat-option *ngFor="let under of underCategory" [value]="under.value">{{under.key}}</mat-option>
         </mat-select>
     </mat-form-field>
     <button mat-raised-button color="primary" (click)="newStudent()">Add Student</button>

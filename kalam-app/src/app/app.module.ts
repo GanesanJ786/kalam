@@ -9,6 +9,9 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input'
@@ -22,6 +25,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { StudentFormComponent } from './student-form/student-form.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -33,6 +37,7 @@ import { MyTeamsComponent } from './my-teams/my-teams.component';
 import { AadharNumberDirective } from './aadhar-number.directive';
 import { LoaderInterceptor } from './loader.interceptor';
 import { LoaderComponent } from './loader/loader.component';
+import { AddGroundComponent } from './add-ground/add-ground.component';
 
 @NgModule({
   declarations: [
@@ -44,9 +49,11 @@ import { LoaderComponent } from './loader/loader.component';
     MyProfileComponent,
     MyTeamsComponent,
     AadharNumberDirective,
-    LoaderComponent
+    LoaderComponent,
+    AddGroundComponent
   ],
   imports: [
+    HttpClientModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -64,7 +71,9 @@ import { LoaderComponent } from './loader/loader.component';
     MatTabsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    AngularFireModule.initializeApp(environment.firebase)
+    MatDialogModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    NgIdleKeepaliveModule.forRoot()
   ],
   providers: [
     {

@@ -13,9 +13,23 @@ import { StudentDetails } from '../student-form/student-form.component';
 })
 export class MyTeamsComponent implements OnInit {
 
-  constructor(private router: Router, private loaderService: LoaderService,  private kalamService: KalamService) { }
+  constructor(private router: Router, private loaderService: LoaderService,  private kalamService: KalamService) {
+    this.kalamService.getStudentDetails().subscribe((res: any) => {
+      let data = res.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      this.allStudents =  data;
+      this.underList();
+    });
+   
+  }
   ageType: string = '';
   studentList: any;
+  allStudents: any;
+  underCategory: any = [];
   
   ngOnInit(): void {
     
@@ -23,7 +37,8 @@ export class MyTeamsComponent implements OnInit {
 
   getStudentList() {
     this.loaderService.show();
-    this.kalamService.studentList({coachId: this.kalamService.getCoachData().kalamId, underAge: this.ageType}).subscribe((res: any) => {
+    const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
+    this.kalamService.studentList({coachId: coachId, underAge: this.ageType}).subscribe((res: any) => {
       this.loaderService.hide();
       let data = res.map((document: any) => {
         return {
@@ -33,6 +48,31 @@ export class MyTeamsComponent implements OnInit {
       });
       this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
     });
+  }
+
+  underList() {
+    this.underCategory = [];
+    this.allStudents.forEach((element:any) => {
+      let obj = {
+        value: element.underAge,
+        key: this.ageConvert(element.underAge)
+      }
+      this.underCategory.push(obj);
+    });
+    this.underCategory = this.underCategory.reduce((unique:any, o:any) => {
+        if(!unique.some((obj:any) => obj.key === o.key && obj.value === o.value)) {
+          unique.push(o);
+        }
+        return unique;
+    },[]);
+  }
+
+  ageConvert(val: string) {
+    if(val == "open") {
+      return "Open"
+    }else {
+      return "Under-"+val.split("-")[1];
+    }
   }
 
   newStudent() {

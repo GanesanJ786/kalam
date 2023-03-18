@@ -39,7 +39,11 @@ export class KalamService {
   }
 
   getCoachData() {
-    return this.getCoachInfo;
+    let coachDetails: any = sessionStorage.getItem("coachDetails");
+    if (coachDetails) {
+        let coachProfile = JSON.parse(coachDetails)
+        return coachProfile;
+    }
   }
 
   setCoachData(coachInfo: RegistrationDetails) {
@@ -53,4 +57,13 @@ export class KalamService {
   getAllAcademy() {
     return this.fireStore.collection('coachDetails').snapshotChanges();
   }
+
+  addGroundDetails(ground: any) {
+    this.fireStore.collection("groundDetails").add({...ground});
+  }
+
+  getGroundDetails(academyId: any) {
+    return this.fireStore.collection('groundDetails', ref => ref.where('academyId', '==', `${academyId}`)).snapshotChanges();
+  }
+
 }

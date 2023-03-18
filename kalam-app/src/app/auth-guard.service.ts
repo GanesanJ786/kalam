@@ -14,10 +14,16 @@ export class AuthGuardService {
     //let url: string = state.url;
     //console.log('Url:'+ url);
     const coachInfo = this.kalamService.getCoachData();
-    if (Object.keys(coachInfo).length > 0) {
-        // logged in so return true
+    let coachDetails: any = sessionStorage.getItem("coachDetails");
+    if (coachDetails) {
+        // let coachProfile = JSON.parse(coachDetails)
+        // console.log(coachProfile);
         return true;
     }
+    // if (Object.keys(coachInfo).length > 0) {
+    //     // logged in so return true
+    //     return true;
+    // }
 
     // not logged in so redirect to login page with the return url
     // return true;

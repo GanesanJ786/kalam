@@ -37,7 +37,7 @@ export interface StudentDetails {
   kalamId?: string;
   underAge?: string;
   imageUrl: string;
-  coachId: string;
+  coachId: string | undefined;
 }
 
 @Component({
@@ -124,12 +124,13 @@ export class StudentFormComponent implements OnInit {
   }
   formData(url?: string): void {
     let studentForm: StudentDetails = {...this.studentForm.value};
-    let obj = {...this.studentForm.value}
+    let obj = {...this.studentForm.value};
+    const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     studentForm.kalamId = obj.aadharNum.replaceAll("-",'');
     studentForm.underAge = this.underAgeCalc(studentForm.age);
     studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
     studentForm['imageUrl'] = url ? url : '';
-    studentForm['coachId'] = this.kalamService.getCoachData().kalamId;
+    studentForm['coachId'] = coachId;
     //console.log(studentForm)
     this.kalamService.setStudentDetails(studentForm);
     this.loaderService.hide();
