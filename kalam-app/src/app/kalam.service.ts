@@ -66,4 +66,19 @@ export class KalamService {
     return this.fireStore.collection('groundDetails', ref => ref.where('academyId', '==', `${academyId}`)).snapshotChanges();
   }
 
+  coachAttendance(coachData: any) {
+    this.fireStore.collection("coachAttendance").add({...coachData});
+  }
+
+  getCoachAttendanceData(academyId: string | undefined) {
+    return this.fireStore.collection('coachAttendance', ref => ref.where('academyId', '==', `${academyId}`)).snapshotChanges();
+  }
+
+  studentAttendance(stundent: any) {
+    this.fireStore.collection("studentAttendance").add({...stundent});
+  }
+
+  getStudentAttendanceData(academyId: string, loginDate: string) {
+    return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`).where("loginDate", "==", `${loginDate}`)).snapshotChanges();
+  }
 }

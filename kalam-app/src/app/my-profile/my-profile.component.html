@@ -18,14 +18,17 @@
     </div>
 </div>
 <div class="ground-add">
-    <button  mat-raised-button color="primary" (click)="addGround()">Add Ground</button>
+    <button *ngIf="owner"  mat-raised-button color="primary" (click)="addGround()">Add Ground</button>
 </div>
 <div class="ground-items">
     <div *ngFor="let ground of groundList" class="groundItem">
-        <div>{{ground.groundName}}</div>
         <div>
-            <button class="btn-grnd" (click)="in(ground)">IN</button>
-            <button class="btn-grnd btn-red" (click)="out(ground)">OUT</button>
+            <div>{{ground.groundName}}</div>
+            <div></div>
+        </div>
+        <div>
+            <button class="btn-grnd" [disabled]="ground.disableInBtn || allBtnDisabled" (click)="in(ground)">IN</button>
+            <button class="btn-grnd btn-red" [disabled]="ground.disableOutBtn" (click)="out(ground)">OUT</button>
         </div>
     </div>
 </div>

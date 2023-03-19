@@ -100,3 +100,18 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background: #ee334e;
   color: #fff;
 }
+.btn-grnd {
+  background: green;
+  color: #fff;
+  border: 0;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+.btn-red {
+  background: #dd0e0e;
+}
+button.btn-grnd:disabled {
+  background: #c9c9c9;
+}

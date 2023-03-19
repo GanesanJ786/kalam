@@ -39,7 +39,11 @@
     align-items: baseline;
     justify-content: space-between;
 }
-::ng-deep .ageGroup .mat-form-field-appearance-fill .mat-form-field-flex {
+.custBtn {
+    padding: 0.4rem 1rem;
+    margin: 0;
+}
+::ng-deep .custField .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: #f1f1f1;
     padding: 0;
   }

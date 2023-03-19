@@ -4,6 +4,7 @@ import { SportsList, UnderAge } from '../constant';
 import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
 import { StudentDetails } from '../student-form/student-form.component';
+import * as moment from 'moment';
 // import * as _ from "lodash";
 
 @Component({
@@ -14,6 +15,7 @@ import { StudentDetails } from '../student-form/student-form.component';
 export class MyTeamsComponent implements OnInit {
 
   constructor(private router: Router, private loaderService: LoaderService,  private kalamService: KalamService) {
+    this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.kalamService.getStudentDetails().subscribe((res: any) => {
       let data = res.map((document: any) => {
         return {
@@ -24,13 +26,25 @@ export class MyTeamsComponent implements OnInit {
       this.allStudents =  data;
       this.underList();
     });
-   
+    this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
+      let data = res.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      this.groundList = data;
+     
+    })
   }
   ageType: string = '';
   studentList: any;
   allStudents: any;
   underCategory: any = [];
-  
+  groundName: string = '';
+  groundList: any = [];
+  coachId: string | undefined;
+
   ngOnInit(): void {
     
   }
@@ -47,6 +61,26 @@ export class MyTeamsComponent implements OnInit {
         }
       });
       this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
+      
+      this.kalamService.getStudentAttendanceData(coachId, moment().format("MM-DD-YYYY")).subscribe((stud:any) => {
+        let stundentData = stud.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+        stundentData.forEach((studList:any) => {
+          this.studentList.forEach((element: any) => {
+            //element['disableInBtn'] = false;
+            if(studList.status == "IN" && element.kalamId == studList.kalamId) {
+              element['disableInBtn'] = true;
+            }
+            
+          });
+        });
+      })
+      
+        
     });
   }
 
@@ -89,5 +123,19 @@ export class MyTeamsComponent implements OnInit {
 
   getUnderAgeLabel(value: string) {
     return UnderAge.filter(res => res.value == value)[0].label;
+  }
+
+  in(student: StudentDetails) {
+    const studentAttendance = {
+      kalamId: student.kalamId,
+      academyId: this.coachId,
+      coachId: this.kalamService.getCoachData().kalamId,
+      groundName: this.groundName,
+      loginTime: moment().format("HH:mm:ss"),
+      loginDate: moment().format("MM-DD-YYYY"),
+      status: "IN"
+    }
+    this.kalamService.studentAttendance(studentAttendance);
+    student["disableInBtn"] = true;
   }
 }

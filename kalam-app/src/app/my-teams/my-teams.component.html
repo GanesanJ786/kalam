@@ -1,4 +1,4 @@
-<div class="ageGroup" *ngIf="underCategory">
+<div class="ageGroup custField" *ngIf="underCategory">
     <mat-form-field appearance="fill" style="width: 45%;">
         <mat-label>Age Group</mat-label>
         <mat-select [(ngModel)]="ageType" (ngModelChange)="underSelection()">
@@ -9,6 +9,14 @@
 </div>
 
 <div *ngIf="ageType"> 
+    <div class="custField">
+        <mat-form-field appearance="fill" style="width: 45%;">
+            <mat-label>Select Ground</mat-label>
+            <mat-select [(ngModel)]="groundName">
+                <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
     <div *ngFor="let student of studentList; let index = index">
         <div class="position-style" *ngIf="!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion">{{getSportLabel(student.playingPostion)}}</div>
         <div class="team-list">
@@ -28,6 +36,9 @@
                     <!-- <div>
                         Ranking: 1
                     </div> -->
+                    <div>
+                        <button class="btn-grnd custBtn" [disabled]="student.disableInBtn || !groundName" (click)="in(student)">IN</button>
+                    </div>
                 </div>
             </div>
         </div>
