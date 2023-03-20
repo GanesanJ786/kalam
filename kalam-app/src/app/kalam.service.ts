@@ -81,4 +81,8 @@ export class KalamService {
   getStudentAttendanceData(academyId: string, loginDate: string) {
     return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`).where("loginDate", "==", `${loginDate}`)).snapshotChanges();
   }
+
+  getAllStudentAttendanceData(academyId: string | undefined) {
+    return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`)).snapshotChanges();
+  }
 }

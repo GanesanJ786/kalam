@@ -39,6 +39,7 @@ export interface StudentDetails {
   imageUrl: string;
   coachId: string | undefined;
   disableInBtn?: boolean;
+  disableOutBtn?: boolean;
 }
 
 @Component({

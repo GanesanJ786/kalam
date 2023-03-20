@@ -5,7 +5,7 @@ import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
 import { StudentDetails } from '../student-form/student-form.component';
 import * as moment from 'moment';
-// import * as _ from "lodash";
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-my-teams',
@@ -16,6 +16,7 @@ export class MyTeamsComponent implements OnInit {
 
   constructor(private router: Router, private loaderService: LoaderService,  private kalamService: KalamService) {
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
+    this.owner = this.kalamService.getCoachData().academyId ? false : true;
     this.kalamService.getStudentDetails().subscribe((res: any) => {
       let data = res.map((document: any) => {
         return {
@@ -44,6 +45,10 @@ export class MyTeamsComponent implements OnInit {
   groundName: string = '';
   groundList: any = [];
   coachId: string | undefined;
+  owner: boolean = true;
+  studentListView: boolean = true;
+  viewStudentAttendance: boolean = false;
+  allStudentAttendance: any = [];
 
   ngOnInit(): void {
     
@@ -74,6 +79,9 @@ export class MyTeamsComponent implements OnInit {
             //element['disableInBtn'] = false;
             if(studList.status == "IN" && element.kalamId == studList.kalamId) {
               element['disableInBtn'] = true;
+            }
+            if(studList.status == "OUT" && element.kalamId == studList.kalamId) {
+              element['disableOutBtn'] = true;
             }
             
           });
@@ -128,14 +136,48 @@ export class MyTeamsComponent implements OnInit {
   in(student: StudentDetails) {
     const studentAttendance = {
       kalamId: student.kalamId,
+      name: student.name,
       academyId: this.coachId,
       coachId: this.kalamService.getCoachData().kalamId,
       groundName: this.groundName,
       loginTime: moment().format("HH:mm:ss"),
       loginDate: moment().format("MM-DD-YYYY"),
+      ageType: this.ageConvert(this.ageType),
       status: "IN"
     }
     this.kalamService.studentAttendance(studentAttendance);
     student["disableInBtn"] = true;
+  }
+  out(student: StudentDetails) {
+    const studentAttendance = {
+      kalamId: student.kalamId,
+      name: student.name,
+      academyId: this.coachId,
+      coachId: this.kalamService.getCoachData().kalamId,
+      groundName: this.groundName,
+      loginTime: moment().format("HH:mm:ss"),
+      loginDate: moment().format("MM-DD-YYYY"),
+      ageType: this.ageConvert(this.ageType),
+      status: "OUT"
+    }
+    this.kalamService.studentAttendance(studentAttendance);
+    student["disableOutBtn"] = true;
+  }
+  viewStudent() {
+    this.studentListView = true;
+    this.viewStudentAttendance = false;
+  }
+  viewAttendance() {
+    this.studentListView = false;
+    this.viewStudentAttendance = true;
+    this.kalamService.getAllStudentAttendanceData(this.coachId).subscribe((stud:any) => {
+      let stundentData = stud.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      this.allStudentAttendance =  _.sortBy(stundentData, ["ageType", "loginDate"]);
+    })
   }
 }
