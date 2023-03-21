@@ -115,3 +115,109 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 button.btn-grnd:disabled {
   background: #c9c9c9;
 }
+
+.sf-container {
+  width: 100%;
+  margin: auto;
+  background-color: #f1f1f1;
+  min-height: 100vh;
+  height: 100%;
+  box-sizing: border-box;
+}
+.sf-header {
+  height: 10vh;
+  color: #000;
+  background-image: url("assets/logo/kalamLogoName.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 5px 5px -6px;
+  background-position: 1rem;
+  background-color: #ffffff;
+}
+.sf-content {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1rem 0 1rem;
+  height: auto;
+  box-sizing: border-box;
+  overflow: auto;
+}
+.sf-footer {
+  display: flex;
+  height: 10vh;
+  justify-content: space-around;
+  align-items: center;
+}
+.brk-field {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+}
+.arrowRight {
+  position: absolute;
+  right: 1px;
+  top: 0.3rem;
+}
+.arrowLeft {
+  position: absolute;
+  left: 1px;
+  top: 0.3rem;
+}
+.gotoHome {
+  display: flex;
+  justify-content: end;
+  margin-bottom: 1rem;
+}
+.pPic {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+}
+.sf-content .mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #f1f1f1;
+  padding: 0;
+}
+.brk-field .mat-form-field-infix {
+  width: 100%;
+}
+.sf-content .mat-form-field-appearance-fill .mat-form-field-subscript-wrapper {
+  padding: 0;
+}
+.sf-content .mat-form-field {
+  font-weight: 500;
+}
+.custField .mat-form-field-appearance-fill .mat-form-field-flex {
+  background-color: #f1f1f1;
+  padding: 0;
+}
+.grid-container {
+  display: grid;
+  grid-template: auto/auto auto auto auto auto;
+  grid-gap: 1px;
+  background-color: #c5e5ff;
+  padding: 0.05rem;
+}
+
+.grid-container > div {
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  padding: 20px 0;
+}
+.header {
+  background-color: rgba(255, 255, 255, 0.5) !important;
+  font-weight: 600;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+.red {
+  background-color: rgba(255, 99, 71) !important;
+  border: red !important;
+  color: #fff;
+}
+.green {
+  background-color: rgba(60, 179, 113) !important;
+  color: #fff;
+}

@@ -82,7 +82,11 @@ export class KalamService {
     return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`).where("loginDate", "==", `${loginDate}`)).snapshotChanges();
   }
 
-  getAllStudentAttendanceData(academyId: string | undefined) {
-    return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`)).snapshotChanges();
+  getAllStudentAttendanceData(academyId: string | undefined, ageType: string) {
+    return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`).where("ageType", "==", `${ageType}`)).snapshotChanges();
+  }
+
+  editStudentAttendance(item: any, id: string) {
+    this.fireStore.doc("studentAttendance/"+id).update(item);
   }
 }

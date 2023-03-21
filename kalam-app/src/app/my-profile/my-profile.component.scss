@@ -27,7 +27,8 @@
 }
 .ground-add {
     padding: 1rem;
-    text-align: center;
+    display: flex;
+    justify-content: space-between;
 }
 .ground-items {
     display: flex;

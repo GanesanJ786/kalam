@@ -38,6 +38,7 @@ import { AadharNumberDirective } from './aadhar-number.directive';
 import { LoaderInterceptor } from './loader.interceptor';
 import { LoaderComponent } from './loader/loader.component';
 import { AddGroundComponent } from './add-ground/add-ground.component';
+import { ViewCoachAttendanceComponent } from './view-coach-attendance/view-coach-attendance.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { AddGroundComponent } from './add-ground/add-ground.component';
     MyTeamsComponent,
     AadharNumberDirective,
     LoaderComponent,
-    AddGroundComponent
+    AddGroundComponent,
+    ViewCoachAttendanceComponent
   ],
   imports: [
     HttpClientModule,

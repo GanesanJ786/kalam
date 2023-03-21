@@ -42,11 +42,12 @@ export class MyProfileComponent implements OnInit {
           element["coachAlreadyIn"] = coachData.filter((val:any) => val.groundName == element.groundName);
           element['disableInBtn'] = false;
           element['disableOutBtn'] = true;
-          if(coachData.filter((val:any) => (val.groundName == element.groundName && val.kalamId == element.kalamId && val.status == "IN")).length > 
-          coachData.filter((val:any) => (val.groundName == element.groundName && val.kalamId == element.kalamId && val.status == "OUT")).length ) {
+          if(coachData.filter((val:any) => (val.groundName == element.groundName && val.inCoachId == this.coachDetails.kalamId && val.status == "IN")).length > 
+          coachData.filter((val:any) => (val.groundName == element.groundName && val.inCoachId == this.coachDetails.kalamId && val.status == "OUT")).length ) {
             this.allBtnDisabled = true;
             element['disableOutBtn'] = false;
           }
+          //if(element["coachAlreadyIn"].find((c:any) => c.inCoachId == ))
         });
       })
     })
@@ -108,5 +109,8 @@ export class MyProfileComponent implements OnInit {
       status: "OUT"
     }
     this.kalamService.coachAttendance(attendance);
+  }
+  viewCoachData() {
+    this.router.navigate([`/coachDetails`]);
   }
 }

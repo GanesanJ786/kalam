@@ -19,6 +19,7 @@
 </div>
 <div class="ground-add">
     <button *ngIf="owner"  mat-raised-button color="primary" (click)="addGround()">Add Ground</button>
+    <button *ngIf="owner"  mat-raised-button color="primary" (click)="viewCoachData()">View Coach Details</button>
 </div>
 <div class="ground-items">
     <div *ngFor="let ground of groundList" class="groundItem">

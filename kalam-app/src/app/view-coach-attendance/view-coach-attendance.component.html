@@ -1,0 +1,30 @@
+<div class="sf-container">
+    <div class="sf-header">View Coaches Details </div>
+    <div class="sf-content">
+        <div class="gotoHome">
+            <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
+        </div>
+        <div>
+            <mat-form-field appearance="fill" style="width: 45%;">
+                <mat-label>Select Coach</mat-label>
+                <mat-select [(ngModel)]="coachVal" (ngModelChange)="coachSelection()">
+                    <mat-option *ngFor="let coach of coachList" [value]="coach.inCoachId">{{coach.coachName}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div *ngIf="coachView.length > 0">
+            <div class="grid-container custGrid">
+                <div class="header">Name</div>
+                <div class="header">Ground</div>
+                <div class="header">Log In Time</div>
+                <div class="header">Log Off Time</div>  
+                <ng-container *ngFor="let coach of coachView">
+                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.coachName}}</div>
+                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.groundName}}</div>
+                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{logInValue(coach)}}</div>
+                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.logOffDataTime}}</div>
+                </ng-container>
+              </div>
+        </div>
+    </div>
+</div>

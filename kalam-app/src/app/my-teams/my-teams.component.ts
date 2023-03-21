@@ -36,7 +36,9 @@ export class MyTeamsComponent implements OnInit {
       });
       this.groundList = data;
      
-    })
+    });
+
+    this.getStudentAttendance();
   }
   ageType: string = '';
   studentList: any;
@@ -52,6 +54,18 @@ export class MyTeamsComponent implements OnInit {
 
   ngOnInit(): void {
     
+  }
+
+  getStudentAttendance() {
+    this.kalamService.getAllStudentAttendanceData(this.coachId, this.ageConvert(this.ageType)).subscribe((stud:any) => {
+      let stundentData = stud.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      this.allStudentAttendance =  _.sortBy(stundentData, ["ageType", "loginDate"]);
+    })
   }
 
   getStudentList() {
@@ -123,6 +137,7 @@ export class MyTeamsComponent implements OnInit {
 
   underSelection() {
     this.getStudentList();
+    this.getStudentAttendance();
   }
 
   getSportLabel(value: string) {
@@ -145,7 +160,14 @@ export class MyTeamsComponent implements OnInit {
       ageType: this.ageConvert(this.ageType),
       status: "IN"
     }
-    this.kalamService.studentAttendance(studentAttendance);
+
+    if(student["disableOutBtn"]) {
+      const id = this.allStudentAttendance.find((res:any) => res.kalamId == student.kalamId).id;
+      this.kalamService.editStudentAttendance(studentAttendance,id);
+      student["disableOutBtn"] = false;
+    }else {
+      this.kalamService.studentAttendance(studentAttendance);
+    }
     student["disableInBtn"] = true;
   }
   out(student: StudentDetails) {
@@ -160,7 +182,14 @@ export class MyTeamsComponent implements OnInit {
       ageType: this.ageConvert(this.ageType),
       status: "OUT"
     }
-    this.kalamService.studentAttendance(studentAttendance);
+    if(student["disableInBtn"]) {
+      const id = this.allStudentAttendance.find((res:any) => res.kalamId == student.kalamId).id;
+      this.kalamService.editStudentAttendance(studentAttendance,id);
+      student["disableInBtn"] = false;
+    }else {
+      this.kalamService.studentAttendance(studentAttendance);
+    }
+ 
     student["disableOutBtn"] = true;
   }
   viewStudent() {
@@ -170,14 +199,5 @@ export class MyTeamsComponent implements OnInit {
   viewAttendance() {
     this.studentListView = false;
     this.viewStudentAttendance = true;
-    this.kalamService.getAllStudentAttendanceData(this.coachId).subscribe((stud:any) => {
-      let stundentData = stud.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
-      this.allStudentAttendance =  _.sortBy(stundentData, ["ageType", "loginDate"]);
-    })
   }
 }
