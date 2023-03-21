@@ -49,6 +49,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
     let sortCoach = _.sortBy(coachInfo, ["loginDate", "loginTime","groundName"]);
     let inCoach = sortCoach.filter((v:any) => v.status == "IN");
     let outCoach = sortCoach.filter((v:any) => v.status == "OUT");
+    outCoach = _.sortBy(outCoach, ["logoffDate", "logoffTime","groundName"]);
     // sortCoach.forEach((e:any) => {
     //   outCoach.forEach((o:any) => {
     //     if(e.status == "IN" && o.status == "OUT" && (e.loginDate == o.logoffDate)) {
