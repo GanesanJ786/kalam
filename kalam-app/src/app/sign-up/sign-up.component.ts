@@ -32,6 +32,7 @@ export interface RegistrationDetails {
   kalamId: string;
   academyOwned: string;
   academyId?: string;
+  approved?: boolean;
 }
 
 interface Sports {
@@ -69,6 +70,7 @@ export class SignUpComponent implements OnInit {
   verticalPosition: MatSnackBarVerticalPosition = 'top';
   academyList: any = [];
   ownerList: any = [];
+  ownerData: any = null;
 
   ngOnInit(): void {
     this.registrationForm = new FormGroup({
@@ -112,14 +114,16 @@ export class SignUpComponent implements OnInit {
   }
 
   academySelection() {
-    const ownerData = this.ownerList.filter((res:any) => res.academyName == this.registrationForm.value.academyName)[0];
+    this.ownerData = this.ownerList.filter((res:any) => res.academyName == this.registrationForm.value.academyName)[0];
+    console.log(this.ownerData)
     this.registrationForm.patchValue({
-      address: ownerData.address,
-      academyId: `A${ownerData.kalamId}`
+      address: this.ownerData.address,
+      academyId: `A${this.ownerData.kalamId}`
     })
   }
 
   academyOwnedSelection() {
+    this.ownerData = null;
     this.registrationForm.patchValue({
       academyName: "",
       address: "",
@@ -165,12 +169,32 @@ export class SignUpComponent implements OnInit {
     coachForm.kalamId = obj.aadharNum.replaceAll("-",'');
     coachForm['imageUrl'] = url ? url : '';
     coachForm.dob = moment(obj.dob).format("MM/DD/YYYY");
+    if(this.ownerData) {
+      coachForm.approved = false;
+    }else {
+      coachForm.approved = true;
+    }
     this.kalamService.setCoachProfile(coachForm);
     this.selectedImage = null;
     this.imgSrc = "./assets/images/upload.png";
     this.openSnackBar('profileRegisted');
     this.loaderService.hide();
+    this.sendMailer();
     this.router.navigate([`/login`]);
+  }
+
+  sendMailer() {
+    if(this.ownerData) {
+      const request = {
+        "to": `${this.ownerData.emailId}`,
+        "subject": "New coach requesting",
+        "ownerName": `${this.ownerData.name}`,
+        "coachName": `${this.registrationForm.value.name}`
+      }
+      this.kalamService.sendEmailer(request).subscribe((res:any) => {
+        console.log("email sent to the owner");
+      })
+    }
   }
 
   openSnackBar(_type: string) {

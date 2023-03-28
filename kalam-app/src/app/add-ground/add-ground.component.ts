@@ -4,9 +4,11 @@ import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog
 import { KalamService } from '../kalam.service';
 
 export interface DialogData {
-  groundName: string;
-  groundAddress: string;
+  dialogType?: string;
+  groundName?: string;
+  groundAddress?: string;
   academyId?: string;
+  coachView?: any;
 }
 
 @Component({

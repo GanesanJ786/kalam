@@ -68,9 +68,22 @@ export class LoginComponent implements OnInit {
         }
       });
       if(data.length > 0) {
-        sessionStorage.setItem('coachDetails', JSON.stringify(data[0]));
-        //this.kalamService.setCoachData(data[0]);
-        this.router.navigate([`/home`]);
+        if(data[0].approved) {
+          sessionStorage.setItem('coachDetails', JSON.stringify(data[0]));
+          //this.kalamService.setCoachData(data[0]);
+          this.router.navigate([`/home`]);
+        }else {
+          if(data[0].academyOwned == 'N') {
+            this._snackBar.open(`Your account is not yet approved. Please contact ${data[0].academyName} admin.`, '', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 8000,
+              panelClass: ['red-snackbar']
+            });
+          }
+         
+        }
+        
       }else {
         this._snackBar.open('Invalid username or password', '', {
           horizontalPosition: 'center',

@@ -39,6 +39,7 @@ import { LoaderInterceptor } from './loader.interceptor';
 import { LoaderComponent } from './loader/loader.component';
 import { AddGroundComponent } from './add-ground/add-ground.component';
 import { ViewCoachAttendanceComponent } from './view-coach-attendance/view-coach-attendance.component';
+import { NewCoachApproveComponent } from './new-coach-approve/new-coach-approve.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { ViewCoachAttendanceComponent } from './view-coach-attendance/view-coach
     AadharNumberDirective,
     LoaderComponent,
     AddGroundComponent,
-    ViewCoachAttendanceComponent
+    ViewCoachAttendanceComponent,
+    NewCoachApproveComponent
   ],
   imports: [
     HttpClientModule,

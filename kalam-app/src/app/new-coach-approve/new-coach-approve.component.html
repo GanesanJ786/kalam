@@ -1,0 +1,28 @@
+<div class="sf-container">
+    <div class="sf-header">New coaches yet to be approved</div>
+    <div class="sf-content">
+        <div class="gotoHome">
+            <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
+        </div>
+        <div *ngIf="coaches?.length > 0">
+            <div class="grid-container custGrid-5">
+                <div class="header">Name</div>
+                <div class="header">Mobile</div>
+                <div class="header">Email</div>
+                <div class="header">To Coach</div>  
+                <div class="header">Action</div>
+                <ng-container *ngFor="let coach of coaches">
+                    <div class="rowBg">{{coach.name}}</div>
+                    <div class="rowBg">{{coach.whatsappNum}}</div>
+                    <div class="rowBg">{{coach.emailId}}</div>
+                    <div class="rowBg" *ngIf="coach?.toCoach">{{coach.toCoach.join(', ')}}</div>
+                    <div class="rowBg"> 
+                        <button class="btn-grnd" style="margin-bottom: 1em;margin-left: 0;" (click)="approve(coach)">Approve</button>
+                        <button class="btn-grnd btn-red" style="margin-left: 0;" (click)="reject(coach)">Reject</button> 
+                    </div>
+                </ng-container>
+                </div>
+        </div>
+       
+    </div>
+</div>

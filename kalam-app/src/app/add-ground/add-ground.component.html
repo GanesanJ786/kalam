@@ -1,17 +1,24 @@
-<h1 mat-dialog-title>Add Ground Details</h1>
-<form [formGroup]="addGround" #form="ngForm">
-    <div mat-dialog-content class="groundInfo">
-    <mat-form-field appearance="fill">
-        <mat-label>Ground name</mat-label>
-        <input matInput formControlName="groundName">
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-        <mat-label>Address</mat-label>
-        <textarea matInput formControlName="groundAddress"></textarea>
-    </mat-form-field>
-    </div>
-    <div mat-dialog-actions style="justify-content: center;">
-    <button mat-button (click)="cancel()">Cancel</button>
-    <button mat-raised-button color="primary" (click)="save()" color="primary" type="submit">Save</button>
-    </div>
-</form>
+<ng-container [ngSwitch]="data.dialogType">
+    <ng-container *ngSwitchCase="'Ground'">
+        <h1 mat-dialog-title>Add Ground Details</h1>
+        <form [formGroup]="addGround" #form="ngForm">
+            <div mat-dialog-content class="groundInfo">
+            <mat-form-field appearance="fill">
+                <mat-label>Ground name</mat-label>
+                <input matInput formControlName="groundName">
+            </mat-form-field>
+            <mat-form-field appearance="fill">
+                <mat-label>Address</mat-label>
+                <textarea matInput formControlName="groundAddress"></textarea>
+            </mat-form-field>
+            </div>
+            <div mat-dialog-actions style="justify-content: center;">
+                <button mat-button (click)="cancel()">Cancel</button>
+                <button mat-raised-button color="primary" (click)="save()" color="primary" type="submit">Save</button>
+            </div>
+        </form>
+    </ng-container>
+
+    
+</ng-container>
+

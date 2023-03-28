@@ -17,11 +17,13 @@ export class MyProfileComponent implements OnInit {
   coachId: string | undefined;
   allBtnDisabled: boolean = false;
   owner: boolean = true;
+  notApproved: any = [];
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) {
     this.groundList = [];
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    
     this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
       let data = res.map((document: any) => {
         return {
@@ -64,9 +66,29 @@ export class MyProfileComponent implements OnInit {
     // }
 
     this.coachDetails = this.kalamService.getCoachData();
+    if(this.owner) {
+      const query = {
+        academyId: `A${this.kalamService.getCoachData().kalamId}`
+      }
+      this.kalamService.getAcademyCoaches(query).subscribe((coach:any) => {
+        let obj = coach.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+
+        this.notApproved = obj.filter((res:any) => !res.approved);
+        this.kalamService.setNewCoachesList(this.notApproved);
+        //this.router.navigate([`/new-coaches`]);
+      })
+    }
   }
   editProfile() {
     
+  }
+  approval() {
+    this.router.navigate([`/new-coaches`]);
   }
   logout() {
    // this.kalamService.setCoachData({} as RegistrationDetails);
@@ -76,7 +98,7 @@ export class MyProfileComponent implements OnInit {
 
   addGround() {
     const dialogRef = this.dialog.open(AddGroundComponent, {
-      data: {groundName: "", groundAddress: ""},
+      data: {groundName: "", groundAddress: "", dialogType: "Ground"},
     });
 
     dialogRef.afterClosed().subscribe(result => {

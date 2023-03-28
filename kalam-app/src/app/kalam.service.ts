@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { StudentData, UserLogin } from './login/login.component';
@@ -10,9 +11,11 @@ import { StudentDetails } from './student-form/student-form.component';
 })
 export class KalamService {
 
-  constructor(private fireStore: AngularFirestore) { }
+  constructor(private fireStore: AngularFirestore, private http: HttpClient) { }
 
   getCoachInfo: RegistrationDetails = {} as RegistrationDetails;
+  apiUrl: string = "https://kalam-nodemailer.onrender.com"
+  getNewCoaches: any = [];
 
   getStudentDetails() {
     return this.fireStore.collection("studentDetails").snapshotChanges();
@@ -48,6 +51,14 @@ export class KalamService {
 
   setCoachData(coachInfo: RegistrationDetails) {
     this.getCoachInfo = coachInfo;
+  }
+
+  getNewCoachesList() {
+    return this.getNewCoaches;
+  }
+  
+  setNewCoachesList(coaches: any) {
+    this.getNewCoaches = coaches;
   }
 
   studentList(query:StudentData) {
@@ -88,5 +99,21 @@ export class KalamService {
 
   editStudentAttendance(item: any, id: string) {
     this.fireStore.doc("studentAttendance/"+id).update(item);
+  }
+
+  getAcademyCoaches(query:any) {
+    return this.fireStore.collection('coachDetails', ref => ref.where('academyId', '==', `${query.academyId}`)).snapshotChanges();
+  }
+
+  approvedCoach(coach: any) {
+    this.fireStore.doc("coachDetails/"+coach.id).update(coach);
+  }
+
+  deleteCoach(coach: any) {
+    this.fireStore.doc("coachDetails/"+coach.id).delete();
+  }
+
+  sendEmailer(request: any) {
+    return this.http.post(this.apiUrl + '/v1/text-mail', request);
   }
 }
