@@ -5,19 +5,12 @@
             <mat-option *ngFor="let under of underCategory" [value]="under.value">{{under.key}}</mat-option>
         </mat-select>
     </mat-form-field>
-    <button style="width: 45%;" *ngIf="owner" mat-raised-button color="primary" (click)="newStudent()">Add Student</button>
-    
-    <mat-form-field appearance="fill" *ngIf="!owner" style="width: 45%;">
-        <mat-label>Select Ground</mat-label>
-        <mat-select [(ngModel)]="groundName">
-            <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
-        </mat-select>
-    </mat-form-field>
+    <button style="width: 45%;" mat-raised-button color="primary" (click)="newStudent()">Add Student</button>
     
 </div>
 
 <div *ngIf="ageType"> 
-    <div class="custField viewAttendance" *ngIf="owner">
+    <div class="custField viewAttendance">
         <mat-form-field appearance="fill" style="width: 45%;">
             <mat-label>Select Ground</mat-label>
             <mat-select [(ngModel)]="groundName">

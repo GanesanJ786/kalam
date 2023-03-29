@@ -6,6 +6,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { HomeComponent } from './home/home.component';
 import { ViewCoachAttendanceComponent } from './view-coach-attendance/view-coach-attendance.component';
 import { NewCoachApproveComponent } from './new-coach-approve/new-coach-approve.component';
+import { NewStudentsComponent } from './new-students/new-students.component';
 
 import { AuthGuardService } from './auth-guard.service';
 
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'sign-up', component: SignUpComponent },
   { path: 'coachDetails', component: ViewCoachAttendanceComponent, canActivate: [AuthGuardService]},
   { path: 'new-coaches', component: NewCoachApproveComponent, canActivate: [AuthGuardService]},
+  { path: 'new-students', component: NewStudentsComponent, canActivate: [AuthGuardService]},
   { path: '**', redirectTo: 'login' }
 ];
 

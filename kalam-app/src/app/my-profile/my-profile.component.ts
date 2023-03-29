@@ -18,6 +18,7 @@ export class MyProfileComponent implements OnInit {
   allBtnDisabled: boolean = false;
   owner: boolean = true;
   notApproved: any = [];
+  newStudents: any = [];
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) {
     this.groundList = [];
@@ -81,15 +82,33 @@ export class MyProfileComponent implements OnInit {
         this.notApproved = obj.filter((res:any) => !res.approved);
         this.kalamService.setNewCoachesList(this.notApproved);
         //this.router.navigate([`/new-coaches`]);
+      });
+
+      this.kalamService.newStudentList({coachId: this.coachId}).subscribe((res: any) => {
+        let obj = res.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+
+        this.newStudents = obj;
+        this.kalamService.setNewStudentsList(this.newStudents);
       })
     }
   }
   editProfile() {
     
   }
+  
   approval() {
     this.router.navigate([`/new-coaches`]);
   }
+
+  studentApproval() {
+    this.router.navigate([`/new-students`]);
+  }
+
   logout() {
    // this.kalamService.setCoachData({} as RegistrationDetails);
     this.router.navigate([`/login`]);

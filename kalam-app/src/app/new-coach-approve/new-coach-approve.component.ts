@@ -20,7 +20,6 @@ export class NewCoachApproveComponent implements OnInit {
   }
 
   approve(coach: any) {
-    let obj = coach;
     coach.approved = true;
     this.kalamService.approvedCoach(coach);
     setTimeout(() => {

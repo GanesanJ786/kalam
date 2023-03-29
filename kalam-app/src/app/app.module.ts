@@ -40,6 +40,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { AddGroundComponent } from './add-ground/add-ground.component';
 import { ViewCoachAttendanceComponent } from './view-coach-attendance/view-coach-attendance.component';
 import { NewCoachApproveComponent } from './new-coach-approve/new-coach-approve.component';
+import { NewStudentsComponent } from './new-students/new-students.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { NewCoachApproveComponent } from './new-coach-approve/new-coach-approve.
     LoaderComponent,
     AddGroundComponent,
     ViewCoachAttendanceComponent,
-    NewCoachApproveComponent
+    NewCoachApproveComponent,
+    NewStudentsComponent
   ],
   imports: [
     HttpClientModule,

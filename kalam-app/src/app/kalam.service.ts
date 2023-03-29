@@ -16,6 +16,7 @@ export class KalamService {
   getCoachInfo: RegistrationDetails = {} as RegistrationDetails;
   apiUrl: string = "https://kalam-nodemailer.onrender.com"
   getNewCoaches: any = [];
+  getNewStudent: any = [];
 
   getStudentDetails() {
     return this.fireStore.collection("studentDetails").snapshotChanges();
@@ -61,8 +62,20 @@ export class KalamService {
     this.getNewCoaches = coaches;
   }
 
+  getNewStudentsList() {
+    return this.getNewStudent;
+  }
+  
+  setNewStudentsList(students: any) {
+    this.getNewStudent = students;
+  }
+
   studentList(query:StudentData) {
-    return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${query.coachId}`).where("underAge", "==", `${query.underAge}`)).snapshotChanges();
+    return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${query.coachId}`).where("underAge", "==", `${query.underAge}`).where("approved", "==", true)).snapshotChanges();
+  }
+
+  newStudentList(query:any) {
+    return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${query.coachId}`).where("approved", "==", false)).snapshotChanges();
   }
 
   getAllAcademy() {
@@ -111,6 +124,14 @@ export class KalamService {
 
   deleteCoach(coach: any) {
     this.fireStore.doc("coachDetails/"+coach.id).delete();
+  }
+
+  approvedStudent(student: any) {
+    this.fireStore.doc("studentDetails/"+student.id).update(student);
+  }
+
+  deleteStudent(student: any) {
+    this.fireStore.doc("studentDetails/"+student.id).delete();
   }
 
   sendEmailer(request: any) {

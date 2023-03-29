@@ -1,6 +1,7 @@
-<div class="edit-profile" [ngClass]="notApproved.length > 0 ? 'space' : 'end'">
+<div class="edit-profile" [ngClass]="notApproved.length > 0 || newStudents.length > 0 ? 'space' : 'end'">
     <!-- <button mat-raised-button color="primary" (click)="editProfile()">Edit Profile</button> -->
     <button class="flicker" *ngIf="notApproved.length > 0" mat-raised-button (click)="approval()" color="accent">Approval</button>
+    <button class="flicker" *ngIf="newStudents.length > 0" mat-raised-button (click)="studentApproval()" color="accent">Student Approval</button>
     <button mat-raised-button (click)="logout()">Logout</button>
 </div>
 <div class="user-details">

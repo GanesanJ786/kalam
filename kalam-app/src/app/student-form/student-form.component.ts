@@ -40,6 +40,8 @@ export interface StudentDetails {
   coachId: string | undefined;
   disableInBtn?: boolean;
   disableOutBtn?: boolean;
+  approved?: boolean;
+  coachName?: string;
 }
 
 @Component({
@@ -133,6 +135,11 @@ export class StudentFormComponent implements OnInit {
     studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
     studentForm['imageUrl'] = url ? url : '';
     studentForm['coachId'] = coachId;
+    studentForm['approved'] = false;
+    studentForm['coachName'] = this.kalamService.getCoachData().name;
+    if(this.kalamService.getCoachData().academyOwned == "Y") {
+      studentForm['approved'] =   true;
+    }   
     //console.log(studentForm)
     this.kalamService.setStudentDetails(studentForm);
     this.loaderService.hide();
@@ -169,14 +176,22 @@ export class StudentFormComponent implements OnInit {
   
   underAgeCalc(val: number) {
     let type = ""
-    if(val <= 15) {
-      type = 'u-15';
-    }else if(val == 16) {
-      type = 'u-16';
-    }else if(val <= 19) {
-      type = 'u-19';
-    }else if(val <= 23) {
-      type = 'u-23';
+    // if(val <= 15) {
+    //   type = 'u-15';
+    // }else if(val == 16) {
+    //   type = 'u-16';
+    // }else if(val <= 19) {
+    //   type = 'u-19';
+    // }else if(val <= 23) {
+    //   type = 'u-23';
+    // }else {
+    //   type = 'open'
+    // }
+
+    if(val < 6) {
+      type = 'u-5';
+    }else if(val <=21) {
+      type = `u-${val}`;
     }else {
       type = 'open'
     }
