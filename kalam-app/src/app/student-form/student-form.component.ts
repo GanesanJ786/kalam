@@ -42,6 +42,7 @@ export interface StudentDetails {
   disableOutBtn?: boolean;
   approved?: boolean;
   coachName?: string;
+  doj?: string;
 }
 
 @Component({
@@ -78,7 +79,7 @@ export class StudentFormComponent implements OnInit {
       motherName: new FormControl(this.studentDetails.motherName,[Validators.required]),
       fatherOcc: new FormControl(this.studentDetails.fatherOcc, [Validators.required]),
       motherOcc: new FormControl(this.studentDetails.motherOcc,[Validators.required]),
-      emailId: new FormControl(this.studentDetails.emailId, [Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
+      emailId: new FormControl(this.studentDetails.emailId, [Validators.required, Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
       mobileNum: new FormControl(this.studentDetails.mobileNum,[Validators.required]),
       whatsappNum: new FormControl(this.studentDetails.whatsappNum, [Validators.required]),
       emgContactName: new FormControl(this.studentDetails.emgContactName,[Validators.required]),
@@ -136,6 +137,7 @@ export class StudentFormComponent implements OnInit {
     studentForm['imageUrl'] = url ? url : '';
     studentForm['coachId'] = coachId;
     studentForm['approved'] = false;
+    studentForm['doj'] = moment().format("MM/DD/YYYY");
     studentForm['coachName'] = this.kalamService.getCoachData().name;
     if(this.kalamService.getCoachData().academyOwned == "Y") {
       studentForm['approved'] =   true;

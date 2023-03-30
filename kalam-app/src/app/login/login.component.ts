@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     this.signInForm = new FormGroup({
       username: new FormControl(this.userLogin.username, [
         Validators.required, 
-        Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')
+        Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')
       ]),
       password: new FormControl(this.userLogin.password, [
         Validators.required

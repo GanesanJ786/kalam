@@ -81,7 +81,7 @@ export class SignUpComponent implements OnInit {
       confirmPassword: new FormControl(this.registerDeatils.confirmPassword,[Validators.required]),
       gender: new FormControl(this.registerDeatils.gender, [Validators.required]),
       aadharNum: new FormControl(this.registerDeatils.aadharNum,[Validators.required]),
-      emailId: new FormControl(this.registerDeatils.emailId, [Validators.required, Validators.email,Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')]),
+      emailId: new FormControl(this.registerDeatils.emailId, [Validators.required, Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
       whatsappNum: new FormControl(this.registerDeatils.whatsappNum, [Validators.required]),
       academyName: new FormControl(this.registerDeatils.academyName,[Validators.required]),
       academyNum: new FormControl(this.registerDeatils.academyNum, []),
