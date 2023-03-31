@@ -61,7 +61,7 @@
                 <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{student.name}}</div>
                 <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{student.ageType}}</div>
                 <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{student.groundName}}</div>
-                <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{student.status}}</div>
+                <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{statusLabel(student.status)}}</div>
                 <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{student.loginDate}}</div>
             </ng-container>
           </div>

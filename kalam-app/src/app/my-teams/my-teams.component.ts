@@ -201,4 +201,13 @@ export class MyTeamsComponent implements OnInit {
     this.studentListView = false;
     this.viewStudentAttendance = true;
   }
+  statusLabel(status:string) {
+    if(status == "IN") {
+      return "Present"
+    }else if(status == "OUT") {
+      return "Absent"
+    }else {
+      return status;
+    }
+  }
 }
