@@ -26,7 +26,7 @@ export interface StudentDetails {
   emgContactName: string;
   emgContactNum: string;
   institutionName: string;
-  institutionNum: string;
+  studying: string;
   preAcademyPlayed: boolean;
   playingPostion: string;
   anyMedicalIssue: string;
@@ -85,7 +85,7 @@ export class StudentFormComponent implements OnInit {
       emgContactName: new FormControl(this.studentDetails.emgContactName,[Validators.required]),
       emgContactNum: new FormControl(this.studentDetails.emgContactNum, [Validators.required]),
       institutionName: new FormControl(this.studentDetails.institutionName,[Validators.required]),
-      institutionNum: new FormControl(this.studentDetails.institutionNum, [Validators.required]),
+      studying: new FormControl(this.studentDetails.studying, [Validators.required]),
       preAcademyPlayed: new FormControl(this.studentDetails.preAcademyPlayed,[Validators.required]),
       playingPostion: new FormControl(this.studentDetails.playingPostion,[Validators.required]),
       anyMedicalIssue: new FormControl(this.studentDetails.anyMedicalIssue, [Validators.required]),
@@ -110,10 +110,10 @@ export class StudentFormComponent implements OnInit {
         this.form1Validation = true;
       } 
 
-      if(this.form2 && val.emgContactName && val.emgContactNum && val.institutionName && val.institutionNum 
+      if(this.form2 && val.emgContactName && val.emgContactNum && val.institutionName && val.studying 
         && val.preAcademyPlayed && val.playingPostion && val.anyMedicalIssue && val.jersySize
         && val.height && val.weight && val.address){
-          if(!this.studentForm.controls['emgContactName']['errors'] && !this.studentForm.controls['emgContactNum']['errors'] && !this.studentForm.controls['institutionName']['errors'] && !this.studentForm.controls['institutionNum']['errors'] 
+          if(!this.studentForm.controls['emgContactName']['errors'] && !this.studentForm.controls['emgContactNum']['errors'] && !this.studentForm.controls['institutionName']['errors'] && !this.studentForm.controls['studying']['errors'] 
             && !this.studentForm.controls['preAcademyPlayed']['errors'] && !this.studentForm.controls['playingPostion']['errors'] && !this.studentForm.controls['anyMedicalIssue']['errors'] && !this.studentForm.controls['jersySize']['errors']
             && !this.studentForm.controls['height']['errors'] && !this.studentForm.controls['weight']['errors'] && !this.studentForm.controls['address']['errors']) {
               this.form2Validation = false;

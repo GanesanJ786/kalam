@@ -111,7 +111,8 @@ export class MyTeamsComponent implements OnInit {
     this.allStudents.forEach((element:any) => {
       let obj = {
         value: element.underAge,
-        key: this.ageConvert(element.underAge)
+        key: this.ageConvert(element.underAge),
+        age: element.age
       }
       this.underCategory.push(obj);
     });
@@ -121,6 +122,7 @@ export class MyTeamsComponent implements OnInit {
         }
         return unique;
     },[]);
+    this.underCategory = this.underCategory.sort((a:any,b:any) => a.age > b.age ? 1 : -1);
   }
 
   ageConvert(val: string) {
