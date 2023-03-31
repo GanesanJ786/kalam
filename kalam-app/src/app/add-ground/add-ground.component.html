@@ -18,7 +18,34 @@
             </div>
         </form>
     </ng-container>
-
-    
+    <ng-container *ngSwitchCase="'Topics'">
+        <h1 mat-dialog-title>Topics to cover today</h1>
+        <form [formGroup]="topicsForm" #form="ngForm">
+            <div mat-dialog-content class="groundInfo">
+                <mat-form-field appearance="fill">
+                    <mat-label>Topics</mat-label>
+                    <textarea matInput formControlName="topics"></textarea>
+                </mat-form-field>
+            </div>
+            <div mat-dialog-actions style="justify-content: center;">
+                <button mat-raised-button color="primary" (click)="saveTopics()" color="primary" type="submit">Save</button>
+            </div>
+        </form>
+    </ng-container>
+    <ng-container *ngSwitchCase="'Notes'">
+        <h1 mat-dialog-title>Any notes for the today</h1>
+        <form [formGroup]="notesForm" #form="ngForm">
+            <div mat-dialog-content class="groundInfo">
+                <mat-form-field appearance="fill">
+                    <mat-label>Notes</mat-label>
+                    <textarea matInput formControlName="notes"></textarea>
+                </mat-form-field>
+            </div>
+            <div mat-dialog-actions style="justify-content: center;">
+                <button mat-button (click)="cancelNotes()">Cancel</button>
+                <button mat-raised-button color="primary" [disabled]="!notesForm.controls['notes'].value" (click)="saveNotes()" color="primary" type="submit">Save</button>
+            </div>
+        </form>
+    </ng-container>
 </ng-container>
 

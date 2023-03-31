@@ -13,14 +13,18 @@
             </mat-form-field>
         </div>
         <div *ngIf="coachView.length > 0">
-            <div class="grid-container custGrid">
+            <div class="grid-container custGrid-6 font-0-7em">
                 <div class="header">Name</div>
                 <div class="header">Ground</div>
+                <div class="header">Topics</div>
+                <div class="header">Notes</div>
                 <div class="header">Log In Time</div>
                 <div class="header">Log Off Time</div>  
                 <ng-container *ngFor="let coach of coachView">
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.coachName}}</div>
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.groundName}}</div>
+                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{checkValue(coach.topics)}}</div>
+                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{checkValue(coach.notes)}}</div>
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{logInValue(coach)}}</div>
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.logOffDataTime}}</div>
                 </ng-container>

@@ -9,6 +9,8 @@ export interface DialogData {
   groundAddress?: string;
   academyId?: string;
   coachView?: any;
+  topics?: string;
+  notes?: string;
 }
 
 @Component({
@@ -20,6 +22,8 @@ export class AddGroundComponent implements OnInit {
 
   addGround!: FormGroup;
   groundInfo: DialogData;
+  topicsForm!: FormGroup;
+  notesForm!: FormGroup;
 
   constructor(
     private kalamService: KalamService,
@@ -37,6 +41,16 @@ export class AddGroundComponent implements OnInit {
       groundAddress: new FormControl(this.groundInfo.groundAddress, [
         Validators.required
       ]),
+    });
+
+    this.topicsForm =  new FormGroup({
+      topics: new FormControl(this.groundInfo.topics, [
+        Validators.required
+      ]),
+    });
+
+    this.notesForm =  new FormGroup({
+      notes: new FormControl(this.groundInfo.notes, []),
     });
   }
 
@@ -57,5 +71,30 @@ export class AddGroundComponent implements OnInit {
     this.kalamService.addGroundDetails(groudData);
     this.dialogRef.close();
   }
+
+  saveTopics() {
+    if (this.topicsForm.invalid) {
+      for (const control of Object.keys(this.topicsForm.controls)) {
+        this.topicsForm.controls[control].markAsTouched();
+      }
+      return;
+    }
+    this.dialogRef.close({data:this.topicsForm.value});
+  }
+
+  saveNotes() {
+    if (this.notesForm.invalid) {
+      for (const control of Object.keys(this.notesForm.controls)) {
+        this.notesForm.controls[control].markAsTouched();
+      }
+      return;
+    }
+    this.dialogRef.close({data:this.notesForm.value});
+  }
+
+  cancelNotes(){
+    this.dialogRef.close({data:{notes: null}});
+  }
+
 
 }

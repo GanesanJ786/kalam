@@ -116,10 +116,19 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <mat-form-field appearance="fill" style="width: 100%;">
-                    <mat-label>Any Medical Issue</mat-label>
-                    <input matInput formControlName="anyMedicalIssue">
-                </mat-form-field>
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" style="width: 45%;">
+                        <mat-label>Any Medical Issue</mat-label>
+                        <input matInput formControlName="anyMedicalIssue">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 45%;">
+                        <mat-label>Ground Name</mat-label>
+                        <mat-select formControlName="groundName">
+                            <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                
                 <div class="brk-field">
                     <mat-form-field appearance="fill" style="width: 30%;">
                         <mat-label>Jersy Size</mat-label>

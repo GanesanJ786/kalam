@@ -60,6 +60,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
     inCoach.forEach((inC:any,i:any) => {
       if(inC.groundName ==  outCoach[i]?.groundName && inC.loginDate ==  outCoach[i]?.logoffDate) {
         inC.logOffDataTime = `${outCoach[i].logoffDate} ${outCoach[i].logoffTime}`
+        inC.notes = outCoach[i].notes;
       }else {
         inC.logOffDataTime = "-"
       }
@@ -80,6 +81,14 @@ export class ViewCoachAttendanceComponent implements OnInit {
       return coach.loginDate+" "+coach.loginTime
     }
     return "-"
+  }
+
+  checkValue(data: any) {
+    if(data) {
+      return data;
+    }else {
+      return "-";
+    }
   }
 
 }

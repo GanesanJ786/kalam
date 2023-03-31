@@ -43,6 +43,7 @@ export interface StudentDetails {
   approved?: boolean;
   coachName?: string;
   doj?: string;
+  groundName?: string;
 }
 
 @Component({
@@ -60,14 +61,26 @@ export class StudentFormComponent implements OnInit {
   form2Validation: boolean = true;
   selectedImage: any = null;
   imgSrc: string = "./assets/images/upload.png";
+  groundList: any = [];
+  coachId: string | undefined;
 
   constructor(private kalamService: KalamService, private router: Router,
     private loaderService: LoaderService,
     private storage: AngularFireStorage) {
     this.studentDetails = {} as StudentDetails;
+    this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
   }
 
   ngOnInit(): void {
+    this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
+      let data = res.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      this.groundList = data;
+    });
     this.studentForm = new FormGroup({
       imageUrl: new FormControl(this.studentDetails.imageUrl, []),
       name: new FormControl(this.studentDetails.name,[Validators.required]),
@@ -79,7 +92,7 @@ export class StudentFormComponent implements OnInit {
       motherName: new FormControl(this.studentDetails.motherName,[Validators.required]),
       fatherOcc: new FormControl(this.studentDetails.fatherOcc, [Validators.required]),
       motherOcc: new FormControl(this.studentDetails.motherOcc,[Validators.required]),
-      emailId: new FormControl(this.studentDetails.emailId, [Validators.required, Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
+      emailId: new FormControl(this.studentDetails.emailId, [Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
       mobileNum: new FormControl(this.studentDetails.mobileNum,[Validators.required]),
       whatsappNum: new FormControl(this.studentDetails.whatsappNum, [Validators.required]),
       emgContactName: new FormControl(this.studentDetails.emgContactName,[Validators.required]),
@@ -92,11 +105,12 @@ export class StudentFormComponent implements OnInit {
       jersySize: new FormControl(this.studentDetails.jersySize, [Validators.required]),
       height: new FormControl(this.studentDetails.height,[Validators.required]),
       weight: new FormControl(this.studentDetails.weight, [Validators.required]),
-      address: new FormControl(this.studentDetails.address, [Validators.required])
+      address: new FormControl(this.studentDetails.address, [Validators.required]),
+      groundName: new FormControl(this.studentDetails.groundName, [Validators.required])
     });
 
     this.studentForm.valueChanges.subscribe((val:StudentDetails) => {
-      if(this.form1 && val.name && val.dob && val.aadharNum && val.age && val.emailId && val.gender 
+      if(this.form1 && val.name && val.dob && val.aadharNum && val.age && val.gender 
         && val.fatherName && val.fatherOcc && val.motherName && val.motherOcc
         && val.mobileNum && val.whatsappNum) {
           if(!this.studentForm.controls['name']['errors'] && !this.studentForm.controls['dob']['errors'] && !this.studentForm.controls['aadharNum']['errors'] && !this.studentForm.controls['age']['errors'] && !this.studentForm.controls['emailId']['errors'] && !this.studentForm.controls['gender']['errors'] 

@@ -17,7 +17,7 @@ export class MyTeamsComponent implements OnInit {
   constructor(private router: Router, private loaderService: LoaderService,  private kalamService: KalamService) {
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
-    this.kalamService.getStudentDetails().subscribe((res: any) => {
+    this.kalamService.getStudentDetails(this.coachId).subscribe((res: any) => {
       let data = res.map((document: any) => {
         return {
           id: document.payload.doc.id,
@@ -35,7 +35,6 @@ export class MyTeamsComponent implements OnInit {
         }
       });
       this.groundList = data;
-     
     });
 
     this.getStudentAttendance();

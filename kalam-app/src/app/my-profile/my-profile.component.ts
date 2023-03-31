@@ -127,29 +127,52 @@ export class MyProfileComponent implements OnInit {
   }
 
   in(ground: any){
-    const attendance = {
-      groundName: ground.groundName,
-      academyId: this.coachId,
-      inCoachId: this.kalamService.getCoachData().kalamId,
-      coachName: this.kalamService.getCoachData().name,
-      loginTime: moment().format("HH:mm:ss"),
-      loginDate: moment().format("MM-DD-YYYY"),
-      status: "IN"
-    }
-    this.kalamService.coachAttendance(attendance);
+    const dialogRef = this.dialog.open(AddGroundComponent, {
+      disableClose: true,
+      data: {groundName: "", groundAddress: "", dialogType: "Topics"},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
+      //console.log(result);
+      const attendance = {
+        groundName: ground.groundName,
+        academyId: this.coachId,
+        inCoachId: this.kalamService.getCoachData().kalamId,
+        coachName: this.kalamService.getCoachData().name,
+        loginTime: moment().format("HH:mm:ss"),
+        loginDate: moment().format("MM-DD-YYYY"),
+        topics: result.data.topics,
+        status: "IN"
+      }
+      this.kalamService.coachAttendance(attendance);
+    });
+
+    
   }
 
   out(ground: any){
-    const attendance = {
-      groundName: ground.groundName,
-      academyId: this.coachId,
-      inCoachId: this.kalamService.getCoachData().kalamId,
-      coachName: this.kalamService.getCoachData().name,
-      logoffTime: moment().format("HH:mm:ss"),
-      logoffDate: moment().format("MM-DD-YYYY"),
-      status: "OUT"
-    }
-    this.kalamService.coachAttendance(attendance);
+    const dialogRef = this.dialog.open(AddGroundComponent, {
+      disableClose: true,
+      data: {groundName: "", groundAddress: "", dialogType: "Notes"},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
+      //console.log(result);
+      const attendance = {
+        groundName: ground.groundName,
+        academyId: this.coachId,
+        inCoachId: this.kalamService.getCoachData().kalamId,
+        coachName: this.kalamService.getCoachData().name,
+        logoffTime: moment().format("HH:mm:ss"),
+        logoffDate: moment().format("MM-DD-YYYY"),
+        notes: result.data.notes,
+        status: "OUT"
+      }
+      this.kalamService.coachAttendance(attendance);
+    });
+    
   }
   viewCoachData() {
     this.router.navigate([`/coachDetails`]);
