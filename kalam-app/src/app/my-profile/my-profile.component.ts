@@ -19,9 +19,13 @@ export class MyProfileComponent implements OnInit {
   owner: boolean = true;
   notApproved: any = [];
   newStudents: any = [];
+  academyName: string = "";
+  logo: string = "";
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) {
     this.groundList = [];
+    this.academyName = this.kalamService.getCoachData().academyName;
+    this.logo = this.kalamService.getCoachData().logoUrl;
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
     
@@ -107,12 +111,6 @@ export class MyProfileComponent implements OnInit {
 
   studentApproval() {
     this.router.navigate([`/new-students`]);
-  }
-
-  logout() {
-   // this.kalamService.setCoachData({} as RegistrationDetails);
-    this.router.navigate([`/login`]);
-    sessionStorage.removeItem("coachDetails");
   }
 
   addGround() {

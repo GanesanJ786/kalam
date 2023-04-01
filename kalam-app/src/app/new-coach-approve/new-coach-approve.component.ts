@@ -10,6 +10,7 @@ import { KalamService } from '../kalam.service';
 export class NewCoachApproveComponent implements OnInit {
 
   coaches: any = [];
+  title: string = "New coaches yet to be approved";
 
   constructor(private router: Router,private kalamService: KalamService) {
     

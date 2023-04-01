@@ -12,6 +12,7 @@ export class HomeComponent implements OnInit {
   tabLoadTimes: Date[] = [];
   tabIndex:number = 0;
   academyName: string = '';
+  title: string = 'Home';
 
   ngOnInit(): void {
     this.academyName = this.kalamService.getCoachData().academyName;
@@ -22,6 +23,16 @@ export class HomeComponent implements OnInit {
     }
 
     return this.tabLoadTimes[index];
+  }
+
+  tabChanged(event: any) {
+    if(event.index == 0) {
+      this.title = "Home"
+    }else if(event.index == 1) {
+      this.title = "Teams" 
+    }else if(event.index == 2) {
+      this.title = "Analysis" 
+    }
   }
 
 }

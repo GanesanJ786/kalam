@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute  } from '@angular/router';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -16,12 +16,13 @@ import * as moment from 'moment';
 import { LoaderService } from '../loader.service';
 
 export interface RegistrationDetails {
+  id?:string;
   imageUrl: string;
   name: string;
   emailId: string;
   password: string;
   confirmPassword: string;
-  dob: string;
+  dob: any;
   gender: string;
   aadharNum: string;
   whatsappNum: string;
@@ -33,6 +34,7 @@ export interface RegistrationDetails {
   academyOwned: string;
   academyId?: string;
   approved?: boolean;
+  logoUrl?: string;
 }
 
 interface Sports {
@@ -47,13 +49,18 @@ interface Sports {
 })
 export class SignUpComponent implements OnInit {
 
+  @ViewChild('fileUploader', { static: false })
+  fileUploader!: any;
+
   constructor(private router: Router,
+    private activatedRoute: ActivatedRoute,
     private kalamService: KalamService,
     private loaderService: LoaderService,
     private storage: AngularFireStorage, 
     private _snackBar: MatSnackBar) {
     this.registerDeatils = {} as RegistrationDetails;
     this.getAcademyNames();
+    this.owner = this.kalamService.getCoachData().academyId ? false : true;
    }
   registrationForm!: FormGroup;
   registerDeatils: RegistrationDetails
@@ -71,9 +78,42 @@ export class SignUpComponent implements OnInit {
   academyList: any = [];
   ownerList: any = [];
   ownerData: any = null;
+  editAccess: boolean = false;
+  profileImg:boolean = false;
+  logoImg: boolean = false;
+  selectLogo: any = null;
+  logoUrl: string = "";
+  logoSrc: string = "./assets/images/upload.png";
+  title: string = "REGISTRATION FORM";
+  owner: boolean = true;
 
   ngOnInit(): void {
+
+    this.activatedRoute.queryParams
+      .subscribe((params:any) => {
+        if(params.source == 'edit') {
+          this.title = "Edit Profile"
+          this.editAccess = true;
+          this.registerDeatils = {...this.registerDeatils, ...this.kalamService.getCoachData()};
+          this.registerDeatils.dob = new Date(this.registerDeatils.dob)
+          if(this.registerDeatils.imageUrl) {
+           // this.fileUploader.click();
+            //this.selectedImage = true;
+            this.imgSrc = this.registerDeatils.imageUrl;
+            this.profileImg = true;
+            //this.registrationForm.get("imageUrl")?.patchValue(year);
+          }
+          if(this.registerDeatils.logoUrl) {
+            this.logoSrc = this.registerDeatils.logoUrl;
+            this.logoImg = true;
+            this.logoUrl = this.registerDeatils.logoUrl;
+          }
+        }
+      }
+    );
+
     this.registrationForm = new FormGroup({
+      logoUrl: new FormControl(this.registerDeatils.imageUrl, []),
       imageUrl: new FormControl(this.registerDeatils.imageUrl, []),
       name: new FormControl(this.registerDeatils.name,[Validators.required]),
       dob: new FormControl(this.registerDeatils.dob, [Validators.required]),
@@ -167,20 +207,42 @@ export class SignUpComponent implements OnInit {
     let coachForm: RegistrationDetails = {...this.registrationForm.value};
     let obj = {...this.registrationForm.value}
     coachForm.kalamId = obj.aadharNum.replaceAll("-",'');
-    coachForm['imageUrl'] = url ? url : '';
+    if(url) {
+      coachForm['imageUrl'] = url;
+    }else if(!this.editAccess) {
+      coachForm['imageUrl'] = "";
+    }
+    
     coachForm.dob = moment(obj.dob).format("MM/DD/YYYY");
     if(this.ownerData) {
       coachForm.approved = false;
     }else {
       coachForm.approved = true;
     }
-    this.kalamService.setCoachProfile(coachForm);
+    if(this.editAccess) {
+      //coachForm['imageUrl'] = obj.imageUrl;
+      coachForm.id = this.registerDeatils.id;
+      if(this.logoUrl) {
+        coachForm.logoUrl = this.logoUrl;
+      }else {
+        coachForm.logoUrl = "";
+      }
+      this.kalamService.editCoachDetails(coachForm)
+    }else {
+      this.kalamService.setCoachProfile(coachForm);
+    }
     this.selectedImage = null;
     this.imgSrc = "./assets/images/upload.png";
-    this.openSnackBar('profileRegisted');
     this.loaderService.hide();
-    this.sendMailer();
-    this.router.navigate([`/login`]);
+    if(this.editAccess) {
+      sessionStorage.setItem('coachDetails', JSON.stringify(coachForm));
+      this.router.navigate([`/home`]);
+    }else {
+      this.openSnackBar('profileRegisted');
+      this.sendMailer();
+      this.router.navigate([`/login`]);
+    }
+    
   }
 
   sendMailer() {
@@ -224,7 +286,11 @@ export class SignUpComponent implements OnInit {
   }
 
   back(){
-    this.router.navigate([`/login`]);
+    if(this.editAccess) {
+      this.router.navigate([`/home`]);
+    }else {
+      this.router.navigate([`/login`]);
+    }
   }
 
   showPreview(event:any) {
@@ -239,4 +305,26 @@ export class SignUpComponent implements OnInit {
     }
   }
 
+  showPreviewLogo(event:any) {
+    if(event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e:any) => this.logoSrc = e.target.result;
+      reader.readAsDataURL(event.target.files[0]);
+      this.selectLogo = event.target.files[0];
+      var filePath = `academy/logo/${this.registrationForm.value.name}_${this.registrationForm.value.aadharNum}_${new Date().getTime()}`;
+      const fileRef = this.storage.ref(filePath);
+      this.loaderService.show();
+      this.storage.upload(filePath,this.selectLogo).snapshotChanges().pipe(
+        finalize(() => {
+          fileRef.getDownloadURL().subscribe((url) => {
+            this.loaderService.hide();
+            this.logoUrl = url;
+          });
+        })
+      ).subscribe();
+    }else {
+      this.logoSrc = "./assets/images/upload.png";
+      this.selectLogo = null;
+    }
+  }
 }

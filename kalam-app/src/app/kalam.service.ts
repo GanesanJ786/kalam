@@ -30,6 +30,10 @@ export class KalamService {
     this.fireStore.doc("studentDetails/"+item.id).update(item);
   }
 
+  editCoachDetails(item: RegistrationDetails) {
+    this.fireStore.doc("coachDetails/"+item.id).update(item);
+  }
+
   deleteStudentDetails(item: StudentDetails) {
     this.fireStore.doc("studentDetails/"+item.id).delete();
   }

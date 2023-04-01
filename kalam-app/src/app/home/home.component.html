@@ -1,26 +1,34 @@
 
 
   <div class="rf-container">
-    <div class="rf-header custm-logo">
-        <div style="color: #ff9800">Welcome!</div>
-        <div style="color: #4caf50;">{{academyName}}</div>
-    </div>
-        <div class="rf-content content-top">
-            <div>
-                <mat-tab-group [selectedIndex]="tabIndex">
-                    <mat-tab label="My Profile">
+      <app-header [title]="title"></app-header>
+        <div class="rf-content content-top" style="padding: 0;">
+            <div class="tab-menu-cust">
+                <mat-tab-group [selectedIndex]="tabIndex" (selectedTabChange)="tabChanged($event)">
+                    <mat-tab>
+                       <ng-template mat-tab-label>
+                        <mat-icon class="example-tab-icon">home</mat-icon>
+                      </ng-template>
                       <ng-template matTabContent>
                         <!-- Content 1 - Loaded: {{getTimeLoaded(1) | date:'medium'}} -->
                         <app-my-profile></app-my-profile>
                       </ng-template>
                     </mat-tab>
-                    <mat-tab label="Teams">
+                    <mat-tab>
+                      <ng-template mat-tab-label>
+                        <mat-icon>people</mat-icon>
+                      </ng-template>
+                      
                       <ng-template matTabContent>
                         <!-- Content 2 - Loaded: {{getTimeLoaded(2) | date:'medium'}} -->
                         <app-my-teams></app-my-teams>
                       </ng-template>
                     </mat-tab>
-                    <mat-tab label="Statistics">
+                    <mat-tab>
+                      <ng-template mat-tab-label>
+                         <mat-icon> bar_chart</mat-icon>
+                      </ng-template>
+                     
                       <ng-template matTabContent>
                         Content 3 - Loaded: {{getTimeLoaded(3) | date:'medium'}}
                       </ng-template>

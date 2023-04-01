@@ -15,6 +15,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
   allCoachList: any = [];
   coachVal: string = '';
   coachView: any = [];
+  title: string = "Coaches Details";
 
   constructor(private router: Router, private kalamService: KalamService) { 
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;

@@ -49,9 +49,9 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   box-sizing: border-box;
 }
 .rf-header {
-  height: 10vh;
+  height: 6vh;
   color: #000;
-  background-image: url("assets/logo/kalamLogoName.png");
+  background-image: url("assets/logo/kalam-w.png");
   background-repeat: no-repeat;
   background-size: contain;
   display: flex;
@@ -79,9 +79,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   background-color: #f1f1f1;
 }
 .custm-logo {
-  background-size: 2.5rem 3rem;
+  background-size: 2rem 3rem;
   background-position: 0.5rem;
   flex-direction: column;
+  background-color: #4caf50;
 }
 .rf-footer {
   display: flex;
@@ -227,4 +228,25 @@ button.btn-grnd:disabled {
 }
 .font-0-7em {
   font-size: 0.7em;
+}
+.tab-menu-cust .mat-tab-labels {
+  justify-content: space-between;
+}
+.tab-menu-cust .mat-tab-label {
+  opacity: 1;
+}
+.tab-menu-cust .mat-tab-label-container {
+  background: #4CAF50;
+}
+.tab-menu-cust .mat-tab-label-active {
+  color: #fff;
+}
+.tab-menu-cust .mat-tab-group.mat-primary .mat-ink-bar {
+  background-color: #fff;
+}
+.tab-menu-cust .mat-tab-header{
+  border: none;
+}
+.content-p {
+  padding: 0rem 1rem;
 }

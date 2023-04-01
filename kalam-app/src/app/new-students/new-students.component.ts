@@ -10,6 +10,7 @@ import { KalamService } from '../kalam.service';
 export class NewStudentsComponent implements OnInit {
 
   students: any = [];
+  title: string = "New Students yet to be approved";
 
   constructor(private router: Router,private kalamService: KalamService) { }
 

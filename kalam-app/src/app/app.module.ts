@@ -26,6 +26,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 
 import { StudentFormComponent } from './student-form/student-form.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -41,6 +42,7 @@ import { AddGroundComponent } from './add-ground/add-ground.component';
 import { ViewCoachAttendanceComponent } from './view-coach-attendance/view-coach-attendance.component';
 import { NewCoachApproveComponent } from './new-coach-approve/new-coach-approve.component';
 import { NewStudentsComponent } from './new-students/new-students.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import { NewStudentsComponent } from './new-students/new-students.component';
     AddGroundComponent,
     ViewCoachAttendanceComponent,
     NewCoachApproveComponent,
-    NewStudentsComponent
+    NewStudentsComponent,
+    HeaderComponent
   ],
   imports: [
     HttpClientModule,
@@ -78,6 +81,7 @@ import { NewStudentsComponent } from './new-students/new-students.component';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatDialogModule,
+    MatMenuModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgIdleKeepaliveModule.forRoot()
   ],

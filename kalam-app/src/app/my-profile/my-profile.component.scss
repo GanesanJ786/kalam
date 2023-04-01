@@ -26,7 +26,7 @@
     justify-content: flex-end;
 }
 .ground-add {
-    padding: 1rem;
+    padding: 1rem 0;
     display: flex;
     justify-content: space-between;
 }
@@ -57,4 +57,47 @@
   }
 @keyframes wink {
   50% {background-color: #fff; color:#ffa500; opacity: 0; }
+}
+.banner-block {
+    background-image: url("../../assets/logo/football-ground.png");
+    background-repeat: no-repeat;
+    height: 14em;
+    background-size: 100%;
+    background-position: center;
+    display: flex;
+    align-items: end;
+}
+.banner-content {
+    display: flex;
+    align-items: center;
+    z-index: 1;
+    margin-left: 1rem;
+}
+.ac-img {
+    border-radius: 8px;
+    width: 100px;
+    height: 100px;
+}
+.ac-name {
+    color: #fff;
+    padding-top: 2.5rem;
+    padding-left: 1rem;
+    font-size: 0.9rem;
+}
+.trans {
+    background: rgba(0,0,0,0.5);
+    height: 4rem;
+    width: 100%;
+    position: absolute;
+    z-index: 0;
+}
+.in-club {
+    margin: 0 !important;
+    font-size: 0.7rem;
+    font-family: system-ui;
+    font-weight: 100;
+}
+.ac-info {
+    margin: 0 !important;
+    padding: 0;
 }

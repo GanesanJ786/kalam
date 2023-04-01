@@ -63,6 +63,7 @@ export class StudentFormComponent implements OnInit {
   imgSrc: string = "./assets/images/upload.png";
   groundList: any = [];
   coachId: string | undefined;
+  title: string = "PLAYER DETAILS FORM";
 
   constructor(private kalamService: KalamService, private router: Router,
     private loaderService: LoaderService,

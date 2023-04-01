@@ -1,37 +1,53 @@
-<div class="edit-profile" [ngClass]="notApproved.length > 0 || newStudents.length > 0 ? 'space' : 'end'">
-    <!-- <button mat-raised-button color="primary" (click)="editProfile()">Edit Profile</button> -->
-    <button class="flicker" *ngIf="notApproved.length > 0" mat-raised-button (click)="approval()" color="accent">Approval</button>
-    <button class="flicker" *ngIf="newStudents.length > 0" mat-raised-button (click)="studentApproval()" color="accent">Student Approval</button>
-    <button mat-raised-button (click)="logout()">Logout</button>
+<div class="banner-block">
+    <div class="trans"></div>
+        <div class="banner-content">
+            
+            <div class="ac-logo">
+                <img class="ac-img" *ngIf="!logo" src="../../assets/logo/kLogo.png" alt="academy image"/>
+                <img class="ac-img" *ngIf="logo" [src]="logo" alt="academy image"/>
+            </div>
+            <div class="ac-name">
+                <p class="ac-info">{{academyName}}</p>
+                <p class="in-club">Football club in India</p>
+            </div>
+        </div>
 </div>
-<div class="user-details">
-    <div>
-        <img class="profile-img" *ngIf="coachDetails.imageUrl; else dummyImg" [src]="coachDetails.imageUrl" alt="profile image"/>
-        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
+<div class="content-p">
+    <div class="edit-profile" [ngClass]="notApproved.length > 0 || newStudents.length > 0 ? 'space' : 'end'">
+        <!-- <button mat-raised-button color="primary" (click)="editProfile()">Edit Profile</button> -->
+        <button class="flicker" *ngIf="notApproved.length > 0" mat-raised-button (click)="approval()" color="accent">Approval</button>
+        <button class="flicker" *ngIf="newStudents.length > 0" mat-raised-button (click)="studentApproval()" color="accent">Student Approval</button>
     </div>
-    <div>
-        {{coachDetails.name}}
-    </div>
-    <div class="user-info">
-        Kalam ID: {{coachDetails.kalamId}}
-    </div>
-    <div class="user-info" *ngIf="coachDetails?.toCoach">
-        To Coach: {{coachDetails.toCoach.join(', ')}}
-    </div>
-</div>
-<div class="ground-add">
-    <button *ngIf="owner"  mat-raised-button color="primary" (click)="addGround()">Add Ground</button>
-    <button *ngIf="owner"  mat-raised-button color="primary" (click)="viewCoachData()">View Coach Details</button>
-</div>
-<div class="ground-items">
-    <div *ngFor="let ground of groundList" class="groundItem">
+    <!-- <div class="user-details">
         <div>
-            <div>{{ground.groundName}}</div>
-            <div></div>
+            <img class="profile-img" *ngIf="coachDetails.imageUrl; else dummyImg" [src]="coachDetails.imageUrl" alt="profile image"/>
+            <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
         </div>
         <div>
-            <button class="btn-grnd" [disabled]="ground.disableInBtn || allBtnDisabled" (click)="in(ground)">IN</button>
-            <button class="btn-grnd btn-red" [disabled]="ground.disableOutBtn" (click)="out(ground)">OUT</button>
+            {{coachDetails.name}}
+        </div>
+        <div class="user-info">
+            Kalam ID: {{coachDetails.kalamId}}
+        </div>
+        <div class="user-info" *ngIf="coachDetails?.toCoach">
+            To Coach: {{coachDetails.toCoach.join(', ')}}
+        </div>
+    </div> -->
+    <div class="ground-add">
+        <button *ngIf="owner"  mat-raised-button color="primary" (click)="addGround()">Add Ground</button>
+        <button *ngIf="owner"  mat-raised-button color="primary" (click)="viewCoachData()">Coach Details</button>
+    </div>
+    <div class="ground-items">
+        <div *ngFor="let ground of groundList" class="groundItem">
+            <div>
+                <div>{{ground.groundName}}</div>
+                <div></div>
+            </div>
+            <div>
+                <button class="btn-grnd" [disabled]="ground.disableInBtn || allBtnDisabled" (click)="in(ground)">IN</button>
+                <button class="btn-grnd btn-red" [disabled]="ground.disableOutBtn" (click)="out(ground)">OUT</button>
+            </div>
         </div>
     </div>
+    
 </div>
