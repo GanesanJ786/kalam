@@ -6,13 +6,13 @@
                 <mat-icon>more_vert</mat-icon>
               </button>
               <mat-menu #menu="matMenu">
-                <button (click)="logout()" mat-menu-item>
-                    <mat-icon>power_settings_new</mat-icon>
-                    <span>Logout</span>
-                </button>
                 <button (click)="editProfile()" mat-menu-item>
                     <mat-icon>edit</mat-icon>
                     <span>Edit Profile</span>
+                </button>
+                <button (click)="logout()" mat-menu-item>
+                    <mat-icon>power_settings_new</mat-icon>
+                    <span>Logout</span>
                 </button>
               </mat-menu>
         </span>
