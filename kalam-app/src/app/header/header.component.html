@@ -1,7 +1,7 @@
 <div class="rf-header custm-logo">
     <!-- <div style="color: #ff9800">Welcome!</div> -->
     <div style="color: #fff;">{{title}} 
-        <span class="menu-icon-cust">
+        <span class="menu-icon-cust" *ngIf="loggedIn">
             <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="action menu">
                 <mat-icon>more_vert</mat-icon>
               </button>

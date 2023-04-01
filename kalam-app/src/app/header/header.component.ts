@@ -11,9 +11,14 @@ export class HeaderComponent implements OnInit {
 
   @Input() title: string = "";
 
+  loggedIn: boolean = false;
+
   constructor(private router: Router, private kalamService: KalamService) { }
 
   ngOnInit(): void {
+    if(this.kalamService.getCoachData()) {
+      this.loggedIn = true;
+    }
   }
 
   logout() {

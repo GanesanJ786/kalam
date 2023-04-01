@@ -51,6 +51,8 @@ export class KalamService {
     if (coachDetails) {
         let coachProfile = JSON.parse(coachDetails)
         return coachProfile;
+    }else {
+      return null;
     }
   }
 

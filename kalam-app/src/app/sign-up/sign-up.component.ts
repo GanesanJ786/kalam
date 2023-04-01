@@ -60,7 +60,7 @@ export class SignUpComponent implements OnInit {
     private _snackBar: MatSnackBar) {
     this.registerDeatils = {} as RegistrationDetails;
     this.getAcademyNames();
-    this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    
    }
   registrationForm!: FormGroup;
   registerDeatils: RegistrationDetails
@@ -92,6 +92,7 @@ export class SignUpComponent implements OnInit {
     this.activatedRoute.queryParams
       .subscribe((params:any) => {
         if(params.source == 'edit') {
+          this.owner = this.kalamService.getCoachData().academyId ? false : true;
           this.title = "Edit Profile"
           this.editAccess = true;
           this.registerDeatils = {...this.registerDeatils, ...this.kalamService.getCoachData()};
