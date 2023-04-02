@@ -239,6 +239,10 @@ export class MyTeamsComponent implements OnInit {
         student.feesApproveWaiting = true;
         student.fessCollectedBy = this.kalamService.getCoachData().name;
         student.feesPaidDate = moment().format("MM-DD-YYYY");
+        if(this.owner) {
+          student.feesApproveWaiting = false;
+          student.feesMonthPaid = moment().startOf("month").format('MMMM');
+        }
         this.kalamService.editStudentDetails(student);
         this.checkFees();
       }
