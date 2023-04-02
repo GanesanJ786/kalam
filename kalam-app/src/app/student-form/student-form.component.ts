@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
 import { finalize } from 'rxjs/operators';
 
@@ -12,7 +12,7 @@ import { LoaderService } from '../loader.service';
 export interface StudentDetails {
   id?: string;
   name: string;
-  dob: string;
+  dob: any;
   age: number;
   gender: string;
   aadharNum: string;
@@ -44,6 +44,13 @@ export interface StudentDetails {
   coachName?: string;
   doj?: string;
   groundName?: string;
+  status?: string;
+  feesMonthPaid?:string;
+  feesApproveWaiting?: boolean;
+  isFeesEnable?:boolean;
+  fessCollectedBy?: string;
+  feesPaidDate?: string;
+  feesAmount?: string;
 }
 
 @Component({
@@ -64,8 +71,11 @@ export class StudentFormComponent implements OnInit {
   groundList: any = [];
   coachId: string | undefined;
   title: string = "PLAYER DETAILS FORM";
+  editAccess: boolean = false;
+  profileImg: boolean = false;
 
   constructor(private kalamService: KalamService, private router: Router,
+    private activatedRoute: ActivatedRoute,
     private loaderService: LoaderService,
     private storage: AngularFireStorage) {
     this.studentDetails = {} as StudentDetails;
@@ -73,6 +83,26 @@ export class StudentFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.activatedRoute.queryParams
+    .subscribe((params:any) => {
+      if(params.source == 'edit') {
+        if(this.kalamService.editStudentData.length == 0) {
+          this.router.navigate([`/home`]);
+          return;
+        }
+        this.title = "Edit Player Information"
+        this.editAccess = true;
+        this.studentDetails = {...this.studentDetails, ...this.kalamService.editStudentData};
+        this.studentDetails.dob = new Date(this.studentDetails.dob)
+        if(this.studentDetails.imageUrl) {
+          this.imgSrc = this.studentDetails.imageUrl;
+          this.profileImg = true;
+        }
+      }
+    });
+
+
     this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
       let data = res.map((document: any) => {
         return {
@@ -83,10 +113,10 @@ export class StudentFormComponent implements OnInit {
       this.groundList = data;
     });
     this.studentForm = new FormGroup({
-      imageUrl: new FormControl(this.studentDetails.imageUrl, []),
+      imageUrl: new FormControl("", []),
       name: new FormControl(this.studentDetails.name,[Validators.required]),
       dob: new FormControl(this.studentDetails.dob, [Validators.required]),
-      age: new FormControl(0,[Validators.required]),
+      age: new FormControl(this.studentDetails.age,[Validators.required]),
       gender: new FormControl(this.studentDetails.gender, [Validators.required]),
       aadharNum: new FormControl(this.studentDetails.aadharNum,[Validators.required]),
       fatherName: new FormControl(this.studentDetails.fatherName, [Validators.required]),
@@ -110,6 +140,15 @@ export class StudentFormComponent implements OnInit {
       groundName: new FormControl(this.studentDetails.groundName, [Validators.required])
     });
 
+    this.btnValidation();
+    
+    if(this.editAccess) {
+      this.studentForm.updateValueAndValidity({ onlySelf: false, emitEvent: true })
+    }
+  }
+
+
+  btnValidation() {
     this.studentForm.valueChanges.subscribe((val:StudentDetails) => {
       if(this.form1 && val.name && val.dob && val.aadharNum && val.age && val.gender 
         && val.fatherName && val.fatherOcc && val.motherName && val.motherOcc
@@ -125,10 +164,10 @@ export class StudentFormComponent implements OnInit {
         this.form1Validation = true;
       } 
 
-      if(this.form2 && val.emgContactName && val.emgContactNum && val.institutionName && val.studying 
+      if(this.form2 && val.emgContactName && val.emgContactNum && val.institutionName && val.studying && val.groundName
         && val.preAcademyPlayed && val.playingPostion && val.anyMedicalIssue && val.jersySize
         && val.height && val.weight && val.address){
-          if(!this.studentForm.controls['emgContactName']['errors'] && !this.studentForm.controls['emgContactNum']['errors'] && !this.studentForm.controls['institutionName']['errors'] && !this.studentForm.controls['studying']['errors'] 
+          if(!this.studentForm.controls['emgContactName']['errors'] && !this.studentForm.controls['emgContactNum']['errors'] && !this.studentForm.controls['institutionName']['errors'] && !this.studentForm.controls['studying']['errors'] && !this.studentForm.controls['groundName']['errors'] 
             && !this.studentForm.controls['preAcademyPlayed']['errors'] && !this.studentForm.controls['playingPostion']['errors'] && !this.studentForm.controls['anyMedicalIssue']['errors'] && !this.studentForm.controls['jersySize']['errors']
             && !this.studentForm.controls['height']['errors'] && !this.studentForm.controls['weight']['errors'] && !this.studentForm.controls['address']['errors']) {
               this.form2Validation = false;
@@ -140,8 +179,8 @@ export class StudentFormComponent implements OnInit {
         this.form2Validation = true;
       }
     });
-    
   }
+
   formData(url?: string): void {
     let studentForm: StudentDetails = {...this.studentForm.value};
     let obj = {...this.studentForm.value};
@@ -149,7 +188,13 @@ export class StudentFormComponent implements OnInit {
     studentForm.kalamId = obj.aadharNum.replaceAll("-",'');
     studentForm.underAge = this.underAgeCalc(studentForm.age);
     studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
-    studentForm['imageUrl'] = url ? url : '';
+    if(url) {
+      studentForm['imageUrl'] = url;
+    }else if(!this.editAccess) {
+      studentForm['imageUrl'] = "";
+    }else if(this.editAccess) {
+      studentForm['imageUrl'] = !this.imgSrc.includes("./assets/images/upload.png") ? this.imgSrc : '';
+    }
     studentForm['coachId'] = coachId;
     studentForm['approved'] = false;
     studentForm['doj'] = moment().format("MM/DD/YYYY");
@@ -157,8 +202,13 @@ export class StudentFormComponent implements OnInit {
     if(this.kalamService.getCoachData().academyOwned == "Y") {
       studentForm['approved'] =   true;
     }   
-    //console.log(studentForm)
-    this.kalamService.setStudentDetails(studentForm);
+    if(this.editAccess) {
+      studentForm.id = this.studentDetails.id;
+      this.kalamService.editStudentDetails(studentForm);
+    }else {
+      this.kalamService.setStudentDetails(studentForm);
+    }
+    this.kalamService.editStudentData = [];
     this.loaderService.hide();
     this.router.navigate([`/home`]);
   }
@@ -219,11 +269,17 @@ export class StudentFormComponent implements OnInit {
   form1Submit(): void {
     this.form1 = false;
     this.form2 = true;
+    if(this.editAccess) {
+      this.studentForm.updateValueAndValidity({ onlySelf: false, emitEvent: true })
+    }
   }
   prevForm(): void {
     this.form1 = true;
     this.form2 = false;
     this.form1Validation = false;
+    if(this.editAccess) {
+      this.studentForm.updateValueAndValidity({ onlySelf: false, emitEvent: true })
+    }
   }
   
   dateSelected(type: string, event: MatDatepickerInputEvent<Date>) {
@@ -243,5 +299,9 @@ export class StudentFormComponent implements OnInit {
 
   gotoHome() {
     this.router.navigate([`/home`]);
+  }
+
+  btnText() {
+    return this.editAccess ? "UPDATE" : "SUBMIT";
   }
 }

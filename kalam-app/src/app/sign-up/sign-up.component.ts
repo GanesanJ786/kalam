@@ -114,8 +114,8 @@ export class SignUpComponent implements OnInit {
     );
 
     this.registrationForm = new FormGroup({
-      logoUrl: new FormControl(this.registerDeatils.imageUrl, []),
-      imageUrl: new FormControl(this.registerDeatils.imageUrl, []),
+      logoUrl: new FormControl("", []),
+      imageUrl: new FormControl("", []),
       name: new FormControl(this.registerDeatils.name,[Validators.required]),
       dob: new FormControl(this.registerDeatils.dob, [Validators.required]),
       password: new FormControl(this.registerDeatils.password,[Validators.required]),
@@ -131,6 +131,10 @@ export class SignUpComponent implements OnInit {
       academyOwned: new FormControl(this.registerDeatils.academyOwned, [Validators.required]),
       academyId: new FormControl(this.registerDeatils.academyId, [])
     });
+
+    if(this.editAccess) {
+      this.registrationForm.updateValueAndValidity({ onlySelf: false, emitEvent: true })
+    }
   }
 
   getAcademyNames() {
@@ -227,6 +231,11 @@ export class SignUpComponent implements OnInit {
         coachForm.logoUrl = this.logoUrl;
       }else {
         coachForm.logoUrl = "";
+      }
+      if(!this.imgSrc.includes("./assets/images/upload.png")) {
+        coachForm.imageUrl = this.imgSrc;
+      }else {
+        coachForm.imageUrl = "";
       }
       this.kalamService.editCoachDetails(coachForm)
     }else {
@@ -327,5 +336,9 @@ export class SignUpComponent implements OnInit {
       this.logoSrc = "./assets/images/upload.png";
       this.selectLogo = null;
     }
+  }
+
+  btnText() {
+    return this.editAccess ? "UPDATE" : "CREATE";
   }
 }

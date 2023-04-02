@@ -6,6 +6,8 @@ import { LoaderService } from '../loader.service';
 import { StudentDetails } from '../student-form/student-form.component';
 import * as moment from 'moment';
 import * as _ from "lodash";
+import { MatDialog } from '@angular/material/dialog';
+import { AddGroundComponent } from '../add-ground/add-ground.component';
 
 @Component({
   selector: 'app-my-teams',
@@ -14,7 +16,7 @@ import * as _ from "lodash";
 })
 export class MyTeamsComponent implements OnInit {
 
-  constructor(private router: Router, private loaderService: LoaderService,  private kalamService: KalamService) {
+  constructor(private router: Router, private loaderService: LoaderService, public dialog: MatDialog,  private kalamService: KalamService) {
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
     this.kalamService.getStudentDetails(this.coachId).subscribe((res: any) => {
@@ -67,7 +69,19 @@ export class MyTeamsComponent implements OnInit {
     })
   }
 
+  checkFees() {
+    let currentMonth = moment().startOf("month").format('MMMM');
+    this.studentList.forEach((element: StudentDetails) => {
+      if((element.feesMonthPaid !== currentMonth || element.feesMonthPaid == undefined) && !element.feesApproveWaiting) {
+        element.isFeesEnable = true;
+      }else {
+        element.isFeesEnable = false;
+      } 
+    });
+  }
+
   getStudentList() {
+    
     this.loaderService.show();
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.kalamService.studentList({coachId: coachId, underAge: this.ageType}).subscribe((res: any) => {
@@ -79,7 +93,7 @@ export class MyTeamsComponent implements OnInit {
         }
       });
       this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
-      
+      this.checkFees();
       this.kalamService.getStudentAttendanceData(coachId, moment().format("MM-DD-YYYY")).subscribe((stud:any) => {
         let stundentData = stud.map((document: any) => {
           return {
@@ -209,5 +223,27 @@ export class MyTeamsComponent implements OnInit {
     }else {
       return status;
     }
+  }
+  editStudent(student:StudentDetails) {
+    this.kalamService.editStudentData = student;
+    this.router.navigate([`/student-form`],{ queryParams: { source: 'edit' }});
+  }
+  pay(student: StudentDetails) {
+    const dialogRef = this.dialog.open(AddGroundComponent, {
+      disableClose: true,
+      data: {dialogType: "Payment"},
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if(result.data.amount) {
+        student.feesAmount = result.data.amount;
+        student.feesApproveWaiting = true;
+        student.fessCollectedBy = this.kalamService.getCoachData().name;
+        student.feesPaidDate = moment().format("MM-DD-YYYY");
+        this.kalamService.editStudentDetails(student);
+        this.checkFees();
+      }
+    });
+
+    
   }
 }

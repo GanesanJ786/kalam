@@ -17,6 +17,8 @@ export class KalamService {
   apiUrl: string = "https://kalam-nodemailer.onrender.com"
   getNewCoaches: any = [];
   getNewStudent: any = [];
+  editStudentData: any = [];
+  paidStudentList: any = [];
 
   getStudentDetails(coachId: any) {
     return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`)).snapshotChanges();
@@ -82,6 +84,10 @@ export class KalamService {
 
   newStudentList(query:any) {
     return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${query.coachId}`).where("approved", "==", false)).snapshotChanges();
+  }
+
+  feesApprove(query:any) {
+    return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${query.coachId}`).where("feesApproveWaiting", "==", true)).snapshotChanges();
   }
 
   getAllAcademy() {

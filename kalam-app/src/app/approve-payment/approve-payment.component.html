@@ -1,0 +1,29 @@
+<div class="sf-container">
+    <app-header [title]="title"></app-header>
+    <div class="sf-content">
+        <div class="gotoHome">
+            <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
+        </div>
+        <div *ngIf="students?.length > 0">
+            <div class="grid-container custGrid-6 font-0-7em">
+                <div class="header">Name</div>
+                <div class="header">Under</div>
+                <div class="header">Coach</div>
+                <div class="header">Date</div>
+                <div class="header">Amount</div>  
+                <div class="header">Action</div>
+                <ng-container *ngFor="let student of students">
+                    <div class="rowBg">{{student.name}}</div>
+                    <div class="rowBg">{{student.underAge}}</div>
+                    <div class="rowBg">{{student.fessCollectedBy}}</div>
+                    <div class="rowBg">{{student.feesPaidDate}}</div>
+                    <div class="rowBg">{{student.feesAmount}}</div>
+                    <div class="rowBg"> 
+                        <button class="btn-grnd" style="padding: 0.5rem 0.5rem;margin-bottom: 1em;margin-left: 0;font-size: 0.7rem;" (click)="approve(student)">Received</button>
+                    </div>
+                </ng-container>
+                </div>
+        </div>
+       
+    </div>
+</div>

@@ -43,6 +43,7 @@ import { ViewCoachAttendanceComponent } from './view-coach-attendance/view-coach
 import { NewCoachApproveComponent } from './new-coach-approve/new-coach-approve.component';
 import { NewStudentsComponent } from './new-students/new-students.component';
 import { HeaderComponent } from './header/header.component';
+import { ApprovePaymentComponent } from './approve-payment/approve-payment.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { HeaderComponent } from './header/header.component';
     ViewCoachAttendanceComponent,
     NewCoachApproveComponent,
     NewStudentsComponent,
-    HeaderComponent
+    HeaderComponent,
+    ApprovePaymentComponent
   ],
   imports: [
     HttpClientModule,

@@ -47,5 +47,21 @@
             </div>
         </form>
     </ng-container>
+    <ng-container *ngSwitchCase="'Payment'">
+        <h1 mat-dialog-title>Student fees received</h1>
+        <form [formGroup]="feesForm" #form="ngForm">
+            <div mat-dialog-content class="groundInfo">
+                <mat-form-field appearance="fill">
+                    <mat-label>Please Enter Amount</mat-label>
+                    <input matInput formControlName="amount">
+                </mat-form-field>
+            </div>
+            <div mat-dialog-actions style="justify-content: center;">
+                <button mat-button (click)="cancelPayment()">Cancel</button>
+                <button mat-raised-button color="primary" [disabled]="!feesForm.controls['amount'].value" (click)="payment()" color="primary" type="submit">Save</button>
+            </div>
+        </form>
+    </ng-container>
+    
 </ng-container>
 

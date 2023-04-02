@@ -25,6 +25,17 @@
             <div *ngFor="let student of studentList; let index = index">
                 <div class="position-style" *ngIf="!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion">{{getSportLabel(student.playingPostion)}}</div>
                 <div class="team-list">
+                    <div class="edit-btn">
+                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="edit student information">
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+                          <mat-menu #menu="matMenu">
+                            <button (click)="editStudent(student)" mat-menu-item>
+                                <mat-icon>edit</mat-icon>
+                                <span>Edit Profile</span>
+                            </button>
+                          </mat-menu>
+                    </div>
                     <div>
                         <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
                         <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
@@ -44,6 +55,7 @@
                             <div>
                                 <button class="btn-grnd custBtn" [disabled]="student.disableInBtn || !groundName" (click)="in(student)">Present</button>
                                 <button class="btn-grnd btn-red custBtn" [disabled]="student.disableOutBtn || !groundName" (click)="out(student)">Absent</button>
+                                <button class="btn-grnd btn-orange custBtn" *ngIf="student.isFeesEnable" (click)="pay(student)">Fees</button>
                             </div>
                         </div>
                     </div>

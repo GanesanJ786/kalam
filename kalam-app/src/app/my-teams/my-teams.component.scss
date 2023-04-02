@@ -1,8 +1,8 @@
 .profile-img {
     height: 6rem;
     width: 4.5rem;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
     border-radius: 0.5rem;
 }
 .dummy-img {
@@ -18,8 +18,13 @@
     border: 1px solid #d7d7d7;
     border-radius: 10px;
     font-weight: 500;
-    margin-left: 1.5rem;
     margin-bottom: 0.5rem;
+    position: relative;
+}
+.edit-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 .student-info {
     font-size: 0.7rem;

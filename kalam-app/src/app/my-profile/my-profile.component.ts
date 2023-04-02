@@ -19,6 +19,7 @@ export class MyProfileComponent implements OnInit {
   owner: boolean = true;
   notApproved: any = [];
   newStudents: any = [];
+  paidStudentList: any = [];
   academyName: string = "";
   logo: string = "";
 
@@ -98,7 +99,19 @@ export class MyProfileComponent implements OnInit {
 
         this.newStudents = obj;
         this.kalamService.setNewStudentsList(this.newStudents);
-      })
+      });
+
+      this.kalamService.feesApprove({coachId: this.coachId}).subscribe((res: any) => {
+        let obj = res.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+
+        this.paidStudentList = obj;
+        this.kalamService.paidStudentList = this.paidStudentList ;
+      });
     }
   }
   editProfile() {
@@ -111,6 +124,10 @@ export class MyProfileComponent implements OnInit {
 
   studentApproval() {
     this.router.navigate([`/new-students`]);
+  }
+
+  feesApproval() {
+    this.router.navigate([`/fees-approval`]);
   }
 
   addGround() {

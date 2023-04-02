@@ -106,8 +106,7 @@
             <button (click)="back()" style="width: 30%;" mat-raised-button>
                 <span class="arrowLeft"><mat-icon>keyboard_arrow_left</mat-icon></span> BACK
             </button>
-            <button *ngIf="editAccess" style="width: 40%;" mat-raised-button color="primary" (click)="onSubmit()">UPDATE</button>
-            <button *ngIf="!editAccess" style="width: 40%;" mat-raised-button color="primary" (click)="onSubmit()">CREATE</button>
+            <button style="width: 40%;" mat-raised-button color="primary" (click)="onSubmit()">{{btnText()}}</button>
         </div>
     </form>
 </div>
