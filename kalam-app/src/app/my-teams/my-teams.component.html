@@ -6,21 +6,23 @@
                 <mat-option *ngFor="let under of underCategory" [value]="under.value">{{under.key}}</mat-option>
             </mat-select>
         </mat-form-field>
-        <button style="width: 45%;" mat-raised-button color="primary" (click)="newStudent()">Add Student</button>
-        
+        <mat-form-field appearance="fill" style="width: 45%;">
+            <mat-label>Select Ground</mat-label>
+            <mat-select [(ngModel)]="groundName" (ngModelChange)="underSelection()">
+                <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <div class="custField viewAttendance">  
+            <button mat-raised-button color="primary" (click)="newStudent()">Add Student</button>
+            <button *ngIf="ageType && groundName && owner && !viewStudentAttendance" mat-raised-button color="primary" (click)="viewAttendance()">View Attendance</button>
+            <button *ngIf="ageType && groundName && owner && viewStudentAttendance" mat-raised-button color="primary" (click)="viewStudent()">View Students</button>
+        </div>
     </div>
     
-    <div *ngIf="ageType"> 
-        <div class="custField viewAttendance">
-            <mat-form-field appearance="fill" style="width: 45%;">
-                <mat-label>Select Ground</mat-label>
-                <mat-select [(ngModel)]="groundName">
-                    <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-            <button style="width: 45%;" *ngIf="owner && !viewStudentAttendance" mat-raised-button color="primary" (click)="viewAttendance()">View Attendance</button>
-            <button style="width: 45%;" *ngIf="owner && viewStudentAttendance" mat-raised-button color="primary" (click)="viewStudent()">View Students</button>
-        </div>
+    <div *ngIf="ageType && groundName" style="margin-top: 1em;"> 
+        
         <div *ngIf="studentListView">
             <div *ngFor="let student of studentList; let index = index">
                 <div class="position-style" *ngIf="!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion">{{getSportLabel(student.playingPostion)}}</div>

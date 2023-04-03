@@ -58,7 +58,7 @@ export class MyTeamsComponent implements OnInit {
   }
 
   getStudentAttendance() {
-    this.kalamService.getAllStudentAttendanceData(this.coachId, this.ageConvert(this.ageType)).subscribe((stud:any) => {
+    this.kalamService.getAllStudentAttendanceData(this.coachId, this.ageConvert(this.ageType), this.groundName).subscribe((stud:any) => {
       let stundentData = stud.map((document: any) => {
         return {
           id: document.payload.doc.id,
@@ -84,7 +84,7 @@ export class MyTeamsComponent implements OnInit {
     
     this.loaderService.show();
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.kalamService.studentList({coachId: coachId, underAge: this.ageType}).subscribe((res: any) => {
+    this.kalamService.studentList({coachId: coachId, underAge: this.ageType, groundName: this.groundName}).subscribe((res: any) => {
       this.loaderService.hide();
       let data = res.map((document: any) => {
         return {
@@ -151,8 +151,10 @@ export class MyTeamsComponent implements OnInit {
   }
 
   underSelection() {
-    this.getStudentList();
-    this.getStudentAttendance();
+    if(this.ageType && this.groundName) {
+      this.getStudentList();
+      this.getStudentAttendance();
+    }
   }
 
   getSportLabel(value: string) {

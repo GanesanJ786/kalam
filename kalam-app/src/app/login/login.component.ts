@@ -19,6 +19,7 @@ export interface UserLogin {
 export interface StudentData {
   coachId: string | undefined;
   underAge: string;
+  groundName: string;
 }
 
 @Component({

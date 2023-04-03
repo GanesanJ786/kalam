@@ -79,7 +79,7 @@ export class KalamService {
   }
 
   studentList(query:StudentData) {
-    return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${query.coachId}`).where("underAge", "==", `${query.underAge}`).where("approved", "==", true)).snapshotChanges();
+    return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${query.coachId}`).where("underAge", "==", `${query.underAge}`).where("approved", "==", true).where("groundName", "==", `${query.groundName}`)).snapshotChanges();
   }
 
   newStudentList(query:any) {
@@ -118,8 +118,8 @@ export class KalamService {
     return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`).where("loginDate", "==", `${loginDate}`)).snapshotChanges();
   }
 
-  getAllStudentAttendanceData(academyId: string | undefined, ageType: string) {
-    return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`).where("ageType", "==", `${ageType}`)).snapshotChanges();
+  getAllStudentAttendanceData(academyId: string | undefined, ageType: string, groundName: string) {
+    return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`).where("ageType", "==", `${ageType}`).where("groundName", "==", `${groundName}`)).snapshotChanges();
   }
 
   editStudentAttendance(item: any, id: string) {
