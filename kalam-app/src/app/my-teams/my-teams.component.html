@@ -25,7 +25,7 @@
             <div *ngFor="let student of studentList; let index = index">
                 <div class="position-style" *ngIf="!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion">{{getSportLabel(student.playingPostion)}}</div>
                 <div class="team-list">
-                    <div class="edit-btn">
+                    <div class="edit-btn" *ngIf="owner">
                         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="edit student information">
                             <mat-icon>more_vert</mat-icon>
                           </button>
