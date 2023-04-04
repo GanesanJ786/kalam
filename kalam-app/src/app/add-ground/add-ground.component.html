@@ -62,6 +62,23 @@
             </div>
         </form>
     </ng-container>
+
+    <ng-container *ngSwitchCase="'Location'">
+        <h1 mat-dialog-title>Coach In & Out location</h1>  
+        <div mat-dialog-content class="locationCont">
+            <div>
+                <label style="font-weight: 600;">Login Address:</label>
+                <p>{{data?.loginAddress}}</p>
+            </div>
+            <div>
+                <label style="font-weight: 600;">Logout Address:</label>
+                <p>{{data?.logoutAddress}}</p>
+            </div>
+        </div>   
+        <div mat-dialog-actions style="justify-content: center;">
+            <button mat-button (click)="cancel()">Close</button>
+        </div>
+    </ng-container>
     
 </ng-container>
 

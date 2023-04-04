@@ -14,7 +14,9 @@ export const environment = {
     messagingSenderId: '571274695594',
     measurementId: 'G-5EYSCL7JGD',
   },
-  production: false
+  production: false,
+  mapUrl: "https://api.opencagedata.com/",
+  mapAuth: "7e8c288584fb43e2a2b2006254330644"
 };
 
 /*

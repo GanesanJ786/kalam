@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { StudentData, UserLogin } from './login/login.component';
 import { RegistrationDetails } from './sign-up/sign-up.component';
 import { StudentDetails } from './student-form/student-form.component'; 
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -149,4 +150,14 @@ export class KalamService {
   sendEmailer(request: any) {
     return this.http.post(this.apiUrl + '/v1/text-mail', request);
   }
+
+  getLocationAddress(data:any) {
+   
+    let params = `geocode/v1/json?q=${data.coords.latitude},${data.coords.longitude}&key=${environment.mapAuth}`;
+    return this.http.get(environment.mapUrl+params);
+  }
+
+  // getAllStudents(coachId:string) {
+  //   return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`)).snapshotChanges();
+  // }
 }

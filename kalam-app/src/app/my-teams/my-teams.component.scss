@@ -1,14 +1,4 @@
-.profile-img {
-    height: 6rem;
-    width: 4.5rem;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    border-radius: 0.5rem;
-}
-.dummy-img {
-    height: 6rem;
-    width: 6rem;
-}
+
 .team-list {
     display: flex;
     flex-direction: row;
@@ -52,5 +42,10 @@
     justify-content: space-between;
     align-items: baseline;
 }
-
+.viewStudent {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
 

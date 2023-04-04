@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { KalamService } from '../kalam.service';
+import { AddGroundComponent } from '../add-ground/add-ground.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-view-coach-attendance',
@@ -17,7 +19,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
   coachView: any = [];
   title: string = "Coaches Details";
 
-  constructor(private router: Router, private kalamService: KalamService) { 
+  constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) { 
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.kalamService.getCoachAttendanceData(this.coachId).subscribe((coach: any) => {
       let coachData = coach.map((document: any) => {
@@ -60,10 +62,12 @@ export class ViewCoachAttendanceComponent implements OnInit {
     // })
     inCoach.forEach((inC:any,i:any) => {
       if(inC.groundName ==  outCoach[i]?.groundName && inC.loginDate ==  outCoach[i]?.logoffDate) {
-        inC.logOffDataTime = `${outCoach[i].logoffDate} ${outCoach[i].logoffTime}`
+        inC.logOffDataTime = `${outCoach[i].logoffDate} ${outCoach[i].logoffTime}`;
+        inC.logoutAddress = outCoach[i].logoutAddress ? outCoach[i].logoutAddress : null;
         inC.notes = outCoach[i].notes;
       }else {
         inC.logOffDataTime = "-"
+        inC.logoutAddress = null;
       }
     })
     this.coachView = inCoach;
@@ -90,6 +94,19 @@ export class ViewCoachAttendanceComponent implements OnInit {
     }else {
       return "-";
     }
+  }
+
+  viewLocation(loginAddress:string, logoutAddress: string) {
+    const dialogRef = this.dialog.open(AddGroundComponent, {
+      disableClose: false,
+      data: {loginAddress: loginAddress, logoutAddress: logoutAddress, dialogType: "Location"},
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
+      //console.log(result);
+      
+    });
   }
 
 }

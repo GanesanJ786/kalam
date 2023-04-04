@@ -12,6 +12,8 @@ export interface DialogData {
   topics?: string;
   notes?: string;
   amount?: string;
+  loginAddress?: string;
+  logoutAddress?: string;
 }
 
 @Component({

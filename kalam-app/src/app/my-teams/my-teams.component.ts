@@ -8,6 +8,7 @@ import * as moment from 'moment';
 import * as _ from "lodash";
 import { MatDialog } from '@angular/material/dialog';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
+import { ViewStudentDataComponent } from '../view-student-data/view-student-data.component';
 
 @Component({
   selector: 'app-my-teams',
@@ -248,8 +249,24 @@ export class MyTeamsComponent implements OnInit {
         this.kalamService.editStudentDetails(student);
         this.checkFees();
       }
+    });    
+  }
+
+  viewStudentProfile(student: StudentDetails) {
+    const dialogRef = this.dialog.open(ViewStudentDataComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      panelClass: 'full-screen-modal',
+      disableClose: true,
+      data: student,
     });
 
-    
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
+      //console.log(result);
+      
+    });
   }
 }

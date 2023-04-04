@@ -27,6 +27,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { StudentFormComponent } from './student-form/student-form.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -44,6 +45,7 @@ import { NewCoachApproveComponent } from './new-coach-approve/new-coach-approve.
 import { NewStudentsComponent } from './new-students/new-students.component';
 import { HeaderComponent } from './header/header.component';
 import { ApprovePaymentComponent } from './approve-payment/approve-payment.component';
+import { ViewStudentDataComponent } from './view-student-data/view-student-data.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,8 @@ import { ApprovePaymentComponent } from './approve-payment/approve-payment.compo
     NewCoachApproveComponent,
     NewStudentsComponent,
     HeaderComponent,
-    ApprovePaymentComponent
+    ApprovePaymentComponent,
+    ViewStudentDataComponent
   ],
   imports: [
     HttpClientModule,
@@ -84,6 +87,7 @@ import { ApprovePaymentComponent } from './approve-payment/approve-payment.compo
     MatProgressSpinnerModule,
     MatDialogModule,
     MatMenuModule,
+    MatExpansionModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgIdleKeepaliveModule.forRoot()
   ],

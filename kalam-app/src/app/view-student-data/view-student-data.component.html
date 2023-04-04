@@ -1,0 +1,67 @@
+<ng-container>
+    <ng-container> 
+            <div mat-dialog-content style="margin: 0;padding: 0;">
+                <div class="rf-header custm-logo" style="background-image: none;">
+                    <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
+                    <div style="color: #fff;">{{title}} 
+                    </div>
+                </div>
+                <div class="student-info">
+                    <div class="s-image">
+                        <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
+                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
+                    </div>
+                    <div class="s-name">{{student.name}}</div>
+                    <div class="s-ground">{{student.groundName}} <span style="text-transform: uppercase;">({{student.underAge}})</span></div>
+                </div>
+                <div class="s-bacis">
+                    <div class="s-cb" style="color: rgba(255,255,255,0.7);">
+                        <div>POSITION</div>
+                        <div>AADHAR</div>
+                        <div>DOB</div>
+                    </div>
+                    <div class="s-cb">
+                        <div>{{getSportLabel(student.playingPostion)}}</div>
+                        <div>{{student.aadharNum}}</div>
+                        <div>{{student.dob}}</div>
+                    </div>
+                </div>
+                <div class="student-p">
+                    <div class="s-physic" style="color: rgba(255,255,255,0.7);font-size: 0.8rem;">
+                        <!-- <div style="width: 30%;text-align: left;">POSITION</div> -->
+                        <div>HEIGHT</div>
+                        <div>WEIGHT</div>
+                        <div>AGE</div>
+                        <div>JERSY</div>
+                    </div>
+                    <div class="s-physic">
+                        <!-- <div style="width: 30%;text-align: left;">{{student.playingPostion}}</div> -->
+                        <div>{{student.height}}</div>
+                        <div>{{student.weight}}</div>
+                        <div>{{student.jersySize}}</div>
+                        <div>{{student.age}}</div>
+                    </div>
+                </div>
+                <!-- <div>
+                    <mat-accordion>
+                        
+                        <mat-expansion-panel (opened)="panelOpenState = true"
+                                             (closed)="panelOpenState = false">
+                          <mat-expansion-panel-header>
+                            <mat-panel-title>
+                              Self aware panel
+                            </mat-panel-title>
+                             <mat-panel-description>
+                              Currently I am {{panelOpenState ? 'open' : 'closed'}}
+                            </mat-panel-description> 
+                          </mat-expansion-panel-header>
+                          <p>I'm visible because I am open</p>
+                        </mat-expansion-panel>
+                      </mat-accordion>
+                </div> -->
+            </div>
+            <!-- <div mat-dialog-actions style="justify-content: center;">
+                <button mat-button (click)="cancel()">Cancel</button>
+                <button mat-raised-button color="primary" (click)="save()" color="primary" type="submit">Save</button>
+            </div> -->
+    </ng-container>

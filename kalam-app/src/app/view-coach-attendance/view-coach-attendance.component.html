@@ -25,8 +25,12 @@
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.groundName}}</div>
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{checkValue(coach.topics)}}</div>
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{checkValue(coach.notes)}}</div>
-                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{logInValue(coach)}}</div>
-                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.logOffDataTime}}</div>
+                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{logInValue(coach)}}
+                        <span *ngIf="coach.loginAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></span>
+                    </div>
+                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.logOffDataTime}}
+                        <span *ngIf="coach.logoutAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></span>
+                    </div>
                 </ng-container>
               </div>
         </div>

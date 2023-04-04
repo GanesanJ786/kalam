@@ -1,0 +1,47 @@
+.backNav {
+    position: absolute;
+    left: 0;
+    color: #fff;
+    background: none;
+    border: 0;
+}
+.student-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+}
+.s-name {
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+.s-ground {
+    padding: 0.5rem 0;
+}
+.s-physic {
+    display: flex;
+}
+.s-physic div {
+    width: 25%;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+}
+.student-p {
+    padding: 1rem;
+    background: rgba(0,0,0,0.4);
+    color: #fff;
+}
+.s-bacis {
+    background: rgba(0,0,0,0.6);
+    padding: 1rem;
+    color: #fff;
+}
+.s-cb {
+    display: flex;
+}
+.s-cb div {
+    width: 33.33%;
+    text-align: center;
+    font-size: 0.7rem;
+}

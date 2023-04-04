@@ -22,6 +22,7 @@ export class MyProfileComponent implements OnInit {
   paidStudentList: any = [];
   academyName: string = "";
   logo: string = "";
+  addressData: any;
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) {
     this.groundList = [];
@@ -63,6 +64,28 @@ export class MyProfileComponent implements OnInit {
 
   coachDetails: RegistrationDetails = {} as RegistrationDetails;
 
+  getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position: any) => {
+        if (position) {
+          console.log("Latitude: " + position.coords.latitude +
+            "Longitude: " + position.coords.longitude);
+            this.kalamService.getLocationAddress(position).subscribe((res:any) => {
+              this.addressData = res.results[0];
+              // this.vilage = addressData.components.village+', ';
+              // this.address = addressData.components.state_district+" - "
+              //+addressData.components.postcode;
+              // console.log(addressData.formatted);
+              // console.log(`${addressData.components.village}, ${addressData.components.state_district}`);
+            })
+        }
+      },
+      (error: any) => console.log(error));
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  }
+
   ngOnInit(): void {
    // console.log('retrievedObject: ', JSON.stringify(sessionStorage.getItem('coachDetails')));
     // let coachDetails: any = sessionStorage.getItem("coachDetails");
@@ -71,6 +94,7 @@ export class MyProfileComponent implements OnInit {
     //     console.log(coachProfile);
     // }
 
+    this.getLocation();
     this.coachDetails = this.kalamService.getCoachData();
     if(this.owner) {
       const query = {
@@ -142,6 +166,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   in(ground: any){
+    this.getLocation();
     const dialogRef = this.dialog.open(AddGroundComponent, {
       disableClose: true,
       data: {groundName: "", groundAddress: "", dialogType: "Topics"},
@@ -158,6 +183,7 @@ export class MyProfileComponent implements OnInit {
         loginTime: moment().format("HH:mm:ss"),
         loginDate: moment().format("MM-DD-YYYY"),
         topics: result.data.topics,
+        loginAddress: this.addressData?.formatted,
         status: "IN"
       }
       this.kalamService.coachAttendance(attendance);
@@ -167,6 +193,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   out(ground: any){
+    this.getLocation();
     const dialogRef = this.dialog.open(AddGroundComponent, {
       disableClose: true,
       data: {groundName: "", groundAddress: "", dialogType: "Notes"},
@@ -183,6 +210,7 @@ export class MyProfileComponent implements OnInit {
         logoffTime: moment().format("HH:mm:ss"),
         logoffDate: moment().format("MM-DD-YYYY"),
         notes: result.data.notes,
+        logoutAddress: this.addressData?.formatted,
         status: "OUT"
       }
       this.kalamService.coachAttendance(attendance);
