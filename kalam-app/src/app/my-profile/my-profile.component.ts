@@ -5,6 +5,8 @@ import { KalamService } from 'src/app/kalam.service';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { RegistrationDetails } from '../sign-up/sign-up.component';
 import * as moment from 'moment';
+import { StudentDetails } from '../student-form/student-form.component';
+import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-students-by-ground.component';
 
 @Component({
   selector: 'app-my-profile',
@@ -23,6 +25,7 @@ export class MyProfileComponent implements OnInit {
   academyName: string = "";
   logo: string = "";
   addressData: any;
+  allStudents: StudentDetails[] = [];
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) {
     this.groundList = [];
@@ -60,6 +63,8 @@ export class MyProfileComponent implements OnInit {
         });
       })
     })
+
+
    }
 
   coachDetails: RegistrationDetails = {} as RegistrationDetails;
@@ -135,6 +140,19 @@ export class MyProfileComponent implements OnInit {
 
         this.paidStudentList = obj;
         this.kalamService.paidStudentList = this.paidStudentList ;
+      });
+
+      this.kalamService.getStudentDetails(this.coachId).subscribe((res: any) => {
+        let data = res.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+        this.allStudents = data;
+        this.groundList.forEach((element: any) => {
+          element.totalStudent = data.filter((res:any) => res.groundName == element.groundName).length;
+        })
       });
     }
   }
@@ -219,5 +237,23 @@ export class MyProfileComponent implements OnInit {
   }
   viewCoachData() {
     this.router.navigate([`/coachDetails`]);
+  }
+
+  viewAllStudents(groundName: string) {
+    let allStudentsGroundBy = this.allStudents.filter((res: StudentDetails) => res.groundName == groundName);
+    const dialogRef = this.dialog.open(AllStudentsByGroundComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      panelClass: 'full-screen-modal',
+      data: allStudentsGroundBy
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
+      //console.log(result);
+      
+    });
   }
 }

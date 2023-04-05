@@ -5,11 +5,11 @@ interface SelectItem {
 
 
 export const SportsList: SelectItem[] = [
-    {value:'goalkeeper', label: 'Goalkeeper'},
+    {value:'goalkeeper', label: 'Goal Keeper'},
     {value:'defenders', label: 'Defenders'},
     {value:'outsideFullback', label: 'Outside Fullback'},
     {value:'centralDefenders', label: 'Central Defenders'},
-    {value:'midfielders', label: 'Midfielders'},
+    {value:'midfielders', label: 'Mid Fielders'},
     {value:'forwards', label: 'Forwards'},
     {value:'centerForward', label: 'Center Forward'}
 ];

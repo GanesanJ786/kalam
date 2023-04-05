@@ -1,0 +1,21 @@
+.custGrid-3 {
+    grid-template: auto/18% 18% 36% 27%;
+} 
+.row-bg {
+    background-color: #0f786f !important;
+    color: #fff;
+}
+.custGrid-3 > div {
+    padding: 4px 0px;;
+}
+.cnt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cnt-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

@@ -1,0 +1,34 @@
+<ng-container>
+    <ng-container> 
+            <div mat-dialog-content style="margin: 0;padding: 0; max-height: 100%;">
+                <div class="rf-header custm-logo" style="background-image: none;">
+                    <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
+                    <div style="color: #fff;">{{title}} {{groundName}}
+                    </div>
+                </div>
+                <div class="s-list">
+                    <div class="grid-container custGrid-3 font-0-9em" >
+                        <div class="header">Under</div>
+                        <div class="header">Photo</div>
+                        <div class="header">Name</div>
+                        <div class="header">Position</div>
+                       
+                        <ng-container *ngFor="let student of students">
+                            <div class="row-bg cnt" style="text-transform: capitalize;">{{student.underAge}}</div>
+                            <div class="row-bg cnt-img">
+                                <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" style="height: 4rem;width: 3.5rem;" alt="profile image"/>
+                                <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png"  style="height: 4rem;width: 4rem;" alt="profile image"/></ng-template>
+                                <div style="text-transform: capitalize;">{{student.gender}}</div>
+                            </div>
+                            <div class="row-bg cnt">{{student.name}}</div>
+                            <div class="row-bg cnt">{{getSportLabel(student.playingPostion)}}</div>
+                            
+                        </ng-container>
+                      </div>
+                </div>
+            </div>
+            <!-- <div mat-dialog-actions style="justify-content: center;">
+                <button mat-button (click)="cancel()">Cancel</button>
+                <button mat-raised-button color="primary" (click)="save()" color="primary" type="submit">Save</button>
+            </div> -->
+    </ng-container>

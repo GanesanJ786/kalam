@@ -46,6 +46,7 @@ import { NewStudentsComponent } from './new-students/new-students.component';
 import { HeaderComponent } from './header/header.component';
 import { ApprovePaymentComponent } from './approve-payment/approve-payment.component';
 import { ViewStudentDataComponent } from './view-student-data/view-student-data.component';
+import { AllStudentsByGroundComponent } from './all-students-by-ground/all-students-by-ground.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +65,8 @@ import { ViewStudentDataComponent } from './view-student-data/view-student-data.
     NewStudentsComponent,
     HeaderComponent,
     ApprovePaymentComponent,
-    ViewStudentDataComponent
+    ViewStudentDataComponent,
+    AllStudentsByGroundComponent
   ],
   imports: [
     HttpClientModule,

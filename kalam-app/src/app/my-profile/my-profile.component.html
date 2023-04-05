@@ -42,7 +42,7 @@
         <div *ngFor="let ground of groundList" class="groundItem">
             <div>
                 <div>{{ground.groundName}}</div>
-                <div></div>
+                <button class="t-student" (click)="viewAllStudents(ground.groundName)">Total Students {{ground.totalStudent}}</button>
             </div>
             <div>
                 <button class="btn-grnd" [disabled]="ground.disableInBtn || allBtnDisabled" (click)="in(ground)">IN</button>
