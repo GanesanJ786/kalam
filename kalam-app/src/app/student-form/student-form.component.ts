@@ -269,17 +269,20 @@ export class StudentFormComponent implements OnInit {
   form1Submit(): void {
     this.form1 = false;
     this.form2 = true;
-    if(this.editAccess) {
+    //if(this.editAccess) {
       this.studentForm.updateValueAndValidity({ onlySelf: false, emitEvent: true })
-    }
+   // }
   }
   prevForm(): void {
     this.form1 = true;
     this.form2 = false;
     this.form1Validation = false;
-    if(this.editAccess) {
+    this.studentForm.patchValue({
+      imageUrl: ""
+    })
+    //if(this.editAccess) {
       this.studentForm.updateValueAndValidity({ onlySelf: false, emitEvent: true })
-    }
+    //}
   }
   
   dateSelected(type: string, event: MatDatepickerInputEvent<Date>) {

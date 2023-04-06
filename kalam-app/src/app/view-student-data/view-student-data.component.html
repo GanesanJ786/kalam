@@ -8,8 +8,9 @@
                 </div>
                 <div class="student-info">
                     <div class="s-image">
-                        <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
-                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
+                        <!-- <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
+                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template> -->
+                        <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
                     </div>
                     <div class="s-name">{{student.name}}</div>
                     <div class="s-ground">{{student.groundName}} <span style="text-transform: uppercase;">({{student.underAge}})</span></div>

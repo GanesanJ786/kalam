@@ -341,4 +341,11 @@ export class SignUpComponent implements OnInit {
   btnText() {
     return this.editAccess ? "UPDATE" : "CREATE";
   }
+  // deleteImg() {
+  //   let pictureRef = this.storage.refFromURL("https://firebasestorage.googleapis.com/v0/b/kalam-in.appspot.com/o/academy%2Flogo%2FGanesan%20J_1234-5678-9123_1680353306850?alt=media&token=d39d31ab-1d64-4fbd-8171-900dfa62077f");
+  //   pictureRef.delete()
+  //     .subscribe((res) => {
+  //       alert("Picture is deleted successfully!");
+  //     })
+  // };
 }
