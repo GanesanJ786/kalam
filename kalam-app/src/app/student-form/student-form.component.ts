@@ -8,6 +8,7 @@ import { finalize } from 'rxjs/operators';
 
 import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
+import { CompetencyLevel, Scholarship, SelectItem } from '../constant';
 
 export interface StudentDetails {
   id?: string;
@@ -51,6 +52,8 @@ export interface StudentDetails {
   fessCollectedBy?: string;
   feesPaidDate?: string;
   feesAmount?: string;
+  scholarship?: string;
+  competency?: string;
 }
 
 @Component({
@@ -73,11 +76,15 @@ export class StudentFormComponent implements OnInit {
   title: string = "PLAYER DETAILS FORM";
   editAccess: boolean = false;
   profileImg: boolean = false;
+  scholarship: SelectItem[] = [];
+  competencyLevel: SelectItem[] = [];
 
   constructor(private kalamService: KalamService, private router: Router,
     private activatedRoute: ActivatedRoute,
     private loaderService: LoaderService,
     private storage: AngularFireStorage) {
+    this.competencyLevel = CompetencyLevel;
+    this.scholarship = Scholarship;
     this.studentDetails = {} as StudentDetails;
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
   }
@@ -137,7 +144,9 @@ export class StudentFormComponent implements OnInit {
       height: new FormControl(this.studentDetails.height,[Validators.required]),
       weight: new FormControl(this.studentDetails.weight, [Validators.required]),
       address: new FormControl(this.studentDetails.address, [Validators.required]),
-      groundName: new FormControl(this.studentDetails.groundName, [Validators.required])
+      groundName: new FormControl(this.studentDetails.groundName, [Validators.required]),
+      scholarship: new FormControl(this.studentDetails.scholarship, []),
+      competency: new FormControl(this.studentDetails.competency, []),
     });
 
     this.btnValidation();

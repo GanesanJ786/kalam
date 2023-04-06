@@ -13,7 +13,12 @@
                         <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
                     </div>
                     <div class="s-name">{{student.name}}</div>
-                    <div class="s-ground">{{student.groundName}} <span style="text-transform: uppercase;">({{student.underAge}})</span></div>
+                    <div class="s-ground" *ngIf="student?.competency" style="padding-bottom: 0;font-weight: 500;">{{student.competency}}</div>
+                    
+                    <div class="s-ground">{{student.groundName}} 
+                        <span style="text-transform: uppercase;">({{student.underAge}})</span>
+                        <span *ngIf="student?.scholarship && student?.scholarship !== '0'"> Scholarship ({{student.scholarship}})</span>
+                    </div>
                 </div>
                 <div class="s-bacis">
                     <div class="s-cb" style="color: rgba(255,255,255,0.7);">

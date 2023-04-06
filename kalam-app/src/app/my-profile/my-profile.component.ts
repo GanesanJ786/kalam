@@ -99,7 +99,7 @@ export class MyProfileComponent implements OnInit {
     //     console.log(coachProfile);
     // }
 
-    this.getLocation();
+    //this.getLocation();
     this.coachDetails = this.kalamService.getCoachData();
     if(this.owner) {
       const query = {

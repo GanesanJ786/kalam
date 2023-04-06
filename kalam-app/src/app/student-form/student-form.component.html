@@ -14,12 +14,21 @@
                     <div class="pPic">Upload Profile Picture *</div>
                 </div>
                 <input type="file" style="display: none;" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
-                <mat-form-field appearance="fill" style="width: 100%;">
-                    <mat-label>Name</mat-label>
-                    <input matInput formControlName="name" appAadharNumber [alphabetOnly]="true">
-                </mat-form-field>
                 <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width:45%">
+                    <mat-form-field appearance="fill" [ngStyle]="{'width': editAccess ? '65%' :  '100%'}">
+                        <mat-label>Name</mat-label>
+                        <input matInput formControlName="name" appAadharNumber [alphabetOnly]="true">
+                    </mat-form-field>
+                    <mat-form-field *ngIf="editAccess" appearance="fill" style="width: 33%;">
+                        <mat-label>Competency Level</mat-label>
+                        <mat-select formControlName="competency">
+                            <mat-option *ngFor="let competency of competencyLevel" [value]="competency.value">{{competency.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+               
+                <div class="brk-field">
+                    <mat-form-field appearance="fill" [ngStyle]="{'width': editAccess ? '40%' :  '45%'}">
                         <mat-label>Date of Birth</mat-label>
                         <input matInput [matDatepicker]="picker" formControlName="dob" (dateChange)="dateSelected('change', $event)">
                         <mat-hint>MM/DD/YYYY</mat-hint>
@@ -27,9 +36,15 @@
                           </mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
-                    <mat-form-field appearance="fill" style="width:45%" *ngIf="studentForm.controls['dob'].value">
+                    <mat-form-field appearance="fill" [ngStyle]="{'width': editAccess ? '20%' :  '45%'}" *ngIf="studentForm.controls['dob'].value">
                         <mat-label>Age</mat-label>
                         <input matInput formControlName="age">
+                    </mat-form-field>
+                    <mat-form-field *ngIf="editAccess" appearance="fill" style="width: 35%;">
+                        <mat-label>Scholarship</mat-label>
+                        <mat-select formControlName="scholarship">
+                            <mat-option *ngFor="let scholar of scholarship" [value]="scholar.value">{{scholar.label}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </div>
                 <div class="brk-field">

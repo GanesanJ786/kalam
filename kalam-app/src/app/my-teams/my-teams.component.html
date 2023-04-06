@@ -50,7 +50,7 @@
                                 Kalam ID: {{student.kalamId}}
                             </div>
                             <div>
-                                Age: {{student.age}}, {{getUnderAgeLabel(student.underAge)}}
+                                Age: {{student.age}}, {{getUnderAgeLabel(student.underAge)}} <span *ngIf="student?.competency">, {{student.competency}}</span>
                             </div>
                             <!-- <div>
                                 Ranking: 1

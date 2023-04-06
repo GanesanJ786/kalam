@@ -1,4 +1,4 @@
-interface SelectItem {
+export interface SelectItem {
     value: string;
     label: string;
 }
@@ -34,3 +34,18 @@ export const UnderAge: SelectItem[] = [
     {value:'u-21', label: 'Under-21'},
     {value:'open', label: 'Open'}
 ];
+
+export const Scholarship: SelectItem[] = [
+    {value:'0', label: 'None'},
+    {value:'10', label: '10'},
+    {value:'15', label: '15'},
+    {value:'25', label: '25'},
+    {value:'50', label: '50'},
+    {value:'100', label: '100'},
+];
+
+export const CompetencyLevel: SelectItem[] = [
+    {value:'Beginner', label: 'Beginner'},
+    {value:'Intermediate', label: 'Intermediate'},
+    {value:'Advanced', label: 'Advanced'}
+]
