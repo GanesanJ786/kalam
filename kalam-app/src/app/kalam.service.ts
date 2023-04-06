@@ -131,6 +131,10 @@ export class KalamService {
     return this.fireStore.collection('coachDetails', ref => ref.where('academyId', '==', `${query.academyId}`)).snapshotChanges();
   }
 
+  getHeadCoache(kalamId:any) {
+    return this.fireStore.collection('coachDetails', ref => ref.where('kalamId', '==', `${kalamId}`)).snapshotChanges();
+  }
+
   approvedCoach(coach: any) {
     this.fireStore.doc("coachDetails/"+coach.id).update(coach);
   }

@@ -33,6 +33,18 @@ export class MyProfileComponent implements OnInit {
     this.logo = this.kalamService.getCoachData().logoUrl;
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
+
+    if(!this.owner) {
+      this.kalamService.getHeadCoache(this.coachId).subscribe((res: any) => {
+        let data = res.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+        this.logo = data[0].logoUrl ? data[0].logoUrl : "";
+      })
+    }
     
     this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
       let data = res.map((document: any) => {
@@ -149,9 +161,9 @@ export class MyProfileComponent implements OnInit {
             ...document.payload.doc.data() as {}
           }
         });
-        this.allStudents = data;
+        this.allStudents = data.filter((res: StudentDetails) => res.approved);
         this.groundList.forEach((element: any) => {
-          element.totalStudent = data.filter((res:any) => res.groundName == element.groundName).length;
+          element.totalStudent = this.allStudents.filter((res:any) => res.groundName == element.groundName).length;
         })
       });
     }
