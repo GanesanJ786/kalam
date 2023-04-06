@@ -15,7 +15,7 @@ export const SportsList: SelectItem[] = [
 ];
 
 export const UnderAge: SelectItem[] = [
-    {value:'9', label: 'Under-5'},
+    {value:'u-5', label: 'Under-5'},
     {value:'u-6', label: 'Under-6'},
     {value:'u-7', label: 'Under-7'},
     {value:'u-8', label: 'Under-8'},
