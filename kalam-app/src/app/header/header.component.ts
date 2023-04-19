@@ -25,6 +25,7 @@ export class HeaderComponent implements OnInit {
     // this.kalamService.setCoachData({} as RegistrationDetails);
      this.router.navigate([`/login`]);
      sessionStorage.removeItem("coachDetails");
+     this.kalamService.resetAll();
    }
 
    editProfile() {

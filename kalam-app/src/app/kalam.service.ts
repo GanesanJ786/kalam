@@ -22,6 +22,10 @@ export class KalamService {
   paidStudentList: any = [];
   getCoachesAttendance: any = [];
 
+  resetAll() {
+    this.getCoachesAttendance = [];
+  }
+
   getStudentDetails(coachId: any) {
     return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`)).snapshotChanges();
   }

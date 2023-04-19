@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
+import { KalamService } from './kalam.service';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class AppComponent {
   timedOut = false;
   lastPing?: any = null;
 
-  constructor(private idle: Idle, private keepalive: Keepalive, private router: Router) {
+  constructor(private idle: Idle, private keepalive: Keepalive, private router: Router, private kalamService: KalamService) {
     // sets an idle timeout of 30 seconds, for testing purposes.
     idle.setIdle(7200);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
@@ -29,6 +30,7 @@ export class AppComponent {
       this.timedOut = true;
       this.router.navigate([`/login`]);
       sessionStorage.removeItem("coachDetails");
+      this.kalamService.resetAll();
     });
     idle.onIdleStart.subscribe(() => this.idleState = 'You\'ve gone idle!');
     idle.onTimeoutWarning.subscribe((countdown) => this.idleState = 'You will time out in ' + countdown + ' seconds!');
