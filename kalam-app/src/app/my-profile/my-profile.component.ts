@@ -64,18 +64,10 @@ export class MyProfileComponent implements OnInit {
             }
           });
           this.kalamService.getCoachesAttendance = coachData;
-          this.groundList.forEach((element: any) => {
-            element["coachAlreadyIn"] = coachData.filter((val:any) => val.groundName == element.groundName);
-            element['disableInBtn'] = false;
-            element['disableOutBtn'] = true;
-            if(coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.loginDate && val.inCoachId == this.coachDetails.kalamId && val.status == "IN")).length > 
-            coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.logoffDate && val.inCoachId == this.coachDetails.kalamId && val.status == "OUT")).length ) {
-              this.allBtnDisabled = true;
-              element['disableOutBtn'] = false;
-            }
-            //if(element["coachAlreadyIn"].find((c:any) => c.inCoachId == ))
-          });
+          this.attendanceLoop(coachData);
         })
+      }else {
+        this.attendanceLoop(this.kalamService.getCoachesAttendance);
       }
     })
 
@@ -104,6 +96,20 @@ export class MyProfileComponent implements OnInit {
     } else {
       alert("Geolocation is not supported by this browser.");
     }
+  }
+
+  attendanceLoop(coachData: any) {
+    this.groundList.forEach((element: any) => {
+            element["coachAlreadyIn"] = coachData.filter((val:any) => val.groundName == element.groundName);
+            element['disableInBtn'] = false;
+            element['disableOutBtn'] = true;
+            if(coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.loginDate && val.inCoachId == this.coachDetails.kalamId && val.status == "IN")).length > 
+            coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.logoffDate && val.inCoachId == this.coachDetails.kalamId && val.status == "OUT")).length ) {
+              this.allBtnDisabled = true;
+              element['disableOutBtn'] = false;
+            }
+            //if(element["coachAlreadyIn"].find((c:any) => c.inCoachId == ))
+          });
   }
 
   ngOnInit(): void {
