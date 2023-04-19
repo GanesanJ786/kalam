@@ -54,26 +54,29 @@ export class MyProfileComponent implements OnInit {
         }
       });
       this.groundList = data;
-      this.kalamService.getCoachAttendanceData(this.coachId).subscribe((coach: any) => {
-        this.allBtnDisabled = false;
-        let coachData = coach.map((document: any) => {
-          return {
-            id: document.payload.doc.id,
-            ...document.payload.doc.data() as {}
-          }
-        });
-        this.groundList.forEach((element: any) => {
-          element["coachAlreadyIn"] = coachData.filter((val:any) => val.groundName == element.groundName);
-          element['disableInBtn'] = false;
-          element['disableOutBtn'] = true;
-          if(coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.loginDate && val.inCoachId == this.coachDetails.kalamId && val.status == "IN")).length > 
-          coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.logoffDate && val.inCoachId == this.coachDetails.kalamId && val.status == "OUT")).length ) {
-            this.allBtnDisabled = true;
-            element['disableOutBtn'] = false;
-          }
-          //if(element["coachAlreadyIn"].find((c:any) => c.inCoachId == ))
-        });
-      })
+      if(this.kalamService.getCoachesAttendance.length == 0) {
+        this.kalamService.getCoachAttendanceData(this.coachId).subscribe((coach: any) => {
+          this.allBtnDisabled = false;
+          let coachData = coach.map((document: any) => {
+            return {
+              id: document.payload.doc.id,
+              ...document.payload.doc.data() as {}
+            }
+          });
+          this.kalamService.getCoachesAttendance = coachData;
+          this.groundList.forEach((element: any) => {
+            element["coachAlreadyIn"] = coachData.filter((val:any) => val.groundName == element.groundName);
+            element['disableInBtn'] = false;
+            element['disableOutBtn'] = true;
+            if(coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.loginDate && val.inCoachId == this.coachDetails.kalamId && val.status == "IN")).length > 
+            coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.logoffDate && val.inCoachId == this.coachDetails.kalamId && val.status == "OUT")).length ) {
+              this.allBtnDisabled = true;
+              element['disableOutBtn'] = false;
+            }
+            //if(element["coachAlreadyIn"].find((c:any) => c.inCoachId == ))
+          });
+        })
+      }
     })
 
 

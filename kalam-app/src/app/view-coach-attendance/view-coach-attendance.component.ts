@@ -21,21 +21,28 @@ export class ViewCoachAttendanceComponent implements OnInit {
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) { 
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.kalamService.getCoachAttendanceData(this.coachId).subscribe((coach: any) => {
-      let coachData = coach.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
+    // this.kalamService.getCoachAttendanceData(this.coachId).subscribe((coach: any) => {
+    //   let coachData = coach.map((document: any) => {
+    //     return {
+    //       id: document.payload.doc.id,
+    //       ...document.payload.doc.data() as {}
+    //     }
+    //   });
+    //   this.allCoachList = coachData;
+    //   this.coachList = coachData.reduce((unique:any, o:any) => {
+    //       if(!unique.some((obj:any) => obj.inCoachId === o.inCoachId)) {
+    //         unique.push(o);
+    //       }
+    //       return unique;
+    //   },[]);
+    // })
+    this.allCoachList = this.kalamService.getCoachesAttendance;
+    this.coachList = this.kalamService.getCoachesAttendance.reduce((unique:any, o:any) => {
+        if(!unique.some((obj:any) => obj.inCoachId === o.inCoachId)) {
+          unique.push(o);
         }
-      });
-      this.allCoachList = coachData;
-      this.coachList = coachData.reduce((unique:any, o:any) => {
-          if(!unique.some((obj:any) => obj.inCoachId === o.inCoachId)) {
-            unique.push(o);
-          }
-          return unique;
-      },[]);
-    })
+        return unique;
+    },[]);
   }
 
   
@@ -71,7 +78,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
       }
     })
     this.coachView = inCoach;
-    console.log(this.coachView)
+    //console.log(this.coachView)
   }
 
   logOffValue(coach: any) {
