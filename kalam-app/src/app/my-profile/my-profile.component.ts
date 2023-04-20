@@ -26,6 +26,7 @@ export class MyProfileComponent implements OnInit {
   logo: string = "";
   addressData: any;
   allStudents: StudentDetails[] = [];
+  inCoachId: string = "";
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) {
     this.groundList = [];
@@ -33,6 +34,7 @@ export class MyProfileComponent implements OnInit {
     this.logo = this.kalamService.getCoachData().logoUrl;
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    this.inCoachId = this.kalamService.getCoachData().kalamId;
 
     if(!this.owner) {
       this.kalamService.getHeadCoache(this.coachId).subscribe((res: any) => {
@@ -54,24 +56,31 @@ export class MyProfileComponent implements OnInit {
         }
       });
       this.groundList = data;
-      if(this.kalamService.getCoachesAttendance.length == 0) {
-        this.kalamService.getCoachAttendanceData(this.coachId).subscribe((coach: any) => {
+
+      this.kalamService.getCurrentCoachIn(this.inCoachId, moment().format("MM-DD-YYYY")).subscribe((coach: any) => {
+        this.allBtnDisabled = false;
+        let coachDataIn = coach.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+        //this.attendanceLoop(coachData);
+
+        this.kalamService.getCurrentCoachOut(this.inCoachId, moment().format("MM-DD-YYYY")).subscribe((coach: any) => {
           this.allBtnDisabled = false;
-          let coachData = coach.map((document: any) => {
+          let coachDataOut = coach.map((document: any) => {
             return {
               id: document.payload.doc.id,
               ...document.payload.doc.data() as {}
             }
           });
-          this.kalamService.getCoachesAttendance = coachData;
-          this.attendanceLoop(coachData);
+          this.attendanceLoop(coachDataIn, coachDataOut);
         })
-      }else {
-        this.attendanceLoop(this.kalamService.getCoachesAttendance);
-      }
+
+      })
+
     })
-
-
    }
 
   coachDetails: RegistrationDetails = {} as RegistrationDetails;
@@ -98,13 +107,13 @@ export class MyProfileComponent implements OnInit {
     }
   }
 
-  attendanceLoop(coachData: any) {
+  attendanceLoop(coachDataIn: any, coachDataOut: any) {
     this.groundList.forEach((element: any) => {
-            element["coachAlreadyIn"] = coachData.filter((val:any) => val.groundName == element.groundName);
+            //element["coachAlreadyIn"] = coachData.filter((val:any) => val.groundName == element.groundName);
             element['disableInBtn'] = false;
             element['disableOutBtn'] = true;
-            if(coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.loginDate && val.inCoachId == this.coachDetails.kalamId && val.status == "IN")).length > 
-            coachData.filter((val:any) => (val.groundName == element.groundName && moment().format("MM-DD-YYYY") == val.logoffDate && val.inCoachId == this.coachDetails.kalamId && val.status == "OUT")).length ) {
+            if(coachDataIn.filter((val:any) => (val.groundName == element.groundName && val.status == "IN")).length > 
+            coachDataOut.filter((val:any) => (val.groundName == element.groundName && val.status == "OUT")).length ) {
               this.allBtnDisabled = true;
               element['disableOutBtn'] = false;
             }

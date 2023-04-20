@@ -21,28 +21,29 @@ export class ViewCoachAttendanceComponent implements OnInit {
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) { 
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    // this.kalamService.getCoachAttendanceData(this.coachId).subscribe((coach: any) => {
-    //   let coachData = coach.map((document: any) => {
-    //     return {
-    //       id: document.payload.doc.id,
-    //       ...document.payload.doc.data() as {}
-    //     }
-    //   });
-    //   this.allCoachList = coachData;
-    //   this.coachList = coachData.reduce((unique:any, o:any) => {
-    //       if(!unique.some((obj:any) => obj.inCoachId === o.inCoachId)) {
-    //         unique.push(o);
-    //       }
-    //       return unique;
-    //   },[]);
-    // })
-    this.allCoachList = this.kalamService.getCoachesAttendance;
-    this.coachList = this.kalamService.getCoachesAttendance.reduce((unique:any, o:any) => {
-        if(!unique.some((obj:any) => obj.inCoachId === o.inCoachId)) {
-          unique.push(o);
+    this.kalamService.getCoachAttendanceData(this.coachId).subscribe((coach: any) => {
+      let coachData = coach.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
         }
-        return unique;
-    },[]);
+      });
+      this.allCoachList = coachData;
+      this.coachList = coachData.reduce((unique:any, o:any) => {
+          if(!unique.some((obj:any) => obj.inCoachId === o.inCoachId)) {
+            unique.push(o);
+          }
+          return unique;
+      },[]);
+    })
+
+    // this.allCoachList = this.kalamService.getCoachesAttendance;
+    // this.coachList = this.kalamService.getCoachesAttendance.reduce((unique:any, o:any) => {
+    //     if(!unique.some((obj:any) => obj.inCoachId === o.inCoachId)) {
+    //       unique.push(o);
+    //     }
+    //     return unique;
+    // },[]);
   }
 
   
@@ -60,6 +61,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
     let inCoach = sortCoach.filter((v:any) => v.status == "IN");
     let outCoach = sortCoach.filter((v:any) => v.status == "OUT");
     outCoach = _.sortBy(outCoach, ["logoffDate", "logoffTime","groundName"]);
+    outCoach.forEach(r => r.matched = false);
     // sortCoach.forEach((e:any) => {
     //   outCoach.forEach((o:any) => {
     //     if(e.status == "IN" && o.status == "OUT" && (e.loginDate == o.logoffDate)) {
@@ -68,10 +70,12 @@ export class ViewCoachAttendanceComponent implements OnInit {
     //   })
     // })
     inCoach.forEach((inC:any,i:any) => {
-      if(inC.groundName ==  outCoach[i]?.groundName && inC.loginDate ==  outCoach[i]?.logoffDate) {
-        inC.logOffDataTime = `${outCoach[i].logoffDate} ${outCoach[i].logoffTime}`;
-        inC.logoutAddress = outCoach[i].logoutAddress ? outCoach[i].logoutAddress : null;
-        inC.notes = outCoach[i].notes;
+      let outCoachData = outCoach.find(r => r.logoffDate == inC.loginDate && !r.matched);
+      if(outCoachData) {
+        inC.logOffDataTime = `${outCoachData.logoffDate} ${outCoachData.logoffTime}`;
+        inC.logoutAddress = outCoachData.logoutAddress ? outCoachData.logoutAddress : null;
+        inC.notes = outCoachData.notes;
+        outCoachData.matched = true;
       }else {
         inC.logOffDataTime = "-"
         inC.logoutAddress = null;

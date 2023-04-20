@@ -116,6 +116,14 @@ export class KalamService {
     return this.fireStore.collection('coachAttendance', ref => ref.where('academyId', '==', `${academyId}`)).snapshotChanges();
   }
 
+  getCurrentCoachIn(inCoachId: string | undefined, loginDate: string | undefined) {
+    return this.fireStore.collection('coachAttendance', ref => ref.where('inCoachId', '==', `${inCoachId}`).where("loginDate", "==", `${loginDate}`)).snapshotChanges();
+  }
+
+  getCurrentCoachOut(inCoachId: string | undefined, logoffDate: string | undefined) {
+    return this.fireStore.collection('coachAttendance', ref => ref.where('inCoachId', '==', `${inCoachId}`).where("logoffDate", "==", `${logoffDate}`)).snapshotChanges();
+  }
+
   studentAttendance(stundent: any) {
     this.fireStore.collection("studentAttendance").add({...stundent});
   }
