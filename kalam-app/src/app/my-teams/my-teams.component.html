@@ -9,6 +9,7 @@
         <mat-form-field appearance="fill" style="width: 45%;">
             <mat-label>Select Ground</mat-label>
             <mat-select [(ngModel)]="groundName" (ngModelChange)="underSelection()">
+                <mat-option value="all">All</mat-option>
                 <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
             </mat-select>
         </mat-form-field>
@@ -56,8 +57,8 @@
                                 Ranking: 1
                             </div> -->
                             <div>
-                                <button class="btn-grnd custBtn" [disabled]="student.disableInBtn || !groundName" (click)="in(student)">Present</button>
-                                <button class="btn-grnd btn-red custBtn" [disabled]="student.disableOutBtn || !groundName" (click)="out(student)">Absent</button>
+                                <button class="btn-grnd custBtn" *ngIf="groundName !== 'all'" [disabled]="student.disableInBtn || !groundName" (click)="in(student)">Present</button>
+                                <button class="btn-grnd btn-red custBtn" *ngIf="groundName !== 'all'" [disabled]="student.disableOutBtn || !groundName" (click)="out(student)">Absent</button>
                                 <button class="btn-grnd btn-orange custBtn" *ngIf="student.isFeesEnable" (click)="pay(student)">Fees</button>
                             </div>
                         </div>

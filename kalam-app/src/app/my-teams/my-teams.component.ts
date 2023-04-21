@@ -94,7 +94,29 @@ export class MyTeamsComponent implements OnInit {
         }
       });
       this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
-      this.checkFees();
+      this.checkAttendance();
+    });
+  }
+
+  getStudentListUnderAge() {
+    this.loaderService.show();
+    const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
+    this.kalamService.studentListUnderAge({coachId: coachId, underAge: this.ageType}).subscribe((res: any) => {
+      this.loaderService.hide();
+      let data = res.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
+      this.checkAttendance();
+    });
+  }
+
+  checkAttendance() {
+    const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
+    this.checkFees();
       this.kalamService.getStudentAttendanceData(coachId, moment().format("MM-DD-YYYY")).subscribe((stud:any) => {
         let stundentData = stud.map((document: any) => {
           return {
@@ -115,9 +137,6 @@ export class MyTeamsComponent implements OnInit {
           });
         });
       })
-      
-        
-    });
   }
 
   underList() {
@@ -153,8 +172,13 @@ export class MyTeamsComponent implements OnInit {
 
   underSelection() {
     if(this.ageType && this.groundName) {
-      this.getStudentList();
-      this.getStudentAttendance();
+      if(this.groundName == "all") {
+        this.getStudentListUnderAge();
+        this.getStudentAttendance();
+      }else{
+        this.getStudentList();
+        this.getStudentAttendance();
+      }
     }
   }
 
