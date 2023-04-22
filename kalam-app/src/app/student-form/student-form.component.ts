@@ -54,6 +54,7 @@ export interface StudentDetails {
   feesAmount?: string;
   scholarship?: string;
   competency?: string;
+  payment?: string;
 }
 
 @Component({

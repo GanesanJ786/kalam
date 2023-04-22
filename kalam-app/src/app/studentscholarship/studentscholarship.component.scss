@@ -1,0 +1,36 @@
+.ageGroup {
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+.custGrid-3 {
+    grid-template: auto/25% 40% 35%;
+} 
+.row-bg {
+    background-color: #0f786f !important;
+    color: #fff;
+}
+.custGrid-3 > div {
+    padding: 4px 0px;;
+}
+.cnt {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cnt-img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.row-click {
+    padding: 0;
+    margin: 0;
+    background: 0;
+    border: 0;
+}
+.tableFull {
+    width: 100%;
+}

@@ -26,6 +26,10 @@ export class KalamService {
     this.getCoachesAttendance = [];
   }
 
+  getAllApprovedStudent(coachId: any) {
+    return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`).where("approved", "==", true)).snapshotChanges();
+  }
+
   getStudentDetails(coachId: any) {
     return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`)).snapshotChanges();
   }
@@ -171,6 +175,12 @@ export class KalamService {
   sendEmailer(request: any) {
     return this.http.post(this.apiUrl + '/v1/text-mail', request);
   }
+
+  // studentListScholar(query:StudentData) {
+  //   return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${query.coachId}`).where("underAge", query.underAge !== 'all' ? "==" : "!=", `${query.underAge}`).where("approved", "==", true)
+  //   .where("groundName", query.groundName !== 'all' ? "==" : "!=", `${query.groundName}`)
+  //   .where("scholarship", query.scholarshipType !== 'no' ? "in" : "not-in", `${query.groundName}`)).snapshotChanges();
+  // }
 
   getLocationAddress(data:any) {
    

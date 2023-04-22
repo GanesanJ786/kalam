@@ -20,6 +20,7 @@ export interface StudentData {
   coachId: string | undefined;
   underAge: string;
   groundName?: string;
+  scholarshipType?: string;
 }
 
 @Component({

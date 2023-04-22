@@ -31,6 +31,8 @@ export class HomeComponent implements OnInit {
     }else if(event.index == 1) {
       this.title = "Teams" 
     }else if(event.index == 2) {
+      this.title = "Scholarship/All Students" 
+    }else if(event.index == 3) {
       this.title = "Analysis" 
     }
   }

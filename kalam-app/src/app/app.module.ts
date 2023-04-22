@@ -28,6 +28,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+
 
 import { StudentFormComponent } from './student-form/student-form.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
@@ -47,6 +50,7 @@ import { HeaderComponent } from './header/header.component';
 import { ApprovePaymentComponent } from './approve-payment/approve-payment.component';
 import { ViewStudentDataComponent } from './view-student-data/view-student-data.component';
 import { AllStudentsByGroundComponent } from './all-students-by-ground/all-students-by-ground.component';
+import { StudentscholarshipComponent } from './studentscholarship/studentscholarship.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +70,8 @@ import { AllStudentsByGroundComponent } from './all-students-by-ground/all-stude
     HeaderComponent,
     ApprovePaymentComponent,
     ViewStudentDataComponent,
-    AllStudentsByGroundComponent
+    AllStudentsByGroundComponent,
+    StudentscholarshipComponent
   ],
   imports: [
     HttpClientModule,
@@ -90,6 +95,8 @@ import { AllStudentsByGroundComponent } from './all-students-by-ground/all-stude
     MatDialogModule,
     MatMenuModule,
     MatExpansionModule,
+    MatTableModule,
+    MatSortModule,
     AngularFireModule.initializeApp(environment.firebase),
     NgIdleKeepaliveModule.forRoot()
   ],
