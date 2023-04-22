@@ -9,6 +9,7 @@ import { finalize } from 'rxjs/operators';
 import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
 import { CompetencyLevel, Scholarship, SelectItem } from '../constant';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface StudentDetails {
   id?: string;
@@ -81,6 +82,7 @@ export class StudentFormComponent implements OnInit {
   competencyLevel: SelectItem[] = [];
 
   constructor(private kalamService: KalamService, private router: Router,
+    private _snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute,
     private loaderService: LoaderService,
     private storage: AngularFireStorage) {
@@ -217,6 +219,11 @@ export class StudentFormComponent implements OnInit {
       this.kalamService.editStudentDetails(studentForm);
     }else {
       this.kalamService.setStudentDetails(studentForm);
+      this._snackBar.open("New student successfully added.", '', {
+        horizontalPosition: "center",
+        verticalPosition: "top",
+        duration: 4000,
+      });
     }
     this.kalamService.editStudentData = [];
     this.loaderService.hide();

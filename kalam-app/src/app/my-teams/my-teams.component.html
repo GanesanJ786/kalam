@@ -58,8 +58,8 @@
                             </div> -->
                             <div>
                                 <button class="btn-grnd custBtn" *ngIf="groundName !== 'all'" [disabled]="student.disableInBtn || !groundName" (click)="in(student)">Present</button>
-                                <button class="btn-grnd btn-red custBtn" *ngIf="groundName !== 'all'" [disabled]="student.disableOutBtn || !groundName" (click)="out(student)">Absent</button>
-                                <button class="btn-grnd btn-orange custBtn" *ngIf="student.isFeesEnable" (click)="pay(student)">Fees</button>
+                                <button class="btn-grnd btn-red custBtn" style="margin-right: 0.5rem;" *ngIf="groundName !== 'all'" [disabled]="student.disableOutBtn || !groundName" (click)="out(student)">Absent</button>
+                                <button class="btn-grnd btn-orange custBtn" style="margin: 0;" *ngIf="student.isFeesEnable" (click)="pay(student)">Fees</button>
                             </div>
                         </div>
                     </div>

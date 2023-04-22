@@ -24,7 +24,7 @@
                         <app-my-teams></app-my-teams>
                       </ng-template>
                     </mat-tab>
-                    <mat-tab>
+                    <mat-tab *ngIf="owner">
                       <ng-template mat-tab-label>
                         <mat-icon>card_membership</mat-icon>
                       </ng-template>

@@ -8,11 +8,14 @@ import { KalamService } from '../kalam.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private kalamService: KalamService) { }
+  constructor(private kalamService: KalamService) { 
+    this.owner = this.kalamService.getCoachData().academyId ? false : true;
+  }
   tabLoadTimes: Date[] = [];
   tabIndex:number = 0;
   academyName: string = '';
   title: string = 'Home';
+  owner: boolean = true;
 
   ngOnInit(): void {
     this.academyName = this.kalamService.getCoachData().academyName;
