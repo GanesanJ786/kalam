@@ -1,10 +1,14 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { StudentDetails } from '../student-form/student-form.component';
 import { KalamService } from '../kalam.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { SportsList } from '../constant';
 import * as _ from 'lodash';
 import { ViewStudentDataComponent } from '../view-student-data/view-student-data.component';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-all-students-by-ground',
@@ -16,6 +20,13 @@ export class AllStudentsByGroundComponent implements OnInit {
   title: string = "List of Students in ";
   students: StudentDetails[] = [];
   groundName: string | undefined;
+  displayedColumns: string[] = ['name','institutionName','mobileNum','payment'];
+
+  dataSource = new MatTableDataSource();
+
+  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
+  @ViewChild(MatSort)
+  sort: MatSort = new MatSort;
 
   constructor(
     private kalamService: KalamService,
@@ -27,8 +38,28 @@ export class AllStudentsByGroundComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let currentMonth = moment().startOf("month").format('MMMM');
     this.students = _.sortBy(this.data, ["age", "gender"]);
     this.groundName = this.students[0].groundName;
+    this.students.forEach((element: StudentDetails) => {
+      if(element.scholarship == "100") {
+        element.payment = "Free"
+      }else if((element.feesMonthPaid !== currentMonth || element.feesMonthPaid == undefined) && !element.feesApproveWaiting) {
+        element.payment =  "Not Paid";
+      }else {
+        element.payment =  "Paid"
+      } 
+    })
+
+    this.dataSource.data = this.students;
+    setTimeout(() => {
+      console.log(this.sort) //not undefined
+      this.dataSource.sort = this.sort; 
+    })
+  }
+
+  callNum(num: string) {
+    return `tel:+${num}`
   }
 
   cancel(){

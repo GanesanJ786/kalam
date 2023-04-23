@@ -25,3 +25,17 @@
     background: 0;
     border: 0;
 }
+.custom-table table .mat-header-cell{
+    padding: 0 0.2rem !important;
+    font-size: 0.8em;
+}
+.custom-table table .mat-cell, .mat-footer-cell {
+    font-size: 0.8em;
+    padding: 0 0.2rem !important;
+}
+.clear {
+    color: #cf3232;
+}
+.done, .free {
+    color: #017e01;
+}
