@@ -59,7 +59,7 @@ export class AllStudentsByGroundComponent implements OnInit {
   }
 
   callNum(num: string) {
-    return `tel:+${num}`
+    return `tel:${num}`
   }
 
   cancel(){
