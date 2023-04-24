@@ -56,6 +56,7 @@ export interface StudentDetails {
   scholarship?: string;
   competency?: string;
   payment?: string;
+  underType?: number;
 }
 
 @Component({
@@ -271,7 +272,7 @@ export class StudentFormComponent implements OnInit {
     // }else {
     //   type = 'open'
     // }
-    
+
     let dob = moment(dobDate);
     let today = moment();
 
