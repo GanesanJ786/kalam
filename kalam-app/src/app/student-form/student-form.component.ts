@@ -198,8 +198,8 @@ export class StudentFormComponent implements OnInit {
     let obj = {...this.studentForm.value};
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     studentForm.kalamId = obj.aadharNum.replaceAll("-",'');
-    studentForm.underAge = this.underAgeCalc(studentForm.age);
     studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
+    studentForm.underAge = this.underAgeCalc(studentForm.dob);
     if(url) {
       studentForm['imageUrl'] = url;
     }else if(!this.editAccess) {
@@ -258,7 +258,7 @@ export class StudentFormComponent implements OnInit {
     }
   }
   
-  underAgeCalc(val: number) {
+  underAgeCalc(dobDate: string) {
     let type = ""
     // if(val <= 15) {
     //   type = 'u-15';
@@ -271,6 +271,11 @@ export class StudentFormComponent implements OnInit {
     // }else {
     //   type = 'open'
     // }
+    
+    let dob = moment(dobDate);
+    let today = moment();
+
+    let val = today.year() - dob.year();
 
     if(val < 6) {
       type = 'u-5';

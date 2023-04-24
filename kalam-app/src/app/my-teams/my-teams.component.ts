@@ -40,7 +40,7 @@ export class MyTeamsComponent implements OnInit {
       this.groundList = data;
     });
 
-    this.getStudentAttendance();
+    //this.getStudentAttendance();
   }
   ageType: string = '';
   studentList: any;
@@ -174,12 +174,16 @@ export class MyTeamsComponent implements OnInit {
     if(this.ageType && this.groundName) {
       if(this.groundName == "all") {
         this.getStudentListUnderAge();
-        this.getStudentAttendance();
+        //this.getStudentAttendance();
       }else{
         this.getStudentList();
-        this.getStudentAttendance();
+        //this.getStudentAttendance();
       }
     }
+  }
+
+  studentAttendanceRange(student: StudentDetails) {
+
   }
 
   getSportLabel(value: string) {

@@ -42,6 +42,22 @@ export class AllStudentsByGroundComponent implements OnInit {
     this.students = _.sortBy(this.data, ["age", "gender"]);
     this.groundName = this.students[0].groundName;
     this.students.forEach((element: StudentDetails) => {
+
+      // let dob = moment(element.dob);
+      // let today = moment();
+
+      // let val = today.year() - dob.year();
+
+      // if(val < 6) {
+      //   element.underAge = 'u-5';
+      // }else if(val <=21) {
+      //   element.underAge = `u-${val}`;
+      // }else {
+      //   element.underAge = 'open'
+      // }
+
+      // this.kalamService.editStudentDetails(element)
+
       if(element.scholarship == "100") {
         element.payment = "Free"
       }else if((element.feesMonthPaid !== currentMonth || element.feesMonthPaid == undefined) && !element.feesApproveWaiting) {
@@ -49,11 +65,12 @@ export class AllStudentsByGroundComponent implements OnInit {
       }else {
         element.payment =  "Paid"
       } 
-    })
+    });
 
     this.dataSource.data = this.students;
+    //console.log(this.students);
     setTimeout(() => {
-      console.log(this.sort) //not undefined
+     // console.log(this.sort) //not undefined
       this.dataSource.sort = this.sort; 
     })
   }

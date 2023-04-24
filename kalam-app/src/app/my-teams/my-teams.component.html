@@ -17,7 +17,7 @@
     <div>
         <div class="custField viewAttendance">  
             <button mat-raised-button color="primary" (click)="newStudent()">Add Student</button>
-            <button *ngIf="ageType && groundName && owner && !viewStudentAttendance" mat-raised-button color="primary" (click)="viewAttendance()">View Attendance</button>
+            <!-- <button *ngIf="ageType && groundName && owner && !viewStudentAttendance" mat-raised-button color="primary" (click)="viewAttendance()">View Attendance</button> -->
             <button *ngIf="ageType && groundName && owner && viewStudentAttendance" mat-raised-button color="primary" (click)="viewStudent()">View Students</button>
         </div>
     </div>
@@ -37,6 +37,10 @@
                                 <mat-icon>edit</mat-icon>
                                 <span>Edit Profile</span>
                             </button>
+                            <button (click)="studentAttendanceRange(student)" mat-menu-item>
+                                <mat-icon>calendar_today</mat-icon>
+                                <span>View Attendance</span>
+                            </button>
                           </mat-menu>
                     </div>
                     <button class="viewStudent" (click)="viewStudentProfile(student)">
@@ -51,7 +55,7 @@
                                 Kalam ID: {{student.kalamId}}
                             </div>
                             <div>
-                                Age: {{student.age}}, {{getUnderAgeLabel(student.underAge)}} <span *ngIf="student?.competency">, {{student.competency}}</span>
+                                {{getUnderAgeLabel(student.underAge)}} <span *ngIf="student?.competency">, {{student.competency}}</span>
                             </div>
                             <!-- <div>
                                 Ranking: 1
