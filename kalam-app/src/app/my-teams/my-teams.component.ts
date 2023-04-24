@@ -145,7 +145,7 @@ export class MyTeamsComponent implements OnInit {
       let obj = {
         value: element.underAge,
         key: this.ageConvert(element.underAge),
-        age: element.age
+        age: this.checkAge(element)
       }
       this.underCategory.push(obj);
     });
@@ -156,6 +156,14 @@ export class MyTeamsComponent implements OnInit {
         return unique;
     },[]);
     this.underCategory = this.underCategory.sort((a:any,b:any) => a.age > b.age ? 1 : -1);
+  }
+
+  checkAge(element: StudentDetails) {
+    if(element.underAge !== "open") {
+      return Number(element.underAge?.split("-")[1]);
+    }else {
+      return element.age;
+    }
   }
 
   ageConvert(val: string) {
