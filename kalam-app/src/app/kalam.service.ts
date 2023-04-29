@@ -172,6 +172,13 @@ export class KalamService {
     this.fireStore.doc("studentDetails/"+student.id).delete();
   }
 
+  getSingleStudentAttendanceData(query:StudentDetails, dateRange: any) {
+    return this.fireStore.collection('studentAttendance', ref => ref.where('kalamId', '==', `${query.kalamId}`)
+    .where("name", "==", `${query.name}`)
+    .where("loginDate", ">=", `${dateRange.start}`)
+    .where("loginDate", "<=", `${dateRange.end}`)).snapshotChanges();
+  }
+
   sendEmailer(request: any) {
     return this.http.post(this.apiUrl + '/v1/text-mail', request);
   }

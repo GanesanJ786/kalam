@@ -1,0 +1,24 @@
+.sa-content {
+    display: flex;
+    padding: 1rem 1rem 0 1rem;
+    height: auto;
+    box-sizing: border-box;
+    overflow: auto;
+    justify-content: center;
+}
+
+.btn-inc {
+    padding: 1em;
+}
+
+::ng-deep .sa-content .mat-form-field-infix {
+    display: flex;
+    align-items: baseline;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0.2em 0.8em;
+}
+::ng-deep .sa-content .mat-form-field-label {
+    padding: 0.2em 0.8em;
+    box-sizing: border-box;
+}

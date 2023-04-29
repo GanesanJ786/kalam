@@ -51,6 +51,7 @@ import { ApprovePaymentComponent } from './approve-payment/approve-payment.compo
 import { ViewStudentDataComponent } from './view-student-data/view-student-data.component';
 import { AllStudentsByGroundComponent } from './all-students-by-ground/all-students-by-ground.component';
 import { StudentscholarshipComponent } from './studentscholarship/studentscholarship.component';
+import { ViewStudentAttendanceRangeComponent } from './view-student-attendance-range/view-student-attendance-range.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { StudentscholarshipComponent } from './studentscholarship/studentscholar
     ApprovePaymentComponent,
     ViewStudentDataComponent,
     AllStudentsByGroundComponent,
-    StudentscholarshipComponent
+    StudentscholarshipComponent,
+    ViewStudentAttendanceRangeComponent
   ],
   imports: [
     HttpClientModule,

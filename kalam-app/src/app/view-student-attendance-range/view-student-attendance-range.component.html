@@ -1,0 +1,63 @@
+<ng-container>
+  <ng-container>
+    <div mat-dialog-content style="margin: 0;padding: 0; max-height: 100%;">
+      <div class="rf-header custm-logo" style="background-image: none;">
+        <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
+        <div style="color: #fff;">{{title}} {{student.name}}
+        </div>
+      </div>
+      <div class="s-list">
+        <div class="sa-content">
+          <mat-form-field appearance="fill" style="width: 85%;">
+            <mat-label>Attendance Range</mat-label>
+            <mat-date-range-input [min]="startOfMonth" [max]="endOfMonth" [formGroup]="attendanceRangeGroup"
+              [rangePicker]="attendanceRange">
+              <input matStartDate placeholder="Start date" formControlName="start">
+              <input matEndDate placeholder="End date" formControlName="end">
+            </mat-date-range-input>
+            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="attendanceRange"></mat-datepicker-toggle>
+            <mat-date-range-picker #attendanceRange></mat-date-range-picker>
+          </mat-form-field>
+          <div>
+            <button mat-raised-button color="primary" [disabled]="!attendanceRangeGroup.valid" class="btn-inc" (click)="search()">Search</button>
+        </div>
+        </div>
+
+        <div class="custom-table" >
+                        <table mat-table [dataSource]="dataSource" matSort class="tableFull">
+                      
+                          <ng-container matColumnDef="name">
+                            <th style="width: 40%;" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+                          </ng-container>
+                         
+                          <ng-container matColumnDef="ground">
+                            <th style="width: 25%;" mat-header-cell *matHeaderCellDef mat-sort-header> Ground </th>
+                            <td mat-cell *matCellDef="let row">{{row.groundName}}</td>
+                          </ng-container>
+
+                          <ng-container matColumnDef="date">
+                            <th style="width: 25%;" mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                            <td mat-cell *matCellDef="let row">{{row.loginDate}} </td>
+                          </ng-container>
+            
+                            <ng-container matColumnDef="status">
+                                <th style="width: 10%;" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                                <td mat-cell *matCellDef="let row"> 
+                                    <span *ngIf="row.status == 'IN'"><mat-icon class="done">done</mat-icon></span>
+                                    <span *ngIf="row.status == 'OUT'"><mat-icon class="clear">clear</mat-icon></span>   
+                                </td>
+                            </ng-container>
+                        
+                          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                          <tr mat-row  *matRowDef="let row; columns: displayedColumns;"></tr>
+                      
+                        </table>
+                      
+                      </div>
+
+      </div>
+    </div>
+
+  </ng-container>

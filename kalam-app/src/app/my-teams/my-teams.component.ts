@@ -9,6 +9,7 @@ import * as _ from "lodash";
 import { MatDialog } from '@angular/material/dialog';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { ViewStudentDataComponent } from '../view-student-data/view-student-data.component';
+import { ViewStudentAttendanceRangeComponent } from '../view-student-attendance-range/view-student-attendance-range.component';
 
 @Component({
   selector: 'app-my-teams',
@@ -191,7 +192,20 @@ export class MyTeamsComponent implements OnInit {
   }
 
   studentAttendanceRange(student: StudentDetails) {
+    const dialogRef = this.dialog.open(ViewStudentAttendanceRangeComponent, {
+      maxWidth: '100vw',
+      maxHeight: '100vh',
+      height: '100%',
+      width: '100%',
+      panelClass: 'full-screen-modal',
+      data: student
+    });
 
+    dialogRef.afterClosed().subscribe(result => {
+      //console.log('The dialog was closed');
+      //console.log(result);
+      
+    });
   }
 
   getSportLabel(value: string) {
