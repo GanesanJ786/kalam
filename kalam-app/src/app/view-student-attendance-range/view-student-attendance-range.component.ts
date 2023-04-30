@@ -22,13 +22,11 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
   student: StudentDetails;
   startOfMonth: any;
   endOfMonth: any;
-  attendanceRangeGroup = new FormGroup({
-    start: new FormControl(new Date(year, month, 1)),
-    end: new FormControl(new Date(year, month, 7)),
-  });
   displayedColumns: string[] = ['name','ground','date','status'];
-
+  attendanceRangeGroup: any;
   dataSource = new MatTableDataSource();
+  startDate:  number = 1;
+  endDate: number = 7;
   
   constructor(
     private kalamService: KalamService,
@@ -40,9 +38,16 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let todayDate = new Date().getDate();
     this.student = this.data;
     this.startOfMonth = new Date(moment().startOf('month').format('YYYY-MM-DD hh:mm'));
     this.endOfMonth   = new Date(moment().endOf('month').format('YYYY-MM-DD hh:mm'));
+    this.startDate = todayDate > 7 ? todayDate-7 : 1;
+    this.endDate = todayDate > 7 ? todayDate : 7 ;
+    this.attendanceRangeGroup = new FormGroup({
+      start: new FormControl(new Date(year, month, this.startDate)),
+      end: new FormControl(new Date(year, month, this.endDate)),
+    });
   }
 
   cancel(){
