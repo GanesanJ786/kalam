@@ -1,14 +1,27 @@
 <div class="sf-container">
     <app-header [title]="title"></app-header>
     <div class="sf-content">
-        <div class="gotoHome">
+        <div class="gotoHome cust-home ">
+            <div class="sa-content">
+                <mat-form-field appearance="fill" style="width: 85%;">
+                    <mat-label>Attendance Range</mat-label>
+                    <mat-date-range-input  [min]="startOfMonth" [max]="endOfMonth" [formGroup]="attendanceRangeGroup"
+                      [rangePicker]="attendanceRange">
+                      <input matStartDate placeholder="Start date" formControlName="start">
+                      <input matEndDate (dateChange)="dateChange($event)" placeholder="End date" formControlName="end">
+                    </mat-date-range-input>
+                    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matIconSuffix [for]="attendanceRange"></mat-datepicker-toggle>
+                    <mat-date-range-picker #attendanceRange></mat-date-range-picker>
+                  </mat-form-field>
+            </div>
             <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
         </div>
         <div>
-            <mat-form-field appearance="fill" style="width: 45%;">
+            <mat-form-field appearance="fill" style="width: 72%;">
                 <mat-label>Select Coach</mat-label>
                 <mat-select [(ngModel)]="coachVal" (ngModelChange)="coachSelection()">
-                    <mat-option *ngFor="let coach of coachList" [value]="coach.inCoachId">{{coach.coachName}}</mat-option>
+                    <mat-option *ngFor="let coach of coachList" [value]="coach.kalamId">{{coach.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>

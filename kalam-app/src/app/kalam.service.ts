@@ -116,6 +116,13 @@ export class KalamService {
     return this.fireStore.collection('groundDetails', ref => ref.where('academyId', '==', `${academyId}`)).snapshotChanges();
   }
 
+  getACoachAttendanceData(query:any, dateRange: any) {
+    return this.fireStore.collection('coachAttendance', ref => ref.where('academyId', '==', `${query.academyId}`)
+    .where('inCoachId', '==', `${query.inCoachId}`)
+    .where("activeDate", ">=", `${dateRange.start}`)
+    .where("activeDate", "<=", `${dateRange.end}`)).snapshotChanges();
+  }
+
   coachAttendance(coachData: any) {
     this.fireStore.collection("coachAttendance").add({...coachData});
   }
