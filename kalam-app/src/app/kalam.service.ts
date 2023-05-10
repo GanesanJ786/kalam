@@ -186,6 +186,12 @@ export class KalamService {
     .where("loginDate", "<=", `${dateRange.end}`)).snapshotChanges();
   }
 
+  getStudentAttendanceByCoachDatewise(query:any) {
+    return this.fireStore.collection('studentAttendance', ref => ref.where('coachId', '==', `${query.inCoachId}`)
+    .where("groundName", "==", `${query.groundName}`)
+    .where("loginDate", "==", `${query.loginDate}`)).snapshotChanges();
+  }
+
   sendEmailer(request: any) {
     return this.http.post(this.apiUrl + '/v1/text-mail', request);
   }

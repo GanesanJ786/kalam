@@ -6,6 +6,7 @@ import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ViewStudentAttendanceDateWiseComponent } from '../view-student-attendance-date-wise/view-student-attendance-date-wise.component';
 
 const today = new Date();
 const month = today.getMonth();
@@ -73,6 +74,28 @@ export class ViewCoachAttendanceComponent implements OnInit {
       start: new FormControl(new Date(year, month, this.startDate)),
       end: new FormControl(new Date(year, month, this.endDate)),
     });
+  }
+
+  viewStudentAttendance(coach: any) {
+    this.kalamService.getStudentAttendanceByCoachDatewise(coach).subscribe((coach:any) => {
+      let obj = coach.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      //console.log(obj)
+      const dialogRef = this.dialog.open(ViewStudentAttendanceDateWiseComponent, {
+        data: obj
+      });
+  
+      dialogRef.afterClosed().subscribe(result => {
+        //console.log('The dialog was closed');
+        //console.log(result);
+        
+      });
+    });
+    
   }
 
   gotoHome() {

@@ -35,7 +35,10 @@
                 <div class="header">Log Off Time</div>  
                 <ng-container *ngFor="let coach of coachView">
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.coachName}}</div>
-                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.groundName}}</div>
+                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'" class="d-flex">
+                        {{coach.groundName}}
+                        <div><mat-icon style="font-size: 1rem;" (click)="viewStudentAttendance(coach)">calendar_today</mat-icon></div>
+                    </div>
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{checkValue(coach.topics)}}</div>
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{checkValue(coach.notes)}}</div>
                     <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{logInValue(coach)}}

@@ -1,0 +1,33 @@
+<ng-container *ngIf="data.length > 0; else noData">
+    <h4 mat-dialog-title class="titleCnt">Students Attendance in </h4>
+    <h5 class="titleCnt">{{data[0]?.groundName}} at {{data[0]?.loginDate}}</h5>
+    <div mat-dialog-content class="groundInfo" class="cont-blck">
+        <div class="custom-table">
+            <table mat-table [dataSource]="dataSource" matSort class="tableFull">
+    
+                <ng-container matColumnDef="name">
+                    <th style="width: 60%;" mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+                    <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+                </ng-container>
+    
+                <ng-container matColumnDef="status">
+                    <th style="width: 30%;" mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
+                    <td mat-cell *matCellDef="let row">
+                        <span *ngIf="row.status == 'IN'"><mat-icon class="done">done</mat-icon></span>
+                        <span *ngIf="row.status == 'OUT'"><mat-icon class="clear">clear</mat-icon></span>
+                    </td>
+                </ng-container>
+    
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+        </div>
+    </div>
+</ng-container>
+<ng-template #noData>
+    Students Attendance Not Found.
+</ng-template>
+
+<div mat-dialog-actions style="justify-content: center;">
+    <button mat-button (click)="cancel()">Close</button>
+</div>
