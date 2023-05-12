@@ -178,6 +178,9 @@ button.btn-grnd:disabled {
   justify-content: end;
   margin-bottom: 1rem;
 }
+.k-justify-content-end {
+  justify-content: end !important;
+}
 .pPic {
   font-size: 0.8rem;
   font-weight: 500;
@@ -221,8 +224,8 @@ button.btn-grnd:disabled {
   text-transform: uppercase;
 }
 .red {
-  background-color: rgba(255, 99, 71) !important;
-  border: red !important;
+  background-color: #be3e27  !important;
+  border: #be3e27  !important;
   color: #fff;
 }
 .green {

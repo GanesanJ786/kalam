@@ -79,6 +79,29 @@
             <button mat-button (click)="cancel()">Close</button>
         </div>
     </ng-container>
-    
+
+    <ng-container *ngSwitchCase="'Leave'">
+        <h1 mat-dialog-title>Apply Leave</h1>
+        <form [formGroup]="leaveForm" #form="ngForm">
+            <div mat-dialog-content class="groundInfo leaveForm">
+                <mat-form-field appearance="fill" style="width: 100%;">
+                    <mat-label>Date of Leave</mat-label>
+                    <input matInput [matDatepicker]="picker" formControlName="dateOfLeave">
+                    <mat-hint>MM/DD/YYYY</mat-hint>
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                        </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+                    <mat-label>Reason</mat-label>
+                    <textarea matInput formControlName="reasonOfLeave"></textarea>
+                </mat-form-field>
+            </div>
+            <div mat-dialog-actions style="justify-content: center;">
+                <button mat-button (click)="cancel()">Cancel</button>
+                <button mat-raised-button color="primary" (click)="applyLeave()" [disabled]="!leaveForm.valid" color="primary" type="submit">Save</button>
+            </div>
+        </form>
+    </ng-container>
 </ng-container>
 

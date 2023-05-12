@@ -28,6 +28,7 @@ export class AddGroundComponent implements OnInit {
   topicsForm!: FormGroup;
   notesForm!: FormGroup;
   feesForm!: FormGroup;
+  leaveForm!: FormGroup;
 
   constructor(
     private kalamService: KalamService,
@@ -62,10 +63,29 @@ export class AddGroundComponent implements OnInit {
         Validators.required
       ]),
     });
+
+    this.leaveForm = new FormGroup({
+      dateOfLeave: new FormControl(this.groundInfo.amount, [
+        Validators.required
+      ]),
+      reasonOfLeave: new FormControl(this.groundInfo.amount, [
+        Validators.required
+      ]),
+    });
   }
 
   cancel(){
     this.dialogRef.close();
+  }
+
+  applyLeave() {
+    if (this.leaveForm.invalid) {
+      for (const control of Object.keys(this.leaveForm.controls)) {
+        this.leaveForm.controls[control].markAsTouched();
+      }
+      return;
+    }
+    this.dialogRef.close({data:this.leaveForm.value});
   }
 
   save(){

@@ -34,17 +34,17 @@
                 <div class="header">Log In Time</div>
                 <div class="header">Log Off Time</div>  
                 <ng-container *ngFor="let coach of coachView">
-                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.coachName}}</div>
-                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'" class="d-flex">
+                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{coach.coachName}}</div>
+                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'" class="d-flex">
                         {{coach.groundName}}
-                        <div><mat-icon style="font-size: 1rem;" (click)="viewStudentAttendance(coach)">calendar_today</mat-icon></div>
+                        <div *ngIf="coach.status !== 'LEAVE'"><mat-icon style="font-size: 1rem;" (click)="viewStudentAttendance(coach)">calendar_today</mat-icon></div>
                     </div>
-                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{checkValue(coach.topics)}}</div>
-                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{checkValue(coach.notes)}}</div>
-                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{logInValue(coach)}}
+                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{checkValue(coach.topics)}}</div>
+                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{checkValue(coach.notes)}}</div>
+                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{logInValue(coach)}}
                         <span *ngIf="coach.loginAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></span>
                     </div>
-                    <div [ngClass]="coach.status == 'OUT' ? 'red' : 'green'">{{coach.logOffDataTime}}
+                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{coach.logOffDataTime}}
                         <span *ngIf="coach.logoutAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></span>
                     </div>
                 </ng-container>

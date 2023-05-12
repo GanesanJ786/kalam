@@ -34,9 +34,13 @@
             To Coach: {{coachDetails.toCoach.join(', ')}}
         </div>
     </div> -->
-    <div class="ground-add">
-        <button *ngIf="owner"  mat-raised-button color="primary" (click)="addGround()">Add Ground</button>
-        <button *ngIf="owner"  mat-raised-button color="primary" (click)="viewCoachData()">Coach Details</button>
+    <div class="ground-add" *ngIf="owner">
+        <button  mat-raised-button color="primary" (click)="addGround()">Add Ground</button>
+        <button  mat-raised-button color="primary" (click)="viewCoachData()">Coach Details</button>
+        <!-- <button  mat-raised-button color="primary" (click)="applyLeave()">Apply Leave</button> -->
+    </div>
+    <div class="ground-add k-justify-content-end" *ngIf="!owner">
+        <button  mat-raised-button color="primary" (click)="applyLeave()">Apply Leave</button>
     </div>
     <div class="ground-items">
         <div *ngFor="let ground of groundList" class="groundItem">

@@ -213,6 +213,32 @@ export class MyProfileComponent implements OnInit {
     });
   }
 
+  applyLeave() {
+    const dialogRef = this.dialog.open(AddGroundComponent, {
+      data: {dialogType: "Leave"},
+      disableClose: true,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // console.log('The dialog was closed');
+      // console.log(result);
+      const attendance = {
+        groundName: "",
+        academyId: this.coachId,
+        inCoachId: this.kalamService.getCoachData().kalamId,
+        coachName: this.kalamService.getCoachData().name,
+        activeDate: moment(result.data.dateOfLeave).format("MM-DD-YYYY"),
+        loginTime: "",
+        loginDate: moment(result.data.dateOfLeave).format("MM-DD-YYYY"),
+        notes: result.data.reasonOfLeave,
+        loginAddress: "",
+        appliedLeave: true,
+        status: "LEAVE"
+      }
+      this.kalamService.coachAttendance(attendance);
+    });
+  }
+
   in(ground: any){
     this.getLocation();
     const dialogRef = this.dialog.open(AddGroundComponent, {

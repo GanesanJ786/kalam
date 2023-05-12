@@ -125,6 +125,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
       let sortCoach = _.sortBy(coachData, ["loginDate", "loginTime","groundName"]);
       let inCoach = sortCoach.filter((v:any) => v.status == "IN");
       let outCoach = sortCoach.filter((v:any) => v.status == "OUT");
+      let leaveData = sortCoach.filter((v:any) => v.status == "LEAVE");
       outCoach = _.sortBy(outCoach, ["logoffDate", "logoffTime","groundName"]);
       outCoach.forEach(r => r.matched = false);
       inCoach.forEach((inC:any,i:any) => {
@@ -138,8 +139,14 @@ export class ViewCoachAttendanceComponent implements OnInit {
           inC.logOffDataTime = "-"
           inC.logoutAddress = null;
         }
-      })
-      this.coachView = inCoach;
+      });
+      if(leaveData.length > 0) {
+        inCoach = inCoach.concat(leaveData);
+        this.coachView = _.sortBy(inCoach, ["loginDate"]);
+      }else {
+        this.coachView = inCoach;
+      }
+      
       });
   }
 
