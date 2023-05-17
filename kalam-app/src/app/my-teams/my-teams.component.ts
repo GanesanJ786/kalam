@@ -128,11 +128,14 @@ export class MyTeamsComponent implements OnInit {
         stundentData.forEach((studList:any) => {
           this.studentList.forEach((element: any) => {
             //element['disableInBtn'] = false;
-            if(studList.status == "IN" && element.kalamId == studList.kalamId) {
+            if(studList.status == "IN" && element.kalamId == studList.kalamId && element.name == studList.name) {
               element['disableInBtn'] = true;
             }
-            if(studList.status == "OUT" && element.kalamId == studList.kalamId) {
+            if(studList.status == "OUT" && element.kalamId == studList.kalamId && element.name == studList.name && studList.evening !== false) {
               element['disableOutBtn'] = true;
+            }
+            if(studList.status == "IN" && element.kalamId == studList.kalamId && element.name == studList.name && studList.evening) {
+              element['disableEveBtn'] = true;
             }
             
           });
@@ -216,7 +219,8 @@ export class MyTeamsComponent implements OnInit {
     return UnderAge.filter(res => res.value == value)[0].label;
   }
 
-  in(student: StudentDetails) {
+  in(student: StudentDetails, eve?: boolean) {
+    let stopLoop = false;
     const studentAttendance = {
       kalamId: student.kalamId,
       name: student.name,
@@ -226,20 +230,42 @@ export class MyTeamsComponent implements OnInit {
       loginTime: moment().format("HH:mm:ss"),
       loginDate: moment().format("MM-DD-YYYY"),
       ageType: this.ageConvert(this.ageType),
-      status: "IN"
+      status: "IN",
+      ...eve && {evening: eve} 
     }
-
-    if(student["disableOutBtn"]) {
-      const id = this.allStudentAttendance.find((res:any) => res.kalamId == student.kalamId).id;
-      this.kalamService.editStudentAttendance(studentAttendance,id);
+    if(eve) {
+      student['disableEveBtn'] = true;
       student["disableOutBtn"] = false;
+    }
+    if(student["disableOutBtn"] && !eve) {
+      let query = {
+        name: student.name,
+        kalamId: student.kalamId,
+        loginDate: moment().format("MM-DD-YYYY"),
+        coachId: this.kalamService.getCoachData().kalamId
+      }
+      this.kalamService.getStudentAttendanceUpdate(query).subscribe((stud:any) => {
+        let stundentData = stud.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        })
+        if(!stopLoop) {
+          this.kalamService.editStudentAttendance(studentAttendance,stundentData[0].id);
+          stopLoop = true;
+          student["disableOutBtn"] = false;
+        }
+        
+      }) 
     }else {
-      this.kalamService.studentAttendance(studentAttendance);
+      this.kalamService.studentAttendance(studentAttendance)
     }
     student["disableInBtn"] = true;
   }
   out(student: StudentDetails) {
-    const studentAttendance = {
+    let stopLoop = false;
+    const studentAttendance: any = {
       kalamId: student.kalamId,
       name: student.name,
       academyId: this.coachId,
@@ -251,9 +277,51 @@ export class MyTeamsComponent implements OnInit {
       status: "OUT"
     }
     if(student["disableInBtn"]) {
-      const id = this.allStudentAttendance.find((res:any) => res.kalamId == student.kalamId).id;
-      this.kalamService.editStudentAttendance(studentAttendance,id);
-      student["disableInBtn"] = false;
+      if(student['disableEveBtn']) {
+        studentAttendance['evening'] = false;
+        let query = {
+          name: student.name,
+          kalamId: student.kalamId,
+          loginDate: moment().format("MM-DD-YYYY"),
+          coachId: this.kalamService.getCoachData().kalamId
+        }
+        this.kalamService.getStudentAttendanceUpdateEvening(query).subscribe((stud:any) => {
+          let stundentData = stud.map((document: any) => {
+            return {
+              id: document.payload.doc.id,
+              ...document.payload.doc.data() as {}
+            }
+          })
+          if(!stopLoop) {
+            this.kalamService.deleteStudentAttendance(stundentData[0].id);
+            student["disableEveBtn"] = false;
+            stopLoop = true;
+          }
+         
+        }) 
+      }else {
+        let query = {
+          name: student.name,
+          kalamId: student.kalamId,
+          loginDate: moment().format("MM-DD-YYYY"),
+          coachId: this.kalamService.getCoachData().kalamId
+        }
+        this.kalamService.getStudentAttendanceUpdate(query).subscribe((stud:any) => {
+          let stundentData = stud.map((document: any) => {
+            return {
+              id: document.payload.doc.id,
+              ...document.payload.doc.data() as {}
+            }
+          })
+          if(!stopLoop) {
+            this.kalamService.editStudentAttendance(studentAttendance,stundentData[0].id);
+            student["disableInBtn"] = false;
+            stopLoop = true;
+          }
+          
+        }) 
+      }
+      
     }else {
       this.kalamService.studentAttendance(studentAttendance);
     }

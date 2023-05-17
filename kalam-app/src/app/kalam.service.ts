@@ -192,6 +192,25 @@ export class KalamService {
     .where("loginDate", "==", `${query.loginDate}`)).snapshotChanges();
   }
 
+  getStudentAttendanceUpdate(query:any) {
+    return this.fireStore.collection('studentAttendance', ref => ref.where('coachId', '==', `${query.coachId}`)
+    .where("name", "==", `${query.name}`)
+    .where("kalamId", "==", `${query.kalamId}`)
+    .where("loginDate", "==", `${query.loginDate}`)).snapshotChanges();
+  }
+
+  getStudentAttendanceUpdateEvening(query:any) {
+    return this.fireStore.collection('studentAttendance', ref => ref.where('coachId', '==', `${query.coachId}`)
+    .where("name", "==", `${query.name}`)
+    .where("kalamId", "==", `${query.kalamId}`)
+    .where("evening", "==", true)
+    .where("loginDate", "==", `${query.loginDate}`)).snapshotChanges();
+  }
+
+  deleteStudentAttendance(id: string) {
+    this.fireStore.doc("studentAttendance/"+id).delete();
+  }
+
   sendEmailer(request: any) {
     return this.http.post(this.apiUrl + '/v1/text-mail', request);
   }

@@ -42,6 +42,7 @@ export interface StudentDetails {
   coachId: string | undefined;
   disableInBtn?: boolean;
   disableOutBtn?: boolean;
+  disableEveBtn?: boolean;
   approved?: boolean;
   coachName?: string;
   doj?: string;
