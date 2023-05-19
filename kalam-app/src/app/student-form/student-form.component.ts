@@ -58,6 +58,7 @@ export interface StudentDetails {
   competency?: string;
   payment?: string;
   underType?: number;
+  hideEve?: boolean;
 }
 
 @Component({

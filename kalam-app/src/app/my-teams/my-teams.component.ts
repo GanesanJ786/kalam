@@ -230,6 +230,7 @@ export class MyTeamsComponent implements OnInit {
       loginTime: moment().format("HH:mm:ss"),
       loginDate: moment().format("MM-DD-YYYY"),
       ageType: this.ageConvert(this.ageType),
+      sessionType:moment().format('a'),
       status: "IN",
       ...eve && {evening: eve} 
     }
@@ -262,6 +263,9 @@ export class MyTeamsComponent implements OnInit {
       this.kalamService.studentAttendance(studentAttendance)
     }
     student["disableInBtn"] = true;
+    if(moment().format('a') == "pm") {
+      student["hideEve"] = true;
+    }
   }
   out(student: StudentDetails) {
     let stopLoop = false;
@@ -274,6 +278,7 @@ export class MyTeamsComponent implements OnInit {
       loginTime: moment().format("HH:mm:ss"),
       loginDate: moment().format("MM-DD-YYYY"),
       ageType: this.ageConvert(this.ageType),
+      sessionType:moment().format('a'),
       status: "OUT"
     }
     if(student["disableInBtn"]) {
@@ -327,6 +332,9 @@ export class MyTeamsComponent implements OnInit {
     }
  
     student["disableOutBtn"] = true;
+    if(moment().format('a') == "pm") {
+      student["hideEve"] = false;
+    }
   }
   viewStudent() {
     this.studentListView = true;
