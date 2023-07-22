@@ -15,7 +15,8 @@ export class KalamService {
   constructor(private fireStore: AngularFirestore, private http: HttpClient) { }
 
   getCoachInfo: RegistrationDetails = {} as RegistrationDetails;
-  apiUrl: string = "https://kalam-nodemailer.onrender.com"
+  //apiUrl: string = "https://kalam-nodemailer.onrender.com"
+  sendEmailUrl: string = "https://us-central1-kalam-in.cloudfunctions.net/sendMailOverHTTP";
   getNewCoaches: any = [];
   getNewStudent: any = [];
   editStudentData: any = [];
@@ -212,7 +213,7 @@ export class KalamService {
   }
 
   sendEmailer(request: any) {
-    return this.http.post(this.apiUrl + '/v1/text-mail', request);
+    return this.http.post(this.sendEmailUrl, request);
   }
 
   // studentListScholar(query:StudentData) {
