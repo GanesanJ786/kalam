@@ -17,6 +17,7 @@ export class KalamService {
   getCoachInfo: RegistrationDetails = {} as RegistrationDetails;
   //apiUrl: string = "https://kalam-nodemailer.onrender.com"
   sendEmailUrl: string = "https://us-central1-kalam-in.cloudfunctions.net/sendMailOverHTTP";
+  sendEmailAttachementUrl: string = "https://us-central1-kalam-in.cloudfunctions.net/sendMailOverHTTPAttachment";
   getNewCoaches: any = [];
   getNewStudent: any = [];
   editStudentData: any = [];
@@ -124,6 +125,12 @@ export class KalamService {
     .where("activeDate", "<=", `${dateRange.end}`)).snapshotChanges();
   }
 
+  getAllCoachAttendanceData(query:any, dateRange: any) {
+    return this.fireStore.collection('coachAttendance', ref => ref.where('academyId', '==', `${query.academyId}`)
+    .where("activeDate", ">=", `${dateRange.start}`)
+    .where("activeDate", "<=", `${dateRange.end}`)).snapshotChanges();
+  }
+
   coachAttendance(coachData: any) {
     this.fireStore.collection("coachAttendance").add({...coachData});
   }
@@ -214,6 +221,14 @@ export class KalamService {
 
   sendEmailer(request: any) {
     return this.http.post(this.sendEmailUrl, request);
+  }
+
+  sendEmailAttachement(request: any) {
+    return this.http.post(this.sendEmailAttachementUrl, request);
+  }
+
+  deleteCoachesAttendance(id: string) {
+    this.fireStore.doc("coachAttendance/"+id).delete();
   }
 
   // studentListScholar(query:StudentData) {

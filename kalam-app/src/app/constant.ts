@@ -49,3 +49,7 @@ export const CompetencyLevel: SelectItem[] = [
     {value:'Intermediate', label: 'Intermediate'},
     {value:'Advanced', label: 'Advanced'}
 ]
+
+export const Logo = {
+    logoUrl: ``
+}
