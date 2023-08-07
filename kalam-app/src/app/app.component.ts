@@ -68,8 +68,8 @@ export class AppComponent {
       inCoachId: "216038235025"
     }
     const dateRange = {
-      start: "06-01-2023",
-      end: "06-30-2023"
+      start: "08-01-2023",
+      end: "08-07-2023"
     }
 
     
@@ -82,11 +82,11 @@ export class AppComponent {
             }
           });
     
-          let sortCoach = _.sortBy(coachData, ["loginDate", "loginTime", "groundName"]);
+          let sortCoach = _.sortBy(coachData, ["coachName","inCoachId","loginDate", "loginTime", "groundName"]);
           let inCoach = sortCoach.filter((v: any) => v.status == "IN");
           let outCoach = sortCoach.filter((v: any) => v.status == "OUT");
           let leaveData = sortCoach.filter((v: any) => v.status == "LEAVE");
-          outCoach = _.sortBy(outCoach, ["logoffDate", "logoffTime", "groundName"]);
+          outCoach = _.sortBy(outCoach, ["coachName","inCoachId","logoffDate", "logoffTime", "groundName"]);
           outCoach.forEach(r => r.matched = false);
           inCoach.forEach((inC: any, i: any) => {
             let outCoachData = outCoach.find(r => r.logoffDate == inC.loginDate && !r.matched);
@@ -102,7 +102,7 @@ export class AppComponent {
           });
           if (leaveData.length > 0) {
             inCoach = inCoach.concat(leaveData);
-            coachView = _.sortBy(inCoach, ["loginDate"]);
+            coachView = _.sortBy(inCoach, ["coachName","inCoachId","loginDate"]);
           } else {
             coachView = inCoach;
           }
@@ -140,9 +140,9 @@ export class AppComponent {
     
           this.ete.exportExcel(reportData);
           console.log(coachData)
-          coachData.forEach((val:any) => {
-            this.kalamService.deleteCoachesAttendance(val.id);
-          })
+          // coachData.forEach((val:any) => {
+          //   this.kalamService.deleteCoachesAttendance(val.id);
+          // })
           stopLoop = true; 
         }
       });
