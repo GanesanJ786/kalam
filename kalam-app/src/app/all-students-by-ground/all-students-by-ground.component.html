@@ -31,9 +31,9 @@
                             <ng-container matColumnDef="payment">
                                 <th style="width: 25%;" mat-header-cell *matHeaderCellDef mat-sort-header> Payment </th>
                                 <td mat-cell *matCellDef="let row"> 
-                                    <span *ngIf="row.payment == 'Not Paid'"><mat-icon class="clear">clear</mat-icon></span>
-                                    <span *ngIf="row.payment == 'Paid'"><mat-icon class="done">done</mat-icon></span> 
-                                    <span class="free" *ngIf="row.payment == 'Free'">{{row.payment}}</span>    
+                                    <span *ngIf="row.payment == 'Not Paid'"><mat-icon class="clear icon-cus-class">clear</mat-icon></span>
+                                    <span *ngIf="row.payment == 'Paid'"><mat-icon class="done icon-cus-class">done</mat-icon></span> 
+                                    <span class="free icon-cus-class" *ngIf="row.payment == 'Free'">{{row.payment}}</span>    
                                 </td>
                             </ng-container>
                         
