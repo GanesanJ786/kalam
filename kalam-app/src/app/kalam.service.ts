@@ -32,6 +32,10 @@ export class KalamService {
     return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`).where("approved", "==", true)).snapshotChanges();
   }
 
+  getAllInactiveStudents(coachId: any) {
+    return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`).where("inActive", "==", true)).snapshotChanges();
+  }
+
   getStudentDetails(coachId: any) {
     return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`)).snapshotChanges();
   }

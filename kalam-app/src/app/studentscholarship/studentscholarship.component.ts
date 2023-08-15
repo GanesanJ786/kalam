@@ -51,19 +51,36 @@ export class StudentscholarshipComponent implements OnInit {
       });
       this.allStudents =  data;
       let currentMonth = moment().startOf("month").format('MMMM');
-      this.allStudents.forEach((element:StudentDetails) => {
-        // if(element.scholarship == undefined) {
-        //   element.scholarship = "No"
-        // }
-        element.underType =  this.checkAge(element);
-        if((element.feesMonthPaid !== currentMonth || element.feesMonthPaid == undefined) && !element.feesApproveWaiting) {
-          element.payment =  "Not Paid";
-        }else {
-          element.payment =  "Paid"
-        } 
+
+
+      this.kalamService.getAllInactiveStudents(this.coachId).subscribe((res: any) => {
+        let inActive = res.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+
+        inActive.forEach((student: any) => {
+          if(this.allStudents.filter((s:any) => s.id == student.id).length == 0) {
+            this.allStudents.push(student)
+          }
+        });
+         
+       
+        this.allStudents.forEach((element:StudentDetails) => {
+          // if(element.scholarship == undefined) {
+          //   element.scholarship = "No"
+          // }
+          element.underType =  this.checkAge(element);
+          if((element.feesMonthPaid !== currentMonth || element.feesMonthPaid == undefined) && !element.feesApproveWaiting) {
+            element.payment =  "Not Paid";
+          }else {
+            element.payment =  "Paid"
+          } 
+        });  
+        this.underList();
       });
-      
-      this.underList();
     });
     this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
       let data = res.map((document: any) => {
@@ -137,13 +154,13 @@ export class StudentscholarshipComponent implements OnInit {
       finalData = finalData.filter((res: StudentDetails) => res.groundName == this.groundName)
     }
     if(this.scholarshipType == 'yes') {
-      this.displayedColumns = ['age', 'name', 'scholarship'];
+      this.displayedColumns = ['age', 'name', 'scholarship', 'inActive'];
       this.isScholarship = true;
       finalData = finalData.filter((res: StudentDetails) => res.scholarship);
       finalData = _.sortBy(finalData, ["underType", "scholarship"]);
     }
     if(this.scholarshipType == 'no') {
-      this.displayedColumns = ['age', 'name', 'payment'];
+      this.displayedColumns = ['age', 'name', 'payment', 'inActive'];
       this.isScholarship = false;
       finalData = finalData.filter((res: StudentDetails) => !res.scholarship);
       finalData = _.sortBy(finalData, ["underType"]);
@@ -168,6 +185,24 @@ export class StudentscholarshipComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataSource.sort = this.sort;
+  }
+
+  inActive(student: any) {
+    if (confirm(`Are you sure to inactivate ${student.name}?`) == true) {
+      student.approved = false;
+      student.inActive = true;
+      this.kalamService.approvedStudent(student);
+      //console.log(student);
+    }
+  }
+
+  activate(student: any) {
+    if (confirm(`Are you sure to activate ${student.name}?`) == true) {
+      student.approved = true;
+      student.inActive = false;
+      this.kalamService.approvedStudent(student);
+      //console.log(student);
+    }
   }
 
 }

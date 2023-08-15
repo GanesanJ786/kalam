@@ -156,7 +156,7 @@ export class MyProfileComponent implements OnInit {
           }
         });
 
-        this.newStudents = obj;
+        this.newStudents = obj.filter((s:any) => !s.inActive);
         this.kalamService.setNewStudentsList(this.newStudents);
       });
 

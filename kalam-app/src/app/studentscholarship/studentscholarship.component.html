@@ -78,6 +78,14 @@
                     <td mat-cell *matCellDef="let row"> {{row.scholarship}} </td>
                   </ng-container>
               </ng-template>
+
+              <ng-container matColumnDef="inActive">
+                <th style="width: 25%;" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td mat-cell *matCellDef="let row">
+                  <button *ngIf="!row?.inActive" class="btn-grnd" style="padding: 0.1rem 0.1rem;margin-left: 0;font-size: 0.1rem;" (click)="inActive(row)"><mat-icon class="done">done</mat-icon></button>
+                  <button *ngIf="row?.inActive" class="btn-grnd btn-red" style="padding: 0.1rem 0.1rem;margin-left: 0;font-size: 0.1rem;" (click)="activate(row)"><mat-icon class="clear">clear</mat-icon></button>
+                </td>
+              </ng-container>
             
           
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
