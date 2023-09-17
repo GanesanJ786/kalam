@@ -24,7 +24,8 @@ export class AppComponent {
   dataForExcel: any = {};
 
   excelHeaderRow = ["Coach Name", "Ground Name", "Login Date", "Login Time", "LogOff Data & Time", "Topics", "Notes", "Login Address", "Logout Address"]
-
+  excelStudentRow = ["Name"];
+  excelDate = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"];
   // End Excel
 
   constructor(private idle: Idle, public ete: ExportToExcelService, private keepalive: Keepalive, private router: Router, private kalamService: KalamService) {
@@ -60,6 +61,56 @@ export class AppComponent {
     this.timedOut = false;
   }
 
+  getAllStudentAttendance() {
+    const dateRange = {
+      start: "09-01-2023",
+      end: "09-17-2023"
+    }
+
+    
+
+    this.kalamService.getAcademyAllStudentAttendanceData("718906821407", dateRange).subscribe((res: any) => {
+      let data = res.map((document: any) => {
+        return {
+          id: document.payload.doc.id,
+          ...document.payload.doc.data() as {}
+        }
+      });
+      
+      data = _.sortBy(data, ["name"]);
+      const result = _.groupBy(data, 'name');
+      console.log(result);
+
+      let objFinal: any = [];
+      let obj:any = [];
+      Object.values(result).forEach((res: any) => {
+        res = _.uniqBy(res, (lD:any) => lD.loginDate);
+        obj = [res[0].name];
+        this.excelDate.forEach((dateVal: any) => {
+          let dateObj = res.filter((ddV:any) => dateVal == moment(ddV.loginDate).date());
+          if(!!dateObj.length) {
+            obj.push(dateObj[0].groundName);
+          }else{
+            obj.push("");
+          }
+        });
+        objFinal.push(obj);
+      });
+
+      console.log(objFinal)
+  
+      let reportData = {
+        title: `Students Attendance Report - ${moment(dateRange.start, 'MM/DD/YYYY').format("MMM YYYY")}`,
+        data: objFinal,
+        headers: this.excelStudentRow.concat(this.excelDate),
+        dateRange: `${dateRange.start} - ${dateRange.end}`
+      }
+  
+      this.ete.exportStudentExcel(reportData);
+    
+    });
+  }
+
   exportToExcel() {
     let coachView = [];
     let stopLoop = false;
@@ -68,8 +119,8 @@ export class AppComponent {
       inCoachId: "216038235025"
     }
     const dateRange = {
-      start: "08-01-2023",
-      end: "08-07-2023"
+      start: "09-05-2023",
+      end: "09-09-2023"
     }
 
     
@@ -140,9 +191,9 @@ export class AppComponent {
     
           this.ete.exportExcel(reportData);
           console.log(coachData)
-          // coachData.forEach((val:any) => {
-          //   this.kalamService.deleteCoachesAttendance(val.id);
-          // })
+          coachData.forEach((val:any) => {
+            this.kalamService.deleteCoachesAttendance(val.id);
+          })
           stopLoop = true; 
         }
       });

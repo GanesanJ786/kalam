@@ -191,6 +191,12 @@ export class KalamService {
     this.fireStore.doc("studentDetails/"+student.id).delete();
   }
 
+  getAcademyAllStudentAttendanceData(academyId:string, dateRange: any) {
+    return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`)
+    .where("loginDate", ">=", `${dateRange.start}`)
+    .where("loginDate", "<=", `${dateRange.end}`)).snapshotChanges();
+  }
+
   getSingleStudentAttendanceData(query:StudentDetails, dateRange: any) {
     return this.fireStore.collection('studentAttendance', ref => ref.where('kalamId', '==', `${query.kalamId}`)
     .where("name", "==", `${query.name}`)
