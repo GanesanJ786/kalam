@@ -25,7 +25,7 @@ export class AppComponent {
 
   excelHeaderRow = ["Coach Name", "Ground Name", "Login Date", "Login Time", "LogOff Data & Time", "Topics", "Notes", "Login Address", "Logout Address"]
   excelStudentRow = ["Name"];
-  excelDate = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17"];
+  excelDate = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19"];
   // End Excel
 
   constructor(private idle: Idle, public ete: ExportToExcelService, private keepalive: Keepalive, private router: Router, private kalamService: KalamService) {
@@ -64,7 +64,7 @@ export class AppComponent {
   getAllStudentAttendance() {
     const dateRange = {
       start: "09-01-2023",
-      end: "09-17-2023"
+      end: "09-19-2023"
     }
 
     
@@ -87,7 +87,7 @@ export class AppComponent {
         res = _.uniqBy(res, (lD:any) => lD.loginDate);
         obj = [res[0].name];
         this.excelDate.forEach((dateVal: any) => {
-          let dateObj = res.filter((ddV:any) => dateVal == moment(ddV.loginDate).date());
+          let dateObj = res.filter((ddV:any) => dateVal == moment(ddV.loginDate).date() && ddV.status == "IN");
           if(!!dateObj.length) {
             obj.push(dateObj[0].groundName);
           }else{
