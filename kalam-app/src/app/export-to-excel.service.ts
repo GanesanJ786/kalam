@@ -255,6 +255,17 @@ export class ExportToExcelService {
     worksheet.getColumn(18).width = 20;
     worksheet.getColumn(19).width = 20;
     worksheet.getColumn(20).width = 20;
+    worksheet.getColumn(21).width = 20;
+    worksheet.getColumn(22).width = 20;
+    worksheet.getColumn(23).width = 20;
+    worksheet.getColumn(24).width = 20;
+    worksheet.getColumn(25).width = 20;
+    worksheet.getColumn(26).width = 20;
+    worksheet.getColumn(27).width = 20;
+    worksheet.getColumn(28).width = 20;
+    worksheet.getColumn(29).width = 20;
+    worksheet.getColumn(30).width = 20;
+    worksheet.getColumn(31).width = 20;
     worksheet.addRow([]);
 
 

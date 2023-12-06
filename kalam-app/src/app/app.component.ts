@@ -25,7 +25,7 @@ export class AppComponent {
 
   excelHeaderRow = ["Coach Name", "Ground Name", "Login Date", "Login Time", "LogOff Data & Time", "Topics", "Notes", "Login Address", "Logout Address"]
   excelStudentRow = ["Name"];
-  excelDate = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19"];
+  excelDate = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"];
   // End Excel
 
   constructor(private idle: Idle, public ete: ExportToExcelService, private keepalive: Keepalive, private router: Router, private kalamService: KalamService) {
@@ -63,8 +63,8 @@ export class AppComponent {
 
   getAllStudentAttendance() {
     const dateRange = {
-      start: "09-01-2023",
-      end: "09-19-2023"
+      start: "10-01-2023",
+      end: "10-31-2023"
     }
 
     
@@ -119,8 +119,8 @@ export class AppComponent {
       inCoachId: "216038235025"
     }
     const dateRange = {
-      start: "09-05-2023",
-      end: "09-09-2023"
+      start: "10-01-2023",
+      end: "10-31-2023"
     }
 
     
@@ -191,9 +191,9 @@ export class AppComponent {
     
           this.ete.exportExcel(reportData);
           console.log(coachData)
-          coachData.forEach((val:any) => {
-            this.kalamService.deleteCoachesAttendance(val.id);
-          })
+          // coachData.forEach((val:any) => {
+          //   this.kalamService.deleteCoachesAttendance(val.id);
+          // })
           stopLoop = true; 
         }
       });
