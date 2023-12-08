@@ -355,6 +355,9 @@ export class MyTeamsComponent implements OnInit {
   }
   editStudent(student:StudentDetails) {
     delete(student.hideEve);
+    delete(student.disableOutBtn);
+    delete(student.disableInBtn);
+    delete(student.disableEveBtn);
     this.kalamService.editStudentData = student;
     this.router.navigate([`/student-form`],{ queryParams: { source: 'edit' }});
   }
