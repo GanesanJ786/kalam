@@ -110,9 +110,53 @@ export class MyTeamsComponent implements OnInit {
           ...document.payload.doc.data() as {}
         }
       });
+      
+      /* AGE Age & Under age update by select age group and select "ALL" in ground
+
+      data.forEach((d: any) => {
+        let newAge = moment.duration(moment().diff(d.dob)).years();
+        let newUnderAge = this.underAgeCalc(d.dob);
+        if(d.underAge !== newUnderAge || d.age !== newAge) {
+          d.age = newAge;
+          d.underAge = newUnderAge;
+          this.kalamService.editStudentDetails(d);
+        }
+      })
+
+      */
       this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
       this.checkAttendance();
     });
+  }
+
+  underAgeCalc(dobDate: string) {
+    let type = ""
+    // if(val <= 15) {
+    //   type = 'u-15';
+    // }else if(val == 16) {
+    //   type = 'u-16';
+    // }else if(val <= 19) {
+    //   type = 'u-19';
+    // }else if(val <= 23) {
+    //   type = 'u-23';
+    // }else {
+    //   type = 'open'
+    // }
+
+    let dob = moment(dobDate);
+    let today = moment();
+
+    let val = today.year() - dob.year();
+
+    if(val < 6) {
+      type = 'u-5';
+    }else if(val <=21) {
+      type = `u-${val}`;
+    }else {
+      type = 'open'
+    }
+
+    return type
   }
 
   checkAttendance() {

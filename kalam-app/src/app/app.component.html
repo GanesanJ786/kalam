@@ -1,4 +1,8 @@
 <app-loader></app-loader>
 <router-outlet></router-outlet>
-<!-- <button (click)="exportToExcel()">Export The Report</button>
-<button (click)="getAllStudentAttendance()">Export The Student Report</button> -->
+<div class="btn-pos" *ngIf="attendanceExpEnable">
+    <button style="margin-right: 10px;" class="flicker" (click)="exportToExcel()"
+        mat-raised-button color="accent">Export Coaches</button>
+    <button class="flicker" (click)="getAllStudentAttendance()" mat-raised-button
+        color="accent">Export Student</button>
+</div>

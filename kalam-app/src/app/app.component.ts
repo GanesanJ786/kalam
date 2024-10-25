@@ -22,11 +22,15 @@ export class AppComponent {
   // Export Excel
 
   dataForExcel: any = {};
-
+  excelDate: string[];
   excelHeaderRow = ["Coach Name", "Ground Name", "Login Date", "Login Time", "LogOff Data & Time", "Topics", "Notes", "Login Address", "Logout Address"]
   excelStudentRow = ["Name"];
-  excelDate = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"];
+  
   // End Excel
+
+  get attendanceExpEnable(): boolean{
+    return this.kalamService.getCoachData()?.kalamId == "123456789123"
+  }
 
   constructor(private idle: Idle, public ete: ExportToExcelService, private keepalive: Keepalive, private router: Router, private kalamService: KalamService) {
     // sets an idle timeout of 30 seconds, for testing purposes.
@@ -53,6 +57,9 @@ export class AppComponent {
     keepalive.onPing.subscribe(() => this.lastPing = new Date());
 
     this.reset();
+    let lastDateOfPreMonth = +moment().subtract(1,'months').endOf('month').format('DD')+1;
+    this.excelDate = [...Array(lastDateOfPreMonth).keys()].slice(1).map(String);
+    //console.log(moment().subtract(1,'months').startOf('month').format('MM-DD-YYYY'));
   }
 
   reset() {
@@ -62,12 +69,15 @@ export class AppComponent {
   }
 
   getAllStudentAttendance() {
-    const dateRange = {
-      start: "10-01-2023",
-      end: "10-31-2023"
-    }
+    // const dateRange = {
+    //   start: "03-01-2024",
+    //   end: "03-31-2024"
+    // }
 
-    
+    const dateRange = {
+      start: moment().subtract(1,'months').startOf('month').format('MM-DD-YYYY'),
+      end: moment().subtract(1,'months').endOf('month').format('MM-DD-YYYY')
+    }
 
     this.kalamService.getAcademyAllStudentAttendanceData("718906821407", dateRange).subscribe((res: any) => {
       let data = res.map((document: any) => {
@@ -106,7 +116,7 @@ export class AppComponent {
         dateRange: `${dateRange.start} - ${dateRange.end}`
       }
   
-      this.ete.exportStudentExcel(reportData);
+      this.ete.exportStudentExcel(reportData, this.excelDate);
     
     });
   }
@@ -118,9 +128,14 @@ export class AppComponent {
       academyId: `718906821407`,
       inCoachId: "216038235025"
     }
+    // const dateRange = {
+    //   start: "03-01-2024",
+    //   end: "03-31-2024"
+    // }
+
     const dateRange = {
-      start: "10-01-2023",
-      end: "10-31-2023"
+      start: moment().subtract(1,'months').startOf('month').format('MM-DD-YYYY'),
+      end: moment().subtract(1,'months').endOf('month').format('MM-DD-YYYY')
     }
 
     

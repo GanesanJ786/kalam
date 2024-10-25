@@ -146,7 +146,7 @@ export class ExportToExcelService {
 
   }
 
-  exportStudentExcel(excelData: any) {
+  exportStudentExcel(excelData: any, excelDate: string[]) {
     //Title, Header & Data
     const title = excelData.title;
     const header = excelData.headers
@@ -235,37 +235,40 @@ export class ExportToExcelService {
 
     }
     );
-    worksheet.getColumn(1).width = 20;
-    worksheet.getColumn(2).width = 20;
-    worksheet.getColumn(3).width = 20;
-    worksheet.getColumn(4).width = 20;
-    worksheet.getColumn(5).width = 20;
-    worksheet.getColumn(6).width = 20;
-    worksheet.getColumn(7).width = 20;
-    worksheet.getColumn(8).width = 20;
-    worksheet.getColumn(9).width = 20;
-    worksheet.getColumn(10).width = 20;
-    worksheet.getColumn(11).width = 20;
-    worksheet.getColumn(12).width = 20;
-    worksheet.getColumn(13).width = 20;
-    worksheet.getColumn(14).width = 20;
-    worksheet.getColumn(15).width = 20;
-    worksheet.getColumn(16).width = 20;
-    worksheet.getColumn(17).width = 20;
-    worksheet.getColumn(18).width = 20;
-    worksheet.getColumn(19).width = 20;
-    worksheet.getColumn(20).width = 20;
-    worksheet.getColumn(21).width = 20;
-    worksheet.getColumn(22).width = 20;
-    worksheet.getColumn(23).width = 20;
-    worksheet.getColumn(24).width = 20;
-    worksheet.getColumn(25).width = 20;
-    worksheet.getColumn(26).width = 20;
-    worksheet.getColumn(27).width = 20;
-    worksheet.getColumn(28).width = 20;
-    worksheet.getColumn(29).width = 20;
-    worksheet.getColumn(30).width = 20;
-    worksheet.getColumn(31).width = 20;
+    excelDate.forEach(val => {
+      worksheet.getColumn(+val).width = 20;
+    });
+    
+    // worksheet.getColumn(2).width = 20;
+    // worksheet.getColumn(3).width = 20;
+    // worksheet.getColumn(4).width = 20;
+    // worksheet.getColumn(5).width = 20;
+    // worksheet.getColumn(6).width = 20;
+    // worksheet.getColumn(7).width = 20;
+    // worksheet.getColumn(8).width = 20;
+    // worksheet.getColumn(9).width = 20;
+    // worksheet.getColumn(10).width = 20;
+    // worksheet.getColumn(11).width = 20;
+    // worksheet.getColumn(12).width = 20;
+    // worksheet.getColumn(13).width = 20;
+    // worksheet.getColumn(14).width = 20;
+    // worksheet.getColumn(15).width = 20;
+    // worksheet.getColumn(16).width = 20;
+    // worksheet.getColumn(17).width = 20;
+    // worksheet.getColumn(18).width = 20;
+    // worksheet.getColumn(19).width = 20;
+    // worksheet.getColumn(20).width = 20;
+    // worksheet.getColumn(21).width = 20;
+    // worksheet.getColumn(22).width = 20;
+    // worksheet.getColumn(23).width = 20;
+    // worksheet.getColumn(24).width = 20;
+    // worksheet.getColumn(25).width = 20;
+    // worksheet.getColumn(26).width = 20;
+    // worksheet.getColumn(27).width = 20;
+    // worksheet.getColumn(28).width = 20;
+    // worksheet.getColumn(29).width = 20;
+    // // worksheet.getColumn(30).width = 20;
+    // // worksheet.getColumn(31).width = 20;
     worksheet.addRow([]);
 
 
