@@ -197,10 +197,13 @@ export class StudentFormComponent implements OnInit {
   }
 
   formData(url?: string): void {
+    let ddT = new Date().getTime().toString();
+    console.log(ddT);
     let studentForm: StudentDetails = {...this.studentForm.value};
     let obj = {...this.studentForm.value};
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    studentForm.kalamId = obj.aadharNum.replaceAll("-",'');
+    //studentForm.kalamId = obj.aadharNum.replaceAll("-",'');
+    
     studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
     studentForm.underAge = this.underAgeCalc(studentForm.dob);
     if(url) {
@@ -214,6 +217,7 @@ export class StudentFormComponent implements OnInit {
     studentForm['approved'] = false;
     studentForm['doj'] = moment().format("MM/DD/YYYY");
     studentForm['coachName'] = this.kalamService.getCoachData().name;
+    studentForm['kalamId'] = obj.aadharNum.substring(0,3)+ddT.substring(ddT.length -3)+studentForm['dob'].substring(0,5).replace("/","");
     if(this.kalamService.getCoachData().academyOwned == "Y") {
       studentForm['approved'] =   true;
     }   

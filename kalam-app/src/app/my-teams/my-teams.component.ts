@@ -59,6 +59,10 @@ export class MyTeamsComponent implements OnInit {
     
   }
 
+  get groundNameNotAll(): boolean {
+    return this.groundName !== 'all' && this.groundName !== ''
+  }
+
   getStudentAttendance() {
     this.kalamService.getAllStudentAttendanceData(this.coachId, this.ageConvert(this.ageType), this.groundName).subscribe((stud:any) => {
       let stundentData = stud.map((document: any) => {
@@ -82,26 +86,32 @@ export class MyTeamsComponent implements OnInit {
     });
   }
 
-  getStudentList() {
-    
-    this.loaderService.show();
+  getStudentList(all: boolean) {
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.kalamService.studentList({coachId: coachId, underAge: this.ageType, groundName: this.groundName}).subscribe((res: any) => {
-      this.loaderService.hide();
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
+    if(!all){
+      this.loaderService.show();
+      this.kalamService.studentList({coachId: coachId, underAge: this.ageType, groundName: this.groundName}).subscribe((res: any) => {
+        this.loaderService.hide();
+        let data = res.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+        this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
+        this.checkAttendance();
       });
+    }else {
+      let data = this.allStudents.filter((res: StudentDetails) => res.groundName == this.groundName);
       this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
       this.checkAttendance();
-    });
+    }
   }
 
   getStudentListUnderAge() {
     this.loaderService.show();
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
+    let idArr:string[] = [];
     this.kalamService.studentListUnderAge({coachId: coachId, underAge: this.ageType}).subscribe((res: any) => {
       this.loaderService.hide();
       let data = res.map((document: any) => {
@@ -124,6 +134,31 @@ export class MyTeamsComponent implements OnInit {
       })
 
       */
+
+      /* Upate kalam id for all exisiting students
+      // data.forEach((d: any) => {
+        
+      //   if(idArr.filter((v) => v == `${d['name']+d['aadharNum']+d['dob']}`).length == 0){
+      //     let ddT = new Date().getTime().toString();
+      //     d['kalamId'] = d.aadharNum.substring(0,3)+ddT.substring(ddT.length -3)+d['dob'].substring(0,5).replace("/","");
+      //     console.log(d);
+      //     this.kalamService.editStudentDetails(d);
+      //     idArr.push(d['name']+d['aadharNum']+d['dob'])
+      //   }
+      // })
+
+      */
+
+      /* to check any duplicate id exist or not
+      // var lookup = data.reduce((a:any, e:any) => {
+      //   a[e.kalamId] = ++a[e.kalamId] || 0;
+      //   return a;
+      // }, {});
+      
+      // console.log(data.filter((e:any) => lookup[e.kalamId]));
+
+      */
+
       this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
       this.checkAttendance();
     });
@@ -227,12 +262,19 @@ export class MyTeamsComponent implements OnInit {
   }
 
   underSelection() {
+    if(this.ageType == 'all' && this.groundName == 'all'){
+      return
+    }
+    if(this.ageType == 'all' && this.groundName) {
+      this.getStudentList(true);
+      return;
+    }
     if(this.ageType && this.groundName) {
       if(this.groundName == "all") {
         this.getStudentListUnderAge();
         //this.getStudentAttendance();
       }else{
-        this.getStudentList();
+        this.getStudentList(false);
         //this.getStudentAttendance();
       }
     }

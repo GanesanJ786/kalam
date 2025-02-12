@@ -20,6 +20,9 @@
                         <span *ngIf="student?.scholarship && student?.scholarship !== '0'"> Scholarship ({{student.scholarship}})</span>
                     </div>
                 </div>
+                <div>
+                    <button (click)="addGame()" mat-raised-button color="primary">+Add Game</button>
+                </div>
                 <div class="s-bacis">
                     <div class="s-cb" style="color: rgba(255,255,255,0.7);">
                         <div>POSITION</div>

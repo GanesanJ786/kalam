@@ -1,0 +1,17 @@
+<div>
+    <h3>Tournament Performance</h3>
+    <form [formGroup]="gameForm" #form="ngForm">
+        <mat-form-field appearance="fill" [ngStyle]="{'width': '90%'}">
+            <mat-label>Tournament name</mat-label>
+            <input matInput formControlName="tournamentName">
+        </mat-form-field>
+        <mat-form-field appearance="fill" [ngStyle]="{'width': '90%'}">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="gameDate">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+    </form>
+</div>

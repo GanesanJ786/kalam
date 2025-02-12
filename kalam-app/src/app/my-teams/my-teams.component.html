@@ -3,6 +3,7 @@
         <mat-form-field appearance="fill" style="width: 45%;">
             <mat-label>Age Group</mat-label>
             <mat-select [(ngModel)]="ageType" (ngModelChange)="underSelection()">
+                <mat-option value="all" *ngIf="groundNameNotAll">All</mat-option>
                 <mat-option *ngFor="let under of underCategory" [value]="under.value">{{under.key}}</mat-option>
             </mat-select>
         </mat-form-field>
