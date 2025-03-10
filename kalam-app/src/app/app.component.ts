@@ -86,6 +86,13 @@ export class AppComponent {
           ...document.payload.doc.data() as {}
         }
       });
+
+      const filteredData = _.filter(data, (item) => {
+        const itemDate = new Date(item.loginDate);
+        return itemDate >= new Date(dateRange.start) && itemDate <= new Date(dateRange.end); // Excludes exact matches
+      });
+      
+      data = filteredData;
       
       data = _.sortBy(data, ["name"]);
       const result = _.groupBy(data, 'name');
@@ -147,6 +154,13 @@ export class AppComponent {
               ...document.payload.doc.data() as {}
             }
           });
+
+          const filteredData = _.filter(coachData, (item) => {
+            const itemDate = new Date(item.activeDate);
+            return itemDate >= new Date(dateRange.start) && itemDate <= new Date(dateRange.end); // Excludes exact matches
+          });
+          
+          coachData = filteredData;
     
           let sortCoach = _.sortBy(coachData, ["coachName","inCoachId","loginDate", "loginTime", "groundName"]);
           let inCoach = sortCoach.filter((v: any) => v.status == "IN");

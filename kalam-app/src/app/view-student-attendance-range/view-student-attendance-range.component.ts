@@ -6,6 +6,7 @@ import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-stud
 import { StudentDetails } from '../student-form/student-form.component';
 import * as moment from 'moment';
 import { MatTableDataSource } from '@angular/material/table';
+import * as _ from 'lodash';
 
 const today = new Date();
 const month = today.getMonth();
@@ -67,6 +68,14 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
           ...document.payload.doc.data() as {}
         }
       });
+
+      const filteredData = _.filter(data, (item) => {
+        const itemDate = new Date(item.loginDate);
+        return itemDate >= new Date(obj.start) && itemDate <= new Date(obj.end); // Excludes exact matches
+      });
+  
+      data = filteredData;
+
       this.dataSource.data = data;
     //console.log(this.students);
     // setTimeout(() => {

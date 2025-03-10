@@ -122,6 +122,14 @@ export class ViewCoachAttendanceComponent implements OnInit {
           ...document.payload.doc.data() as {}
         }
       });
+
+      const filteredData = _.filter(coachData, (item) => {
+        const itemDate = new Date(item.activeDate);
+        return itemDate >= new Date(dateRange.start) && itemDate <= new Date(dateRange.end); // Excludes exact matches
+      });
+
+      coachData = filteredData;
+
       let sortCoach = _.sortBy(coachData, ["loginDate", "loginTime","groundName"]);
       let inCoach = sortCoach.filter((v:any) => v.status == "IN");
       let outCoach = sortCoach.filter((v:any) => v.status == "OUT");
