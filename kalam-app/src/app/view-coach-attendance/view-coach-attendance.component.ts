@@ -123,10 +123,12 @@ export class ViewCoachAttendanceComponent implements OnInit {
         }
       });
 
-      const filteredData = _.filter(coachData, (item) => {
-        const itemDate = new Date(item.activeDate);
-        return itemDate >= new Date(dateRange.start) && itemDate <= new Date(dateRange.end); // Excludes exact matches
+      const filteredData = coachData.filter((item: any) => {
+        const itemDate = new Date(this.kalamService.convertToISO(item.activeDate));
+        return itemDate >= new Date(this.kalamService.convertToISO(dateRange.start)) && itemDate <= new Date(this.kalamService.convertToISO(dateRange.end)); // Excludes exact matches
       });
+
+      //console.log(filteredData);
 
       coachData = filteredData;
 

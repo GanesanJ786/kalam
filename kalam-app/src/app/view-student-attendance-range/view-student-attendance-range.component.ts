@@ -70,8 +70,8 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
       });
 
       const filteredData = _.filter(data, (item) => {
-        const itemDate = new Date(item.loginDate);
-        return itemDate >= new Date(obj.start) && itemDate <= new Date(obj.end); // Excludes exact matches
+        const itemDate = new Date(this.kalamService.convertToISO(item.loginDate));
+        return itemDate >= new Date(this.kalamService.convertToISO(obj.start)) && itemDate <= new Date(this.kalamService.convertToISO(obj.end)); // Excludes exact matches
       });
   
       data = filteredData;

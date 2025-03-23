@@ -24,6 +24,16 @@ export class KalamService {
   paidStudentList: any = [];
   getCoachesAttendance: any = [];
 
+  convertToISO(dateString: string) {
+    // Split the MM-DD-YYYY string into parts
+    const [month, day, year] = dateString.split('-');
+
+    // Rearrange to ISO format YYYY-MM-DD
+    const isoDate = `${year}-${month}-${day}`;
+
+    return isoDate;
+  }
+
   resetAll() {
     this.getCoachesAttendance = [];
   }

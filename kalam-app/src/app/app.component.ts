@@ -88,8 +88,8 @@ export class AppComponent {
       });
 
       const filteredData = _.filter(data, (item) => {
-        const itemDate = new Date(item.loginDate);
-        return itemDate >= new Date(dateRange.start) && itemDate <= new Date(dateRange.end); // Excludes exact matches
+        const itemDate = new Date(this.kalamService.convertToISO(item.loginDate));
+        return itemDate >= new Date(this.kalamService.convertToISO(dateRange.start)) && itemDate <= new Date(this.kalamService.convertToISO(dateRange.end)); // Excludes exact matches
       });
       
       data = filteredData;
@@ -156,8 +156,8 @@ export class AppComponent {
           });
 
           const filteredData = _.filter(coachData, (item) => {
-            const itemDate = new Date(item.activeDate);
-            return itemDate >= new Date(dateRange.start) && itemDate <= new Date(dateRange.end); // Excludes exact matches
+            const itemDate = new Date(this.kalamService.convertToISO(item.activeDate));
+            return itemDate >= new Date(this.kalamService.convertToISO(dateRange.start)) && itemDate <= new Date(this.kalamService.convertToISO(dateRange.end)); // Excludes exact matches
           });
           
           coachData = filteredData;
