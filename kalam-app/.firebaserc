@@ -7,8 +7,12 @@
       "hosting": {
         "kalam-app": [
           "kalam-in"
+        ],
+        "kalam-quality": [
+          "kalam-q"
         ]
       }
     }
-  }
+  },
+  "etags": {}
 }

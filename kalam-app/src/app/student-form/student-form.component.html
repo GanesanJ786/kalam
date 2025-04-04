@@ -48,14 +48,14 @@
                     </mat-form-field>
                 </div>
                 <div class="brk-field">
-                    <mat-radio-group formControlName="gender" style="margin-top: 1rem;width:50%">
-                        <mat-radio-button value="male" style="margin-right: 1rem;">Male</mat-radio-button>
+                    <mat-radio-group formControlName="gender" style="margin: 1rem 0;width:100%">
+                        <mat-radio-button value="male" style="margin-right: 1rem;width: 50%;">Male</mat-radio-button>
                         <mat-radio-button  value="female">Female</mat-radio-button>
-                      </mat-radio-group>
-                    <mat-form-field appearance="fill" style="width:45%">
+                    </mat-radio-group>
+                    <!-- <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Aadhar</mat-label>
                         <input matInput formControlName="aadharNum" minlength="14" maxlength="14" appAadharNumber>
-                    </mat-form-field>
+                    </mat-form-field> -->
                 </div>
                 <mat-form-field appearance="fill" style="width: 100%;">
                     <mat-label>Email ID</mat-label>
@@ -84,16 +84,34 @@
                 <div class="brk-field">
                     <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Mobile Number</mat-label>
-                        <input matInput formControlName="mobileNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Whats App Number</mat-label>
                         <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
+                    <mat-form-field appearance="fill" style="width: 45%;">
+                        <mat-label>Venue Name</mat-label>
+                        <mat-select formControlName="groundName">
+                            <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
+                <ng-container *ngIf="sportType !=='football'">
+                    <div class="brk-field">
+                        <mat-form-field appearance="fill" style="width:45%">
+                            <mat-label>School / Institution Name</mat-label>
+                            <input matInput formControlName="institutionName">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" style="width:45%">
+                            <mat-label>Studying</mat-label>
+                            <input matInput formControlName="studying">
+                        </mat-form-field>
+                    </div>
+                    <mat-form-field appearance="fill" style="width: 100%;">
+                        <mat-label>Address</mat-label>
+                        <textarea matInput formControlName="address"></textarea>
+                    </mat-form-field>
+                </ng-container>
             </div>
 
-            <div *ngIf="form2">
+            <div *ngIf="form2 && sportType =='football'">
                 <div class="brk-field">
                     <mat-form-field appearance="fill" style="width:45%">
                         <mat-label>Emergency Contact Person</mat-label>
@@ -167,13 +185,14 @@
                
         </div>
         <div class="sf-footer">
-            <button *ngIf="form1" (click)="form1Submit()" [disabled]="form1Validation" style="width: 50%;" mat-raised-button color="primary">NEXT 
+            <button *ngIf="form1 && sportType =='football'" (click)="form1Submit()" [disabled]="form1Validation" style="width: 50%;" mat-raised-button color="primary">NEXT 
                 <span class="arrowRight"><mat-icon>keyboard_arrow_right</mat-icon></span>
             </button>
             <button *ngIf="form2" (click)="prevForm()" style="width: 30%;" mat-raised-button>
                 <span class="arrowLeft"><mat-icon>keyboard_arrow_left</mat-icon></span> BACK
             </button>
             <button *ngIf="form2" [disabled]="form2Validation" style="width: 40%;" mat-raised-button color="primary" (click)="onSubmit()">{{btnText()}}</button>
+            <button *ngIf="sportType !=='football'" [disabled]="!studentForm.valid" style="width: 40%;" mat-raised-button color="primary" (click)="onSubmit()">{{btnText()}}</button>
         </div>
     </form>
 </div>

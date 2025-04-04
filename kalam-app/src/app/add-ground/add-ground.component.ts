@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { KalamService } from '../kalam.service';
+import { environment } from 'src/environments/environment';
+import { CommonObject } from '../constant';
 
 export interface DialogData {
   dialogType?: string;
@@ -29,6 +31,8 @@ export class AddGroundComponent implements OnInit {
   notesForm!: FormGroup;
   feesForm!: FormGroup;
   leaveForm!: FormGroup;
+  groundDetails: string = "Add Ground Details";
+  groundName: string = "Ground name";
 
   constructor(
     private kalamService: KalamService,
@@ -36,6 +40,11 @@ export class AddGroundComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
   ) {
     this.groundInfo = {} as DialogData;
+    if(environment.siteNameObj){
+      let obj = (CommonObject as any)[environment.siteNameObj];
+      this.groundDetails = obj.groundDetails;
+      this.groundName = obj.groundName;
+    }
   }
 
   ngOnInit(): void {

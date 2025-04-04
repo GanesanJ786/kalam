@@ -50,10 +50,10 @@
                           </mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </mat-form-field>
-                    <mat-form-field appearance="fill" style="width: 45%;">
+                    <!-- <mat-form-field appearance="fill" style="width: 45%;">
                         <mat-label>Aadhar</mat-label>
                         <input [readonly]="editAccess" matInput formControlName="aadharNum" minlength="14" maxlength="14" appAadharNumber>
-                    </mat-form-field>
+                    </mat-form-field> -->
                 </div>
                 <div class="brk-field">
                     <mat-radio-group formControlName="gender" style="margin-top: 1rem;width: 50%;">
@@ -69,14 +69,14 @@
                 </div>
                 <div class="brk-field">
                     <mat-form-field appearance="fill" style="width: 45%;">
-                        <mat-label>Whats App Number</mat-label>
+                        <mat-label>Mobile Number</mat-label>
                         <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
                     </mat-form-field>
                     <mat-radio-group *ngIf="!editAccess" formControlName="academyOwned" style="margin-top: 1rem;width: 50%;" (change)="academyOwnedSelection()">
                         <mat-radio-button value="Y" style="margin-right: 1rem;">Owner</mat-radio-button>
                         <mat-radio-button  value="N">Employee</mat-radio-button>
                     </mat-radio-group>
-                    
+
                 </div>
                 <div *ngIf="registrationForm.controls['academyOwned'].value == 'Y'">
                     <mat-form-field appearance="fill" style="width: 100%;">

@@ -10,6 +10,8 @@ import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
 import { CompetencyLevel, Scholarship, SelectItem } from '../constant';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from 'src/environments/environment';
+import { CommonObject } from '../constant';
 
 export interface StudentDetails {
   id?: string;
@@ -17,7 +19,6 @@ export interface StudentDetails {
   dob: any;
   age: number;
   gender: string;
-  aadharNum: string;
   fatherName: string;
   motherName: string;
   fatherOcc: string;
@@ -59,6 +60,7 @@ export interface StudentDetails {
   payment?: string;
   underType?: number;
   hideEve?: boolean;
+  aadharNum?:string;
 }
 
 @Component({
@@ -83,6 +85,7 @@ export class StudentFormComponent implements OnInit {
   profileImg: boolean = false;
   scholarship: SelectItem[] = [];
   competencyLevel: SelectItem[] = [];
+  sportType: string = "football";
 
   constructor(private kalamService: KalamService, private router: Router,
     private _snackBar: MatSnackBar,
@@ -93,6 +96,10 @@ export class StudentFormComponent implements OnInit {
     this.scholarship = Scholarship;
     this.studentDetails = {} as StudentDetails;
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
+    if(environment.siteNameObj){
+      let obj = (CommonObject as any)[environment.siteNameObj];
+      this.sportType = obj.sportType;
+    }
   }
 
   ngOnInit(): void {
@@ -131,32 +138,36 @@ export class StudentFormComponent implements OnInit {
       dob: new FormControl(this.studentDetails.dob, [Validators.required]),
       age: new FormControl(this.studentDetails.age,[Validators.required]),
       gender: new FormControl(this.studentDetails.gender, [Validators.required]),
-      aadharNum: new FormControl(this.studentDetails.aadharNum,[Validators.required]),
       fatherName: new FormControl(this.studentDetails.fatherName, [Validators.required]),
       motherName: new FormControl(this.studentDetails.motherName,[Validators.required]),
       fatherOcc: new FormControl(this.studentDetails.fatherOcc, [Validators.required]),
       motherOcc: new FormControl(this.studentDetails.motherOcc,[Validators.required]),
       emailId: new FormControl(this.studentDetails.emailId, [Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
-      mobileNum: new FormControl(this.studentDetails.mobileNum,[Validators.required]),
       whatsappNum: new FormControl(this.studentDetails.whatsappNum, [Validators.required]),
-      emgContactName: new FormControl(this.studentDetails.emgContactName,[Validators.required]),
-      emgContactNum: new FormControl(this.studentDetails.emgContactNum, [Validators.required]),
+      
       institutionName: new FormControl(this.studentDetails.institutionName,[Validators.required]),
       studying: new FormControl(this.studentDetails.studying, [Validators.required]),
-      preAcademyPlayed: new FormControl(this.studentDetails.preAcademyPlayed,[Validators.required]),
-      playingPostion: new FormControl(this.studentDetails.playingPostion,[Validators.required]),
-      anyMedicalIssue: new FormControl(this.studentDetails.anyMedicalIssue, [Validators.required]),
-      jersySize: new FormControl(this.studentDetails.jersySize, [Validators.required]),
-      height: new FormControl(this.studentDetails.height,[Validators.required]),
-      weight: new FormControl(this.studentDetails.weight, [Validators.required]),
+     
       address: new FormControl(this.studentDetails.address, [Validators.required]),
       groundName: new FormControl(this.studentDetails.groundName, [Validators.required]),
       scholarship: new FormControl(this.studentDetails.scholarship, []),
       competency: new FormControl(this.studentDetails.competency, []),
+      kalamId: new FormControl(this.studentDetails.kalamId, []),
+      ...(this.sportType == 'football' && {
+        emgContactName: new FormControl(this.studentDetails.emgContactName,[Validators.required]),
+        emgContactNum: new FormControl(this.studentDetails.emgContactNum, [Validators.required]),
+        preAcademyPlayed: new FormControl(this.studentDetails.preAcademyPlayed,[Validators.required]),
+        playingPostion: new FormControl(this.studentDetails.playingPostion,[Validators.required]),
+        anyMedicalIssue: new FormControl(this.studentDetails.anyMedicalIssue, [Validators.required]),
+        jersySize: new FormControl(this.studentDetails.jersySize, [Validators.required]),
+        height: new FormControl(this.studentDetails.height,[Validators.required]),
+        weight: new FormControl(this.studentDetails.weight, [Validators.required]),
+      })
     });
 
-    this.btnValidation();
-    
+    if(this.sportType == 'football') {
+      this.btnValidation();
+    }    
     if(this.editAccess) {
       this.studentForm.updateValueAndValidity({ onlySelf: false, emitEvent: true })
     }
@@ -165,12 +176,12 @@ export class StudentFormComponent implements OnInit {
 
   btnValidation() {
     this.studentForm.valueChanges.subscribe((val:StudentDetails) => {
-      if(this.form1 && val.name && val.dob && val.aadharNum && val.age && val.gender 
+      if(this.form1 && val.name && val.dob && val.age && val.gender 
         && val.fatherName && val.fatherOcc && val.motherName && val.motherOcc
-        && val.mobileNum && val.whatsappNum) {
-          if(!this.studentForm.controls['name']['errors'] && !this.studentForm.controls['dob']['errors'] && !this.studentForm.controls['aadharNum']['errors'] && !this.studentForm.controls['age']['errors'] && !this.studentForm.controls['emailId']['errors'] && !this.studentForm.controls['gender']['errors'] 
+       && val.whatsappNum) {
+          if(!this.studentForm.controls['name']['errors'] && !this.studentForm.controls['dob']['errors'] && !this.studentForm.controls['age']['errors'] && !this.studentForm.controls['emailId']['errors'] && !this.studentForm.controls['gender']['errors'] 
             && !this.studentForm.controls['fatherName']['errors'] && !this.studentForm.controls['fatherOcc']['errors'] && !this.studentForm.controls['motherName']['errors'] && !this.studentForm.controls['motherOcc']['errors']
-            && !this.studentForm.controls['mobileNum']['errors'] && !this.studentForm.controls['whatsappNum']['errors']) {
+            && !this.studentForm.controls['whatsappNum']['errors']) {
               this.form1Validation = false;
             }else {
               this.form1Validation = true;
@@ -179,10 +190,10 @@ export class StudentFormComponent implements OnInit {
         this.form1Validation = true;
       } 
 
-      if(this.form2 && val.emgContactName && val.emgContactNum && val.institutionName && val.studying && val.groundName
+      if(this.form2 && val.institutionName && val.studying && val.groundName
         && val.preAcademyPlayed && val.playingPostion && val.anyMedicalIssue && val.jersySize
         && val.height && val.weight && val.address){
-          if(!this.studentForm.controls['emgContactName']['errors'] && !this.studentForm.controls['emgContactNum']['errors'] && !this.studentForm.controls['institutionName']['errors'] && !this.studentForm.controls['studying']['errors'] && !this.studentForm.controls['groundName']['errors'] 
+          if(!this.studentForm.controls['institutionName']['errors'] && !this.studentForm.controls['studying']['errors'] && !this.studentForm.controls['groundName']['errors'] 
             && !this.studentForm.controls['preAcademyPlayed']['errors'] && !this.studentForm.controls['playingPostion']['errors'] && !this.studentForm.controls['anyMedicalIssue']['errors'] && !this.studentForm.controls['jersySize']['errors']
             && !this.studentForm.controls['height']['errors'] && !this.studentForm.controls['weight']['errors'] && !this.studentForm.controls['address']['errors']) {
               this.form2Validation = false;
@@ -196,11 +207,11 @@ export class StudentFormComponent implements OnInit {
     });
   }
 
-  formData(url?: string): void {
+  formData(url: string, uniqId: string): void {
     let studentForm: StudentDetails = {...this.studentForm.value};
     let obj = {...this.studentForm.value};
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    studentForm.kalamId = obj.aadharNum.replaceAll("-",'');
+    studentForm.kalamId = uniqId;
     studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
     studentForm.underAge = this.underAgeCalc(studentForm.dob);
     if(url) {
@@ -235,18 +246,24 @@ export class StudentFormComponent implements OnInit {
 
   onSubmit() {
     this.loaderService.show();
+    let uniqId = "";
+    if(!this.editAccess) {
+      uniqId = this.kalamService.generateUniqueId();
+    }else {
+      uniqId = this.studentForm.value.kalamId;
+    }
     if(this.selectedImage) {
-      var filePath = `student/${this.studentForm.value.name}_${this.studentForm.value.aadharNum}_${new Date().getTime()}`;
+      var filePath = `student/${this.kalamService.getCoachData().academyId.split("-").splice(1,2).join("-")}/${uniqId.split("-").splice(1,2).join("-")}`;
       const fileRef = this.storage.ref(filePath);
       this.storage.upload(filePath,this.selectedImage).snapshotChanges().pipe(
         finalize(() => {
           fileRef.getDownloadURL().subscribe((url) => {
-            this.formData(url);
+            this.formData(url,uniqId);
           });
         })
       ).subscribe();
     }else {
-      this.formData();
+      this.formData("",uniqId);
     }
   }
   showPreview(event:any) {

@@ -1,0 +1,13 @@
+.ratingsSection {
+    display: flex;
+    flex-wrap: wrap;
+
+    mat-form-field {
+        width: 46%;
+        padding: 4% 2% 0 2%;
+    }
+    .align-item {
+        display: flex;
+        align-items: center;
+    }
+}

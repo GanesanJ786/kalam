@@ -3,6 +3,11 @@ export interface SelectItem {
     label: string;
 }
 
+export interface SelectItemNum {
+    value: number;
+    label: number;
+}
+
 
 export const SportsList: SelectItem[] = [
     {value:'goalkeeper', label: 'Goal Keeper'},
@@ -52,4 +57,30 @@ export const CompetencyLevel: SelectItem[] = [
 
 export const Logo = {
     logoUrl: ``
+}
+
+export const RatingLevel: SelectItemNum[] = [
+    {value:0, label: 0},
+    {value:1, label: 1},
+    {value:2, label: 2},
+    {value:3, label: 3},
+    {value:4, label: 4},
+    {value:5, label: 5},
+    {value:6, label: 6},
+    {value:7, label: 7},
+    {value:8, label: 8},
+    {value:9, label: 9},
+    {value:10, label: 10}
+]
+
+export const CommonObject = {
+    KalamQuality: {
+        bannerImg: "../../assets/images/banner/kalam-q/chessB2.jpg",
+        academyText: 'Kalam Chess Associations',
+        groundLabel: 'Add Venue',
+        groundDetails: 'Add Venue Details',
+        groundName: "Venue name",
+        sportType: "chess",
+        ground: "Venue"
+    }
 }

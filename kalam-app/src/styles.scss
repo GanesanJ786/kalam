@@ -232,6 +232,14 @@ button.btn-grnd:disabled {
   background-color: rgba(60, 179, 113) !important;
   color: #fff;
 }
+.yellow-green {
+  background-color: rgba(154, 205, 50, 1) !important;
+  color: #fff;
+}
+.yellow {
+  background-color: rgba(229, 229, 57, 1) !important;
+  color: #2e2e2e;
+}
 .font-0-7em {
   font-size: 0.7em;
 }
@@ -288,3 +296,8 @@ button.btn-grnd:disabled {
 [mat-sort-header].cdk-keyboard-focused .mat-sort-header-container, [mat-sort-header].cdk-program-focused .mat-sort-header-container {
   border-bottom: 0 !important;
 }
+// @media (max-width: 768px) {
+//   .mat-title {
+//     width: 90%; /* Adjust width for mobile screens */
+//   }
+// }

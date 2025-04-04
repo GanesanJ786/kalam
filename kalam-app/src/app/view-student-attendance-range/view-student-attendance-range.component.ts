@@ -6,6 +6,8 @@ import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-stud
 import { StudentDetails } from '../student-form/student-form.component';
 import * as moment from 'moment';
 import { MatTableDataSource } from '@angular/material/table';
+import { environment } from 'src/environments/environment';
+import { CommonObject } from '../constant';
 import * as _ from 'lodash';
 
 const today = new Date();
@@ -28,6 +30,7 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
   dataSource = new MatTableDataSource();
   startDate:  number = 1;
   endDate: number = 7;
+  ground: string = "Ground";
   
   constructor(
     private kalamService: KalamService,
@@ -36,6 +39,10 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: StudentDetails,
   ) { 
     this.student = {} as StudentDetails;
+    if(environment.siteNameObj){
+      let obj = (CommonObject as any)[environment.siteNameObj];
+      this.ground = obj.ground;
+    }
   }
 
   ngOnInit(): void {

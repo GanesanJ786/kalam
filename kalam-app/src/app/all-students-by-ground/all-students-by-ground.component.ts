@@ -20,7 +20,7 @@ export class AllStudentsByGroundComponent implements OnInit {
   title: string = "List of Students in ";
   students: StudentDetails[] = [];
   groundName: string | undefined;
-  displayedColumns: string[] = ['name','institutionName','mobileNum','payment'];
+  displayedColumns: string[] = ['name','institutionName','whatsappNum','payment'];
 
   dataSource = new MatTableDataSource();
 

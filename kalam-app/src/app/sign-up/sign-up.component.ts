@@ -2,6 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Router, ActivatedRoute  } from '@angular/router';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import {
   MatSnackBar,
   MatSnackBarHorizontalPosition,
@@ -24,7 +25,6 @@ export interface RegistrationDetails {
   confirmPassword: string;
   dob: any;
   gender: string;
-  aadharNum: string;
   whatsappNum: string;
   academyName: string;
   academyNum: string;
@@ -57,6 +57,7 @@ export class SignUpComponent implements OnInit {
     private kalamService: KalamService,
     private loaderService: LoaderService,
     private storage: AngularFireStorage, 
+    private afAuth: AngularFireAuth,
     private _snackBar: MatSnackBar) {
     this.registerDeatils = {} as RegistrationDetails;
     this.getAcademyNames();
@@ -70,6 +71,7 @@ export class SignUpComponent implements OnInit {
     {sportName: 'Volleyball', sportValue: 'volleyball'},
     {sportName: 'Cricket', sportValue: 'cricket'},
     {sportName: 'Hockey', sportValue: 'hockey'},
+    {sportName: 'Chess', sportValue: 'chess'}
   ]
   selectedImage: any = null;
   imgSrc: string = "./assets/images/upload.png";
@@ -86,13 +88,15 @@ export class SignUpComponent implements OnInit {
   logoSrc: string = "./assets/images/upload.png";
   title: string = "REGISTRATION FORM";
   owner: boolean = true;
+  otpSent: boolean = false;
+  verificationId: string = '';
 
   ngOnInit(): void {
-
+    this.sports = this.sports.sort((a, b) => a.sportName.localeCompare(b.sportName));
     this.activatedRoute.queryParams
       .subscribe((params:any) => {
         if(params.source == 'edit') {
-          this.owner = this.kalamService.getCoachData().academyId ? false : true;
+          this.owner = this.kalamService.getCoachData().academyOwned === 'Y' ? true : false;
           this.title = "Edit Profile"
           this.editAccess = true;
           this.registerDeatils = {...this.registerDeatils, ...this.kalamService.getCoachData()};
@@ -121,7 +125,6 @@ export class SignUpComponent implements OnInit {
       password: new FormControl(this.registerDeatils.password,[Validators.required]),
       confirmPassword: new FormControl(this.registerDeatils.confirmPassword,[Validators.required]),
       gender: new FormControl(this.registerDeatils.gender, [Validators.required]),
-      aadharNum: new FormControl(this.registerDeatils.aadharNum,[Validators.required]),
       emailId: new FormControl(this.registerDeatils.emailId, [Validators.required, Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
       whatsappNum: new FormControl(this.registerDeatils.whatsappNum, [Validators.required]),
       academyName: new FormControl(this.registerDeatils.academyName,[Validators.required]),
@@ -129,7 +132,9 @@ export class SignUpComponent implements OnInit {
       toCoach: new FormControl(this.registerDeatils.toCoach,[Validators.required]),
       address: new FormControl(this.registerDeatils.address, [Validators.required]),
       academyOwned: new FormControl(this.registerDeatils.academyOwned, [Validators.required]),
-      academyId: new FormControl(this.registerDeatils.academyId, [])
+      academyId: new FormControl(this.registerDeatils.academyId, []),
+      kalamId: new FormControl(this.registerDeatils.kalamId, []),
+      otp: new FormControl("", []),
     });
 
     if(this.editAccess) {
@@ -193,25 +198,35 @@ export class SignUpComponent implements OnInit {
   }
 
   submitData() {
+    let uniqId = "";
+    if(!this.editAccess) {
+      uniqId = this.kalamService.generateUniqueId();
+    }else {
+      uniqId = this.registrationForm.value.kalamId;
+    }
+    
     if(this.selectedImage) {
-      var filePath = `coach/${this.registrationForm.value.name}_${this.registrationForm.value.aadharNum}_${new Date().getTime()}`;
+      var filePath = `coach/${this.registrationForm.value.academyId.split("-").splice(1,2).join("-")}/${uniqId.split("-").splice(1,2).join("-")}`;
       const fileRef = this.storage.ref(filePath);
       this.storage.upload(filePath,this.selectedImage).snapshotChanges().pipe(
         finalize(() => {
           fileRef.getDownloadURL().subscribe((url) => {
-            this.formData(url);
+            this.formData(url, uniqId);
           });
         })
       ).subscribe();
     }else {
-      this.formData();
+      this.formData("", uniqId);
     }
   }
 
-  formData(url?:string) {
+  formData(url:string, uniqId: string) {
     let coachForm: RegistrationDetails = {...this.registrationForm.value};
     let obj = {...this.registrationForm.value}
-    coachForm.kalamId = obj.aadharNum.replaceAll("-",'');
+    coachForm.kalamId = uniqId;
+    if(!coachForm.academyId) {
+      coachForm.academyId = `A${coachForm.kalamId}`
+    }
     if(url) {
       coachForm['imageUrl'] = url;
     }else if(!this.editAccess) {
@@ -239,20 +254,45 @@ export class SignUpComponent implements OnInit {
       }
       this.kalamService.editCoachDetails(coachForm)
     }else {
-      this.kalamService.setCoachProfile(coachForm);
+      //this.kalamService.setCoachProfile(coachForm);
     }
     this.selectedImage = null;
     this.imgSrc = "./assets/images/upload.png";
-    this.loaderService.hide();
+    
     if(this.editAccess) {
+      this.loaderService.hide();
       sessionStorage.setItem('coachDetails', JSON.stringify(coachForm));
       this.router.navigate([`/home`]);
     }else {
-      this.openSnackBar('profileRegisted');
-      this.sendMailer();
-      this.router.navigate([`/login`]);
+      //this.openSnackBar('profileRegisted');
+      //this.sendMailer();
+      this.authEmailSender(coachForm);
+      //this.router.navigate([`/login`]);
     }
     
+  }
+
+  authEmailSender(coachForm: any) {
+    this.afAuth.createUserWithEmailAndPassword(this.registrationForm.value.emailId, this.registrationForm.value.confirmPassword)
+      .then((userCredential) => {
+        this.loaderService.hide();
+        const user = userCredential.user;
+        user?.sendEmailVerification().then(() => {
+          this.kalamService.setCoachProfile(coachForm);
+          console.log('Verification email sent!');
+          this.router.navigate([`/login`]);
+          this.openSnackBar('profileRegisted');
+          sessionStorage.removeItem("coachDetails");
+        }).catch((error) => {
+          console.error('Error sending verification email:', error);
+          alert(error.message);
+        });
+      })
+      .catch((error) => {
+        this.loaderService.hide();
+        console.error('Error during registration:', error);
+        alert(error.message);
+      });
   }
 
   sendMailer() {
@@ -280,7 +320,8 @@ export class SignUpComponent implements OnInit {
       this.horizontalPosition = "center";
       this.verticalPosition = "top";
       duration = 7000;
-      msg = 'You will receive a confirmation email. After you can login.';
+      //msg = 'You will receive a confirmation email. After you can login.';
+      msg = 'A verification email has been sent to your email address.'
     }
 
     this._snackBar.open(msg, '', {
@@ -321,7 +362,7 @@ export class SignUpComponent implements OnInit {
       reader.onload = (e:any) => this.logoSrc = e.target.result;
       reader.readAsDataURL(event.target.files[0]);
       this.selectLogo = event.target.files[0];
-      var filePath = `academy/logo/${this.registrationForm.value.name}_${this.registrationForm.value.aadharNum}_${new Date().getTime()}`;
+      var filePath = `academy/logo/${this.registrationForm.value.academyId.split("-").splice(1,2).join("-")}/${this.registrationForm.value.kalamId.split("-").splice(1,2).join("-")}`;
       const fileRef = this.storage.ref(filePath);
       this.loaderService.show();
       this.storage.upload(filePath,this.selectLogo).snapshotChanges().pipe(
@@ -341,6 +382,31 @@ export class SignUpComponent implements OnInit {
   btnText() {
     return this.editAccess ? "UPDATE" : "CREATE";
   }
+
+  // register() {
+  //   this.afAuth.createUserWithEmailAndPassword(this.registrationForm.value.emailId, this.registrationForm.value.confirmPassword)
+  //     .then((userCredential) => {
+  //       const user = userCredential.user;
+  //       user?.sendEmailVerification().then(() => {
+  //         console.log('Verification email sent!');
+  //       }).catch((error) => {
+  //         console.error('Error sending verification email:', error);
+  //       });
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error during registration:', error);
+  //     });
+
+  //     // this.afAuth.authState.subscribe((user) => {
+  //     //   if (user?.emailVerified) {
+  //     //     alert('Email is verified!');
+  //     //   } else {
+  //     //     alert('Email is not verified.');
+  //     //   }
+  //     // });
+  // }
+
+
   // deleteImg() {
   //   let pictureRef = this.storage.refFromURL("https://firebasestorage.googleapis.com/v0/b/kalam-in.appspot.com/o/academy%2Flogo%2FGanesan%20J_1234-5678-9123_1680353306850?alt=media&token=d39d31ab-1d64-4fbd-8171-900dfa62077f");
   //   pictureRef.delete()
@@ -348,4 +414,44 @@ export class SignUpComponent implements OnInit {
   //       alert("Picture is deleted successfully!");
   //     })
   // };
+
+  // Send OTP to the provided phone number
+  // sendOtp() {
+  //   const appVerifier = new firebase.auth.RecaptchaVerifier(
+  //     'recaptcha-container',
+  //     {
+  //       size: 'invisible',
+  //     }
+  //   );
+
+  //   console.log(appVerifier);
+
+  //   this.afAuth
+  //     .signInWithPhoneNumber("+91" + this.registrationForm.value.whatsappNum.replace(/\s+/g, ""), appVerifier)
+  //     .then((confirmationResult) => {
+  //       this.otpSent = true;
+  //       this.verificationId = confirmationResult.verificationId;
+  //      alert('OTP sent successfully!');
+  //     })
+  //     .catch((error) => {
+  //       alert(error);
+  //     });
+  // }
+
+  // // Verify the entered OTP
+  // verifyOtp() {
+  //   const credential = firebase.auth.PhoneAuthProvider.credential(
+  //     this.verificationId,
+  //     this.registrationForm.value.otp
+  //   );
+
+  //   this.afAuth
+  //     .signInWithCredential(credential)
+  //     .then((result) => {
+  //       alert('User signed in');
+  //     })
+  //     .catch((error) => {
+  //       alert('Error verifying OTP');
+  //     });
+  // }
 }

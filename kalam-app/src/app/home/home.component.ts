@@ -9,7 +9,7 @@ import { KalamService } from '../kalam.service';
 export class HomeComponent implements OnInit {
 
   constructor(private kalamService: KalamService) { 
-    this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    this.owner = this.kalamService.getCoachData().academyOwned === 'Y' ? true : false;
   }
   tabLoadTimes: Date[] = [];
   tabIndex:number = 0;

@@ -1,0 +1,155 @@
+<div>
+    <!-- <div class="rf-header custm-logo" style="background-image: none;">
+        <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
+        <div style="color: #fff;">{{title}} 
+        </div>
+    </div> -->
+    <div class="add-performace-cont">
+        <h1 mat-dialog-title>{{title}}</h1>
+        <form [formGroup]="addStudentPerformance" #form="ngForm">
+            <div class="ratingsSection">
+                <ng-container *ngIf="sportType == 'football'">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Goals</mat-label>
+                        <mat-select formControlName="numberofGoals">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Assists</mat-label>
+                        <mat-select formControlName="assist">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="fill">
+                        <mat-label>Accurate Pass</mat-label>
+                        <mat-select formControlName="accuratePass">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Chance Created</mat-label>
+                        <mat-select formControlName="chanceCreated">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="fill">
+                        <mat-label>Shoot On Target</mat-label>
+                        <mat-select formControlName="shootOnTarget">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Shoot Off Target</mat-label>
+                        <mat-select formControlName="shootOffTarget">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="fill">
+                        <mat-label>Accurate Crosses</mat-label>
+                        <mat-select formControlName="accurateCrosses">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Long Ball Passes</mat-label>
+                        <mat-select formControlName="longBallPass">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="fill">
+                        <mat-label>Tackles Won 1V1</mat-label>
+                        <mat-select formControlName="tacklesWonOnevsOne">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Clearance</mat-label>
+                        <mat-select formControlName="clearance">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="fill">
+                        <mat-label>Heading</mat-label>
+                        <mat-select formControlName="heading">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Recovery</mat-label>
+                        <mat-select formControlName="recovery">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="fill">
+                        <mat-label>Foul Committed</mat-label>
+                        <mat-select formControlName="foulCommited">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Was Fouled</mat-label>
+                        <mat-select formControlName="wasFouled">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="fill">
+                        <mat-label>Game Sense</mat-label>
+                        <mat-select formControlName="gameSense">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                </ng-container>
+                <ng-container *ngIf="sportType == 'chess'">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Match Title</mat-label>
+                        <input matInput formControlName="gameTitle">
+                    </mat-form-field>
+                    <div class="align-item">
+                        <mat-radio-group formControlName="result">
+                            <mat-radio-button value="win" style="margin-right: 0.5rem;">Win</mat-radio-button>
+                            <mat-radio-button  value="loss" style="margin-right: 0.5rem;">Loss</mat-radio-button>
+                            <mat-radio-button  value="tie">Tie</mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="gameDate">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                          </mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Move Accuracy</mat-label>
+                        <mat-select formControlName="moveAccuracy">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Mistake/Blunder</mat-label>
+                        <mat-select formControlName="mistakes">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Time Usage</mat-label>
+                        <input matInput formControlName="timeUsage" placeholder="Specify in minutes">
+                    </mat-form-field>
+                </ng-container>
+            </div>
+            <div mat-dialog-actions style="justify-content: center;">
+                <button mat-button (click)="cancel()">Cancel</button>
+                <button mat-raised-button color="primary" (click)="save()" [disabled]="!addStudentPerformance.valid" color="primary" type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+</div>

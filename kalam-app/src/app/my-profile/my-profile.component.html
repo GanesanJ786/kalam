@@ -1,4 +1,4 @@
-<div class="banner-block">
+<div class="banner-block" [ngStyle]="{'background-image': 'url(' + bgImageUrl + ')'}">
     <div class="trans"></div>
         <div class="banner-content">
             
@@ -8,7 +8,7 @@
             </div>
             <div class="ac-name">
                 <p class="ac-info">{{academyName}}</p>
-                <p class="in-club">Football club in India</p>
+                <p class="in-club">{{academyText}}</p>
             </div>
         </div>
 </div>
@@ -35,7 +35,7 @@
         </div>
     </div> -->
     <div class="ground-add" *ngIf="owner">
-        <button  mat-raised-button color="primary" (click)="addGround()">Add Ground</button>
+        <button  mat-raised-button color="primary" (click)="addGround()">{{groundLabel}}</button>
         <button  mat-raised-button color="primary" (click)="viewCoachData()">Coach Details</button>
         <!-- <button  mat-raised-button color="primary" (click)="applyLeave()">Apply Leave</button> -->
     </div>

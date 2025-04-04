@@ -26,7 +26,7 @@
         
         <div *ngIf="studentListView">
             <div *ngFor="let student of studentList; let index = index">
-                <div class="position-style" *ngIf="!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion">{{getSportLabel(student.playingPostion)}}</div>
+                <div class="position-style" *ngIf="sportType =='football' && (!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion)">{{getSportLabel(student.playingPostion)}}</div>
                 <div class="team-list">
                     <div class="edit-btn" *ngIf="owner">
                         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="edit student information">
@@ -44,9 +44,9 @@
                           </mat-menu>
                     </div>
                     <button class="viewStudent" (click)="viewStudentProfile(student)">
-                        <!-- <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
-                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template> -->
-                        <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
+                        <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
+                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
+                        <!-- <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/> -->
                     </button>
                     <div class="team-info">
                         {{student.name}}

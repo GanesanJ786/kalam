@@ -7,6 +7,9 @@ import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ViewStudentAttendanceDateWiseComponent } from '../view-student-attendance-date-wise/view-student-attendance-date-wise.component';
+import { environment } from 'src/environments/environment';
+import { CommonObject } from '../constant';
+
 
 const today = new Date();
 const month = today.getMonth();
@@ -30,6 +33,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
   attendanceRangeGroup: any;
   startDate:  number = 1;
   endDate: number = 7;
+  ground: string = "Ground";
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) { 
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
@@ -61,6 +65,10 @@ export class ViewCoachAttendanceComponent implements OnInit {
       });
       this.coachList = obj;
     });
+    if(environment.siteNameObj){
+      let obj = (CommonObject as any)[environment.siteNameObj];
+      this.ground = obj.ground;
+    }
   }
 
   
@@ -77,23 +85,27 @@ export class ViewCoachAttendanceComponent implements OnInit {
   }
 
   viewStudentAttendance(coach: any) {
+    let stopLoop = false;
     this.kalamService.getStudentAttendanceByCoachDatewise(coach).subscribe((coach:any) => {
-      let obj = coach.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
-      //console.log(obj)
-      const dialogRef = this.dialog.open(ViewStudentAttendanceDateWiseComponent, {
-        data: obj
-      });
-  
-      dialogRef.afterClosed().subscribe(result => {
-        //console.log('The dialog was closed');
-        //console.log(result);
-        
-      });
+      if (!stopLoop) {
+        let obj = coach.map((document: any) => {
+          return {
+            id: document.payload.doc.id,
+            ...document.payload.doc.data() as {}
+          }
+        });
+        //console.log(obj)
+        const dialogRef = this.dialog.open(ViewStudentAttendanceDateWiseComponent, {
+          data: obj
+        });
+    
+        dialogRef.afterClosed().subscribe(result => {
+          //console.log('The dialog was closed');
+          //console.log(result);
+          
+        });
+        stopLoop = true;
+      }
     });
     
   }

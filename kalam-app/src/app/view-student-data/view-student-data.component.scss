@@ -39,3 +39,18 @@
     text-align: center;
     font-size: 0.7rem;
 }
+.performance-container {
+    text-align: center;
+    margin: 0.5rem 0.5rem 2rem 0.5rem;
+}
+.custGrid-6 {
+    grid-template: auto/16.66% 16.66% 16.66% 16.66% 16.66% 16.66%;
+}
+.title-case {
+    text-transform: capitalize;
+}
+.text-ellip {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

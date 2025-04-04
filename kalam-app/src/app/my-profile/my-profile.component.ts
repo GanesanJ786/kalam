@@ -7,6 +7,8 @@ import { RegistrationDetails } from '../sign-up/sign-up.component';
 import * as moment from 'moment';
 import { StudentDetails } from '../student-form/student-form.component';
 import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-students-by-ground.component';
+import { environment } from 'src/environments/environment';
+import { CommonObject } from '../constant';
 
 @Component({
   selector: 'app-my-profile',
@@ -27,13 +29,16 @@ export class MyProfileComponent implements OnInit {
   addressData: any;
   allStudents: StudentDetails[] = [];
   inCoachId: string = "";
+  bgImageUrl: string = '../../assets/logo/football-ground.png';
+  academyText: string = 'Football club in India';
+  groundLabel: string = 'Add Ground';
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) {
     this.groundList = [];
     this.academyName = this.kalamService.getCoachData().academyName;
     this.logo = this.kalamService.getCoachData().logoUrl;
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    this.owner = this.kalamService.getCoachData().academyOwned === 'Y' ? true : false;
     this.inCoachId = this.kalamService.getCoachData().kalamId;
 
     if(!this.owner) {
@@ -77,10 +82,14 @@ export class MyProfileComponent implements OnInit {
           });
           this.attendanceLoop(coachDataIn, coachDataOut);
         })
-
       })
-
     })
+    if(environment.siteNameObj){
+      let obj = (CommonObject as any)[environment.siteNameObj];
+      this.bgImageUrl = obj.bannerImg;
+      this.academyText = obj.academyText;
+      this.groundLabel = obj.groundLabel;
+    }
    }
 
   coachDetails: RegistrationDetails = {} as RegistrationDetails;

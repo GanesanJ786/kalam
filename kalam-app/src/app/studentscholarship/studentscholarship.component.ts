@@ -41,7 +41,7 @@ export class StudentscholarshipComponent implements OnInit {
   constructor(private router: Router, private loaderService: LoaderService, public dialog: MatDialog,  private kalamService: KalamService) { 
    
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    this.owner = this.kalamService.getCoachData().academyOwned === 'Y' ? true : false;
     this.kalamService.getAllApprovedStudent(this.coachId).subscribe((res: any) => {
       let data = res.map((document: any) => {
         return {

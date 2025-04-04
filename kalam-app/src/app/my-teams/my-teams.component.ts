@@ -10,6 +10,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { ViewStudentDataComponent } from '../view-student-data/view-student-data.component';
 import { ViewStudentAttendanceRangeComponent } from '../view-student-attendance-range/view-student-attendance-range.component';
+import { environment } from 'src/environments/environment';
+import { CommonObject } from '../constant';
 
 @Component({
   selector: 'app-my-teams',
@@ -20,7 +22,7 @@ export class MyTeamsComponent implements OnInit {
 
   constructor(private router: Router, private loaderService: LoaderService, public dialog: MatDialog,  private kalamService: KalamService) {
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    this.owner = this.kalamService.getCoachData().academyOwned === 'Y' ? true : false;
     this.kalamService.getStudentDetails(this.coachId).subscribe((res: any) => {
       let data = res.map((document: any) => {
         return {
@@ -42,6 +44,10 @@ export class MyTeamsComponent implements OnInit {
     });
 
     //this.getStudentAttendance();
+    if(environment.siteNameObj){
+      let obj = (CommonObject as any)[environment.siteNameObj];
+      this.sportType = obj.sportType;
+    }
   }
   ageType: string = '';
   studentList: any;
@@ -54,6 +60,7 @@ export class MyTeamsComponent implements OnInit {
   studentListView: boolean = true;
   viewStudentAttendance: boolean = false;
   allStudentAttendance: any = [];
+  sportType: string = "football";
 
   ngOnInit(): void {
     

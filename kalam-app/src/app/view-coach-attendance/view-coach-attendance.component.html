@@ -28,7 +28,7 @@
         <div *ngIf="coachView.length > 0">
             <div class="grid-container custGrid-6 font-0-7em">
                 <div class="header">Name</div>
-                <div class="header">Ground</div>
+                <div class="header">{{ground}}</div>
                 <div class="header">Topics</div>
                 <div class="header">Notes</div>
                 <div class="header">Log In Time</div>
@@ -42,10 +42,10 @@
                     <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{checkValue(coach.topics)}}</div>
                     <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{checkValue(coach.notes)}}</div>
                     <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{logInValue(coach)}}
-                        <span *ngIf="coach.loginAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></span>
+                        <div *ngIf="coach.loginAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></div>
                     </div>
                     <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{coach.logOffDataTime}}
-                        <span *ngIf="coach.logoutAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></span>
+                        <div *ngIf="coach.logoutAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></div>
                     </div>
                 </ng-container>
               </div>

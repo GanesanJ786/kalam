@@ -8,9 +8,9 @@
                 </div>
                 <div class="student-info">
                     <div class="s-image">
-                        <!-- <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
-                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template> -->
-                        <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
+                        <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
+                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
+                        <!-- <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/> -->
                     </div>
                     <div class="s-name">{{student.name}}</div>
                     <div class="s-ground" *ngIf="student?.competency" style="padding-bottom: 0;font-weight: 500;">{{student.competency}}</div>
@@ -20,34 +20,36 @@
                         <span *ngIf="student?.scholarship && student?.scholarship !== '0'"> Scholarship ({{student.scholarship}})</span>
                     </div>
                 </div>
-                <div class="s-bacis">
-                    <div class="s-cb" style="color: rgba(255,255,255,0.7);">
-                        <div>POSITION</div>
-                        <div>AADHAR</div>
-                        <div>DOB</div>
+                <ng-container *ngIf="sportType == 'football'">
+                    <div class="s-bacis">
+                        <div class="s-cb" style="color: rgba(255,255,255,0.7);">
+                            <div>POSITION</div>
+                            <!-- <div>AADHAR</div> -->
+                            <div>DOB</div>
+                        </div>
+                        <div class="s-cb">
+                            <div>{{getSportLabel(student.playingPostion)}}</div>
+                            <!-- <div>{{student.aadharNum}}</div> -->
+                            <div>{{student.dob}}</div>
+                        </div>
                     </div>
-                    <div class="s-cb">
-                        <div>{{getSportLabel(student.playingPostion)}}</div>
-                        <div>{{student.aadharNum}}</div>
-                        <div>{{student.dob}}</div>
+                    <div class="student-p">
+                        <div class="s-physic" style="color: rgba(255,255,255,0.7);font-size: 0.8rem;">
+                            <!-- <div style="width: 30%;text-align: left;">POSITION</div> -->
+                            <div>HEIGHT</div>
+                            <div>WEIGHT</div>
+                            <!-- <div>AGE</div> -->
+                            <div>JERSY</div>
+                        </div>
+                        <div class="s-physic">
+                            <!-- <div style="width: 30%;text-align: left;">{{student.playingPostion}}</div> -->
+                            <div>{{student.height}}</div>
+                            <div>{{student.weight}}</div>
+                            <!-- <div>{{student.age}}</div> -->
+                            <div>{{student.jersySize}}</div>
+                        </div>
                     </div>
-                </div>
-                <div class="student-p">
-                    <div class="s-physic" style="color: rgba(255,255,255,0.7);font-size: 0.8rem;">
-                        <!-- <div style="width: 30%;text-align: left;">POSITION</div> -->
-                        <div>HEIGHT</div>
-                        <div>WEIGHT</div>
-                        <!-- <div>AGE</div> -->
-                        <div>JERSY</div>
-                    </div>
-                    <div class="s-physic">
-                        <!-- <div style="width: 30%;text-align: left;">{{student.playingPostion}}</div> -->
-                        <div>{{student.height}}</div>
-                        <div>{{student.weight}}</div>
-                        <!-- <div>{{student.age}}</div> -->
-                        <div>{{student.jersySize}}</div>
-                    </div>
-                </div>
+                </ng-container>
                 <!-- <div>
                     <mat-accordion>
                         
@@ -70,4 +72,29 @@
                 <button mat-button (click)="cancel()">Cancel</button>
                 <button mat-raised-button color="primary" (click)="save()" color="primary" type="submit">Save</button>
             </div> -->
+            <div class="performance-container" *ngIf="sportType == 'chess'">
+                <button mat-raised-button color="primary"  (click)="addPerform()" class="">Create a Performance</button>
+            </div>
+            <ng-container *ngIf="sportType == 'chess'">
+                <div class="perTable">
+                    <div *ngIf="studentPerData.length > 0">
+                        <div class="grid-container custGrid-6 font-0-7em">
+                            <div class="header">Date</div>
+                            <div class="header">Match Title</div>
+                            <div class="header">Result</div>
+                            <div class="header">Move Accuracy</div>
+                            <div class="header">Mistakes</div>
+                            <div class="header">Time Usage</div>  
+                            <ng-container *ngFor="let perData of studentPerData">
+                                <div class="green">{{perData.gameDate}}</div>
+                                <div class="green text-ellip" (click)="showTitle(perData.gameTitle)">{{perData.gameTitle}}</div>
+                                <div [ngClass]="resultClass(perData.result)" class="title-case">{{perData.result}}</div>
+                                <div class="green">{{perData.moveAccuracy}}</div>
+                                <div class="green">{{perData.mistakes}}</div>
+                                <div class="green">{{perData.timeUsage}}</div>
+                            </ng-container>
+                          </div>
+                    </div>
+                </div>
+            </ng-container>
     </ng-container>

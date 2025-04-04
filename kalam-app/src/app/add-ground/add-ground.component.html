@@ -1,10 +1,10 @@
 <ng-container [ngSwitch]="data.dialogType">
     <ng-container *ngSwitchCase="'Ground'">
-        <h1 mat-dialog-title>Add Ground Details</h1>
+        <h1 mat-dialog-title>{{groundDetails}}</h1>
         <form [formGroup]="addGround" #form="ngForm">
             <div mat-dialog-content class="groundInfo">
             <mat-form-field appearance="fill">
-                <mat-label>Ground name</mat-label>
+                <mat-label>{{groundName}}</mat-label>
                 <input matInput formControlName="groundName">
             </mat-form-field>
             <mat-form-field appearance="fill">
