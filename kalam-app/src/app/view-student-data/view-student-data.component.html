@@ -82,7 +82,7 @@
                             <div class="header">Date</div>
                             <div class="header">Match Title</div>
                             <div class="header">Result</div>
-                            <div class="header">Move Accuracy</div>
+                            <div class="header">Accuracy</div>
                             <div class="header">Mistakes</div>
                             <div class="header">Time Usage</div>  
                             <ng-container *ngFor="let perData of studentPerData">
@@ -91,7 +91,7 @@
                                 <div [ngClass]="resultClass(perData.result)" class="title-case">{{perData.result}}</div>
                                 <div class="green">{{perData.moveAccuracy}}</div>
                                 <div class="green">{{perData.mistakes}}</div>
-                                <div class="green">{{perData.timeUsage}}</div>
+                                <div class="green">{{perData.timeUsage}} Mins</div>
                             </ng-container>
                           </div>
                     </div>

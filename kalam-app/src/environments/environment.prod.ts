@@ -13,8 +13,6 @@ export const environment = {
   production: true,
   mapUrl: "https://api.opencagedata.com/",
   mapAuth: "7e8c288584fb43e2a2b2006254330644",
-  siteName: 'kalam-quality/VP7oTHU04NqvovnQtWzG',
-  siteNameObj: 'KalamQuality'
-  //siteName: '',
+  siteNameObj: 'KalamQuality',
   //siteNameObj: ''
 };

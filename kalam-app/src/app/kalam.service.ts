@@ -7,13 +7,17 @@ import { RegistrationDetails } from './sign-up/sign-up.component';
 import { StudentPerformance, ChessPerformance } from './student-performance/student-performance.component';
 import { StudentDetails } from './student-form/student-form.component'; 
 import { environment } from 'src/environments/environment';
+import { CommonObject } from './constant';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KalamService {
 
-  constructor(private fireStore: AngularFirestore, private http: HttpClient) { }
+  constructor(private fireStore: AngularFirestore, private http: HttpClient) { 
+    let obj = (CommonObject as any)[environment.siteNameObj];
+    this.siteName = obj.siteName ? `${obj.siteName}/` : "";
+  }
 
   getCoachInfo: RegistrationDetails = {} as RegistrationDetails;
   //apiUrl: string = "https://kalam-nodemailer.onrender.com"
@@ -24,6 +28,7 @@ export class KalamService {
   editStudentData: any = [];
   paidStudentList: any = [];
   getCoachesAttendance: any = [];
+  siteName = "";
 
   convertToISO(dateString: string) {
     // Split the MM-DD-YYYY string into parts
@@ -35,7 +40,7 @@ export class KalamService {
     return isoDate;
   }
 
-  siteName = environment.siteName ? `${environment.siteName}/` : "";
+  
 
   generateUniqueId() {
     const now = new Date();

@@ -75,6 +75,8 @@ export const RatingLevel: SelectItemNum[] = [
 
 export const CommonObject = {
     KalamQuality: {
+        siteName: 'kalam-quality/VP7oTHU04NqvovnQtWzG',
+        siteNameObj: 'KalamQuality',
         bannerImg: "../../assets/images/banner/kalam-q/chessB2.jpg",
         academyText: 'Kalam Chess Associations',
         groundLabel: 'Add Venue',
