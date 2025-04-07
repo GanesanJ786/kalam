@@ -29,7 +29,7 @@ export class MyProfileComponent implements OnInit {
   addressData: any;
   allStudents: StudentDetails[] = [];
   inCoachId: string = "";
-  bgImageUrl: string = '../../assets/logo/football-ground.png';
+  bgImageUrl: string = './assets/logo/football-ground.png';
   academyText: string = 'Football club in India';
   groundLabel: string = 'Add Ground';
 

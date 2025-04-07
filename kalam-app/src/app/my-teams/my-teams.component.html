@@ -45,8 +45,8 @@
                     </div>
                     <button class="viewStudent" (click)="viewStudentProfile(student)">
                         <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
-                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
-                        <!-- <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/> -->
+                        <ng-template #dummyImg><img class="dummy-img" src="./assets/logo/profileImg.png" alt="profile image"/></ng-template>
+                        <!-- <img class="dummy-img" src="./assets/logo/profileImg.png" alt="profile image"/> -->
                     </button>
                     <div class="team-info">
                         {{student.name}}

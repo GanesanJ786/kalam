@@ -1,9 +1,9 @@
-<div class="banner-block" [ngStyle]="{'background-image': 'url(' + bgImageUrl + ')'}">
+<div class="banner-block" [ngStyle]="{'background-image': 'url('+bgImageUrl+')'}">
     <div class="trans"></div>
         <div class="banner-content">
             
             <div class="ac-logo">
-                <img class="ac-img" *ngIf="!logo" src="../../assets/logo/kLogo.png" alt="academy image"/>
+                <img class="ac-img" *ngIf="!logo" src="./assets/logo/kLogo.png" alt="academy image"/>
                 <img class="ac-img" *ngIf="logo" [src]="logo" alt="academy image"/>
             </div>
             <div class="ac-name">
@@ -22,7 +22,7 @@
     <!-- <div class="user-details">
         <div>
             <img class="profile-img" *ngIf="coachDetails.imageUrl; else dummyImg" [src]="coachDetails.imageUrl" alt="profile image"/>
-            <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
+            <ng-template #dummyImg><img class="dummy-img" src="./assets/logo/profileImg.png" alt="profile image"/></ng-template>
         </div>
         <div>
             {{coachDetails.name}}
