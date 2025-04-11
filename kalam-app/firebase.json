@@ -4,6 +4,7 @@
   },
   "hosting":[
     {
+      "target": "kalam-app",
       "public": "dist/kalam-app",
       "ignore": [
         "firebase.json",
