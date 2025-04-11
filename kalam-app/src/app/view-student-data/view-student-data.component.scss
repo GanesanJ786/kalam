@@ -39,3 +39,34 @@
     text-align: center;
     font-size: 0.7rem;
 }
+.student-container, .stud-cont {
+    padding: 0.5rem;
+}
+.performance-container {
+    text-align: right;
+    padding: 0.5rem 0;
+}
+.stud-cont {
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+    font-size: smaller;
+}
+.match-detail {
+    display: flex;
+    font-weight: 700;
+}
+.stuPerfList {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .5rem;
+}
+.list-cont {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    display: grid;
+    align-items: center;
+    gap: 0.5rem;
+}
+.list-cont div:last-child {
+    text-align: center;
+}

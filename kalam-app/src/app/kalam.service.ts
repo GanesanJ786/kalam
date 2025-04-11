@@ -5,6 +5,7 @@ import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { StudentData, UserLogin } from './login/login.component';
 import { RegistrationDetails } from './sign-up/sign-up.component';
 import { StudentDetails } from './student-form/student-form.component'; 
+import { StudentPerformance } from './student-performance/student-performance.component';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -38,6 +39,14 @@ export class KalamService {
     this.getCoachesAttendance = [];
   }
 
+  addStudentPerformace(studentPerformance: StudentPerformance) {
+    this.fireStore.collection('studentsPerformance').add({...studentPerformance});
+  }
+
+  getStudentPerformance(kalamId: string) {
+    return this.fireStore.collection(`studentsPerformance`, ref => ref.where('kalamId', '==', `${kalamId}`)).snapshotChanges();
+  }
+
   getAllApprovedStudent(coachId: any) {
     return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`).where("approved", "==", true)).snapshotChanges();
   }
@@ -53,6 +62,10 @@ export class KalamService {
   setStudentDetails(list: StudentDetails) {
     this.fireStore.collection("studentDetails").add({...list});
   }
+
+  // addStudentPerformace(id: string, studentPerformance: StudentPerformance) {
+  //   this.fireStore.collection("studentDetails/").doc(id).collection("performance").add({...studentPerformance});
+  // }
 
   editStudentDetails(item: StudentDetails) {
     this.fireStore.doc("studentDetails/"+item.id).update(item);

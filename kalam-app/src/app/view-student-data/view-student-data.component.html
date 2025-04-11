@@ -1,25 +1,28 @@
 <ng-container>
-    <ng-container> 
-            <div mat-dialog-content style="margin: 0;padding: 0;">
-                <div class="rf-header custm-logo" style="background-image: none;">
-                    <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
-                    <div style="color: #fff;">{{title}} 
-                    </div>
+    <ng-container>
+        <div mat-dialog-content style="margin: 0;padding: 0;max-height: 100%;">
+            <div class="rf-header custm-logo" style="background-image: none;">
+                <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
+                <div style="color: #fff;">{{title}}
                 </div>
-                <div class="student-info">
-                    <div class="s-image">
-                        <!-- <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
+            </div>
+            <div class="student-info">
+                <div class="s-image">
+                    <!-- <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
                         <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template> -->
-                        <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
-                    </div>
-                    <div class="s-name">{{student.name}}</div>
-                    <div class="s-ground" *ngIf="student?.competency" style="padding-bottom: 0;font-weight: 500;">{{student.competency}}</div>
-                    
-                    <div class="s-ground">{{student.groundName}} 
-                        <span style="text-transform: uppercase;">({{student.underAge}})</span>
-                        <span *ngIf="student?.scholarship && student?.scholarship !== '0'"> Scholarship ({{student.scholarship}})</span>
-                    </div>
+                    <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image" />
                 </div>
+                <div class="s-name">{{student.name}}</div>
+                <div class="s-ground" *ngIf="student?.competency" style="padding-bottom: 0;font-weight: 500;">
+                    {{student.competency}}</div>
+
+                <div class="s-ground">{{student.groundName}}
+                    <span style="text-transform: uppercase;">({{student.underAge}})</span>
+                    <span *ngIf="student?.scholarship && student?.scholarship !== '0'"> Scholarship
+                        ({{student.scholarship}})</span>
+                </div>
+            </div>
+            <div class="student-container">
                 <div class="s-bacis">
                     <div class="s-cb" style="color: rgba(255,255,255,0.7);">
                         <div>POSITION</div>
@@ -48,25 +51,87 @@
                         <div>{{student.jersySize}}</div>
                     </div>
                 </div>
-                <!-- <div>
-                    <mat-accordion>
-                        
-                        <mat-expansion-panel (opened)="panelOpenState = true"
-                                             (closed)="panelOpenState = false">
-                          <mat-expansion-panel-header>
-                            <mat-panel-title>
-                              Self aware panel
-                            </mat-panel-title>
-                             <mat-panel-description>
-                              Currently I am {{panelOpenState ? 'open' : 'closed'}}
-                            </mat-panel-description> 
-                          </mat-expansion-panel-header>
-                          <p>I'm visible because I am open</p>
-                        </mat-expansion-panel>
-                      </mat-accordion>
-                </div> -->
+
+                <div class="performance-container">
+                    <button mat-raised-button color="primary" (click)="addPerform()" class="">Add Performance</button>
+                </div>
+                <ng-container *ngIf="studentPerData.length > 0">
+                    <ng-container *ngFor="let perData of studentPerData">
+                        <div class="stud-cont">
+                            <div class="match-detail">
+                                <div>{{perData.gameTitle}}</div>
+                            </div>
+                            <div class="match-detail">
+                                <div>{{perData.gameDate}}</div>
+                            </div>
+                            <div class="stuPerfList">
+                                <div class="list-cont">
+                                    <div>Goals</div>
+                                    <div>{{perData.numberofGoals}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Fouled</div>
+                                    <div>{{perData.wasFouled}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Foul Committed</div>
+                                    <div>{{perData.foulCommited}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Game Sense</div>
+                                    <div>{{perData.gameSense}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Accurate Crosses</div>
+                                    <div>{{perData.accurateCrosses}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Accurate Pass</div>
+                                    <div>{{perData.accuratePass}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Long Pass</div>
+                                    <div>{{perData.longBallPass}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Assist</div>
+                                    <div>{{perData.assist}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Chance Crerated</div>
+                                    <div>{{perData.chanceCreated}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Clearance</div>
+                                    <div>{{perData.clearance}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Heading</div>
+                                    <div>{{perData.heading}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Recovery</div>
+                                    <div>{{perData.recovery}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Shoot Off</div>
+                                    <div>{{perData.shootOffTarget}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Shoot On</div>
+                                    <div>{{perData.shootOnTarget}}</div>
+                                </div>
+                                <div class="list-cont">
+                                    <div>Tackles (1vs1)</div>
+                                    <div>{{perData.tacklesWonOnevsOne}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </ng-container>
             </div>
-            <!-- <div mat-dialog-actions style="justify-content: center;">
+        </div>
+        <!-- <div mat-dialog-actions style="justify-content: center;">
                 <button mat-button (click)="cancel()">Cancel</button>
                 <button mat-raised-button color="primary" (click)="save()" color="primary" type="submit">Save</button>
             </div> -->

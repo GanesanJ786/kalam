@@ -53,6 +53,7 @@ import { AllStudentsByGroundComponent } from './all-students-by-ground/all-stude
 import { StudentscholarshipComponent } from './studentscholarship/studentscholarship.component';
 import { ViewStudentAttendanceRangeComponent } from './view-student-attendance-range/view-student-attendance-range.component';
 import { ViewStudentAttendanceDateWiseComponent } from './view-student-attendance-date-wise/view-student-attendance-date-wise.component';
+import { StudentPerformanceComponent } from './student-performance/student-performance.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { ViewStudentAttendanceDateWiseComponent } from './view-student-attendanc
     AllStudentsByGroundComponent,
     StudentscholarshipComponent,
     ViewStudentAttendanceRangeComponent,
-    ViewStudentAttendanceDateWiseComponent
+    ViewStudentAttendanceDateWiseComponent,
+    StudentPerformanceComponent
   ],
   imports: [
     HttpClientModule,
