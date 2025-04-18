@@ -31,7 +31,7 @@
                     <mat-label>Email ID</mat-label>
                     <input matInput formControlName="emailId">
                 </mat-form-field>
-                <div class="brk-field">
+                <div class="brk-field" *ngIf="!editAccess">
                     <mat-form-field appearance="fill" style="width: 45%;">
                         <mat-label>Password</mat-label>
                         <input matInput type="password" formControlName="password">

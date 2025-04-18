@@ -155,6 +155,23 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   }
 
+  forgot(){
+    this.loaderService.show();
+    this.afAuth.sendPasswordResetEmail(this.signInForm.value.username)
+      .then(() => {
+        this.loaderService.hide();
+        alert("Password reset email sent")
+        console.log("Password reset email sent");
+        // Display success message
+      })
+      .catch((error) => {
+        this.loaderService.hide();
+        alert(`Error sending password reset email:, ${error.message}`)
+        console.error("Error sending password reset email:", error.message);
+        // Display error message
+      });
+  }
+
   signUp() {
     this.router.navigate([`/sign-up`]);
   }

@@ -101,7 +101,7 @@ export class KalamService {
   }
 
   loginDetails(query:UserLogin) {
-    return this.fireStore.collection(`${this.siteName}coachDetails`, ref => ref.where('emailId', '==', `${query.username}`).where("password", "==", `${query.password}`)).snapshotChanges();
+    return this.fireStore.collection(`${this.siteName}coachDetails`, ref => ref.where('emailId', '==', `${query.username}`)).snapshotChanges();
   }
 
   getCoachData() {

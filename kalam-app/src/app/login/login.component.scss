@@ -27,6 +27,17 @@
     // height: 30vh;
     justify-content: start;
   }
+  .forgot-pwd {
+    position: relative;
+  }
+  .forgot-pwd div{
+    font-size: 12px;
+    margin-left: -85px;
+    padding: 0;
+    color: #3f51b5;
+    margin-top: -10px;
+    cursor: pointer;
+  }
   ::ng-deep .login-content .mat-form-field-appearance-fill .mat-form-field-flex {
     background-color: #f1f1f1;
     padding: 0;

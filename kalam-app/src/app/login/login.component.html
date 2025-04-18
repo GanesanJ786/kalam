@@ -10,6 +10,9 @@
                 <mat-label>Password</mat-label>
                 <input type="password" matInput formControlName="password">
             </mat-form-field>
+            <div class="forgot-pwd" *ngIf="signInForm.controls['username'].value">
+              <div mat-button (click)="forgot()">Forgot password?</div>
+            </div>
               <!-- <mat-form-field appearance="fill">
                 <mat-label>Select</mat-label>
                 <mat-select>
@@ -26,7 +29,7 @@
         </div>
    
       <div class="login-footer">
-         <button mat-raised-button color="primary" (click)="onSubmit()">Login</button>
+         <button mat-raised-button type="submit" color="primary" (click)="onSubmit()">Login</button>
          <div style="margin-top: 1rem;">
             Don't have an account? <button (click)="signUp()" mat-button color="primary" style="padding: 0;min-width: auto;">Sign Up</button>
          </div>
