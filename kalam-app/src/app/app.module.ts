@@ -54,6 +54,7 @@ import { StudentscholarshipComponent } from './studentscholarship/studentscholar
 import { ViewStudentAttendanceRangeComponent } from './view-student-attendance-range/view-student-attendance-range.component';
 import { ViewStudentAttendanceDateWiseComponent } from './view-student-attendance-date-wise/view-student-attendance-date-wise.component';
 import { StudentPerformanceComponent } from './student-performance/student-performance.component';
+import { StudentAnalyticsComponent } from './student-analytics/student-analytics.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { StudentPerformanceComponent } from './student-performance/student-perfo
     StudentscholarshipComponent,
     ViewStudentAttendanceRangeComponent,
     ViewStudentAttendanceDateWiseComponent,
-    StudentPerformanceComponent
+    StudentPerformanceComponent,
+    StudentAnalyticsComponent
   ],
   imports: [
     HttpClientModule,
