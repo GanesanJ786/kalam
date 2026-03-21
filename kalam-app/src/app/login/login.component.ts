@@ -5,10 +5,10 @@ import { Router } from '@angular/router';
 import { KalamService } from 'src/app/kalam.service';
 import { RegistrationDetails } from '../sign-up/sign-up.component';
 import {
-  MatLegacySnackBar as MatSnackBar,
-  MatLegacySnackBarHorizontalPosition as MatSnackBarHorizontalPosition,
-  MatLegacySnackBarVerticalPosition as MatSnackBarVerticalPosition,
-} from '@angular/material/legacy-snack-bar';
+  MatSnackBar,
+  MatSnackBarHorizontalPosition as MatSnackBarHorizontalPosition,
+  MatSnackBarVerticalPosition as MatSnackBarVerticalPosition,
+} from '@angular/material/snack-bar';
 import { LoaderService } from '../loader.service';
 
 export interface UserLogin {

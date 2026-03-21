@@ -9,7 +9,7 @@ import { finalize } from 'rxjs/operators';
 import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
 import { CompetencyLevel, Scholarship, SelectItem } from '../constant';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export interface StudentDetails {
   id?: string;

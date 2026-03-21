@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-  HTTP_INTERCEPTORS
-} from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,22 +11,22 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 
-import { MatLegacyFormFieldModule as MatFormFieldModule } from '@angular/material/legacy-form-field';
-import { MatLegacyInputModule as MatInputModule } from '@angular/material/legacy-input'
-import { MatLegacyButtonModule as MatButtonModule} from '@angular/material/legacy-button';
+import { MatFormFieldModule as MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule as MatInputModule } from '@angular/material/input'
+import { MatButtonModule as MatButtonModule} from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
-import { MatLegacyRadioModule as MatRadioModule } from '@angular/material/legacy-radio';
-import { MatLegacySelectModule as MatSelectModule } from '@angular/material/legacy-select';
+import { MatRadioModule as MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule as MatSelectModule } from '@angular/material/select';
 import { MatIconModule } from '@angular/material/icon';
-import { MatLegacyTabsModule as MatTabsModule } from '@angular/material/legacy-tabs';
-import { MatLegacySnackBarModule as MatSnackBarModule } from '@angular/material/legacy-snack-bar';
-import { MatLegacyProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/legacy-progress-spinner';
-import { MatLegacyDialogModule as MatDialogModule } from '@angular/material/legacy-dialog';
-import { MatLegacyMenuModule as MatMenuModule } from '@angular/material/legacy-menu';
+import { MatTabsModule as MatTabsModule } from '@angular/material/tabs';
+import { MatSnackBarModule as MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule as MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialogModule as MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule as MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
+import { MatTableModule as MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 
 
@@ -56,65 +54,59 @@ import { ViewStudentAttendanceDateWiseComponent } from './view-student-attendanc
 import { StudentPerformanceComponent } from './student-performance/student-performance.component';
 import { StudentAnalyticsComponent } from './student-analytics/student-analytics.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    StudentFormComponent,
-    SignUpComponent,
-    HomeComponent,
-    MyProfileComponent,
-    MyTeamsComponent,
-    AadharNumberDirective,
-    LoaderComponent,
-    AddGroundComponent,
-    ViewCoachAttendanceComponent,
-    NewCoachApproveComponent,
-    NewStudentsComponent,
-    HeaderComponent,
-    ApprovePaymentComponent,
-    ViewStudentDataComponent,
-    AllStudentsByGroundComponent,
-    StudentscholarshipComponent,
-    ViewStudentAttendanceRangeComponent,
-    ViewStudentAttendanceDateWiseComponent,
-    StudentPerformanceComponent,
-    StudentAnalyticsComponent
-  ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatGridListModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatSelectModule,
-    MatRadioModule,
-    MatIconModule,
-    MatTabsModule,
-    MatSnackBarModule,
-    MatProgressSpinnerModule,
-    MatDialogModule,
-    MatMenuModule,
-    MatExpansionModule,
-    MatTableModule,
-    MatSortModule,
-    AngularFireModule.initializeApp(environment.firebase),
-    NgIdleKeepaliveModule.forRoot()
-  ],
-  providers: [
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LoaderInterceptor,
-      multi: true,
-    }
-],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        LoginComponent,
+        StudentFormComponent,
+        SignUpComponent,
+        HomeComponent,
+        MyProfileComponent,
+        MyTeamsComponent,
+        AadharNumberDirective,
+        LoaderComponent,
+        AddGroundComponent,
+        ViewCoachAttendanceComponent,
+        NewCoachApproveComponent,
+        NewStudentsComponent,
+        HeaderComponent,
+        ApprovePaymentComponent,
+        ViewStudentDataComponent,
+        AllStudentsByGroundComponent,
+        StudentscholarshipComponent,
+        ViewStudentAttendanceRangeComponent,
+        ViewStudentAttendanceDateWiseComponent,
+        StudentPerformanceComponent,
+        StudentAnalyticsComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatGridListModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSelectModule,
+        MatRadioModule,
+        MatIconModule,
+        MatTabsModule,
+        MatSnackBarModule,
+        MatProgressSpinnerModule,
+        MatDialogModule,
+        MatMenuModule,
+        MatExpansionModule,
+        MatTableModule,
+        MatSortModule,
+        AngularFireModule.initializeApp(environment.firebase),
+        NgIdleKeepaliveModule.forRoot()], providers: [
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: LoaderInterceptor,
+            multi: true,
+        },
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }

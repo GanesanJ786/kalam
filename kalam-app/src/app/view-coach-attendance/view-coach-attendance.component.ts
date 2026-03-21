@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { KalamService } from '../kalam.service';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ViewStudentAttendanceDateWiseComponent } from '../view-student-attendance-date-wise/view-student-attendance-date-wise.component';

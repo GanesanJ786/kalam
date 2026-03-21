@@ -6,7 +6,7 @@ import { LoaderService } from '../loader.service';
 import { StudentDetails } from '../student-form/student-form.component';
 import * as moment from 'moment';
 import * as _ from "lodash";
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { ViewStudentDataComponent } from '../view-student-data/view-student-data.component';
 import { ViewStudentAttendanceRangeComponent } from '../view-student-attendance-range/view-student-attendance-range.component';
