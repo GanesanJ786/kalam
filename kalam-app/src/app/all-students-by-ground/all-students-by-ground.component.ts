@@ -11,9 +11,10 @@ import { MatTableDataSource as MatTableDataSource } from '@angular/material/tabl
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-all-students-by-ground',
-  templateUrl: './all-students-by-ground.component.html',
-  styleUrls: ['./all-students-by-ground.component.scss']
+    selector: 'app-all-students-by-ground',
+    templateUrl: './all-students-by-ground.component.html',
+    styleUrls: ['./all-students-by-ground.component.scss'],
+    standalone: false
 })
 export class AllStudentsByGroundComponent implements OnInit {
 

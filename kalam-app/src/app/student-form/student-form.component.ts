@@ -62,9 +62,10 @@ export interface StudentDetails {
 }
 
 @Component({
-  selector: 'app-student-form',
-  templateUrl: './student-form.component.html',
-  styleUrls: ['./student-form.component.scss']
+    selector: 'app-student-form',
+    templateUrl: './student-form.component.html',
+    styleUrls: ['./student-form.component.scss'],
+    standalone: false
 })
 export class StudentFormComponent implements OnInit {
 

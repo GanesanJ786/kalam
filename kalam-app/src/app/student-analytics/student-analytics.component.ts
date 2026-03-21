@@ -10,9 +10,10 @@ import * as moment from 'moment';
 import { StudentDetails } from '../student-form/student-form.component';
 
 @Component({
-  selector: 'app-student-analytics',
-  templateUrl: './student-analytics.component.html',
-  styleUrls: ['./student-analytics.component.scss']
+    selector: 'app-student-analytics',
+    templateUrl: './student-analytics.component.html',
+    styleUrls: ['./student-analytics.component.scss'],
+    standalone: false
 })
 export class StudentAnalyticsComponent implements OnInit {
 

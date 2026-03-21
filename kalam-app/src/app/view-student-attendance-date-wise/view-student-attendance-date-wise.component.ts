@@ -5,9 +5,10 @@ import { KalamService } from '../kalam.service';
 import { MatSort } from '@angular/material/sort';
 
 @Component({
-  selector: 'app-view-student-attendance-date-wise',
-  templateUrl: './view-student-attendance-date-wise.component.html',
-  styleUrls: ['./view-student-attendance-date-wise.component.scss']
+    selector: 'app-view-student-attendance-date-wise',
+    templateUrl: './view-student-attendance-date-wise.component.html',
+    styleUrls: ['./view-student-attendance-date-wise.component.scss'],
+    standalone: false
 })
 export class ViewStudentAttendanceDateWiseComponent implements OnInit {
 

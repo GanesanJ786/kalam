@@ -12,9 +12,10 @@ import { ViewStudentDataComponent } from '../view-student-data/view-student-data
 import { ViewStudentAttendanceRangeComponent } from '../view-student-attendance-range/view-student-attendance-range.component';
 
 @Component({
-  selector: 'app-my-teams',
-  templateUrl: './my-teams.component.html',
-  styleUrls: ['./my-teams.component.scss']
+    selector: 'app-my-teams',
+    templateUrl: './my-teams.component.html',
+    styleUrls: ['./my-teams.component.scss'],
+    standalone: false
 })
 export class MyTeamsComponent implements OnInit {
 

@@ -13,9 +13,10 @@ const month = today.getMonth();
 const year = today.getFullYear();
 
 @Component({
-  selector: 'app-view-student-attendance-range',
-  templateUrl: './view-student-attendance-range.component.html',
-  styleUrls: ['./view-student-attendance-range.component.scss']
+    selector: 'app-view-student-attendance-range',
+    templateUrl: './view-student-attendance-range.component.html',
+    styleUrls: ['./view-student-attendance-range.component.scss'],
+    standalone: false
 })
 export class ViewStudentAttendanceRangeComponent implements OnInit {
 

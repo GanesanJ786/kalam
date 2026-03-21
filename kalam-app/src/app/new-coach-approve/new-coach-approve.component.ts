@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { KalamService } from '../kalam.service';
 
 @Component({
-  selector: 'app-new-coach-approve',
-  templateUrl: './new-coach-approve.component.html',
-  styleUrls: ['./new-coach-approve.component.scss']
+    selector: 'app-new-coach-approve',
+    templateUrl: './new-coach-approve.component.html',
+    styleUrls: ['./new-coach-approve.component.scss'],
+    standalone: false
 })
 export class NewCoachApproveComponent implements OnInit {
 

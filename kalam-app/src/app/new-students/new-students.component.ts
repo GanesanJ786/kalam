@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { KalamService } from '../kalam.service';
 
 @Component({
-  selector: 'app-new-students',
-  templateUrl: './new-students.component.html',
-  styleUrls: ['./new-students.component.scss']
+    selector: 'app-new-students',
+    templateUrl: './new-students.component.html',
+    styleUrls: ['./new-students.component.scss'],
+    standalone: false
 })
 export class NewStudentsComponent implements OnInit {
 

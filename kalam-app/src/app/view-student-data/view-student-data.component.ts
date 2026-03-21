@@ -7,9 +7,10 @@ import { StudentPerformance, StudentPerformanceComponent } from '../student-perf
 import * as _ from 'lodash';
 
 @Component({
-  selector: 'app-view-student-data',
-  templateUrl: './view-student-data.component.html',
-  styleUrls: ['./view-student-data.component.scss']
+    selector: 'app-view-student-data',
+    templateUrl: './view-student-data.component.html',
+    styleUrls: ['./view-student-data.component.scss'],
+    standalone: false
 })
 export class ViewStudentDataComponent implements OnInit {
 

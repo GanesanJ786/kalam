@@ -13,9 +13,10 @@ const month = today.getMonth();
 const year = today.getFullYear();
 
 @Component({
-  selector: 'app-view-coach-attendance',
-  templateUrl: './view-coach-attendance.component.html',
-  styleUrls: ['./view-coach-attendance.component.scss']
+    selector: 'app-view-coach-attendance',
+    templateUrl: './view-coach-attendance.component.html',
+    styleUrls: ['./view-coach-attendance.component.scss'],
+    standalone: false
 })
 export class ViewCoachAttendanceComponent implements OnInit {
 

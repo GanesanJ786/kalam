@@ -39,9 +39,10 @@ export interface ChessPerformance {
 }
 
 @Component({
-  selector: 'app-student-performance',
-  templateUrl: './student-performance.component.html',
-  styleUrls: ['./student-performance.component.scss']
+    selector: 'app-student-performance',
+    templateUrl: './student-performance.component.html',
+    styleUrls: ['./student-performance.component.scss'],
+    standalone: false
 })
 export class StudentPerformanceComponent implements OnInit {
 

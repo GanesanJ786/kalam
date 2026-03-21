@@ -4,9 +4,10 @@ import { KalamService } from '../kalam.service';
 import * as moment from 'moment';
 
 @Component({
-  selector: 'app-approve-payment',
-  templateUrl: './approve-payment.component.html',
-  styleUrls: ['./approve-payment.component.scss']
+    selector: 'app-approve-payment',
+    templateUrl: './approve-payment.component.html',
+    styleUrls: ['./approve-payment.component.scss'],
+    standalone: false
 })
 export class ApprovePaymentComponent implements OnInit {
 

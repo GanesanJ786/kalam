@@ -2,12 +2,13 @@ import { Directive, ElementRef, forwardRef, HostListener, Input, Renderer2 } fro
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
-  selector: '[appAadharNumber]',
-  providers: [{
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => AadharNumberDirective),
-    multi: true
-}]
+    selector: '[appAadharNumber]',
+    providers: [{
+            provide: NG_VALUE_ACCESSOR,
+            useExisting: forwardRef(() => AadharNumberDirective),
+            multi: true
+        }],
+    standalone: false
 })
 export class AadharNumberDirective implements ControlValueAccessor {
 

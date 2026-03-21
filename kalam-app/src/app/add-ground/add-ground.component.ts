@@ -17,9 +17,10 @@ export interface DialogData {
 }
 
 @Component({
-  selector: 'app-add-ground',
-  templateUrl: './add-ground.component.html',
-  styleUrls: ['./add-ground.component.scss']
+    selector: 'app-add-ground',
+    templateUrl: './add-ground.component.html',
+    styleUrls: ['./add-ground.component.scss'],
+    standalone: false
 })
 export class AddGroundComponent implements OnInit {
 

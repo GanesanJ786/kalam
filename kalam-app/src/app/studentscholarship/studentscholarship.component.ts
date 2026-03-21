@@ -13,9 +13,10 @@ import { MatTableDataSource as MatTableDataSource } from '@angular/material/tabl
 
 
 @Component({
-  selector: 'app-studentscholarship',
-  templateUrl: './studentscholarship.component.html',
-  styleUrls: ['./studentscholarship.component.scss']
+    selector: 'app-studentscholarship',
+    templateUrl: './studentscholarship.component.html',
+    styleUrls: ['./studentscholarship.component.scss'],
+    standalone: false
 })
 export class StudentscholarshipComponent implements OnInit {
 
