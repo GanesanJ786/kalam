@@ -28,7 +28,8 @@
         "node_modules/exceljs/dist/exceljs.min"
       ]
     },
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "typeRoots": ["node_modules/@types"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
