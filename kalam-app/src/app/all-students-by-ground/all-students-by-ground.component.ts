@@ -1,13 +1,13 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { StudentDetails } from '../student-form/student-form.component';
 import { KalamService } from '../kalam.service';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { SportsList } from '../constant';
 import * as _ from 'lodash';
 import { ViewStudentDataComponent } from '../view-student-data/view-student-data.component';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import * as moment from 'moment';
 
 @Component({
