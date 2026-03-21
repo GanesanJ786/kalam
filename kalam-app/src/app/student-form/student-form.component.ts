@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
@@ -68,7 +68,7 @@ export interface StudentDetails {
 })
 export class StudentFormComponent implements OnInit {
 
-  studentForm!: FormGroup;
+  studentForm!: UntypedFormGroup;
   studentDetails: StudentDetails;
   form1: boolean = true;
   form2: boolean = false;
@@ -125,34 +125,34 @@ export class StudentFormComponent implements OnInit {
       });
       this.groundList = data;
     });
-    this.studentForm = new FormGroup({
-      imageUrl: new FormControl("", []),
-      name: new FormControl(this.studentDetails.name,[Validators.required]),
-      dob: new FormControl(this.studentDetails.dob, [Validators.required]),
-      age: new FormControl(this.studentDetails.age,[Validators.required]),
-      gender: new FormControl(this.studentDetails.gender, [Validators.required]),
-      aadharNum: new FormControl(this.studentDetails.aadharNum,[Validators.required]),
-      fatherName: new FormControl(this.studentDetails.fatherName, [Validators.required]),
-      motherName: new FormControl(this.studentDetails.motherName,[Validators.required]),
-      fatherOcc: new FormControl(this.studentDetails.fatherOcc, [Validators.required]),
-      motherOcc: new FormControl(this.studentDetails.motherOcc,[Validators.required]),
-      emailId: new FormControl(this.studentDetails.emailId, [Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
-      mobileNum: new FormControl(this.studentDetails.mobileNum,[Validators.required]),
-      whatsappNum: new FormControl(this.studentDetails.whatsappNum, [Validators.required]),
-      emgContactName: new FormControl(this.studentDetails.emgContactName,[Validators.required]),
-      emgContactNum: new FormControl(this.studentDetails.emgContactNum, [Validators.required]),
-      institutionName: new FormControl(this.studentDetails.institutionName,[Validators.required]),
-      studying: new FormControl(this.studentDetails.studying, [Validators.required]),
-      preAcademyPlayed: new FormControl(this.studentDetails.preAcademyPlayed,[Validators.required]),
-      playingPostion: new FormControl(this.studentDetails.playingPostion,[Validators.required]),
-      anyMedicalIssue: new FormControl(this.studentDetails.anyMedicalIssue, [Validators.required]),
-      jersySize: new FormControl(this.studentDetails.jersySize, [Validators.required]),
-      height: new FormControl(this.studentDetails.height,[Validators.required]),
-      weight: new FormControl(this.studentDetails.weight, [Validators.required]),
-      address: new FormControl(this.studentDetails.address, [Validators.required]),
-      groundName: new FormControl(this.studentDetails.groundName, [Validators.required]),
-      scholarship: new FormControl(this.studentDetails.scholarship, []),
-      competency: new FormControl(this.studentDetails.competency, []),
+    this.studentForm = new UntypedFormGroup({
+      imageUrl: new UntypedFormControl("", []),
+      name: new UntypedFormControl(this.studentDetails.name,[Validators.required]),
+      dob: new UntypedFormControl(this.studentDetails.dob, [Validators.required]),
+      age: new UntypedFormControl(this.studentDetails.age,[Validators.required]),
+      gender: new UntypedFormControl(this.studentDetails.gender, [Validators.required]),
+      aadharNum: new UntypedFormControl(this.studentDetails.aadharNum,[Validators.required]),
+      fatherName: new UntypedFormControl(this.studentDetails.fatherName, [Validators.required]),
+      motherName: new UntypedFormControl(this.studentDetails.motherName,[Validators.required]),
+      fatherOcc: new UntypedFormControl(this.studentDetails.fatherOcc, [Validators.required]),
+      motherOcc: new UntypedFormControl(this.studentDetails.motherOcc,[Validators.required]),
+      emailId: new UntypedFormControl(this.studentDetails.emailId, [Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
+      mobileNum: new UntypedFormControl(this.studentDetails.mobileNum,[Validators.required]),
+      whatsappNum: new UntypedFormControl(this.studentDetails.whatsappNum, [Validators.required]),
+      emgContactName: new UntypedFormControl(this.studentDetails.emgContactName,[Validators.required]),
+      emgContactNum: new UntypedFormControl(this.studentDetails.emgContactNum, [Validators.required]),
+      institutionName: new UntypedFormControl(this.studentDetails.institutionName,[Validators.required]),
+      studying: new UntypedFormControl(this.studentDetails.studying, [Validators.required]),
+      preAcademyPlayed: new UntypedFormControl(this.studentDetails.preAcademyPlayed,[Validators.required]),
+      playingPostion: new UntypedFormControl(this.studentDetails.playingPostion,[Validators.required]),
+      anyMedicalIssue: new UntypedFormControl(this.studentDetails.anyMedicalIssue, [Validators.required]),
+      jersySize: new UntypedFormControl(this.studentDetails.jersySize, [Validators.required]),
+      height: new UntypedFormControl(this.studentDetails.height,[Validators.required]),
+      weight: new UntypedFormControl(this.studentDetails.weight, [Validators.required]),
+      address: new UntypedFormControl(this.studentDetails.address, [Validators.required]),
+      groundName: new UntypedFormControl(this.studentDetails.groundName, [Validators.required]),
+      scholarship: new UntypedFormControl(this.studentDetails.scholarship, []),
+      competency: new UntypedFormControl(this.studentDetails.competency, []),
     });
 
     this.btnValidation();

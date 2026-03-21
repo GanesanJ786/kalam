@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Router, ActivatedRoute  } from '@angular/router';
 import {
@@ -62,7 +62,7 @@ export class SignUpComponent implements OnInit {
     this.getAcademyNames();
     
    }
-  registrationForm!: FormGroup;
+  registrationForm!: UntypedFormGroup;
   registerDeatils: RegistrationDetails
   sports:Sports[] = [
     {sportName: 'Football', sportValue: 'football'},
@@ -113,23 +113,23 @@ export class SignUpComponent implements OnInit {
       }
     );
 
-    this.registrationForm = new FormGroup({
-      logoUrl: new FormControl("", []),
-      imageUrl: new FormControl("", []),
-      name: new FormControl(this.registerDeatils.name,[Validators.required]),
-      dob: new FormControl(this.registerDeatils.dob, [Validators.required]),
-      password: new FormControl(this.registerDeatils.password,[Validators.required]),
-      confirmPassword: new FormControl(this.registerDeatils.confirmPassword,[Validators.required]),
-      gender: new FormControl(this.registerDeatils.gender, [Validators.required]),
-      aadharNum: new FormControl(this.registerDeatils.aadharNum,[Validators.required]),
-      emailId: new FormControl(this.registerDeatils.emailId, [Validators.required, Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
-      whatsappNum: new FormControl(this.registerDeatils.whatsappNum, [Validators.required]),
-      academyName: new FormControl(this.registerDeatils.academyName,[Validators.required]),
-      academyNum: new FormControl(this.registerDeatils.academyNum, []),
-      toCoach: new FormControl(this.registerDeatils.toCoach,[Validators.required]),
-      address: new FormControl(this.registerDeatils.address, [Validators.required]),
-      academyOwned: new FormControl(this.registerDeatils.academyOwned, [Validators.required]),
-      academyId: new FormControl(this.registerDeatils.academyId, [])
+    this.registrationForm = new UntypedFormGroup({
+      logoUrl: new UntypedFormControl("", []),
+      imageUrl: new UntypedFormControl("", []),
+      name: new UntypedFormControl(this.registerDeatils.name,[Validators.required]),
+      dob: new UntypedFormControl(this.registerDeatils.dob, [Validators.required]),
+      password: new UntypedFormControl(this.registerDeatils.password,[Validators.required]),
+      confirmPassword: new UntypedFormControl(this.registerDeatils.confirmPassword,[Validators.required]),
+      gender: new UntypedFormControl(this.registerDeatils.gender, [Validators.required]),
+      aadharNum: new UntypedFormControl(this.registerDeatils.aadharNum,[Validators.required]),
+      emailId: new UntypedFormControl(this.registerDeatils.emailId, [Validators.required, Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
+      whatsappNum: new UntypedFormControl(this.registerDeatils.whatsappNum, [Validators.required]),
+      academyName: new UntypedFormControl(this.registerDeatils.academyName,[Validators.required]),
+      academyNum: new UntypedFormControl(this.registerDeatils.academyNum, []),
+      toCoach: new UntypedFormControl(this.registerDeatils.toCoach,[Validators.required]),
+      address: new UntypedFormControl(this.registerDeatils.address, [Validators.required]),
+      academyOwned: new UntypedFormControl(this.registerDeatils.academyOwned, [Validators.required]),
+      academyId: new UntypedFormControl(this.registerDeatils.academyId, [])
     });
 
     if(this.editAccess) {

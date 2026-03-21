@@ -5,7 +5,7 @@ import { KalamService } from '../kalam.service';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ViewStudentAttendanceDateWiseComponent } from '../view-student-attendance-date-wise/view-student-attendance-date-wise.component';
 
 const today = new Date();
@@ -70,9 +70,9 @@ export class ViewCoachAttendanceComponent implements OnInit {
     this.endOfMonth   = new Date(moment().endOf('month').format('YYYY-MM-DD hh:mm'));
     this.startDate = todayDate > 7 ? todayDate-7 : 1;
     this.endDate = todayDate > 7 ? todayDate : 7 ;
-    this.attendanceRangeGroup = new FormGroup({
-      start: new FormControl(new Date(year, month, this.startDate)),
-      end: new FormControl(new Date(year, month, this.endDate)),
+    this.attendanceRangeGroup = new UntypedFormGroup({
+      start: new UntypedFormControl(new Date(year, month, this.startDate)),
+      end: new UntypedFormControl(new Date(year, month, this.endDate)),
     });
   }
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { KalamService } from 'src/app/kalam.service';
@@ -30,7 +30,7 @@ export interface StudentData {
 })
 export class LoginComponent implements OnInit {
 
-  signInForm!: FormGroup;
+  signInForm!: UntypedFormGroup;
   userLogin: UserLogin;
 
   constructor(private router: Router, 
@@ -41,12 +41,12 @@ export class LoginComponent implements OnInit {
    }
 
   ngOnInit(): void {
-    this.signInForm = new FormGroup({
-      username: new FormControl(this.userLogin.username, [
+    this.signInForm = new UntypedFormGroup({
+      username: new UntypedFormControl(this.userLogin.username, [
         Validators.required, 
         Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')
       ]),
-      password: new FormControl(this.userLogin.password, [
+      password: new UntypedFormControl(this.userLogin.password, [
         Validators.required
       ]),
     });

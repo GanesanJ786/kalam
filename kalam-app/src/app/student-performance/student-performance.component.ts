@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { environment } from 'src/environments/environment';
 import { RatingLevel, SelectItemNum } from '../constant';
@@ -54,7 +54,7 @@ export class StudentPerformanceComponent implements OnInit {
     }
 
   title = "Add Student Performance";
-  addStudentPerformance!: FormGroup;
+  addStudentPerformance!: UntypedFormGroup;
   studentPerformance: StudentPerformance;
   chessPerformance: ChessPerformance;
   sportType: string = 'football';
@@ -62,33 +62,33 @@ export class StudentPerformanceComponent implements OnInit {
   ratingLevel: SelectItemNum[] = [];
 
   ngOnInit(): void {
-    this.addStudentPerformance = new FormGroup({
+    this.addStudentPerformance = new UntypedFormGroup({
        ...(this.sportType == 'football' && {
-        gameDate: new FormControl(this.studentPerformance.gameDate,[Validators.required]),
-        gameTitle: new FormControl(this.studentPerformance.gameTitle,[Validators.required]),
-        numberofGoals: new FormControl(this.studentPerformance.numberofGoals,[Validators.required]),
-        assist: new FormControl(this.studentPerformance.assist,[Validators.required]),
-        accuratePass: new FormControl(this.studentPerformance.accuratePass,[Validators.required]),
-        chanceCreated: new FormControl(this.studentPerformance.chanceCreated,[Validators.required]),
-        shootOnTarget: new FormControl(this.studentPerformance.shootOnTarget,[Validators.required]),
-        shootOffTarget: new FormControl(this.studentPerformance.shootOffTarget,[Validators.required]),
-        accurateCrosses: new FormControl(this.studentPerformance.accurateCrosses,[Validators.required]),
-        longBallPass: new FormControl(this.studentPerformance.longBallPass,[Validators.required]),
-        tacklesWonOnevsOne: new FormControl(this.studentPerformance.tacklesWonOnevsOne,[Validators.required]),
-        clearance: new FormControl(this.studentPerformance.clearance,[Validators.required]),
-        heading: new FormControl(this.studentPerformance.heading,[Validators.required]),
-        recovery: new FormControl(this.studentPerformance.recovery,[Validators.required]),
-        foulCommited: new FormControl(this.studentPerformance.foulCommited,[Validators.required]),
-        wasFouled: new FormControl(this.studentPerformance.wasFouled,[Validators.required]),
-        gameSense: new FormControl(this.studentPerformance.gameSense,[Validators.required]),
+        gameDate: new UntypedFormControl(this.studentPerformance.gameDate,[Validators.required]),
+        gameTitle: new UntypedFormControl(this.studentPerformance.gameTitle,[Validators.required]),
+        numberofGoals: new UntypedFormControl(this.studentPerformance.numberofGoals,[Validators.required]),
+        assist: new UntypedFormControl(this.studentPerformance.assist,[Validators.required]),
+        accuratePass: new UntypedFormControl(this.studentPerformance.accuratePass,[Validators.required]),
+        chanceCreated: new UntypedFormControl(this.studentPerformance.chanceCreated,[Validators.required]),
+        shootOnTarget: new UntypedFormControl(this.studentPerformance.shootOnTarget,[Validators.required]),
+        shootOffTarget: new UntypedFormControl(this.studentPerformance.shootOffTarget,[Validators.required]),
+        accurateCrosses: new UntypedFormControl(this.studentPerformance.accurateCrosses,[Validators.required]),
+        longBallPass: new UntypedFormControl(this.studentPerformance.longBallPass,[Validators.required]),
+        tacklesWonOnevsOne: new UntypedFormControl(this.studentPerformance.tacklesWonOnevsOne,[Validators.required]),
+        clearance: new UntypedFormControl(this.studentPerformance.clearance,[Validators.required]),
+        heading: new UntypedFormControl(this.studentPerformance.heading,[Validators.required]),
+        recovery: new UntypedFormControl(this.studentPerformance.recovery,[Validators.required]),
+        foulCommited: new UntypedFormControl(this.studentPerformance.foulCommited,[Validators.required]),
+        wasFouled: new UntypedFormControl(this.studentPerformance.wasFouled,[Validators.required]),
+        gameSense: new UntypedFormControl(this.studentPerformance.gameSense,[Validators.required]),
        }),
        ...(this.sportType == 'chess' && {
-        gameTitle: new FormControl(this.chessPerformance.gameTitle,[Validators.required]),
-        result: new FormControl(this.chessPerformance.result,[Validators.required]),
-        gameDate: new FormControl(this.chessPerformance.gameDate,[Validators.required]),
-        moveAccuracy: new FormControl(this.chessPerformance.moveAccuracy,[Validators.required]),
-        mistakes: new FormControl(this.chessPerformance.mistakes,[Validators.required]),
-        timeUsage: new FormControl(this.chessPerformance.timeUsage,[Validators.required]),
+        gameTitle: new UntypedFormControl(this.chessPerformance.gameTitle,[Validators.required]),
+        result: new UntypedFormControl(this.chessPerformance.result,[Validators.required]),
+        gameDate: new UntypedFormControl(this.chessPerformance.gameDate,[Validators.required]),
+        moveAccuracy: new UntypedFormControl(this.chessPerformance.moveAccuracy,[Validators.required]),
+        mistakes: new UntypedFormControl(this.chessPerformance.mistakes,[Validators.required]),
+        timeUsage: new UntypedFormControl(this.chessPerformance.timeUsage,[Validators.required]),
       })
       });
   }

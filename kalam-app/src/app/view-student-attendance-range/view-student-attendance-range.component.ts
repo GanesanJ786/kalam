@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormControl } from '@angular/forms';
 import { KalamService } from '../kalam.service';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-students-by-ground.component';
@@ -45,9 +45,9 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
     this.endOfMonth   = new Date(moment().endOf('month').format('YYYY-MM-DD hh:mm'));
     this.startDate = todayDate > 7 ? todayDate-7 : 1;
     this.endDate = todayDate > 7 ? todayDate : 7 ;
-    this.attendanceRangeGroup = new FormGroup({
-      start: new FormControl(new Date(year, month, this.startDate)),
-      end: new FormControl(new Date(year, month, this.endDate)),
+    this.attendanceRangeGroup = new UntypedFormGroup({
+      start: new UntypedFormControl(new Date(year, month, this.startDate)),
+      end: new UntypedFormControl(new Date(year, month, this.endDate)),
     });
   }
 

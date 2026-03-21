@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {MatDialog, MAT_DIALOG_DATA, MatDialogRef} from '@angular/material/dialog';
 import { KalamService } from '../kalam.service';
 
@@ -23,12 +23,12 @@ export interface DialogData {
 })
 export class AddGroundComponent implements OnInit {
 
-  addGround!: FormGroup;
+  addGround!: UntypedFormGroup;
   groundInfo: DialogData;
-  topicsForm!: FormGroup;
-  notesForm!: FormGroup;
-  feesForm!: FormGroup;
-  leaveForm!: FormGroup;
+  topicsForm!: UntypedFormGroup;
+  notesForm!: UntypedFormGroup;
+  feesForm!: UntypedFormGroup;
+  leaveForm!: UntypedFormGroup;
 
   constructor(
     private kalamService: KalamService,
@@ -39,36 +39,36 @@ export class AddGroundComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addGround = new FormGroup({
-      groundName: new FormControl(this.groundInfo.groundName, [
+    this.addGround = new UntypedFormGroup({
+      groundName: new UntypedFormControl(this.groundInfo.groundName, [
         Validators.required
       ]),
-      groundAddress: new FormControl(this.groundInfo.groundAddress, [
-        Validators.required
-      ]),
-    });
-
-    this.topicsForm =  new FormGroup({
-      topics: new FormControl(this.groundInfo.topics, [
+      groundAddress: new UntypedFormControl(this.groundInfo.groundAddress, [
         Validators.required
       ]),
     });
 
-    this.notesForm =  new FormGroup({
-      notes: new FormControl(this.groundInfo.notes, []),
-    });
-
-    this.feesForm =  new FormGroup({
-      amount: new FormControl(this.groundInfo.amount, [
+    this.topicsForm =  new UntypedFormGroup({
+      topics: new UntypedFormControl(this.groundInfo.topics, [
         Validators.required
       ]),
     });
 
-    this.leaveForm = new FormGroup({
-      dateOfLeave: new FormControl(this.groundInfo.amount, [
+    this.notesForm =  new UntypedFormGroup({
+      notes: new UntypedFormControl(this.groundInfo.notes, []),
+    });
+
+    this.feesForm =  new UntypedFormGroup({
+      amount: new UntypedFormControl(this.groundInfo.amount, [
         Validators.required
       ]),
-      reasonOfLeave: new FormControl(this.groundInfo.amount, [
+    });
+
+    this.leaveForm = new UntypedFormGroup({
+      dateOfLeave: new UntypedFormControl(this.groundInfo.amount, [
+        Validators.required
+      ]),
+      reasonOfLeave: new UntypedFormControl(this.groundInfo.amount, [
         Validators.required
       ]),
     });
