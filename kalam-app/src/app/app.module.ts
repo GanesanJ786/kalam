@@ -28,6 +28,7 @@ import { MatMenuModule as MatMenuModule } from '@angular/material/menu';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule as MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 
 import { StudentFormComponent } from './student-form/student-form.component';
@@ -100,6 +101,7 @@ import { StudentAnalyticsComponent } from './student-analytics/student-analytics
         MatExpansionModule,
         MatTableModule,
         MatSortModule,
+        MatToolbarModule,
         AngularFireModule.initializeApp(environment.firebase),
         NgIdleKeepaliveModule.forRoot()], providers: [
         {

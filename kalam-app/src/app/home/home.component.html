@@ -1,50 +1,54 @@
 
-
-  <div class="rf-container">
-      <app-header [title]="title"></app-header>
-        <div class="rf-content content-top" style="padding: 0;">
-            <div class="tab-menu-cust">
-                <mat-tab-group [selectedIndex]="tabIndex" (selectedTabChange)="tabChanged($event)">
-                    <mat-tab>
-                       <ng-template mat-tab-label>
-                        <mat-icon class="example-tab-icon">home</mat-icon>
-                      </ng-template>
-                      <ng-template matTabContent>
-                        <!-- Content 1 - Loaded: {{getTimeLoaded(1) | date:'medium'}} -->
-                        <app-my-profile></app-my-profile>
-                      </ng-template>
-                    </mat-tab>
-                    <mat-tab>
-                      <ng-template mat-tab-label>
+<div class="rf-container">
+    <app-header [title]="title"></app-header>
+      <div class="rf-content content-top" style="padding: 0;">
+          <div class="tab-menu-cust">
+              <mat-tab-group [selectedIndex]="tabIndex" (selectedTabChange)="tabChanged($event)">
+                  <mat-tab>
+                     <ng-template mat-tab-label>
+                      <div class="tab-icon-label">
+                        <mat-icon>home</mat-icon>
+                        <span>Profile</span>
+                      </div>
+                    </ng-template>
+                    <ng-template matTabContent>
+                      <app-my-profile></app-my-profile>
+                    </ng-template>
+                  </mat-tab>
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                      <div class="tab-icon-label">
                         <mat-icon>people</mat-icon>
-                      </ng-template>
-                      
-                      <ng-template matTabContent>
-                        <!-- Content 2 - Loaded: {{getTimeLoaded(2) | date:'medium'}} -->
-                        <app-my-teams></app-my-teams>
-                      </ng-template>
-                    </mat-tab>
-                    <mat-tab *ngIf="owner">
-                      <ng-template mat-tab-label>
+                        <span>Teams</span>
+                      </div>
+                    </ng-template>
+                    <ng-template matTabContent>
+                      <app-my-teams></app-my-teams>
+                    </ng-template>
+                  </mat-tab>
+                  <mat-tab *ngIf="owner">
+                    <ng-template mat-tab-label>
+                      <div class="tab-icon-label">
                         <mat-icon>card_membership</mat-icon>
-                      </ng-template>
-                      <ng-template matTabContent>
-                        <app-studentscholarship></app-studentscholarship>
-                      </ng-template>
-                    </mat-tab>
-                    <mat-tab>
-                      <ng-template mat-tab-label>
-                         <mat-icon> bar_chart</mat-icon>
-                      </ng-template>
-                     
-                      <ng-template matTabContent>
-                        <app-student-analytics></app-student-analytics>
-                      </ng-template>
-                    </mat-tab>
-                  </mat-tab-group>
-            </div>
-        </div>
-        <!-- <div class="rf-footer">
-            
-        </div> -->
+                        <span>Scholarship</span>
+                      </div>
+                    </ng-template>
+                    <ng-template matTabContent>
+                      <app-studentscholarship></app-studentscholarship>
+                    </ng-template>
+                  </mat-tab>
+                  <mat-tab>
+                    <ng-template mat-tab-label>
+                      <div class="tab-icon-label">
+                        <mat-icon>bar_chart</mat-icon>
+                        <span>Analytics</span>
+                      </div>
+                    </ng-template>
+                    <ng-template matTabContent>
+                      <app-student-analytics></app-student-analytics>
+                    </ng-template>
+                  </mat-tab>
+                </mat-tab-group>
+          </div>
+      </div>
 </div>

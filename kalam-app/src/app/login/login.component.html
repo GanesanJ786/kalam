@@ -1,35 +1,116 @@
-<div class="login-container">
-    <div class="logo-header"></div>
-    <form [formGroup]="signInForm" #form="ngForm">
-        <div class="login-content">
-            <mat-form-field appearance="fill">
-                <mat-label>Email Address</mat-label>
-                <input matInput formControlName="username" type="email">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Password</mat-label>
-                <input type="password" matInput formControlName="password">
-            </mat-form-field>
-              <!-- <mat-form-field appearance="fill">
-                <mat-label>Select</mat-label>
-                <mat-select>
-                  <mat-option value="one">First option</mat-option>
-                  <mat-option value="two">Second option</mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field appearance="fill">
-                <mat-label>Textarea</mat-label>
-                <textarea matInput></textarea>
-              </mat-form-field> -->
-             
-              
+<div class="login-page">
+  <div class="login-container">
+    <!-- Left Section - Branding -->
+    <div class="login-left">
+      <div class="branding-content">
+        <div class="logo-wrapper">
+          <div class="logo-header"></div>
         </div>
-   
-      <div class="login-footer">
-         <button mat-raised-button color="primary" (click)="onSubmit()">Login</button>
-         <div style="margin-top: 1rem;">
-            Don't have an account? <button (click)="signUp()" mat-button color="primary" style="padding: 0;min-width: auto;">Sign Up</button>
-         </div>
+        <!-- <h1 class="brand-title">Kalam</h1> -->
+        <p class="brand-subtitle">Academy Management Made Simple</p>
+        <div class="features-list">
+          <div class="feature-item">
+            <mat-icon class="feature-icon">check_circle</mat-icon>
+            <span>Manage Students & Coaches</span>
+          </div>
+          <div class="feature-item">
+            <mat-icon class="feature-icon">check_circle</mat-icon>
+            <span>Track Attendance & Performance</span>
+          </div>
+          <div class="feature-item">
+            <mat-icon class="feature-icon">check_circle</mat-icon>
+            <span>Real-time Reports & Analytics</span>
+          </div>
+        </div>
       </div>
-  </form>
+    </div>
+
+    <!-- Right Section - Login Form -->
+    <div class="login-right">
+      <div class="login-card">
+        <!-- Logo at Top -->
+        <div class="login-logo-wrapper">
+          <div class="login-logo"></div>
+        </div>
+
+        <div class="login-header">
+          <h2 class="login-title">Welcome Back</h2>
+          <p class="login-subtitle">Sign in to your account to continue</p>
+        </div>
+
+        <form [formGroup]="signInForm" #form="ngForm" class="login-form">
+          <div class="form-group">
+            <label for="email" class="form-label">Email Address</label>
+            <div class="input-wrapper">
+              <mat-icon class="input-icon">mail</mat-icon>
+              <input
+                id="email"
+                matInput
+                formControlName="username"
+                type="email"
+                placeholder="your@email.com"
+                class="form-input"
+              />
+            </div>
+            <div class="error-message" *ngIf="signInForm.get('username')?.invalid && signInForm.get('username')?.touched">
+              <span *ngIf="signInForm.get('username')?.errors?.['required']">Email is required</span>
+              <span *ngIf="signInForm.get('username')?.errors?.['email'] || signInForm.get('username')?.errors?.['pattern']">Please enter a valid email</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="password-header">
+              <label for="password" class="form-label">Password</label>
+              <a href="#" class="forgot-password">Forgot?</a>
+            </div>
+            <div class="input-wrapper">
+              <mat-icon class="input-icon">lock</mat-icon>
+              <input
+                id="password"
+                matInput
+                formControlName="password"
+                type="password"
+                placeholder="Enter your password"
+                class="form-input"
+              />
+            </div>
+            <div class="error-message" *ngIf="signInForm.get('password')?.invalid && signInForm.get('password')?.touched">
+              <span *ngIf="signInForm.get('password')?.errors?.['required']">Password is required</span>
+            </div>
+          </div>
+
+          <button
+            type="button"
+            mat-raised-button
+            class="login-btn"
+            (click)="onSubmit()"
+            [disabled]="signInForm.invalid"
+          >
+            <span class="btn-text">Sign In</span>
+            <mat-icon class="btn-icon">arrow_forward</mat-icon>
+          </button>
+        </form>
+
+        <div class="divider">
+          <span>Don't have an account?</span>
+        </div>
+
+        <button
+          type="button"
+          mat-stroked-button
+          class="signup-btn"
+          (click)="signUp()"
+        >
+          <mat-icon class="btn-icon-left">person_add</mat-icon>
+          Create New Account
+        </button>
+
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <span class="separator">•</span>
+          <a href="#">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
