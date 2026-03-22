@@ -1,34 +1,707 @@
-.login-container {
-    width: 100%;
-    margin: auto;
-    background-color: #f1f1f1;
-    min-height: 100vh;
-    height: 100%;
+// ============================================
+// KALAM LOGIN PAGE - Black & Orange Theme
+// ============================================
+
+// Variables
+$orange: #FF5722;
+$orange-light: #FF7043;
+$orange-dark: #E64A19;
+$orange-glow: rgba(255, 87, 34, 0.15);
+$black-1: #0D0D0D;
+$black-2: #121212;
+$black-3: #1A1A1A;
+$black-4: #1E1E1E;
+$black-5: #2A2A2A;
+$black-6: #333333;
+$white: #FFFFFF;
+$gray-light: #B0B0B0;
+$gray-mid: #808080;
+$error: #FF5252;
+$radius: 10px;
+$transition: 250ms ease;
+
+// ============================================
+// BASE LAYOUT
+// ============================================
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0a0a;
+  padding: 24px;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  overflow-x: hidden;
+  box-sizing: border-box;
+
+  *, *::before, *::after {
+    box-sizing: border-box;
   }
+}
+
+.login-container {
+  display: flex;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 620px;
+  background: $black-2;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+// ============================================
+// LEFT PANEL - BRANDING
+// ============================================
+.login-left {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(160deg, $black-3 0%, $black-1 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.left-glow {
+  position: absolute;
+  top: 30%;
+  left: 40%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, $orange-glow, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  animation: pulse-glow 6s ease-in-out infinite alternate;
+}
+
+.branding-content {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+}
+
+.logo-wrapper {
+  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+
   .logo-header {
-    height: 30vh;
-    color: #fff;
+    width: 140px;
+    height: 140px;
     background-image: url("../../assets/logo/kalamLogoName.png");
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center;
+    filter: drop-shadow(0 4px 20px rgba(255, 87, 34, 0.35));
   }
-  .login-content {
-    display: flex;
+}
+
+.brand-subtitle {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: $gray-light;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.2px;
+  text-align: left;
+}
+
+.features-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: $gray-light;
+  transition: color $transition;
+
+  &:hover {
+    color: $white;
+  }
+
+  .feature-icon {
+    color: $orange;
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+// ============================================
+// RIGHT PANEL - LOGIN FORM
+// ============================================
+.login-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  background: linear-gradient(180deg, $black-3 0%, $black-1 100%);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 400px;
+}
+
+// Mobile logo - hidden on desktop
+.mobile-logo {
+  display: none;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+
+  .logo-header-mobile {
+    width: 100px;
+    height: 100px;
+    background-image: url("../../assets/logo/kalamLogoName.png");
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    filter: drop-shadow(0 4px 16px rgba(255, 87, 34, 0.3));
+  }
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.login-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: $white;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.5px;
+}
+
+.login-subtitle {
+  font-size: 0.9rem;
+  color: $gray-light;
+  margin: 0;
+  font-weight: 400;
+}
+
+// ============================================
+// FORM STYLES
+// ============================================
+.form-group {
+  margin-bottom: 1.25rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #d0d0d0;
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.3px;
+}
+
+.password-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.45rem;
+}
+
+.forgot-link {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: $white;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  transition: color $transition;
+
+  &:hover {
+    color: $orange-light;
+  }
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 14px;
+  color: $gray-mid;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.form-input {
+  width: 100%;
+  padding: 13px 14px 13px 46px;
+  background: $black-5;
+  border: 1.5px solid rgba(255, 255, 255, 0.08);
+  border-radius: $radius;
+  color: $white;
+  font-size: 0.92rem;
+  font-family: inherit;
+  transition: all $transition;
+  outline: none;
+
+  &::placeholder {
+    color: $gray-mid;
+  }
+
+  &:focus {
+    border-color: $orange;
+    background: rgba(255, 87, 34, 0.06);
+    box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.12);
+  }
+}
+
+.error-message {
+  display: block;
+  font-size: 0.76rem;
+  color: $error;
+  margin-top: 0.35rem;
+  font-weight: 500;
+}
+
+// ============================================
+// BUTTONS
+// ============================================
+.signin-btn {
+  width: 100%;
+  height: 48px;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, $orange-dark, $orange);
+  color: $white;
+  border: none;
+  border-radius: $radius;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all $transition;
+  box-shadow: 0 4px 18px rgba(255, 87, 34, 0.25);
+
+  .btn-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: linear-gradient(135deg, $orange, $orange-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(255, 87, 34, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 87, 34, 0.2);
+  }
+}
+
+.divider-text {
+  text-align: center;
+  font-size: 0.82rem;
+  color: $gray-light;
+  margin: 1.5rem 0;
+}
+
+.create-btn {
+  width: 100%;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: rgba(255, 87, 34, 0.08);
+  border: 1.5px solid $orange;
+  border-radius: $radius;
+  color: $orange;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all $transition;
+
+  .btn-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: rgba(255, 87, 34, 0.15);
+    color: $orange-light;
+    border-color: $orange-light;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(255, 87, 34, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+}
+
+// ============================================
+// FOOTER
+// ============================================
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1.8rem;
+  padding-top: 1.3rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  a {
+    font-size: 0.78rem;
+    color: $gray-light;
+    text-decoration: none;
+    transition: color $transition;
+
+    &:hover {
+      color: $orange;
+    }
+  }
+
+  .dot {
+    color: rgba(255, 255, 255, 0.2);
+    font-size: 0.9rem;
+  }
+}
+
+// ============================================
+// ANIMATIONS
+// ============================================
+@keyframes pulse-glow {
+  0% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+// ============================================
+// RESPONSIVE - Desktop Large (1440px+)
+// ============================================
+@media (min-width: 1440px) {
+  .login-container {
+    max-width: 1200px;
+    min-height: 680px;
+  }
+
+  .login-left {
+    padding: 3.5rem 3rem;
+  }
+
+  .logo-wrapper .logo-header {
+    width: 160px;
+    height: 160px;
+  }
+
+  .brand-subtitle {
+    font-size: 1.25rem;
+  }
+
+  .feature-item {
+    font-size: 1.05rem;
+  }
+
+  .login-title {
+    font-size: 2.1rem;
+  }
+}
+
+// ============================================
+// RESPONSIVE - Tablet Landscape (1024-1279px)
+// ============================================
+@media (max-width: 1279px) {
+  .login-container {
+    max-width: 960px;
+  }
+
+  .login-left {
+    padding: 2.5rem 2rem;
+  }
+
+  .login-right {
+    padding: 2.5rem 2rem;
+  }
+
+  .logo-wrapper .logo-header {
+    width: 120px;
+    height: 120px;
+  }
+
+  .brand-subtitle {
+    font-size: 1.05rem;
+    margin-bottom: 2rem;
+  }
+}
+
+// ============================================
+// RESPONSIVE - Tablet Portrait (768-1023px)
+// ============================================
+@media (max-width: 1023px) {
+  .login-page {
+    padding: 16px;
+  }
+
+  .login-container {
     flex-direction: column;
-    align-items: center;
-    height: 40vh;
-    justify-content: center;
+    max-width: 560px;
+    min-height: auto;
+    border-radius: 16px;
   }
-  .login-footer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    // height: 30vh;
-    justify-content: start;
+
+  .login-left {
+    padding: 2rem 2rem 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   }
-  ::ng-deep .login-content .mat-form-field-appearance-fill .mat-form-field-flex {
-    background-color: #f1f1f1;
+
+  .branding-content {
+    text-align: center;
+  }
+
+  .brand-subtitle {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 1rem;
+  }
+
+  .features-list {
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .logo-wrapper .logo-header {
+    width: 110px;
+    height: 110px;
+  }
+
+  .login-right {
+    padding: 2rem;
+  }
+
+  .login-title {
+    font-size: 1.6rem;
+  }
+}
+
+// ============================================
+// RESPONSIVE - Mobile (max-width: 767px)
+// ============================================
+@media (max-width: 767px) {
+  .login-page {
     padding: 0;
+    margin: 0;
+    align-items: flex-start;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
-  
+
+  .login-container {
+    flex-direction: column;
+    max-width: 100%;
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+    margin: 0;
+  }
+
+  .login-left {
+    display: none;
+  }
+
+  .left-glow {
+    display: none;
+  }
+
+  .mobile-logo {
+    display: flex;
+  }
+
+  .login-right {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    padding: 2rem 1.5rem;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-x: hidden;
+  }
+
+  .login-card {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .login-title {
+    font-size: 1.5rem;
+  }
+
+  .login-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .form-input {
+    padding: 12px 12px 12px 42px;
+    font-size: 16px; // prevents iOS zoom
+    max-width: 100%;
+  }
+
+  .signin-btn,
+  .create-btn {
+    height: 46px;
+    font-size: 0.9rem;
+    max-width: 100%;
+  }
+
+  .footer-links {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+  }
+}
+
+// ============================================
+// RESPONSIVE - Small Mobile (max-width: 380px)
+// ============================================
+@media (max-width: 380px) {
+  .login-right {
+    padding: 1.5rem 1.2rem;
+  }
+
+  .mobile-logo .logo-header-mobile {
+    width: 80px;
+    height: 80px;
+  }
+
+  .login-title {
+    font-size: 1.35rem;
+  }
+
+  .login-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .divider-text {
+    margin: 1.2rem 0;
+  }
+
+  .signin-btn,
+  .create-btn {
+    height: 44px;
+    font-size: 0.85rem;
+  }
+}
+
+// ============================================
+// RESPONSIVE - Landscape Mobile
+// ============================================
+@media (max-height: 500px) and (orientation: landscape) {
+  .login-page {
+    padding: 0;
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .login-container {
+    flex-direction: row;
+    min-height: auto;
+    height: auto;
+    border-radius: 0;
+  }
+
+  .login-left {
+    display: none;
+  }
+
+  .mobile-logo {
+    display: flex;
+
+    .logo-header-mobile {
+      width: 60px;
+      height: 60px;
+    }
+  }
+
+  .login-right {
+    flex: 1;
+    padding: 1rem 2rem;
+    overflow-y: auto;
+  }
+
+  .login-card {
+    max-width: 420px;
+  }
+
+  .login-header {
+    margin-bottom: 0.8rem;
+  }
+
+  .login-title {
+    font-size: 1.2rem;
+  }
+
+  .login-subtitle {
+    font-size: 0.75rem;
+  }
+
+  .form-group {
+    margin-bottom: 0.7rem;
+  }
+
+  .form-input {
+    padding: 9px 10px 9px 40px;
+    font-size: 14px;
+  }
+
+  .signin-btn,
+  .create-btn {
+    height: 38px;
+    font-size: 0.8rem;
+  }
+
+  .divider-text {
+    margin: 0.8rem 0;
+    font-size: 0.75rem;
+  }
+
+  .footer-links {
+    margin-top: 0.8rem;
+    padding-top: 0.6rem;
+  }
+}
