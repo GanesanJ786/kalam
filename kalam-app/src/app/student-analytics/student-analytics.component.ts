@@ -22,8 +22,16 @@ export class StudentAnalyticsComponent implements OnInit {
   allStudents: any;
   selectedYear: number = 0;
   finalStudentList: any = [];
+  filteredStudentList: any = [];
   listOfYears: number[] = [];
   displayedColumns: string[] = ['name', 'gender', 'ground'];
+
+  // Sorting & Filtering
+  sortBy: string = 'name';
+  sortDirection: string = 'asc';
+  filterGender: string = 'all';
+  filterGround: string = 'all';
+  uniqueGrounds: string[] = [];
 
   dataSource = new MatTableDataSource();
     
@@ -58,13 +66,79 @@ export class StudentAnalyticsComponent implements OnInit {
 
     finalData = finalData.filter((item: StudentDetails) => item.dob.includes(+this.selectedYear));
 
-    //console.log(finalData);
     this.finalStudentList = finalData;
-    this.dataSource.data = this.finalStudentList;
+
+    // Extract unique grounds
+    this.uniqueGrounds = [...new Set(finalData.map((s: any) => s.groundName).filter(Boolean))] as string[];
+    this.uniqueGrounds.sort((a, b) => a.localeCompare(b));
+
+    // Reset filters
+    this.filterGender = 'all';
+    this.filterGround = 'all';
+    this.sortBy = 'name';
+    this.sortDirection = 'asc';
+
+    this.applyFiltersAndSort();
+
+    this.dataSource.data = this.filteredStudentList;
     setTimeout(() => {
-      console.log(this.sort) //not undefined
       this.dataSource.sort = this.sort; 
-    })
+    });
+  }
+
+  applyFiltersAndSort() {
+    let list = [...this.finalStudentList];
+
+    // Filter by gender
+    if (this.filterGender !== 'all') {
+      list = list.filter((s: any) => s.gender === this.filterGender);
+    }
+
+    // Filter by ground
+    if (this.filterGround !== 'all') {
+      list = list.filter((s: any) => s.groundName === this.filterGround);
+    }
+
+    // Sort
+    list = this.sortList(list);
+
+    this.filteredStudentList = list;
+  }
+
+  sortList(list: any[]): any[] {
+    const dir = this.sortDirection === 'asc' ? 1 : -1;
+    return list.sort((a: any, b: any) => {
+      let valA: any, valB: any;
+      switch (this.sortBy) {
+        case 'name':
+          valA = (a.name || '').toLowerCase();
+          valB = (b.name || '').toLowerCase();
+          return valA.localeCompare(valB) * dir;
+        case 'gender':
+          valA = (a.gender || '').toLowerCase();
+          valB = (b.gender || '').toLowerCase();
+          return valA.localeCompare(valB) * dir;
+        case 'ground':
+          valA = (a.groundName || '').toLowerCase();
+          valB = (b.groundName || '').toLowerCase();
+          return valA.localeCompare(valB) * dir;
+        case 'dob':
+          valA = a.dob ? new Date(a.dob).getTime() : 0;
+          valB = b.dob ? new Date(b.dob).getTime() : 0;
+          return (valA - valB) * dir;
+        default:
+          return 0;
+      }
+    });
+  }
+
+  onFilterOrSortChange() {
+    this.applyFiltersAndSort();
+  }
+
+  toggleSortDirection() {
+    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+    this.applyFiltersAndSort();
   }
 
   genderMapper(gender: string) {
@@ -75,4 +149,19 @@ export class StudentAnalyticsComponent implements OnInit {
     }
   }
 
+  getMaleCount(): number {
+    return this.finalStudentList.filter((s: any) => s.gender === 'male').length;
+  }
+
+  getFemaleCount(): number {
+    return this.finalStudentList.filter((s: any) => s.gender === 'female').length;
+  }
+
+  getFilteredMaleCount(): number {
+    return this.filteredStudentList.filter((s: any) => s.gender === 'male').length;
+  }
+
+  getFilteredFemaleCount(): number {
+    return this.filteredStudentList.filter((s: any) => s.gender === 'female').length;
+  }
 }

@@ -1,30 +1,26 @@
 <ng-container>
     <ng-container>
-        <div mat-dialog-content style="margin: 0;padding: 0;max-height: 100%;">
-            <div class="rf-header custm-logo" style="background-image: none;">
+        <div mat-dialog-content class="dialog-fullscreen-content">
+            <div class="rf-header custm-logo">
                 <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
-                <div style="color: #fff;">{{title}}
-                </div>
+                <div class="header-title">{{title}}</div>
             </div>
             <div class="student-info">
                 <div class="s-image">
-                    <!-- <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
-                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template> -->
                     <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image" />
                 </div>
                 <div class="s-name">{{student.name}}</div>
-                <div class="s-ground" *ngIf="student?.competency" style="padding-bottom: 0;font-weight: 500;">
+                <div class="s-ground s-competency" *ngIf="student?.competency">
                     {{student.competency}}</div>
-
                 <div class="s-ground">{{student.groundName}}
-                    <span style="text-transform: uppercase;">({{student.underAge}})</span>
+                    <span>({{student.underAge}})</span>
                     <span *ngIf="student?.scholarship && student?.scholarship !== '0'"> Scholarship
                         ({{student.scholarship}})</span>
                 </div>
             </div>
             <div class="student-container">
                 <div class="s-bacis">
-                    <div class="s-cb" style="color: rgba(255,255,255,0.7);">
+                    <div class="s-cb s-cb-label">
                         <div>POSITION</div>
                         <div>AADHAR</div>
                         <div>DOB</div>
@@ -36,24 +32,20 @@
                     </div>
                 </div>
                 <div class="student-p">
-                    <div class="s-physic" style="color: rgba(255,255,255,0.7);font-size: 0.8rem;">
-                        <!-- <div style="width: 30%;text-align: left;">POSITION</div> -->
+                    <div class="s-physic s-physic-label">
                         <div>HEIGHT</div>
                         <div>WEIGHT</div>
-                        <!-- <div>AGE</div> -->
                         <div>JERSY</div>
                     </div>
                     <div class="s-physic">
-                        <!-- <div style="width: 30%;text-align: left;">{{student.playingPostion}}</div> -->
                         <div>{{student.height}}</div>
                         <div>{{student.weight}}</div>
-                        <!-- <div>{{student.age}}</div> -->
                         <div>{{student.jersySize}}</div>
                     </div>
                 </div>
 
                 <div class="performance-container">
-                    <button mat-raised-button color="primary" (click)="addPerform()" class="">Add Performance</button>
+                    <button mat-raised-button color="primary" (click)="addPerform()">Add Performance</button>
                 </div>
                 <ng-container *ngIf="studentPerData.length > 0">
                     <ng-container *ngFor="let perData of studentPerData">
@@ -131,8 +123,5 @@
                 </ng-container>
             </div>
         </div>
-        <!-- <div mat-dialog-actions style="justify-content: center;">
-                <button mat-button (click)="cancel()">Cancel</button>
-                <button mat-raised-button color="primary" (click)="save()" color="primary" type="submit">Save</button>
-            </div> -->
     </ng-container>
+</ng-container>

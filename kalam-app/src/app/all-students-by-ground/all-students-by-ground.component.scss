@@ -1,47 +1,110 @@
-.custGrid-3 {
-    grid-template: auto/25% 40% 35%;
-} 
-.row-bg {
-    background-color: #0f786f !important;
-    color: #fff;
+// ============================================
+// All Students By Ground - Black & Orange Theme
+// ============================================
+
+.s-list {
+  background: #0D0D0D;
+  min-height: calc(100vh - 52px);
 }
-.custGrid-3 > div {
-    padding: 4px 0px;;
+
+// --- Full-screen dialog content ---
+.dialog-fullscreen-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-height: 100% !important;
 }
-.cnt {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+.header-title {
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
 }
-.cnt-img {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
-.row-click {
-    padding: 0;
-    margin: 0;
-    background: 0;
-    border: 0;
-}
+
 .custom-table {
-    padding: 1rem;
+  padding: 0.75rem;
+
+  table {
+    background: transparent !important;
+  }
+
+  .mat-mdc-header-row,
+  .mat-header-row {
+    background: #1A1A1A !important;
+  }
+
+  .mat-mdc-header-cell,
+  .mat-header-cell {
+    color: #FF8A65 !important;
+    font-weight: 700 !important;
+    font-size: 0.72rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom-color: #333333 !important;
+    padding: 0 0.35rem !important;
+  }
+
+  .mat-mdc-row,
+  .mat-row {
+    background: transparent !important;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 87, 34, 0.06) !important;
+      cursor: pointer;
+    }
+  }
+
+  .mat-mdc-cell,
+  .mat-cell {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 0.8rem !important;
+    border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+    padding: 0 0.35rem !important;
+
+    a {
+      color: #FF8A65;
+      text-decoration: none;
+
+      &:hover {
+        color: #FF5722;
+        text-decoration: underline;
+      }
+    }
+  }
 }
+
+// --- Status Icons ---
 .icon-cus-class {
-    padding-left: 0.7rem;
+  padding-left: 0.5rem;
 }
-.custom-table table .mat-header-cell{
-    padding: 0 0.2rem !important;
-    font-size: 0.8em;
-}
-.custom-table table .mat-cell, .mat-footer-cell {
-    font-size: 0.8em;
-    padding: 0 0.2rem !important;
-}
+
 .clear {
-    color: #cf3232;
+  color: #FF1744 !important;
 }
-.done, .free {
-    color: #017e01;
+
+.done {
+  color: #00C853 !important;
+}
+
+.free {
+  color: #00C853 !important;
+  font-weight: 700;
+  font-size: 0.72rem;
+}
+
+// --- Responsive ---
+@media (max-width: 479px) {
+  .custom-table {
+    padding: 0.5rem;
+    overflow-x: auto;
+
+    .mat-mdc-header-cell,
+    .mat-header-cell,
+    .mat-mdc-cell,
+    .mat-cell {
+      font-size: 0.7rem !important;
+      padding: 0 0.2rem !important;
+    }
+  }
 }

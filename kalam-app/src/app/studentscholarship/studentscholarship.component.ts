@@ -184,6 +184,18 @@ export class StudentscholarshipComponent implements OnInit {
     }
   }
 
+  getPaidCount(): number {
+    return this.finalStudentList.filter((s: any) => s.payment === 'Paid').length;
+  }
+
+  getNotPaidCount(): number {
+    return this.finalStudentList.filter((s: any) => s.payment !== 'Paid').length;
+  }
+
+  getActiveCount(): number {
+    return this.finalStudentList.filter((s: any) => !s.inActive).length;
+  }
+
   ngOnInit(): void {
     this.dataSource.sort = this.sort;
   }

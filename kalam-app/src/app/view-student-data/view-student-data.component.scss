@@ -1,72 +1,238 @@
+// ============================================
+// View Student Data Dialog - Black & Orange Theme
+// ============================================
 
 .student-info {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.25rem 1rem;
+  background: linear-gradient(180deg, #121212 0%, #0D0D0D 100%);
 }
+
+.s-image {
+  .dummy-img,
+  .profile-img {
+    border-radius: 50%;
+    border: 3px solid #FF5722;
+    box-shadow: 0 0 16px rgba(255, 87, 34, 0.2);
+    object-fit: cover;
+  }
+
+  .dummy-img {
+    height: 5rem;
+    width: 5rem;
+  }
+
+  .profile-img {
+    height: 5rem;
+    width: 5rem;
+  }
+}
+
 .s-name {
-    font-size: 1.5rem;
-    font-weight: 500;
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-top: 0.6rem;
+  letter-spacing: 0.3px;
 }
+
 .s-ground {
-    padding: 0.5rem 0;
+  padding: 0.25rem 0;
+  font-size: 0.78rem;
+  color: #999999;
+  text-align: center;
+
+  span {
+    color: #FF8A65;
+    font-weight: 600;
+  }
 }
+
+// --- Basic Info / Physical Stats ---
+.s-bacis {
+  background: linear-gradient(135deg, #1A1A1A, #222222);
+  padding: 0.85rem 1rem;
+  color: #FFFFFF;
+  border-bottom: 1px solid #333333;
+}
+
+.s-cb {
+  display: flex;
+
+  div {
+    width: 33.33%;
+    text-align: center;
+    font-size: 0.72rem;
+    padding: 0.15rem 0;
+  }
+
+  &:first-child div {
+    color: #999999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+    font-size: 0.65rem;
+  }
+
+  &:last-child div {
+    color: #FFFFFF;
+    font-weight: 700;
+  }
+}
+
+.s-cb-label div {
+  color: #999999 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600 !important;
+  font-size: 0.65rem !important;
+}
+
+.student-p {
+  padding: 0.85rem 1rem;
+  background: linear-gradient(135deg, #222222, #1A1A1A);
+  color: #FFFFFF;
+  border-bottom: 1px solid #333333;
+}
+
 .s-physic {
-    display: flex;
-}
-.s-physic div {
+  display: flex;
+
+  div {
     width: 33.3%;
     text-align: center;
     text-transform: uppercase;
-    font-size: 0.7rem;
+    font-size: 0.72rem;
+    padding: 0.15rem 0;
+  }
 }
-.student-p {
-    padding: 1rem;
-    background: rgba(0,0,0,0.4);
-    color: #fff;
+
+.s-physic-label div {
+  color: rgba(255, 255, 255, 0.5) !important;
+  font-size: 0.68rem !important;
 }
-.s-bacis {
-    background: rgba(0,0,0,0.6);
-    padding: 1rem;
-    color: #fff;
+
+// --- Student Container / Performance ---
+.student-container {
+  padding: 0.75rem;
+  background: #0D0D0D;
 }
-.s-cb {
-    display: flex;
-}
-.s-cb div {
-    width: 33.33%;
-    text-align: center;
-    font-size: 0.7rem;
-}
-.student-container, .stud-cont {
-    padding: 0.5rem;
-}
+
 .performance-container {
-    text-align: right;
-    padding: 0.5rem 0;
-}
-.stud-cont {
-    border: 1px solid #e5e7eb;
-    border-radius: 5px;
-    margin-bottom: 0.5rem;
-    font-size: smaller;
-}
-.match-detail {
-    display: flex;
+  text-align: right;
+  padding: 0.65rem 0;
+
+  button {
+    background: linear-gradient(135deg, #FF5722, #E64A19) !important;
+    color: #FFFFFF !important;
+    border-radius: 10px !important;
     font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.4px;
+    box-shadow: 0 3px 12px rgba(255, 87, 34, 0.3) !important;
+  }
 }
+
+.stud-cont {
+  background: linear-gradient(145deg, #1A1A1A, #222222);
+  border: 1px solid #333333;
+  border-radius: 10px;
+  margin-bottom: 0.65rem;
+  font-size: 0.82rem;
+  padding: 0.75rem;
+  overflow: hidden;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(255, 87, 34, 0.3);
+  }
+}
+
+.match-detail {
+  display: flex;
+  font-weight: 700;
+  color: #FF8A65;
+  font-size: 0.82rem;
+  padding-bottom: 0.35rem;
+
+  &:nth-child(2) {
+    color: #999999;
+    font-weight: 500;
+    font-size: 0.72rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    margin-bottom: 0.5rem;
+  }
+}
+
 .stuPerfList {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: .5rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.4rem;
 }
+
 .list-cont {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    display: grid;
-    align-items: center;
-    gap: 0.5rem;
-}
-.list-cont div:last-child {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  display: grid;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0;
+  font-size: 0.72rem;
+
+  div:first-child {
+    color: #999999;
+    font-weight: 500;
+  }
+
+  div:last-child {
     text-align: center;
+    color: #FFFFFF;
+    font-weight: 700;
+    background: rgba(255, 87, 34, 0.08);
+    border-radius: 6px;
+    padding: 0.15rem 0.3rem;
+  }
+}
+
+// --- Full-screen dialog content ---
+.dialog-fullscreen-content {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-height: 100% !important;
+}
+
+.header-title {
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.3px;
+}
+
+.s-competency {
+  padding-bottom: 0 !important;
+  font-weight: 600 !important;
+  color: #FF8A65 !important;
+}
+
+// --- Responsive ---
+@media (max-width: 479px) {
+  .stuPerfList {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .s-name {
+    font-size: 1.1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .student-info {
+    padding: 1.5rem;
+  }
+
+  .stuPerfList {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }

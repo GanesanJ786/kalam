@@ -1,20 +1,27 @@
-<div class="rf-header custm-logo">
-    <!-- <div style="color: #ff9800">Welcome!</div> -->
-    <div style="color: #fff;">{{title}} 
-        <span class="menu-icon-cust" *ngIf="loggedIn">
-            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="action menu">
-                <mat-icon>more_vert</mat-icon>
-              </button>
-              <mat-menu #menu="matMenu">
-                <button (click)="editProfile()" mat-menu-item>
-                    <mat-icon>edit</mat-icon>
-                    <span>Edit Profile</span>
+<header class="kalam-header">
+    <div class="header-inner">
+        <div class="header-left">
+            <div class="header-logo"></div>
+        </div>
+        <div class="header-center">
+            <h1 class="header-title">{{title}}</h1>
+        </div>
+        <div class="header-right">
+            <span class="menu-icon-cust" *ngIf="loggedIn">
+                <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="action menu" class="menu-btn">
+                    <mat-icon>more_vert</mat-icon>
                 </button>
-                <button (click)="logout()" mat-menu-item>
-                    <mat-icon>power_settings_new</mat-icon>
-                    <span>Logout</span>
-                </button>
-              </mat-menu>
-        </span>
+                <mat-menu #menu="matMenu" class="dark-menu" xPosition="before">
+                    <button (click)="editProfile()" mat-menu-item>
+                        <mat-icon>edit</mat-icon>
+                        <span>Edit Profile</span>
+                    </button>
+                    <button (click)="logout()" mat-menu-item>
+                        <mat-icon>power_settings_new</mat-icon>
+                        <span>Logout</span>
+                    </button>
+                </mat-menu>
+            </span>
+        </div>
     </div>
-</div>
+</header>

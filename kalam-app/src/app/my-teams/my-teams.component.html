@@ -1,94 +1,174 @@
-<div class="content-p">
-    <div class="ageGroup custField" *ngIf="underCategory">
-        <mat-form-field appearance="fill" style="width: 45%;">
-            <mat-label>Age Group</mat-label>
-            <mat-select [(ngModel)]="ageType" (ngModelChange)="underSelection()">
-                <mat-option *ngFor="let under of underCategory" [value]="under.value">{{under.key}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" style="width: 45%;">
-            <mat-label>Select Ground</mat-label>
-            <mat-select [(ngModel)]="groundName" (ngModelChange)="underSelection()">
-                <mat-option value="all">All</mat-option>
-                <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
-            </mat-select>
-        </mat-form-field>
+<!-- ============================================ -->
+<!-- KALAM MY TEAMS - Black & Orange Sports Theme -->
+<!-- ============================================ -->
+
+<div class="teams-container">
+
+  <!-- Filter Bar -->
+  <section class="filter-bar" *ngIf="underCategory">
+    <div class="filter-row">
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Age Group</mat-label>
+        <mat-select [(ngModel)]="ageType" (ngModelChange)="underSelection()">
+          <mat-option *ngFor="let under of underCategory" [value]="under.value">{{under.key}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="fill" class="filter-field">
+        <mat-label>Select Ground</mat-label>
+        <mat-select [(ngModel)]="groundName" (ngModelChange)="underSelection()">
+          <mat-option value="all">All</mat-option>
+          <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
-    <div>
-        <div class="custField viewAttendance">  
-            <button mat-raised-button color="primary" (click)="newStudent()">Add Student</button>
-            <!-- <button *ngIf="ageType && groundName && owner && !viewStudentAttendance" mat-raised-button color="primary" (click)="viewAttendance()">View Attendance</button> -->
-            <button *ngIf="ageType && groundName && owner && viewStudentAttendance" mat-raised-button color="primary" (click)="viewStudent()">View Students</button>
-        </div>
+
+    <!-- Action Bar -->
+    <div class="action-bar">
+      <button class="action-btn action-primary" (click)="newStudent()">
+        <mat-icon>person_add</mat-icon>
+        <span>Add Student</span>
+      </button>
+      <button class="action-btn action-secondary"
+              *ngIf="ageType && groundName && owner && viewStudentAttendance"
+              (click)="viewStudent()">
+        <mat-icon>groups</mat-icon>
+        <span>View Students</span>
+      </button>
     </div>
-    
-    <div *ngIf="ageType && groundName" style="margin-top: 1em;"> 
-        
-        <div *ngIf="studentListView">
-            <div *ngFor="let student of studentList; let index = index">
-                <div class="position-style" *ngIf="!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion">{{getSportLabel(student.playingPostion)}}</div>
-                <div class="team-list">
-                    <div class="edit-btn" *ngIf="owner">
-                        <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="edit student information">
-                            <mat-icon>more_vert</mat-icon>
-                          </button>
-                          <mat-menu #menu="matMenu">
-                            <button (click)="editStudent(student)" mat-menu-item>
-                                <mat-icon>edit</mat-icon>
-                                <span>Edit Profile</span>
-                            </button>
-                            <button (click)="studentAttendanceRange(student)" mat-menu-item>
-                                <mat-icon>calendar_today</mat-icon>
-                                <span>View Attendance</span>
-                            </button>
-                          </mat-menu>
-                    </div>
-                    <button class="viewStudent" (click)="viewStudentProfile(student)">
-                        <!-- <img class="profile-img" *ngIf="student.imageUrl; else dummyImg" [src]="student.imageUrl" alt="profile image"/>
-                        <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template> -->
-                        <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
-                    </button>
-                    <div class="team-info">
-                        {{student.name}}
-                        <div class="student-info">
-                            <div>
-                                Kalam ID: {{student.kalamId}}
-                            </div>
-                            <div>
-                                {{getUnderAgeLabel(student.underAge)}} <span *ngIf="student?.competency">, {{student.competency}}</span>
-                            </div>
-                            <!-- <div>
-                                Ranking: 1
-                            </div> -->
-                            <div>
-                                <button class="btn-grnd custBtn" *ngIf="groundName !== 'all' && !student.disableInBtn" [disabled]="!groundName" (click)="in(student)">Present</button>
-                                <button class="btn-grnd custBtn eveningBtn" *ngIf="groundName !== 'all' && student?.hideEve" [disabled]="true">Present</button>
-                                <button class="btn-grnd custBtn eveningBtn" *ngIf="groundName !== 'all' && student.disableInBtn && !student?.hideEve" [disabled]="!groundName || student?.disableEveBtn" (click)="in(student, true)">Evening</button>
-                                <button class="btn-grnd btn-red custBtn" style="margin-right: 0.5rem;" *ngIf="groundName !== 'all'" [disabled]="student.disableOutBtn || !groundName" (click)="out(student)">Absent</button>
-                                <button class="btn-grnd btn-orange custBtn" style="margin: 0;" *ngIf="student.isFeesEnable" (click)="pay(student)">Fees</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div *ngIf="studentList?.length == 0" style="margin-top: 20vh;text-align: center;"> No Students Added</div>
+  </section>
+
+  <!-- Student List View -->
+  <section class="students-section" *ngIf="ageType && groundName">
+
+    <div class="student-list-view" *ngIf="studentListView">
+      <ng-container *ngFor="let student of studentList; let index = index">
+
+        <!-- Position Group Header -->
+        <div class="position-header"
+             *ngIf="!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion">
+          <div class="position-accent"></div>
+          <mat-icon class="position-icon">sports_soccer</mat-icon>
+          <h3 class="position-title">{{getSportLabel(student.playingPostion)}}</h3>
         </div>
-        <div *ngIf="viewStudentAttendance">
-            <div class="grid-container">
-                <div class="header">Name</div>
-                <div class="header">Category</div>
-                <div class="header">Ground</div>
-                <div class="header">Status</div>  
-                <div class="header">Date</div>
-                <ng-container *ngFor="let student of allStudentAttendance">
-                    <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{student.name}}</div>
-                    <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{student.ageType}}</div>
-                    <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{student.groundName}}</div>
-                    <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{statusLabel(student.status)}}</div>
-                    <div [ngClass]="student.status == 'OUT' ? 'red' : 'green'">{{student.loginDate}}</div>
-                </ng-container>
+
+        <!-- Player Card -->
+        <div class="player-card">
+          <!-- Menu Button -->
+          <div class="card-menu" *ngIf="owner">
+            <button mat-icon-button [matMenuTriggerFor]="menu" class="menu-trigger">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" class="player-menu">
+              <button (click)="editStudent(student)" mat-menu-item>
+                <mat-icon>edit</mat-icon>
+                <span>Edit Profile</span>
+              </button>
+              <button (click)="studentAttendanceRange(student)" mat-menu-item>
+                <mat-icon>calendar_today</mat-icon>
+                <span>View Attendance</span>
+              </button>
+            </mat-menu>
+          </div>
+
+          <!-- Card Body -->
+          <div class="card-body">
+            <!-- Avatar -->
+            <button class="avatar-btn" (click)="viewStudentProfile(student)">
+              <div class="avatar-ring">
+                <img class="avatar-img" src="../../assets/logo/profileImg.png" alt="profile image"/>
               </div>
+            </button>
+
+            <!-- Player Info -->
+            <div class="player-info">
+              <h4 class="player-name">{{student.name}}</h4>
+              <div class="player-meta">
+                <div class="meta-row">
+                  <mat-icon class="meta-icon">badge</mat-icon>
+                  <span class="meta-label">Kalam ID:</span>
+                  <span class="meta-value">{{student.kalamId}}</span>
+                </div>
+                <div class="meta-row">
+                  <mat-icon class="meta-icon">category</mat-icon>
+                  <span class="meta-value">{{getUnderAgeLabel(student.underAge)}}</span>
+                  <span class="meta-divider" *ngIf="student?.competency">•</span>
+                  <span class="meta-value competency-tag" *ngIf="student?.competency">{{student.competency}}</span>
+                </div>
+              </div>
+
+              <!-- Action Buttons -->
+              <div class="player-actions">
+                <button class="pill-btn pill-present"
+                        *ngIf="groundName !== 'all' && !student.disableInBtn"
+                        [disabled]="!groundName"
+                        (click)="checkIn(student)">
+                  <mat-icon>check_circle</mat-icon>
+                  <span>Present</span>
+                </button>
+                <button class="pill-btn pill-evening-disabled"
+                        *ngIf="groundName !== 'all' && student?.hideEve"
+                        [disabled]="true">
+                  <mat-icon>wb_twilight</mat-icon>
+                  <span>Present</span>
+                </button>
+                <button class="pill-btn pill-evening"
+                        *ngIf="groundName !== 'all' && student.disableInBtn && !student?.hideEve"
+                        [disabled]="!groundName || student?.disableEveBtn"
+                        (click)="checkIn(student, true)">
+                  <mat-icon>wb_twilight</mat-icon>
+                  <span>Evening</span>
+                </button>
+                <button class="pill-btn pill-absent"
+                        *ngIf="groundName !== 'all'"
+                        [disabled]="student.disableOutBtn || !groundName"
+                        (click)="out(student)">
+                  <mat-icon>cancel</mat-icon>
+                  <span>Absent</span>
+                </button>
+                <button class="pill-btn pill-fees"
+                        *ngIf="student.isFeesEnable"
+                        (click)="pay(student)">
+                  <mat-icon>payments</mat-icon>
+                  <span>Fees</span>
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
+      </ng-container>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="studentList?.length == 0">
+        <mat-icon class="empty-icon">people_outline</mat-icon>
+        <p class="empty-text">No Students Added</p>
+        <span class="empty-sub">Select an age group and ground, or add a new student</span>
+      </div>
     </div>
-    
+
+    <!-- Attendance Grid View -->
+    <div class="attendance-view" *ngIf="viewStudentAttendance">
+      <div class="att-grid">
+        <div class="att-header">
+          <div>Name</div>
+          <div>Category</div>
+          <div>Ground</div>
+          <div>Status</div>
+          <div>Date</div>
+        </div>
+        <div class="att-row" *ngFor="let student of allStudentAttendance"
+             [class.att-absent]="student.status == 'OUT'"
+             [class.att-present]="student.status !== 'OUT'">
+          <div>{{student.name}}</div>
+          <div>{{student.ageType}}</div>
+          <div>{{student.groundName}}</div>
+          <div class="att-status">
+            <span class="status-dot" [class.dot-present]="student.status !== 'OUT'" [class.dot-absent]="student.status == 'OUT'"></span>
+            {{statusLabel(student.status)}}
+          </div>
+          <div>{{student.loginDate}}</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
 </div>

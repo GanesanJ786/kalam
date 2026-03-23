@@ -1,9 +1,119 @@
-.titleCnt {
-    text-align: center;
-    margin: 0;
+// ============================================
+// Attendance Date-Wise Dialog - Black & Orange Theme
+// ============================================
+
+.dialog-title-icon {
+  color: #FF8A65;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
 }
-.cont-blck {
-    max-width: 80vw;
-    width: 80vw;
-    box-sizing: border-box;
+
+.dialog-subtitle {
+  text-align: center;
+  margin: 0;
+  padding: 0 1.5rem 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #999999;
+  letter-spacing: 0.3px;
+}
+
+.dialog-table-content {
+  padding: 0 !important;
+}
+
+.custom-table {
+  padding: 0.5rem 0.75rem;
+
+  table {
+    background: transparent !important;
+  }
+
+  .mat-mdc-header-row,
+  .mat-header-row {
+    background: #1A1A1A !important;
+  }
+
+  .mat-mdc-header-cell,
+  .mat-header-cell {
+    color: #FF8A65 !important;
+    font-weight: 700 !important;
+    font-size: 0.72rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom-color: #333333 !important;
+    padding: 0 0.5rem !important;
+  }
+
+  .mat-mdc-row,
+  .mat-row {
+    background: transparent !important;
+    transition: background 0.2s ease;
+
+    &:hover {
+      background: rgba(255, 87, 34, 0.06) !important;
+    }
+  }
+
+  .mat-mdc-cell,
+  .mat-cell {
+    color: rgba(255, 255, 255, 0.85) !important;
+    font-size: 0.82rem !important;
+    border-bottom-color: rgba(255, 255, 255, 0.06) !important;
+    padding: 0 0.5rem !important;
+  }
+}
+
+// --- Status Badges ---
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 50px;
+
+  &.status-in {
+    color: #00C853;
+    background: rgba(0, 200, 83, 0.1);
+  }
+
+  &.status-out {
+    color: #FF1744;
+    background: rgba(255, 23, 68, 0.1);
+  }
+}
+
+.status-icon {
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+// --- Empty State ---
+.empty-state-dialog {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+
+  .empty-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #333333;
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    color: #999999;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin: 0;
+  }
 }

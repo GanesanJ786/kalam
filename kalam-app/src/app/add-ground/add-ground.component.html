@@ -1,105 +1,131 @@
 <ng-container [ngSwitch]="data.dialogType">
     <ng-container *ngSwitchCase="'Ground'">
-        <h1 mat-dialog-title>Add Ground Details</h1>
+        <h1 mat-dialog-title>
+          <mat-icon class="dialog-title-icon">add_location_alt</mat-icon>
+          Add Ground Details
+        </h1>
         <form [formGroup]="addGround" #form="ngForm">
-            <div mat-dialog-content class="groundInfo">
-            <mat-form-field appearance="fill">
-                <mat-label>Ground name</mat-label>
-                <input matInput formControlName="groundName">
-            </mat-form-field>
-            <mat-form-field appearance="fill">
-                <mat-label>Address</mat-label>
-                <textarea matInput formControlName="groundAddress"></textarea>
-            </mat-form-field>
+            <div mat-dialog-content class="dialog-form-content">
+              <mat-form-field appearance="fill">
+                  <mat-label>Ground name</mat-label>
+                  <input matInput formControlName="groundName" placeholder="Enter ground name">
+              </mat-form-field>
+              <mat-form-field appearance="fill">
+                  <mat-label>Address</mat-label>
+                  <textarea matInput formControlName="groundAddress" rows="3" placeholder="Enter ground address"></textarea>
+              </mat-form-field>
             </div>
-            <div mat-dialog-actions style="justify-content: center;">
+            <div mat-dialog-actions>
                 <button mat-button (click)="cancel()">Cancel</button>
-                <button mat-raised-button color="primary" (click)="save()" color="primary" type="submit">Save</button>
+                <button mat-raised-button color="primary" (click)="save()" type="submit">Save</button>
             </div>
         </form>
     </ng-container>
+
     <ng-container *ngSwitchCase="'Topics'">
-        <h1 mat-dialog-title>Topics to cover today</h1>
+        <h1 mat-dialog-title>
+          <mat-icon class="dialog-title-icon">topic</mat-icon>
+          Topics to cover today
+        </h1>
         <form [formGroup]="topicsForm" #form="ngForm">
-            <div mat-dialog-content class="groundInfo">
+            <div mat-dialog-content class="dialog-form-content">
                 <mat-form-field appearance="fill">
                     <mat-label>Topics</mat-label>
-                    <textarea matInput formControlName="topics"></textarea>
+                    <textarea matInput formControlName="topics" rows="3" placeholder="What will you cover today?"></textarea>
                 </mat-form-field>
             </div>
-            <div mat-dialog-actions style="justify-content: center;">
-                <button mat-raised-button color="primary" (click)="saveTopics()" color="primary" type="submit">Save</button>
+            <div mat-dialog-actions>
+                <button mat-raised-button color="primary" (click)="saveTopics()" type="submit">Save</button>
             </div>
         </form>
     </ng-container>
+
     <ng-container *ngSwitchCase="'Notes'">
-        <h1 mat-dialog-title>Any notes for the today</h1>
+        <h1 mat-dialog-title>
+          <mat-icon class="dialog-title-icon">edit_note</mat-icon>
+          Notes for today
+        </h1>
         <form [formGroup]="notesForm" #form="ngForm">
-            <div mat-dialog-content class="groundInfo">
+            <div mat-dialog-content class="dialog-form-content">
                 <mat-form-field appearance="fill">
                     <mat-label>Notes</mat-label>
-                    <textarea matInput formControlName="notes"></textarea>
+                    <textarea matInput formControlName="notes" rows="3" placeholder="Any observations or notes..."></textarea>
                 </mat-form-field>
             </div>
-            <div mat-dialog-actions style="justify-content: center;">
+            <div mat-dialog-actions>
                 <button mat-button (click)="cancelNotes()">Cancel</button>
-                <button mat-raised-button color="primary" [disabled]="!notesForm.controls['notes'].value" (click)="saveNotes()" color="primary" type="submit">Save</button>
+                <button mat-raised-button color="primary" [disabled]="!notesForm.controls['notes'].value" (click)="saveNotes()" type="submit">Save</button>
             </div>
         </form>
     </ng-container>
+
     <ng-container *ngSwitchCase="'Payment'">
-        <h1 mat-dialog-title>Student fees received</h1>
+        <h1 mat-dialog-title>
+          <mat-icon class="dialog-title-icon">payments</mat-icon>
+          Student fees received
+        </h1>
         <form [formGroup]="feesForm" #form="ngForm">
-            <div mat-dialog-content class="groundInfo">
+            <div mat-dialog-content class="dialog-form-content">
                 <mat-form-field appearance="fill">
                     <mat-label>Please Enter Amount</mat-label>
-                    <input matInput formControlName="amount">
+                    <input matInput formControlName="amount" type="number" placeholder="₹ 0.00">
                 </mat-form-field>
             </div>
-            <div mat-dialog-actions style="justify-content: center;">
+            <div mat-dialog-actions>
                 <button mat-button (click)="cancelPayment()">Cancel</button>
-                <button mat-raised-button color="primary" [disabled]="!feesForm.controls['amount'].value" (click)="payment()" color="primary" type="submit">Save</button>
+                <button mat-raised-button color="primary" [disabled]="!feesForm.controls['amount'].value" (click)="payment()" type="submit">Save</button>
             </div>
         </form>
     </ng-container>
 
     <ng-container *ngSwitchCase="'Location'">
-        <h1 mat-dialog-title>Coach In & Out location</h1>  
-        <div mat-dialog-content class="locationCont">
-            <div>
-                <label style="font-weight: 600;">Login Address:</label>
-                <p>{{data?.loginAddress}}</p>
+        <h1 mat-dialog-title>
+          <mat-icon class="dialog-title-icon">my_location</mat-icon>
+          Coach In &amp; Out Location
+        </h1>
+        <div mat-dialog-content class="dialog-form-content">
+            <div class="location-block">
+                <div class="location-label">
+                  <mat-icon class="location-icon location-in">login</mat-icon>
+                  <span>Login Address</span>
+                </div>
+                <p class="location-value">{{data.loginAddress || '—'}}</p>
             </div>
-            <div>
-                <label style="font-weight: 600;">Logout Address:</label>
-                <p>{{data?.logoutAddress}}</p>
+            <div class="location-block">
+                <div class="location-label">
+                  <mat-icon class="location-icon location-out">logout</mat-icon>
+                  <span>Logout Address</span>
+                </div>
+                <p class="location-value">{{data.logoutAddress || '—'}}</p>
             </div>
-        </div>   
-        <div mat-dialog-actions style="justify-content: center;">
+        </div>
+        <div mat-dialog-actions>
             <button mat-button (click)="cancel()">Close</button>
         </div>
     </ng-container>
 
     <ng-container *ngSwitchCase="'Leave'">
-        <h1 mat-dialog-title>Apply Leave</h1>
+        <h1 mat-dialog-title>
+          <mat-icon class="dialog-title-icon">event_busy</mat-icon>
+          Apply Leave
+        </h1>
         <form [formGroup]="leaveForm" #form="ngForm">
-            <div mat-dialog-content class="groundInfo leaveForm">
-                <mat-form-field appearance="fill" style="width: 100%;">
+            <div mat-dialog-content class="dialog-form-content">
+                <mat-form-field appearance="fill">
                     <mat-label>Date of Leave</mat-label>
                     <input matInput [matDatepicker]="picker" formControlName="dateOfLeave">
                     <mat-hint>MM/DD/YYYY</mat-hint>
-                    <mat-datepicker-toggle matSuffix [for]="picker">
-                        </mat-datepicker-toggle>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
-                <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem;">
+                <mat-form-field appearance="fill">
                     <mat-label>Reason</mat-label>
-                    <textarea matInput formControlName="reasonOfLeave"></textarea>
+                    <textarea matInput formControlName="reasonOfLeave" rows="3" placeholder="Reason for leave..."></textarea>
                 </mat-form-field>
             </div>
-            <div mat-dialog-actions style="justify-content: center;">
+            <div mat-dialog-actions>
                 <button mat-button (click)="cancel()">Cancel</button>
-                <button mat-raised-button color="primary" (click)="applyLeave()" [disabled]="!leaveForm.valid" color="primary" type="submit">Save</button>
+                <button mat-raised-button color="primary" (click)="applyLeave()" [disabled]="!leaveForm.valid" type="submit">Submit</button>
             </div>
         </form>
     </ng-container>

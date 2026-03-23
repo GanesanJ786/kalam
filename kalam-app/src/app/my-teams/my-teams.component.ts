@@ -264,7 +264,7 @@ export class MyTeamsComponent implements OnInit {
     return UnderAge.filter(res => res.value == value)[0].label;
   }
 
-  in(student: StudentDetails, eve?: boolean) {
+  checkIn(student: StudentDetails, eve?: boolean) {
     let stopLoop = false;
     const studentAttendance = {
       kalamId: student.kalamId,

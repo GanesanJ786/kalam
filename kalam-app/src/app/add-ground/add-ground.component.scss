@@ -1,8 +1,68 @@
-::ng-deep .groundInfo .mat-form-field-appearance-fill .mat-form-field-flex {
-    background-color: #ffffff;
-    padding: 0;
+// ============================================
+// Add Ground Dialog - Black & Orange Theme
+// ============================================
+
+.dialog-title-icon {
+  color: #FF8A65;
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+}
+
+.dialog-form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+// --- Location Dialog ---
+.location-block {
+  background: #222222;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 0.65rem;
+  border: 1px solid #333333;
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(255, 87, 34, 0.3);
+  }
+}
+
+.location-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #999999;
+  margin-bottom: 0.35rem;
+}
+
+.location-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+
+  &.location-in {
+    color: #00C853;
   }
 
-  ::ng-deep .leaveForm .mat-form-field-appearance-fill .mat-form-field-subscript-wrapper {
-    padding-left: 0;
+  &.location-out {
+    color: #FF1744;
   }
+}
+
+.location-value {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.9);
+  word-break: break-word;
+}

@@ -1,10 +1,13 @@
-    <!-- <div class="rf-header custm-logo" style="background-image: none;">
+<!-- <div class="rf-header custm-logo" style="background-image: none;">
         <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
         <div style="color: #fff;">{{title}} 
         </div>
     </div> -->
     <div class="add-performace-cont">
-        <h1 mat-dialog-title>{{title}}</h1>
+        <h1 mat-dialog-title>
+            <mat-icon class="dialog-title-icon">emoji_events</mat-icon>
+            {{title}}
+        </h1>
         <form [formGroup]="addStudentPerformance" #form="ngForm">
             <div class="ratingsSection">
                 <ng-container *ngIf="sportType == 'football'">
@@ -157,9 +160,9 @@
                     </mat-form-field>
                 </ng-container>
             </div>
-            <div mat-dialog-actions style="justify-content: center; padding: 1rem;">
+            <div mat-dialog-actions>
                 <button mat-button (click)="cancel()">Cancel</button>
-                <button mat-raised-button color="primary" (click)="save()" [disabled]="!addStudentPerformance.valid" color="primary" type="submit">Save</button>
+                <button mat-raised-button color="primary" (click)="save()" [disabled]="!addStudentPerformance.valid" type="submit">Save</button>
             </div>
         </form>
     </div>

@@ -1,179 +1,302 @@
-<div class="sf-container">
+<div class="sf-shell">
     <app-header [title]="title"></app-header>
-    <form [formGroup]="studentForm" #form="ngForm">
-       
-        <div class="sf-content">
-            <div class="gotoHome">
-                <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
+
+    <form [formGroup]="studentForm" #form="ngForm" class="sf-body">
+        <!-- Top bar: Home + Step Indicator -->
+        <div class="sf-top-bar">
+            <button class="sf-home-btn" mat-icon-button (click)="gotoHome()">
+                <mat-icon>home</mat-icon>
+            </button>
+            <div class="sf-step-indicator">
+                <div class="step" [class.active]="form1" [class.done]="form2">
+                    <span class="step-dot">1</span>
+                    <span class="step-label">Personal</span>
+                </div>
+                <div class="step-line" [class.active]="form2"></div>
+                <div class="step" [class.active]="form2">
+                    <span class="step-dot">2</span>
+                    <span class="step-label">Sports</span>
+                </div>
             </div>
-            <div *ngIf="form1">
-                <div class="form-group" style="text-align: center;">
-                    <img *ngIf="selectedImage == null && profileImg" [src]="imgSrc" width="60" height="80" (click)="fileUploader.click()">
-                    <img *ngIf="selectedImage" [src]="imgSrc" width="60" height="80" (click)="fileUploader.click()">
-                    <img *ngIf="selectedImage == null && !profileImg" [src]="imgSrc" width="80" height="80" (click)="fileUploader.click()">
-                    <div class="pPic">Upload Profile Picture *</div>
+            <div class="sf-spacer"></div>
+        </div>
+
+        <!-- Scrollable content area -->
+        <div class="sf-scroll-area">
+
+            <!-- ====== STEP 1: Personal Details ====== -->
+            <div *ngIf="form1" class="sf-step-content" @fadeSlide>
+
+                <!-- Profile Upload Card -->
+                <div class="sf-card sf-profile-card" (click)="fileUploader.click()">
+                    <div class="profile-upload-zone">
+                        <div class="profile-avatar-ring">
+                            <img *ngIf="selectedImage == null && profileImg" [src]="imgSrc" class="profile-avatar" alt="Profile">
+                            <img *ngIf="selectedImage" [src]="imgSrc" class="profile-avatar" alt="Profile">
+                            <!-- <img *ngIf="selectedImage == null && !profileImg" [src]="imgSrc" class="profile-avatar placeholder" alt="Upload"> -->
+                            <div class="avatar-overlay">
+                                <mat-icon>camera_alt</mat-icon>
+                            </div>
+                        </div>
+                        <span class="upload-hint">Tap to upload photo *</span>
+                    </div>
                 </div>
                 <input type="file" style="display: none;" #fileUploader formControlName="imageUrl" (change)="showPreview($event)">
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" [ngStyle]="{'width': editAccess ? '65%' :  '100%'}">
-                        <mat-label>Name</mat-label>
-                        <input matInput formControlName="name" appAadharNumber [alphabetOnly]="true">
-                    </mat-form-field>
-                    <mat-form-field *ngIf="editAccess" appearance="fill" style="width: 33%;">
-                        <mat-label>Competency Level</mat-label>
-                        <mat-select formControlName="competency">
-                            <mat-option *ngFor="let competency of competencyLevel" [value]="competency.value">{{competency.label}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+
+                <!-- Basic Info Card -->
+                <div class="sf-card">
+                    <div class="sf-card-header">
+                        <mat-icon class="card-icon">person</mat-icon>
+                        <h3>Basic Information</h3>
+                    </div>
+                    <div class="sf-card-body">
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" [class.sf-col-8]="editAccess" [class.sf-col-12]="!editAccess">
+                                <mat-label>Name</mat-label>
+                                <input matInput formControlName="name" appAadharNumber [alphabetOnly]="true">
+                            </mat-form-field>
+                            <mat-form-field *ngIf="editAccess" appearance="fill" class="sf-col-4">
+                                <mat-label>Competency Level</mat-label>
+                                <mat-select formControlName="competency">
+                                    <mat-option *ngFor="let competency of competencyLevel" [value]="competency.value">{{competency.label}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" [class.sf-col-5]="editAccess" [class.sf-col-6]="!editAccess">
+                                <mat-label>Date of Birth</mat-label>
+                                <input matInput [matDatepicker]="picker" formControlName="dob" (dateChange)="dateSelected('change', $event)">
+                                <mat-hint>MM/DD/YYYY</mat-hint>
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" [class.sf-col-3]="editAccess" [class.sf-col-6]="!editAccess" *ngIf="studentForm.controls['dob'].value">
+                                <mat-label>Age</mat-label>
+                                <input matInput formControlName="age">
+                            </mat-form-field>
+                            <mat-form-field *ngIf="editAccess" appearance="fill" class="sf-col-4">
+                                <mat-label>Scholarship</mat-label>
+                                <mat-select formControlName="scholarship">
+                                    <mat-option *ngFor="let scholar of scholarship" [value]="scholar.value">{{scholar.label}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="sf-row sf-row-align-center">
+                            <div class="sf-col-6 sf-gender-group">
+                                <label class="sf-field-label">Gender</label>
+                                <mat-radio-group formControlName="gender" class="sf-radio-row">
+                                    <mat-radio-button value="male">Male</mat-radio-button>
+                                    <mat-radio-button value="female">Female</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Aadhar Number</mat-label>
+                                <input matInput formControlName="aadharNum" minlength="14" maxlength="14" appAadharNumber>
+                            </mat-form-field>
+                        </div>
+
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-12">
+                                <mat-label>Email ID</mat-label>
+                                <input matInput formControlName="emailId">
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
-               
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" [ngStyle]="{'width': editAccess ? '40%' :  '45%'}">
-                        <mat-label>Date of Birth</mat-label>
-                        <input matInput [matDatepicker]="picker" formControlName="dob" (dateChange)="dateSelected('change', $event)">
-                        <mat-hint>MM/DD/YYYY</mat-hint>
-                        <mat-datepicker-toggle matSuffix [for]="picker">
-                          </mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" [ngStyle]="{'width': editAccess ? '20%' :  '45%'}" *ngIf="studentForm.controls['dob'].value">
-                        <mat-label>Age</mat-label>
-                        <input matInput formControlName="age">
-                    </mat-form-field>
-                    <mat-form-field *ngIf="editAccess" appearance="fill" style="width: 35%;">
-                        <mat-label>Scholarship</mat-label>
-                        <mat-select formControlName="scholarship">
-                            <mat-option *ngFor="let scholar of scholarship" [value]="scholar.value">{{scholar.label}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+
+                <!-- Family Info Card -->
+                <div class="sf-card">
+                    <div class="sf-card-header">
+                        <mat-icon class="card-icon">family_restroom</mat-icon>
+                        <h3>Family Details</h3>
+                    </div>
+                    <div class="sf-card-body">
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Father's / Guardian</mat-label>
+                                <input matInput formControlName="fatherName" appAadharNumber [alphabetOnly]="true" placeholder="Enter name">
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Occupation</mat-label>
+                                <input matInput formControlName="fatherOcc">
+                            </mat-form-field>
+                        </div>
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Mother's / Guardian</mat-label>
+                                <input matInput formControlName="motherName" appAadharNumber [alphabetOnly]="true" placeholder="Enter name">
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Occupation</mat-label>
+                                <input matInput formControlName="motherOcc">
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
-                <div class="brk-field">
-                    <mat-radio-group formControlName="gender" style="margin-top: 1rem;width:50%">
-                        <mat-radio-button value="male" style="margin-right: 1rem;">Male</mat-radio-button>
-                        <mat-radio-button  value="female">Female</mat-radio-button>
-                      </mat-radio-group>
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Aadhar</mat-label>
-                        <input matInput formControlName="aadharNum" minlength="14" maxlength="14" appAadharNumber>
-                    </mat-form-field>
-                </div>
-                <mat-form-field appearance="fill" style="width: 100%;">
-                    <mat-label>Email ID</mat-label>
-                    <input matInput formControlName="emailId">
-                </mat-form-field>
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Father's / Guardian Name</mat-label>
-                        <input matInput formControlName="fatherName" appAadharNumber [alphabetOnly]="true">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Occupation</mat-label>
-                        <input matInput formControlName="fatherOcc">
-                    </mat-form-field>
-                </div>
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Mother's / Guardian Name</mat-label>
-                        <input matInput formControlName="motherName" appAadharNumber [alphabetOnly]="true">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Occupation</mat-label>
-                        <input matInput formControlName="motherOcc">
-                    </mat-form-field>
-                </div>
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Mobile Number</mat-label>
-                        <input matInput formControlName="mobileNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Whats App Number</mat-label>
-                        <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
-                    </mat-form-field>
+
+                <!-- Contact Info Card -->
+                <div class="sf-card">
+                    <div class="sf-card-header">
+                        <mat-icon class="card-icon">phone</mat-icon>
+                        <h3>Contact Information</h3>
+                    </div>
+                    <div class="sf-card-body">
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Mobile Number</mat-label>
+                                <input matInput formControlName="mobileNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>WhatsApp Number</mat-label>
+                                <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div *ngIf="form2">
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Emergency Contact Person</mat-label>
-                        <input matInput formControlName="emgContactName" appAadharNumber [alphabetOnly]="true">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Number</mat-label>
-                        <input matInput formControlName="emgContactNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
-                    </mat-form-field>
+            <!-- ====== STEP 2: Sports & Academy Details ====== -->
+            <div *ngIf="form2" class="sf-step-content" @fadeSlide>
+
+                <!-- Emergency Contact Card -->
+                <div class="sf-card">
+                    <div class="sf-card-header">
+                        <mat-icon class="card-icon">emergency</mat-icon>
+                        <h3>Emergency Contact</h3>
+                    </div>
+                    <div class="sf-card-body">
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Emergency Contact Person</mat-label>
+                                <input matInput formControlName="emgContactName" appAadharNumber [alphabetOnly]="true">
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Number</mat-label>
+                                <input matInput formControlName="emgContactNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>School / Institution Name</mat-label>
-                        <input matInput formControlName="institutionName">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width:45%">
-                        <mat-label>Studying</mat-label>
-                        <input matInput formControlName="studying">
-                    </mat-form-field>
+
+                <!-- Education Card -->
+                <div class="sf-card">
+                    <div class="sf-card-header">
+                        <mat-icon class="card-icon">school</mat-icon>
+                        <h3>Education</h3>
+                    </div>
+                    <div class="sf-card-body">
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>School / Institution Name</mat-label>
+                                <input matInput formControlName="institutionName">
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Studying</mat-label>
+                                <input matInput formControlName="studying">
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width: 45%;">
-                        <mat-label>Previous Academy Played</mat-label>
-                        <input matInput formControlName="preAcademyPlayed">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width: 45%;">
-                        <mat-label>Playing Position</mat-label>
-                        <mat-select formControlName="playingPostion">
-                            <mat-option value="goalkeeper">Goalkeeper</mat-option>
-                            <mat-option value="defenders">Defenders</mat-option>
-                            <mat-option value="outsideFullback">Outside fullback</mat-option>
-                            <mat-option value="centralDefenders">Central Defenders</mat-option>
-                            <mat-option value="midfielders">Midfielders</mat-option>
-                            <mat-option value="forwards">Forwards</mat-option>
-                            <mat-option value="centerForward">Center Forward</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+
+                <!-- Sports Info Card -->
+                <div class="sf-card">
+                    <div class="sf-card-header">
+                        <mat-icon class="card-icon">sports_soccer</mat-icon>
+                        <h3>Sports Profile</h3>
+                    </div>
+                    <div class="sf-card-body">
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Previous Academy Played</mat-label>
+                                <input matInput formControlName="preAcademyPlayed">
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Playing Position</mat-label>
+                                <mat-select formControlName="playingPostion">
+                                    <mat-option value="goalkeeper">Goalkeeper</mat-option>
+                                    <mat-option value="defenders">Defenders</mat-option>
+                                    <mat-option value="outsideFullback">Outside Fullback</mat-option>
+                                    <mat-option value="centralDefenders">Central Defenders</mat-option>
+                                    <mat-option value="midfielders">Midfielders</mat-option>
+                                    <mat-option value="forwards">Forwards</mat-option>
+                                    <mat-option value="centerForward">Center Forward</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Any Medical Issue</mat-label>
+                                <input matInput formControlName="anyMedicalIssue">
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="sf-col-6">
+                                <mat-label>Ground Name</mat-label>
+                                <mat-select formControlName="groundName">
+                                    <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width: 45%;">
-                        <mat-label>Any Medical Issue</mat-label>
-                        <input matInput formControlName="anyMedicalIssue">
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width: 45%;">
-                        <mat-label>Ground Name</mat-label>
-                        <mat-select formControlName="groundName">
-                            <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+
+                <!-- Physical & Kit Card -->
+                <div class="sf-card">
+                    <div class="sf-card-header">
+                        <mat-icon class="card-icon">fitness_center</mat-icon>
+                        <h3>Physical & Kit Details</h3>
+                    </div>
+                    <div class="sf-card-body">
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-4">
+                                <mat-label>Jersey Size</mat-label>
+                                <input matInput formControlName="jersySize" appAadharNumber [numbericOnly]='true'>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="sf-col-4">
+                                <mat-label>Height</mat-label>
+                                <input matInput formControlName="height" placeholder="Cm" appAadharNumber [numbericOnly]='true'>
+                                <span matSuffix class="sf-suffix">cm</span>
+                            </mat-form-field>
+                            <mat-form-field appearance="fill" class="sf-col-4">
+                                <mat-label>Weight</mat-label>
+                                <input matInput formControlName="weight" appAadharNumber [numbericOnly]='true'>
+                                <span matSuffix class="sf-suffix">kg</span>
+                            </mat-form-field>
+                        </div>
+                        <div class="sf-row">
+                            <mat-form-field appearance="fill" class="sf-col-12">
+                                <mat-label>Address</mat-label>
+                                <textarea matInput formControlName="address" rows="3"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
-                
-                <div class="brk-field">
-                    <mat-form-field appearance="fill" style="width: 30%;">
-                        <mat-label>Jersy Size</mat-label>
-                        <input matInput formControlName="jersySize" appAadharNumber [numbericOnly]='true'>
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width: 30%;">
-                        <mat-label>Height</mat-label>
-                        <input matInput formControlName="height" placeholder="Cm" appAadharNumber [numbericOnly]='true'>
-                    </mat-form-field>
-                    <mat-form-field appearance="fill" style="width: 30%;">
-                        <mat-label>Weight</mat-label>
-                        <input matInput formControlName="weight" appAadharNumber [numbericOnly]='true'>
-                    </mat-form-field>
-                </div>
-                <mat-form-field appearance="fill" style="width: 100%;">
-                    <mat-label>Address</mat-label>
-                    <textarea matInput formControlName="address"></textarea>
-                </mat-form-field>
             </div>
-               
         </div>
-        <div class="sf-footer">
-            <button *ngIf="form1" (click)="form1Submit()" [disabled]="form1Validation" style="width: 50%;" mat-raised-button color="primary">NEXT 
-                <span class="arrowRight"><mat-icon>keyboard_arrow_right</mat-icon></span>
+
+        <!-- Fixed bottom action bar -->
+        <div class="sf-action-bar">
+            <button *ngIf="form1"
+                    class="sf-btn sf-btn-primary sf-btn-full"
+                    [disabled]="form1Validation"
+                    (click)="form1Submit()">
+                <span>NEXT</span>
+                <mat-icon>arrow_forward</mat-icon>
             </button>
-            <button *ngIf="form2" (click)="prevForm()" style="width: 30%;" mat-raised-button>
-                <span class="arrowLeft"><mat-icon>keyboard_arrow_left</mat-icon></span> BACK
+
+            <button *ngIf="form2"
+                    class="sf-btn sf-btn-outline"
+                    (click)="prevForm()">
+                <mat-icon>arrow_back</mat-icon>
+                <span>BACK</span>
             </button>
-            <button *ngIf="form2" [disabled]="form2Validation" style="width: 40%;" mat-raised-button color="primary" (click)="onSubmit()">{{btnText()}}</button>
+            <button *ngIf="form2"
+                    class="sf-btn sf-btn-primary"
+                    [disabled]="form2Validation"
+                    (click)="onSubmit()">
+                <mat-icon>{{editAccess ? 'save' : 'check_circle'}}</mat-icon>
+                <span>{{btnText()}}</span>
+            </button>
         </div>
     </form>
 </div>

@@ -240,7 +240,7 @@ export class MyProfileComponent implements OnInit {
     });
   }
 
-  in(ground: any){
+  checkIn(ground: any){
     this.getLocation();
     const dialogRef = this.dialog.open(AddGroundComponent, {
       disableClose: true,

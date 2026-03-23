@@ -1,54 +1,160 @@
-<div class="sf-container">
+<div class="vca-shell">
     <app-header [title]="title"></app-header>
-    <div class="sf-content">
-        <div class="gotoHome cust-home ">
-            <div class="sa-content">
-                <mat-form-field appearance="fill" style="width: 85%;">
-                    <mat-label>Attendance Range</mat-label>
-                    <mat-date-range-input  [min]="startOfMonth" [max]="endOfMonth" [formGroup]="attendanceRangeGroup"
-                      [rangePicker]="attendanceRange">
-                      <input matStartDate placeholder="Start date" formControlName="start">
-                      <input matEndDate (dateChange)="dateChange($event)" placeholder="End date" formControlName="end">
-                    </mat-date-range-input>
-                    <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                    <mat-datepicker-toggle matIconSuffix [for]="attendanceRange"></mat-datepicker-toggle>
-                    <mat-date-range-picker #attendanceRange></mat-date-range-picker>
-                  </mat-form-field>
+
+    <div class="vca-body">
+        <!-- Top bar: Home button -->
+        <div class="vca-top-bar">
+            <button class="vca-home-btn" mat-icon-button (click)="gotoHome()">
+                <mat-icon>home</mat-icon>
+            </button>
+            <div class="vca-top-title">
+                <mat-icon class="vca-top-icon">supervisor_account</mat-icon>
+                <span>Coach Attendance</span>
             </div>
-            <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
+            <div class="vca-spacer"></div>
         </div>
-        <div>
-            <mat-form-field appearance="fill" style="width: 72%;">
-                <mat-label>Select Coach</mat-label>
-                <mat-select [(ngModel)]="coachVal" (ngModelChange)="coachSelection()">
-                    <mat-option *ngFor="let coach of coachList" [value]="coach.kalamId">{{coach.name}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div *ngIf="coachView.length > 0">
-            <div class="grid-container custGrid-6 font-0-7em">
-                <div class="header">Name</div>
-                <div class="header">Ground</div>
-                <div class="header">Topics</div>
-                <div class="header">Notes</div>
-                <div class="header">Log In Time</div>
-                <div class="header">Log Off Time</div>  
-                <ng-container *ngFor="let coach of coachView">
-                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{coach.coachName}}</div>
-                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'" class="d-flex">
-                        {{coach.groundName}}
-                        <div *ngIf="coach.status !== 'LEAVE'"><mat-icon style="font-size: 1rem;" (click)="viewStudentAttendance(coach)">calendar_today</mat-icon></div>
+
+        <!-- Scrollable content -->
+        <div class="vca-scroll-area">
+
+            <!-- Filter Card: Date Range + Coach Selector -->
+            <div class="vca-card vca-filter-card">
+                <div class="vca-card-header">
+                    <mat-icon class="card-icon">filter_list</mat-icon>
+                    <h3>Filters</h3>
+                </div>
+                <div class="vca-card-body">
+                    <div class="vca-row">
+                        <mat-form-field appearance="fill" class="vca-col-7">
+                            <mat-label>Attendance Range</mat-label>
+                            <mat-date-range-input [min]="startOfMonth" [max]="endOfMonth"
+                                [formGroup]="attendanceRangeGroup" [rangePicker]="attendanceRange">
+                                <input matStartDate placeholder="Start date" formControlName="start">
+                                <input matEndDate (dateChange)="dateChange($event)" placeholder="End date"
+                                    formControlName="end">
+                            </mat-date-range-input>
+                            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+                            <mat-datepicker-toggle matIconSuffix [for]="attendanceRange"></mat-datepicker-toggle>
+                            <mat-date-range-picker #attendanceRange></mat-date-range-picker>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="vca-col-5">
+                            <mat-label>Select Coach</mat-label>
+                            <mat-select [(ngModel)]="coachVal" (ngModelChange)="coachSelection()">
+                                <mat-option *ngFor="let coach of coachList"
+                                    [value]="coach.kalamId">{{coach.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
-                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{checkValue(coach.topics)}}</div>
-                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{checkValue(coach.notes)}}</div>
-                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{logInValue(coach)}}
-                        <span *ngIf="coach.loginAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></span>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div *ngIf="coachView.length === 0 && coachVal" class="vca-empty-state">
+                <div class="vca-empty-icon-ring">
+                    <mat-icon>event_busy</mat-icon>
+                </div>
+                <h4>No Records Found</h4>
+                <p>No attendance data for the selected date range.</p>
+            </div>
+
+            <div *ngIf="!coachVal" class="vca-empty-state">
+                <div class="vca-empty-icon-ring vca-empty-hint">
+                    <mat-icon>person_search</mat-icon>
+                </div>
+                <h4>Select a Coach</h4>
+                <p>Choose a coach and date range to view attendance details.</p>
+            </div>
+
+            <!-- Summary Stats Bar -->
+            <div *ngIf="coachView.length > 0" class="vca-stats-bar">
+                <div class="vca-stat">
+                    <span class="vca-stat-value vca-stat-total">{{coachView.length}}</span>
+                    <span class="vca-stat-label">Total</span>
+                </div>
+                <div class="vca-stat-divider"></div>
+                <div class="vca-stat">
+                    <span class="vca-stat-value vca-stat-present">{{getPresentCount()}}</span>
+                    <span class="vca-stat-label">Present</span>
+                </div>
+                <div class="vca-stat-divider"></div>
+                <div class="vca-stat">
+                    <span class="vca-stat-value vca-stat-leave">{{getLeaveCount()}}</span>
+                    <span class="vca-stat-label">Leave</span>
+                </div>
+            </div>
+
+            <!-- ===== MOBILE: Card-based attendance view ===== -->
+            <div *ngIf="coachView.length > 0" class="vca-attendance-cards">
+                <div *ngFor="let coach of coachView; let i = index" class="vca-card vca-attendance-item"
+                    [class.vca-leave]="coach.status === 'LEAVE'" [class.vca-present]="coach.status !== 'LEAVE'">
+
+                    <!-- Status badge -->
+                    <div class="vca-status-badge" [class.leave]="coach.status === 'LEAVE'">
+                        <mat-icon>{{coach.status === 'LEAVE' ? 'event_busy' : 'check_circle'}}</mat-icon>
+                        <span>{{coach.status === 'LEAVE' ? 'Leave' : 'Present'}}</span>
                     </div>
-                    <div [ngClass]="coach.status == 'LEAVE' ? 'red' : 'green'">{{coach.logOffDataTime}}
-                        <span *ngIf="coach.logoutAddress" (click)="viewLocation(coach.loginAddress, coach.logoutAddress)"><mat-icon style="font-size: 1rem;"> location_on</mat-icon></span>
+
+                    <!-- View Student Attendance Action -->
+                    <button *ngIf="coach.status !== 'LEAVE'" class="vca-view-student-btn" mat-icon-button
+                        (click)="viewStudentAttendance(coach)">
+                        <mat-icon>calendar_today</mat-icon>
+                    </button>
+
+                    <div class="vca-attendance-content">
+                        <!-- Row 1: Name + Ground -->
+                        <div class="vca-att-row vca-att-primary">
+                            <div class="vca-att-field">
+                                <mat-icon class="vca-field-icon">person</mat-icon>
+                                <span class="vca-field-value">{{coach.coachName}}</span>
+                            </div>
+                            <div class="vca-att-field vca-ground-field" *ngIf="coach.status !== 'LEAVE'">
+                                <mat-icon class="vca-field-icon">sports_soccer</mat-icon>
+                                <span class="vca-field-value">{{coach.groundName}}</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 2: Topics + Notes -->
+                        <div class="vca-att-row" *ngIf="coach.status !== 'LEAVE'">
+                            <div class="vca-att-detail">
+                                <span class="vca-detail-label">Topics</span>
+                                <span class="vca-detail-value">{{checkValue(coach.topics)}}</span>
+                            </div>
+                            <div class="vca-att-detail">
+                                <span class="vca-detail-label">Notes</span>
+                                <span class="vca-detail-value">{{checkValue(coach.notes)}}</span>
+                            </div>
+                        </div>
+
+                        <!-- Row 3: Login / Logout Times -->
+                        <div class="vca-att-row vca-time-row" *ngIf="coach.status !== 'LEAVE'">
+                            <div class="vca-time-block">
+                                <div class="vca-time-header">
+                                    <mat-icon>login</mat-icon>
+                                    <span>Log In</span>
+                                </div>
+                                <span class="vca-time-value">{{logInValue(coach)}}</span>
+                                <button *ngIf="coach.loginAddress" class="vca-location-btn"
+                                    (click)="viewLocation(coach.loginAddress, coach.logoutAddress)">
+                                    <mat-icon>location_on</mat-icon>
+                                </button>
+                            </div>
+                            <div class="vca-time-divider"></div>
+                            <div class="vca-time-block">
+                                <div class="vca-time-header">
+                                    <mat-icon>logout</mat-icon>
+                                    <span>Log Off</span>
+                                </div>
+                                <span class="vca-time-value">{{coach.logOffDataTime}}</span>
+                                <button *ngIf="coach.logoutAddress" class="vca-location-btn"
+                                    (click)="viewLocation(coach.loginAddress, coach.logoutAddress)">
+                                    <mat-icon>location_on</mat-icon>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </ng-container>
-              </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>

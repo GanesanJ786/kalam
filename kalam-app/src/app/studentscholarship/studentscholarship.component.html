@@ -1,103 +1,134 @@
-<div class="content-p">
-    <div class="ageGroup custField">
-        <mat-form-field appearance="fill" style="width: 45%;">
-            <mat-label>Age Group</mat-label>
-            <mat-select [(ngModel)]="ageType">
-                <mat-option value="all">All</mat-option>
-                <mat-option *ngFor="let under of underCategory" [value]="under.value">{{under.key}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" style="width: 45%;">
-            <mat-label>Select Ground</mat-label>
-            <mat-select [(ngModel)]="groundName">
-                <mat-option value="all">All</mat-option>
-                <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-    </div>
-    <div class="ageGroup custField" style="margin: 0;">
-        <mat-form-field appearance="fill" style="width: 45%;">
-            <mat-label>Scholarship</mat-label>
-            <mat-select [(ngModel)]="scholarshipType">
-                <mat-option value="yes">Yes</mat-option>
-                <mat-option value="no">No</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <div>
-            <button mat-raised-button color="primary" [disabled]="!ageType || !groundName || !scholarshipType" (click)="search()">Search</button>
+<div class="ss-shell">
+
+    <!-- Filter Card -->
+    <div class="ss-card ss-filter-card">
+        <div class="ss-card-header">
+            <mat-icon class="ss-card-icon">filter_list</mat-icon>
+            <h3>Filters</h3>
+        </div>
+        <div class="ss-card-body">
+            <div class="ss-filter-row">
+                <mat-form-field appearance="fill" class="ss-field">
+                    <mat-label>Age Group</mat-label>
+                    <mat-select [(ngModel)]="ageType">
+                        <mat-option value="all">All</mat-option>
+                        <mat-option *ngFor="let under of underCategory" [value]="under.value">{{under.key}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="ss-field">
+                    <mat-label>Select Ground</mat-label>
+                    <mat-select [(ngModel)]="groundName">
+                        <mat-option value="all">All</mat-option>
+                        <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="ss-filter-row">
+                <mat-form-field appearance="fill" class="ss-field">
+                    <mat-label>Scholarship</mat-label>
+                    <mat-select [(ngModel)]="scholarshipType">
+                        <mat-option value="yes">Yes</mat-option>
+                        <mat-option value="no">No</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="ss-search-action">
+                    <button class="ss-search-btn" [disabled]="!ageType || !groundName || !scholarshipType" (click)="search()">
+                        <mat-icon>search</mat-icon>
+                        <span>Search</span>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="s-list" *ngIf="finalStudentList.length > 0">
-        <!-- <div class="grid-container custGrid-3 font-0-9em" >
-            <div class="header">Under</div>
-          
-            <div class="header">Name</div>
-            <div class="header" *ngIf="!isScholarship; else scholar">Payment</div>
-            <ng-template #scholar><div class="header">Scholarship</div></ng-template>
-           
-            <ng-container *ngFor="let student of finalStudentList">
-                <div class="row-bg cnt" style="text-transform: capitalize;">
-                    {{student.underAge}}
-                    <div style="text-transform: capitalize;padding-left: 0.3em;">{{genderMapper(student.gender)}}</div>
-                </div>
-                <div class="row-bg cnt">{{student.name}}</div>
-                <div class="row-bg cnt" *ngIf="!isScholarship; else scholarCheck">{{checkFees(student)}}</div>
-                <ng-template #scholarCheck><div class="row-bg cnt">{{student.scholarship}}</div></ng-template>
-            </ng-container>
-          </div> -->
-          <!-- <mat-form-field>
-            <mat-label>Filter</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia" #input>
-          </mat-form-field> -->
-          
-          <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource" matSort class="tableFull">
-          
-              <ng-container matColumnDef="age">
-                <th style="width: 25%;" mat-header-cell *matHeaderCellDef mat-sort-header> Under </th>
-                <td mat-cell *matCellDef="let row"> {{row.underAge}} </td>
-              </ng-container>
-          
-            
-              <ng-container matColumnDef="name">
-                <th style="width: 50%;" mat-header-cell *matHeaderCellDef mat-sort-header> Name & Gender </th>
-                <td mat-cell *matCellDef="let row"> {{row.name}} 
-                    <span style="text-transform: capitalize;padding-left: 0.3em;">{{genderMapper(row.gender)}}</span>
-                </td>
-              </ng-container>
-          
-             
-              <ng-container matColumnDef="payment" *ngIf="!isScholarship; else scholar">
-                <th style="width: 25%;" mat-header-cell *matHeaderCellDef mat-sort-header> Payment </th>
-                <td mat-cell *matCellDef="let row"> {{row.payment}} </td>
-              </ng-container>
 
-              <ng-template #scholar>
-                <ng-container matColumnDef="scholarship">
-                    <th style="width: 25%;" mat-header-cell *matHeaderCellDef mat-sort-header> Scholarship </th>
-                    <td mat-cell *matCellDef="let row"> {{row.scholarship}} </td>
-                  </ng-container>
-              </ng-template>
-
-              <ng-container matColumnDef="inActive">
-                <th style="width: 25%;" mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-                <td mat-cell *matCellDef="let row">
-                  <button *ngIf="!row?.inActive" class="btn-grnd" style="padding: 0.1rem 0.1rem;margin-left: 0;font-size: 0.1rem;" (click)="inActive(row)"><mat-icon class="done">done</mat-icon></button>
-                  <button *ngIf="row?.inActive" class="btn-grnd btn-red" style="padding: 0.1rem 0.1rem;margin-left: 0;font-size: 0.1rem;" (click)="activate(row)"><mat-icon class="clear">clear</mat-icon></button>
-                </td>
-              </ng-container>
-            
-          
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          
-              <!-- Row shown when there is no matching data. -->
-              <!-- <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="3">No data matching the filter "{{input.value}}"</td>
-              </tr> -->
-            </table>
-          
-            <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator> -->
-          </div>
+    <!-- Empty State: Before Search -->
+    <div *ngIf="finalStudentList.length === 0" class="ss-empty-state">
+        <div class="ss-empty-icon-ring">
+            <mat-icon>card_membership</mat-icon>
+        </div>
+        <h4>Search Students</h4>
+        <p>Select filters and tap search to view scholarship & payment details.</p>
     </div>
+
+    <!-- Results Section -->
+    <ng-container *ngIf="finalStudentList.length > 0">
+
+        <!-- Stats Bar -->
+        <div class="ss-stats-bar">
+            <div class="ss-stat">
+                <span class="ss-stat-value ss-stat-total">{{finalStudentList.length}}</span>
+                <span class="ss-stat-label">Total</span>
+            </div>
+            <div class="ss-stat-divider"></div>
+            <div class="ss-stat" *ngIf="isScholarship">
+                <span class="ss-stat-value ss-stat-scholarship">{{finalStudentList.length}}</span>
+                <span class="ss-stat-label">Scholarship</span>
+            </div>
+            <div class="ss-stat" *ngIf="!isScholarship">
+                <span class="ss-stat-value ss-stat-paid">{{getPaidCount()}}</span>
+                <span class="ss-stat-label">Paid</span>
+            </div>
+            <div class="ss-stat-divider"></div>
+            <div class="ss-stat" *ngIf="!isScholarship">
+                <span class="ss-stat-value ss-stat-unpaid">{{getNotPaidCount()}}</span>
+                <span class="ss-stat-label">Not Paid</span>
+            </div>
+            <div class="ss-stat" *ngIf="isScholarship">
+                <span class="ss-stat-value ss-stat-active">{{getActiveCount()}}</span>
+                <span class="ss-stat-label">Active</span>
+            </div>
+        </div>
+
+        <!-- Student Cards -->
+        <div class="ss-student-cards">
+            <div *ngFor="let row of finalStudentList; let i = index" class="ss-card ss-student-item"
+                [class.ss-inactive]="row?.inActive">
+
+                <!-- Status indicator -->
+                <div class="ss-student-badge" [class.inactive]="row?.inActive">
+                    <mat-icon>{{row?.inActive ? 'person_off' : 'person'}}</mat-icon>
+                    <span>{{row?.inActive ? 'Inactive' : 'Active'}}</span>
+                </div>
+
+                <div class="ss-student-content">
+                    <!-- Row 1: Name & Age Group -->
+                    <div class="ss-student-row ss-student-primary">
+                        <div class="ss-student-field">
+                            <mat-icon class="ss-field-icon">person</mat-icon>
+                            <span class="ss-field-value">{{row.name}}</span>
+                            <span class="ss-gender-tag">{{genderMapper(row.gender)}}</span>
+                        </div>
+                        <div class="ss-student-field ss-age-field">
+                            <mat-icon class="ss-field-icon">category</mat-icon>
+                            <span class="ss-field-value">{{row.underAge}}</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Payment/Scholarship Info -->
+                    <div class="ss-student-row">
+                        <div class="ss-detail-chip" *ngIf="!isScholarship"
+                            [class.ss-chip-paid]="row.payment === 'Paid'"
+                            [class.ss-chip-unpaid]="row.payment !== 'Paid'">
+                            <mat-icon>{{row.payment === 'Paid' ? 'check_circle' : 'warning'}}</mat-icon>
+                            <span>{{row.payment}}</span>
+                        </div>
+                        <div class="ss-detail-chip ss-chip-scholarship" *ngIf="isScholarship">
+                            <mat-icon>school</mat-icon>
+                            <span>{{row.scholarship}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Button -->
+                <button class="ss-action-btn" *ngIf="!row?.inActive" (click)="inActive(row)">
+                    <mat-icon>person_off</mat-icon>
+                </button>
+                <button class="ss-action-btn ss-activate-btn" *ngIf="row?.inActive" (click)="activate(row)">
+                    <mat-icon>person_add</mat-icon>
+                </button>
+            </div>
+        </div>
+
+    </ng-container>
+
 </div>

@@ -196,4 +196,12 @@ export class ViewCoachAttendanceComponent implements OnInit {
     });
   }
 
+  getPresentCount(): number {
+    return this.coachView.filter((c: any) => c.status !== 'LEAVE').length;
+  }
+
+  getLeaveCount(): number {
+    return this.coachView.filter((c: any) => c.status === 'LEAVE').length;
+  }
+
 }

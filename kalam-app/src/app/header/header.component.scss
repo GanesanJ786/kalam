@@ -1,5 +1,95 @@
+// ============================================
+// KALAM HEADER - Black & Orange Theme
+// ============================================
+$orange: #FF5722;
+$orange-dark: #E64A19;
+$black-1: #0D0D0D;
+$black-2: #121212;
+$black-3: #1A1A1A;
+$white: #FFFFFF;
+
+.kalam-header {
+  background: linear-gradient(135deg, $black-1 0%, $black-3 100%);
+  border-bottom: none;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-logo {
+  width: 36px;
+  height: 36px;
+  background-image: url("../../assets/logo/kalamLogoName.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  filter: drop-shadow(0 2px 8px rgba(255, 87, 34, 0.3));
+}
+
+.header-center {
+  flex: 1;
+  text-align: center;
+}
+
+.header-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: $white;
+  margin: 0;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
 .menu-icon-cust {
-    position: absolute;
-    right: 8px;
-    top: 0;
+  display: inline-flex;
+  align-items: center;
+}
+
+.menu-btn {
+  color: $orange;
+  transition: color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    color: $orange-dark;
+    transform: scale(1.1);
+  }
+}
+
+::ng-deep .dark-menu {
+  .mat-mdc-menu-content {
+    background: $black-2;
+  }
+
+  .mat-mdc-menu-item {
+    color: $white;
+
+    .mat-icon {
+      color: $orange;
+    }
+
+    &:hover {
+      background: $black-3;
+    }
+  }
 }

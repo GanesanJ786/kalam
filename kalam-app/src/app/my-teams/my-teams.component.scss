@@ -1,54 +1,772 @@
+// ============================================
+// KALAM MY TEAMS - Black & Orange Sports Theme
+// ============================================
 
-.team-list {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: flex-start;
-    padding: 1rem 0;
-    border: 1px solid #d7d7d7;
-    border-radius: 10px;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-    position: relative;
+// --- Theme Variables ---
+$orange: #FF5722;
+$orange-dark: #E64A19;
+$orange-light: #FF8A65;
+$orange-glow: rgba(255, 87, 34, 0.25);
+$black-1: #0D0D0D;
+$black-2: #121212;
+$black-3: #1A1A1A;
+$black-4: #222222;
+$black-5: #2A2A2A;
+$grey-dark: #333333;
+$grey-mid: #555555;
+$grey-light: #999999;
+$white: #FFFFFF;
+$green: #00C853;
+$green-dark: #009624;
+$red: #FF1744;
+$red-dark: #D50000;
+$yellow: #FFB300;
+$yellow-dark: #8a7e31;
+$radius: 14px;
+$radius-sm: 10px;
+$fast: 0.2s ease;
+$med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+// ============================================
+// HOST
+// ============================================
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 100%;
+  background: $black-1;
 }
-.edit-btn {
+
+// ============================================
+// CONTAINER
+// ============================================
+.teams-container {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 0 env(safe-area-inset-bottom, 0);
+}
+
+// ============================================
+// FILTER BAR
+// ============================================
+.filter-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: linear-gradient(180deg, $black-1 0%, rgba($black-1, 0.97) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding: 1rem 1rem 0.5rem;
+  border-bottom: 1px solid rgba($white, 0.04);
+}
+
+.filter-row {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+}
+
+.filter-field {
+  flex: 1;
+  min-width: 0;
+
+  // Dark theme form fields
+  .mdc-text-field--filled {
+    background: $black-4 !important;
+    border-radius: $radius-sm $radius-sm 0 0 !important;
+    border-bottom: 2px solid $grey-dark !important;
+
+    &:hover {
+      border-bottom-color: $grey-mid !important;
+    }
+
+    &.mdc-text-field--focused {
+      border-bottom-color: $orange !important;
+    }
+  }
+
+  .mdc-floating-label {
+    color: $grey-light !important;
+    font-size: 0.82rem !important;
+  }
+
+  .mdc-floating-label--float-above {
+    color: $orange-light !important;
+  }
+
+  .mat-mdc-select-value {
+    color: $white !important;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .mat-mdc-select-arrow {
+    color: $grey-light !important;
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+    background: rgba($orange, 0.04) !important;
+  }
+
+  .mdc-line-ripple::after {
+    border-bottom-color: $orange !important;
+  }
+}
+
+// --- Action Bar ---
+.action-bar {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all $med;
+  letter-spacing: 0.3px;
+  -webkit-tap-highlight-color: transparent;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.action-primary {
+  background: linear-gradient(135deg, $orange, $orange-dark);
+  color: $white;
+  box-shadow: 0 2px 10px $orange-glow;
+
+  &:hover {
+    box-shadow: 0 4px 18px rgba($orange, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+.action-secondary {
+  background: $black-4;
+  color: $white;
+  border: 1px solid $grey-dark;
+
+  &:hover {
+    border-color: $orange;
+    color: $orange;
+    transform: translateY(-1px);
+  }
+}
+
+// ============================================
+// STUDENTS SECTION
+// ============================================
+.students-section {
+  flex: 1;
+  padding: 0.5rem 0.75rem 2rem;
+}
+
+.student-list-view {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+// ============================================
+// POSITION GROUP HEADER
+// ============================================
+.position-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.25rem 0.25rem 0.5rem;
+  margin-top: 0.25rem;
+  position: relative;
+}
+
+.position-accent {
+  position: absolute;
+  left: 0;
+  top: 1.25rem;
+  bottom: 0.5rem;
+  width: 3px;
+  border-radius: 2px;
+  background: linear-gradient(180deg, $orange, $orange-dark);
+  box-shadow: 0 0 8px $orange-glow;
+}
+
+.position-icon {
+  color: $orange;
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  margin-left: 0.5rem;
+}
+
+.position-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: $white;
+  letter-spacing: 0.5px;
+  text-transform: capitalize;
+}
+
+// ============================================
+// PLAYER CARD
+// ============================================
+.player-card {
+  position: relative;
+  background: linear-gradient(160deg, $black-3 0%, $black-4 100%);
+  border: 1px solid $grey-dark;
+  border-radius: $radius;
+  overflow: hidden;
+  transition: all $med;
+  -webkit-tap-highlight-color: transparent;
+
+  // Subtle top accent line
+  &::before {
+    content: '';
     position: absolute;
-    right: 0;
     top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, $orange, transparent 70%);
+    opacity: 0;
+    transition: opacity $med;
+  }
+
+  &:hover {
+    border-color: rgba($orange, 0.35);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba($orange, 0.08);
+
+    &::before {
+      opacity: 1;
+    }
+  }
 }
-.student-info {
-    font-size: 0.7rem;
+
+// --- Card Menu ---
+.card-menu {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  z-index: 2;
 }
-.position-style {
-    padding: 0.5rem 0;
-    margin-top: 0.5rem;
-    font-size: 1rem;
+
+.menu-trigger {
+  color: $grey-light !important;
+  width: 36px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    color: $orange !important;
+    background: rgba($orange, 0.08) !important;
+  }
+}
+
+// --- Card Body ---
+.card-body {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  padding: 0.85rem;
+  padding-right: 2.5rem; // space for menu button
+}
+
+// --- Avatar ---
+.avatar-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform $fast;
+
+  &:active {
+    transform: scale(0.93);
+  }
+}
+
+.avatar-ring {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  padding: 2.5px;
+  background: linear-gradient(135deg, $orange, #26C6DA, $orange-light);
+  box-shadow: 0 0 16px rgba($orange, 0.15), 0 0 16px rgba(38, 198, 218, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: box-shadow $med;
+
+  .player-card:hover & {
+    box-shadow: 0 0 20px rgba($orange, 0.25), 0 0 20px rgba(38, 198, 218, 0.15);
+  }
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  background: $black-2;
+  border: 2px solid $black-3;
+}
+
+// --- Player Info ---
+.player-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.player-name {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: $white;
+  letter-spacing: 0.3px;
+  line-height: 1.3;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// --- Player Meta ---
+.player-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
+.meta-icon {
+  font-size: 13px;
+  width: 13px;
+  height: 13px;
+  color: $orange-light;
+  flex-shrink: 0;
+}
+
+.meta-label {
+  font-size: 0.7rem;
+  color: $grey-light;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+.meta-value {
+  font-size: 0.72rem;
+  color: rgba($white, 0.85);
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.meta-divider {
+  color: $grey-dark;
+  font-size: 0.6rem;
+}
+
+.competency-tag {
+  color: $orange-light;
+  font-weight: 700;
+}
+
+// ============================================
+// PLAYER ACTION BUTTONS (Pills)
+// ============================================
+.player-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.35rem;
+}
+
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: none;
+  border-radius: 50px;
+  padding: 0.32rem 0.75rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all $med;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+  }
+
+  &:not(:disabled):active {
+    transform: scale(0.94);
+  }
+}
+
+.pill-present {
+  background: linear-gradient(135deg, $green, $green-dark);
+  color: $white;
+  box-shadow: 0 2px 8px rgba($green, 0.25);
+
+  &:not(:disabled):hover {
+    box-shadow: 0 3px 14px rgba($green, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+.pill-absent {
+  background: linear-gradient(135deg, $red, $red-dark);
+  color: $white;
+  box-shadow: 0 2px 8px rgba($red, 0.2);
+
+  &:not(:disabled):hover {
+    box-shadow: 0 3px 14px rgba($red, 0.35);
+    transform: translateY(-1px);
+  }
+}
+
+.pill-evening {
+  background: linear-gradient(135deg, $yellow, $yellow-dark);
+  color: $black-1;
+  box-shadow: 0 2px 8px rgba($yellow, 0.2);
+
+  &:not(:disabled):hover {
+    box-shadow: 0 3px 14px rgba($yellow, 0.35);
+    transform: translateY(-1px);
+  }
+}
+
+.pill-evening-disabled {
+  background: $grey-dark;
+  color: $grey-mid;
+}
+
+.pill-fees {
+  background: linear-gradient(135deg, $orange, $orange-dark);
+  color: $white;
+  box-shadow: 0 2px 8px $orange-glow;
+
+  &:not(:disabled):hover {
+    box-shadow: 0 3px 14px rgba($orange, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
+// ============================================
+// EMPTY STATE
+// ============================================
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.empty-icon {
+  font-size: 56px;
+  width: 56px;
+  height: 56px;
+  color: $grey-dark;
+  margin-bottom: 0.75rem;
+}
+
+.empty-text {
+  color: $white;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.3rem;
+}
+
+.empty-sub {
+  color: $grey-light;
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+// ============================================
+// ATTENDANCE VIEW
+// ============================================
+.attendance-view {
+  padding: 0.5rem 0;
+}
+
+.att-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr 1fr;
+  gap: 1px;
+  background: rgba($white, 0.04);
+  border-radius: $radius;
+  overflow: hidden;
+  border: 1px solid $grey-dark;
+}
+
+.att-header {
+  display: contents;
+
+  > div {
+    background: $black-3;
+    color: $orange-light;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 0.65rem 0.5rem;
+    text-align: center;
+  }
+}
+
+.att-row {
+  display: contents;
+
+  > div {
+    padding: 0.55rem 0.5rem;
+    font-size: 0.72rem;
     font-weight: 500;
-}
-.team-info {
-    margin-top: 0.5rem;
-}
-.ageGroup {
-    margin-top: 1.5rem;
+    text-align: center;
+    color: rgba($white, 0.85);
+    background: $black-4;
     display: flex;
-    align-items: baseline;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    word-break: break-word;
+  }
+
+  &.att-present > div {
+    background: rgba($green, 0.08);
+    color: $green;
+  }
+
+  &.att-absent > div {
+    background: rgba($red, 0.08);
+    color: $red;
+  }
 }
-.custBtn {
-    padding: 0.4rem 1rem;
+
+.att-status {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
 }
-.viewAttendance {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+
+  &.dot-present {
+    background: $green;
+    box-shadow: 0 0 6px rgba($green, 0.4);
+  }
+
+  &.dot-absent {
+    background: $red;
+    box-shadow: 0 0 6px rgba($red, 0.4);
+  }
 }
-.viewStudent {
-    background: none;
-    border: none;
-    padding: 0;
-    margin: 0;
+
+// ============================================
+// RESPONSIVE - Small phones (< 360px)
+// ============================================
+@media (max-width: 359px) {
+  .filter-row {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .card-body {
+    gap: 0.6rem;
+    padding: 0.7rem;
+    padding-right: 2rem;
+  }
+
+  .avatar-ring {
+    width: 48px;
+    height: 48px;
+  }
+
+  .player-name {
+    font-size: 0.85rem;
+  }
+
+  .pill-btn {
+    padding: 0.28rem 0.6rem;
+    font-size: 0.62rem;
+  }
+
+  .att-grid {
+    grid-template-columns: 1.2fr 0.8fr 0.8fr 0.8fr 0.8fr;
+    font-size: 0.6rem;
+  }
 }
-.eveningBtn {
-    background: #8a7e31;
+
+// ============================================
+// RESPONSIVE - Phones (>= 380px)
+// ============================================
+@media (min-width: 380px) {
+  .player-name {
+    font-size: 1rem;
+  }
+
+  .avatar-ring {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+// ============================================
+// RESPONSIVE - Tablets (>= 600px)
+// ============================================
+@media (min-width: 600px) {
+  .filter-bar {
+    padding: 1.25rem 1.5rem 0.65rem;
+  }
+
+  .students-section {
+    padding: 0.75rem 1.5rem 2.5rem;
+  }
+
+  .filter-row {
+    gap: 1rem;
+  }
+
+  .card-body {
+    gap: 1rem;
+    padding: 1rem 1.15rem;
+    padding-right: 2.75rem;
+  }
+
+  .avatar-ring {
+    width: 72px;
+    height: 72px;
+  }
+
+  .player-name {
+    font-size: 1.05rem;
+  }
+
+  .meta-value,
+  .meta-label {
+    font-size: 0.76rem;
+  }
+
+  .pill-btn {
+    padding: 0.38rem 0.9rem;
+    font-size: 0.72rem;
+  }
+
+  .position-title {
+    font-size: 1.1rem;
+  }
+}
+
+// ============================================
+// RESPONSIVE - Tablets landscape (>= 768px)
+// ============================================
+@media (min-width: 768px) {
+  .student-list-view {
+    gap: 0.65rem;
+  }
+
+  .player-card:hover {
+    transform: translateY(-2px);
+  }
+
+  .action-btn {
+    padding: 0.55rem 1.25rem;
+    font-size: 0.82rem;
+  }
+}
+
+// ============================================
+// RESPONSIVE - Desktop (>= 1024px)
+// ============================================
+@media (min-width: 1024px) {
+  .teams-container {
+    padding: 0 1rem env(safe-area-inset-bottom, 0);
+  }
+
+  .player-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .card-body {
+    padding: 1.15rem 1.25rem;
+    padding-right: 3rem;
+  }
+
+  .avatar-ring {
+    width: 76px;
+    height: 76px;
+  }
+
+  .player-name {
+    font-size: 1.1rem;
+  }
+}
+
+// ============================================
+// SAFE AREAS (Hybrid / Notched devices)
+// ============================================
+@supports (padding: env(safe-area-inset-top)) {
+  .filter-bar {
+    padding-left: calc(1rem + env(safe-area-inset-left, 0px));
+    padding-right: calc(1rem + env(safe-area-inset-right, 0px));
+  }
+
+  .students-section {
+    padding-left: calc(0.75rem + env(safe-area-inset-left, 0px));
+    padding-right: calc(0.75rem + env(safe-area-inset-right, 0px));
+  }
 }
 

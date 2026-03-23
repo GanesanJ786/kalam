@@ -1,16 +1,60 @@
-.ratingsSection {
-    display: flex;
-    flex-wrap: wrap;
+// ============================================
+// Student Performance Dialog - Black & Orange Theme
+// ============================================
 
-    mat-form-field {
-        width: 46%;
-        padding: 4% 2% 0 2%;
-    }
-    .align-item {
-        display: flex;
-        align-items: center;
-    }
-}
 .add-performace-cont {
-    height: 90vh;
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #333333 transparent;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #333333;
+    border-radius: 4px;
+  }
+}
+
+.ratingsSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+
+  mat-form-field {
+    width: 46%;
+    padding: 4% 2% 0 2%;
+  }
+
+  .align-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 2%;
+  }
+}
+
+// --- Responsive ---
+@media (max-width: 479px) {
+  .ratingsSection {
+    mat-form-field {
+      width: 100%;
+      padding: 0.35rem 0 0 0;
+    }
+
+    .align-item {
+      padding: 0.5rem 0;
+    }
+  }
+}
+.mat-mdc-select {
+  font-size: $font-base;
+  color: rgb(255 254 254 / 87%) !important;
+  .mat-mdc-select-arrow {
+    color: $grey-3 !important;
+  }
 }

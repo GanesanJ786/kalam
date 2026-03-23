@@ -1,60 +1,155 @@
-<div class="content-p">
-    <div class="ageGroup custField">
-        <mat-form-field appearance="fill" style="width: 45%;">
-            <mat-label>Select Year</mat-label>
-            <mat-select [(ngModel)]="selectedYear">
-                <mat-option *ngFor="let year of listOfYears" [value]="year">{{year}}</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <div>
-          <button mat-raised-button color="primary" [disabled]="!selectedYear" (click)="search()">Search</button>
-      </div>
+<div class="sa-shell">
+
+    <!-- Filter Card -->
+    <div class="sa-card sa-filter-card">
+        <div class="sa-card-header">
+            <mat-icon class="sa-card-icon">filter_list</mat-icon>
+            <h3>Filters</h3>
+        </div>
+        <div class="sa-card-body">
+            <div class="sa-filter-row">
+                <mat-form-field appearance="fill" class="sa-field">
+                    <mat-label>Select Year</mat-label>
+                    <mat-select [(ngModel)]="selectedYear">
+                        <mat-option *ngFor="let year of listOfYears" [value]="year">{{year}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="sa-search-action">
+                    <button class="sa-search-btn" [disabled]="!selectedYear" (click)="search()">
+                        <mat-icon>search</mat-icon>
+                        <span>Search</span>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
- 
-    <div class="s-list" *ngIf="finalStudentList.length > 0">
-          
-          <div class="mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource" matSort class="tableFull">
-          
-              <!-- <ng-container matColumnDef="age">
-                <th style="width: 10%;" mat-header-cell *matHeaderCellDef mat-sort-header> Under </th>
-                <td mat-cell *matCellDef="let row"> {{row.underAge}} </td>
-              </ng-container> -->
-          
-            
-              <ng-container matColumnDef="name">
-                <th style="width: 40%;" mat-header-cell *matHeaderCellDef mat-sort-header> Player</th>
-                <td mat-cell *matCellDef="let row">
-                  <div>{{row.name}}</div>
-                  <div class="f-12 c-brown ">{{row.dob}} </div>
-                  <div class="f-12 txt-capital c-green">{{row.playingPostion}}</div>
-                </td>
-              </ng-container>
 
-              <ng-container matColumnDef="gender">
-                <th style="width: 10%;" mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
-                <td mat-cell *matCellDef="let row">
-                  <span style="text-transform: capitalize;padding-left: 0.3em;">{{genderMapper(row.gender)}}</span>
-                </td>
-              </ng-container>
-
-              <!-- <ng-container matColumnDef="dob">
-                <th style="width: 20%;" mat-header-cell *matHeaderCellDef mat-sort-header> DOB </th>
-                <td mat-cell *matCellDef="let row"> {{row.dob}} </td>
-              </ng-container> -->
-
-              <ng-container matColumnDef="ground">
-                <th style="width: 30%;" mat-header-cell *matHeaderCellDef mat-sort-header> Ground </th>
-                <td mat-cell *matCellDef="let row"> {{row.groundName}}</td>
-              </ng-container>
-            
-          
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          
-             
-            </table>
-          
-          </div>
+    <!-- Empty State: Before Search -->
+    <div *ngIf="finalStudentList.length === 0" class="sa-empty-state">
+        <div class="sa-empty-icon-ring">
+            <mat-icon>bar_chart</mat-icon>
+        </div>
+        <h4>Player Analytics</h4>
+        <p>Select a birth year to view all players born in that year.</p>
     </div>
+
+    <!-- Results Section -->
+    <ng-container *ngIf="finalStudentList.length > 0">
+
+        <!-- Stats Bar -->
+        <div class="sa-stats-bar">
+            <div class="sa-stat">
+                <span class="sa-stat-value sa-stat-total">{{filteredStudentList.length}}</span>
+                <span class="sa-stat-label">Showing</span>
+            </div>
+            <div class="sa-stat-divider"></div>
+            <div class="sa-stat">
+                <span class="sa-stat-value sa-stat-male">{{getFilteredMaleCount()}}</span>
+                <span class="sa-stat-label">Male</span>
+            </div>
+            <div class="sa-stat-divider"></div>
+            <div class="sa-stat">
+                <span class="sa-stat-value sa-stat-female">{{getFilteredFemaleCount()}}</span>
+                <span class="sa-stat-label">Female</span>
+            </div>
+            <div class="sa-stat-divider"></div>
+            <div class="sa-stat">
+                <span class="sa-stat-value sa-stat-all">{{finalStudentList.length}}</span>
+                <span class="sa-stat-label">Total</span>
+            </div>
+        </div>
+
+        <!-- Sort & Filter Toolbar -->
+        <div class="sa-toolbar">
+            <div class="sa-toolbar-row">
+                <!-- Gender Filter -->
+                <mat-form-field appearance="fill" class="sa-toolbar-field">
+                    <mat-label>Gender</mat-label>
+                    <mat-select [(ngModel)]="filterGender" (selectionChange)="onFilterOrSortChange()">
+                        <mat-option value="all">All</mat-option>
+                        <mat-option value="male">Male</mat-option>
+                        <mat-option value="female">Female</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Ground Filter -->
+                <mat-form-field appearance="fill" class="sa-toolbar-field">
+                    <mat-label>Ground</mat-label>
+                    <mat-select [(ngModel)]="filterGround" (selectionChange)="onFilterOrSortChange()">
+                        <mat-option value="all">All Grounds</mat-option>
+                        <mat-option *ngFor="let g of uniqueGrounds" [value]="g">{{g}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="sa-toolbar-row">
+                <!-- Sort By -->
+                <mat-form-field appearance="fill" class="sa-toolbar-field">
+                    <mat-label>Sort By</mat-label>
+                    <mat-select [(ngModel)]="sortBy" (selectionChange)="onFilterOrSortChange()">
+                        <mat-option value="name">Name</mat-option>
+                        <mat-option value="gender">Gender</mat-option>
+                        <mat-option value="ground">Ground</mat-option>
+                        <mat-option value="dob">Date of Birth</mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Sort Direction Toggle -->
+                <button class="sa-sort-dir-btn" (click)="toggleSortDirection()" [title]="sortDirection === 'asc' ? 'Ascending' : 'Descending'">
+                    <mat-icon>{{sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
+                    <span>{{sortDirection === 'asc' ? 'A–Z' : 'Z–A'}}</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- No results after filtering -->
+        <div *ngIf="filteredStudentList.length === 0" class="sa-no-results">
+            <mat-icon>search_off</mat-icon>
+            <span>No players match the selected filters.</span>
+        </div>
+
+        <!-- Player Cards -->
+        <div class="sa-player-cards" *ngIf="filteredStudentList.length > 0">
+            <div *ngFor="let row of filteredStudentList; let i = index" class="sa-card sa-player-item"
+                 [class.sa-player-male]="row.gender === 'male'"
+                 [class.sa-player-female]="row.gender === 'female'">
+
+                <!-- Serial number -->
+                <div class="sa-serial">{{i + 1}}</div>
+
+                <!-- Gender badge -->
+                <div class="sa-gender-badge" [class.female]="row.gender === 'female'">
+                    <mat-icon>{{row.gender === 'male' ? 'male' : 'female'}}</mat-icon>
+                    <span>{{genderMapper(row.gender)}}</span>
+                </div>
+
+                <div class="sa-player-content">
+                    <!-- Row 1: Name -->
+                    <div class="sa-player-row sa-player-primary">
+                        <div class="sa-player-field">
+                            <mat-icon class="sa-field-icon">person</mat-icon>
+                            <span class="sa-field-value">{{row.name}}</span>
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Details -->
+                    <div class="sa-player-row sa-player-details">
+                        <div class="sa-detail-block">
+                            <span class="sa-detail-label">DOB</span>
+                            <span class="sa-detail-value">{{row.dob}}</span>
+                        </div>
+                        <div class="sa-detail-block" *ngIf="row.playingPostion">
+                            <span class="sa-detail-label">Position</span>
+                            <span class="sa-detail-value sa-position">{{row.playingPostion}}</span>
+                        </div>
+                        <div class="sa-detail-block">
+                            <span class="sa-detail-label">Ground</span>
+                            <span class="sa-detail-value">{{row.groundName}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </ng-container>
+
 </div>

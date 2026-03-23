@@ -1,0 +1,942 @@
+// ============================================
+// STUDENT FORM - Black & Orange Sports Theme
+// Professional, Responsive, Hybrid Design
+// ============================================
+
+// --- Tokens ---
+$orange: #FF5722;
+$orange-light: #FF8A65;
+$orange-dark: #E64A19;
+$orange-glow: rgba(255, 87, 34, 0.35);
+$black-0: #000000;
+$black-1: #0D0D0D;
+$black-2: #121212;
+$black-3: #1A1A1A;
+$black-4: #222222;
+$black-5: #2A2A2A;
+$grey-1: #333333;
+$grey-2: #555555;
+$grey-3: #999999;
+$grey-4: #BBBBBB;
+$white: #FFFFFF;
+$green: #00C853;
+$red: #FF1744;
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+
+// --- Typography scale ---
+$font-xs: 0.75rem;    // 12px
+$font-sm: 0.8125rem;  // 13px
+$font-base: 0.9375rem; // 15px — comfortable reading size
+$font-md: 1rem;       // 16px
+$font-lg: 1.125rem;   // 18px
+
+// ============================================
+// SHELL — Full viewport wrapper
+// ============================================
+.sf-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  height: 100vh;
+  background: $black-1;
+  overflow: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ============================================
+// BODY — Everything below the header
+// ============================================
+.sf-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+
+// ============================================
+// TOP BAR — Home button + Step indicator
+// ============================================
+.sf-top-bar {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0.75rem;
+  background: linear-gradient(180deg, $black-2 0%, $black-3 100%);
+  border-bottom: 1px solid $grey-1;
+  flex-shrink: 0;
+  min-height: 56px;
+}
+
+.sf-home-btn {
+  color: $orange-light !important;
+  flex-shrink: 0;
+  transition: color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    color: $orange !important;
+    transform: scale(1.1);
+  }
+}
+
+.sf-spacer {
+  width: 40px;
+  flex-shrink: 0;
+}
+
+// --- Step indicator ---
+.sf-step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  gap: 0;
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    transition: all 0.3s ease;
+
+    .step-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: $font-xs;
+      font-weight: 800;
+      color: $grey-2;
+      background: $black-4;
+      border: 2px solid $grey-1;
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .step-label {
+      font-size: $font-xs;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: $grey-2;
+      transition: color 0.3s ease;
+    }
+
+    &.active .step-dot {
+      background: linear-gradient(135deg, $orange, $orange-dark);
+      border-color: $orange;
+      color: $white;
+      box-shadow: 0 0 16px $orange-glow;
+      transform: scale(1.08);
+    }
+
+    &.active .step-label {
+      color: $orange-light;
+    }
+
+    &.done .step-dot {
+      background: $green;
+      border-color: $green;
+      color: $white;
+      box-shadow: 0 0 10px rgba($green, 0.3);
+    }
+
+    &.done .step-label {
+      color: rgba($green, 0.85);
+    }
+  }
+
+  .step-line {
+    width: 52px;
+    height: 2px;
+    background: $grey-1;
+    margin: 0 0.6rem;
+    margin-bottom: 18px; // align with dot center
+    border-radius: 2px;
+    transition: background 0.4s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, $green, $orange);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    &.active::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+// ============================================
+// SCROLL AREA — Scrollable form content
+// ============================================
+.sf-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.875rem 0.875rem 6.5rem 0.875rem;
+  scrollbar-width: thin;
+  scrollbar-color: $grey-1 transparent;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $grey-1;
+    border-radius: 4px;
+  }
+}
+
+.sf-step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+// ============================================
+// CARD — Section card container
+// ============================================
+.sf-card {
+  background: linear-gradient(160deg, $black-3 0%, $black-2 100%);
+  border: 1px solid $grey-1;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: rgba($orange, 0.2);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  }
+}
+
+.sf-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 1.125rem 0.625rem;
+  border-bottom: 1px solid rgba($white, 0.04);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 1.125rem;
+    right: 1.125rem;
+    height: 2px;
+    background: linear-gradient(90deg, rgba($orange, 0.5), transparent 70%);
+    border-radius: 1px;
+  }
+
+  .card-icon {
+    color: $orange;
+    font-size: 22px;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+
+  h3 {
+    margin: 0;
+    color: $white;
+    font-size: $font-base;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    line-height: 1.3;
+  }
+}
+
+.sf-card-body {
+  padding: 1rem 1.125rem 1.25rem;
+}
+
+// ============================================
+// PROFILE UPLOAD CARD
+// ============================================
+.sf-profile-card {
+  cursor: pointer;
+  padding: 1.75rem 1rem;
+  text-align: center;
+  border: 2px dashed rgba($orange, 0.4);
+  background: linear-gradient(160deg, rgba($orange, 0.05) 0%, $black-2 100%);
+  transition: border-color 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    border-color: rgba($orange, 0.6);
+    background: linear-gradient(160deg, rgba($orange, 0.08) 0%, $black-2 100%);
+    box-shadow: 0 4px 24px rgba($orange, 0.1);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.profile-upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.profile-avatar-ring {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, $orange, $orange-dark);
+  box-shadow: 0 0 28px rgba($orange, 0.35), 0 0 56px rgba($orange, 0.1);
+  flex-shrink: 0;
+
+  .profile-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid $black-1;
+    display: block;
+    background: $black-2;
+
+    &.placeholder {
+      object-fit: contain;
+      padding: 16px;
+      filter: brightness(0.6);
+    }
+  }
+
+  .avatar-overlay {
+    position: absolute;
+    inset: 3px;
+    border-radius: 50%;
+    background: rgba($black-0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+    transition: opacity 0.25s ease;
+
+    mat-icon {
+      color: $white;
+      font-size: 30px;
+      width: 30px;
+      height: 30px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+  }
+
+  &:hover .avatar-overlay {
+    opacity: 1;
+  }
+}
+
+.upload-hint {
+  font-size: $font-sm;
+  font-weight: 600;
+  color: rgba($white, 0.6);
+  letter-spacing: 0.4px;
+}
+
+// ============================================
+// GRID SYSTEM — Responsive flex grid
+// ============================================
+.sf-row {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.375rem;
+
+  &.sf-row-align-center {
+    align-items: center;
+  }
+
+  // Column classes — use min-width to allow wrapping
+  .sf-col-3  { flex: 1 1 calc(25% - 0.6rem);  min-width: 80px; }
+  .sf-col-4  { flex: 1 1 calc(33.33% - 0.5rem); min-width: 100px; }
+  .sf-col-5  { flex: 1 1 calc(41.66% - 0.4rem); min-width: 120px; }
+  .sf-col-6  { flex: 1 1 calc(50% - 0.375rem); min-width: 140px; }
+  .sf-col-8  { flex: 1 1 calc(66.66% - 0.25rem); min-width: 180px; }
+  .sf-col-12 { flex: 1 1 100%; min-width: 0; }
+}
+
+// ============================================
+// FORM FIELDS — Dark themed Material fields
+// ============================================
+:host {
+  .mat-mdc-form-field {
+    width: 100%;
+
+    .mdc-text-field--filled {
+      background: $black-4 !important;
+      border-radius: $radius-sm $radius-sm 0 0 !important;
+      border-bottom: 2px solid $grey-1 !important;
+      transition: border-color 0.2s ease;
+      min-height: 52px;
+
+      &:hover {
+        border-bottom-color: $grey-2 !important;
+      }
+
+      &.mdc-text-field--focused {
+        border-bottom-color: $orange !important;
+      }
+    }
+
+    .mat-mdc-form-field-focus-overlay {
+      background: rgba($orange, 0.04) !important;
+    }
+
+    // Floating label — readable size, proper wrapping
+    .mdc-floating-label {
+      color: $grey-3 !important;
+      font-size: $font-base !important;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: calc(100% - 16px);
+    }
+
+    .mdc-floating-label--float-above {
+      color: $orange-light !important;
+      font-size: $font-base !important; // Material scales this automatically when floating
+    }
+
+    // Input text — clear, readable
+    .mat-mdc-input-element,
+    input.mat-mdc-input-element,
+    textarea.mat-mdc-input-element {
+      color: $white !important;
+      caret-color: $orange;
+      font-size: $font-base;
+      line-height: 1.4;
+      letter-spacing: 0.2px;
+    }
+
+    .mdc-line-ripple::after {
+      border-bottom-color: $orange !important;
+    }
+
+    // Hints & errors — legible
+    .mat-mdc-form-field-hint {
+      color: $grey-2;
+      font-size: $font-xs;
+      letter-spacing: 0.2px;
+    }
+
+    .mat-mdc-form-field-error {
+      color: $red;
+      font-size: $font-xs;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      padding: 0 !important;
+    }
+
+    // Infix sizing
+    .mat-mdc-form-field-infix {
+      min-height: 48px;
+      padding-top: 22px !important;
+      padding-bottom: 6px !important;
+    }
+  }
+
+  // --- Select ---
+  .mat-mdc-select {
+    color: $white !important;
+    font-size: $font-base;
+
+    .mat-mdc-select-trigger {
+      font-size: $font-base;
+    }
+
+    .mat-mdc-select-value-text {
+      font-size: $font-base;
+    }
+
+    .mat-mdc-select-arrow {
+      color: $grey-3 !important;
+    }
+  }
+
+  // --- Datepicker toggle ---
+  .mat-datepicker-toggle {
+    color: $orange-light !important;
+  }
+
+  // --- Radio buttons ---
+  .mat-mdc-radio-button {
+    .mdc-radio__outer-circle {
+      border-color: $grey-2 !important;
+    }
+
+    &.mat-mdc-radio-checked {
+      .mdc-radio__outer-circle {
+        border-color: $orange !important;
+      }
+      .mdc-radio__inner-circle {
+        border-color: $orange !important;
+      }
+    }
+
+    .mdc-label,
+    .mdc-radio + label,
+    label {
+      color: rgba($white, 0.9) !important;
+      font-size: $font-base !important;
+      letter-spacing: 0.3px;
+      font-weight: 500;
+    }
+  }
+}
+
+// --- Gender group ---
+.sf-gender-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.5rem 0;
+  background: rgba($black-4, 0.5);
+  border-radius: $radius-sm;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba($grey-1, 0.5);
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba($orange, 0.2);
+  }
+}
+
+.sf-field-label {
+  font-size: $font-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: $orange-light !important;
+  margin-bottom: 0.15rem;
+}
+
+.sf-radio-row {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+
+  .mat-mdc-radio-button {
+    .mdc-label,
+    label {
+      color: rgba($white, 0.9) !important;
+      font-size: $font-base !important;
+      font-weight: 500 !important;
+      letter-spacing: 0.3px;
+    }
+
+    .mdc-form-field {
+      color: rgba($white, 0.9) !important;
+
+      > label {
+        color: rgba($white, 0.9) !important;
+        font-size: $font-base !important;
+        font-weight: 500 !important;
+      }
+    }
+
+    .mdc-radio {
+      .mdc-radio__native-control:enabled:not(:checked) + .mdc-radio__background {
+        .mdc-radio__outer-circle {
+          border-color: $grey-2 !important;
+        }
+      }
+
+      .mdc-radio__native-control:enabled:checked + .mdc-radio__background {
+        .mdc-radio__outer-circle {
+          border-color: $orange !important;
+        }
+        .mdc-radio__inner-circle {
+          border-color: $orange !important;
+        }
+      }
+    }
+  }
+}
+
+// --- Suffix (cm, kg) ---
+.sf-suffix {
+  color: $grey-3;
+  font-size: $font-sm;
+  font-weight: 500;
+}
+
+// ============================================
+// ACTION BAR — Fixed bottom buttons
+// ============================================
+.sf-action-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: linear-gradient(180deg, $black-2 0%, $black-1 100%);
+  border-top: 1px solid $grey-1;
+  flex-shrink: 0;
+
+  // Safe area for notched phones
+  padding-bottom: calc(0.875rem + env(safe-area-inset-bottom, 0px));
+}
+
+// --- Buttons ---
+.sf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: $radius-md;
+  font-size: $font-base;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  min-height: 48px; // comfortable touch target
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.sf-btn-primary {
+  background: linear-gradient(135deg, $orange, $orange-dark);
+  color: $white;
+  box-shadow: 0 4px 16px rgba($orange, 0.3);
+  flex: 1;
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 6px 24px rgba($orange, 0.45);
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    background: $grey-1;
+    color: $grey-2;
+    box-shadow: none;
+    cursor: not-allowed;
+    transform: none;
+  }
+}
+
+.sf-btn-full {
+  width: 100%;
+  max-width: 420px;
+}
+
+.sf-btn-outline {
+  background: transparent;
+  color: $grey-3;
+  border: 1px solid $grey-1;
+  flex: 0.5;
+
+  &:hover {
+    background: rgba($white, 0.05);
+    border-color: $grey-2;
+    color: $white;
+  }
+}
+
+// ============================================
+// RESPONSIVE — Mobile-first adjustments
+// ============================================
+
+// Very small phones (< 360px)
+@media (max-width: 359px) {
+  .sf-scroll-area {
+    padding: 0.5rem 0.5rem 6rem;
+  }
+
+  .sf-card-header {
+    padding: 0.75rem 0.75rem 0.5rem;
+
+    h3 {
+      font-size: $font-sm;
+    }
+  }
+
+  .sf-card-body {
+    padding: 0.75rem 0.75rem 1rem;
+  }
+
+  .sf-row {
+    gap: 0.5rem;
+
+    // Full width stacking on very small screens
+    .sf-col-3,
+    .sf-col-4,
+    .sf-col-5,
+    .sf-col-6,
+    .sf-col-8 {
+      flex: 1 1 100%;
+      min-width: 0;
+    }
+  }
+
+  .sf-step-indicator .step-line {
+    width: 32px;
+  }
+
+  .sf-step-indicator .step .step-dot {
+    width: 28px;
+    height: 28px;
+  }
+
+  .sf-action-bar {
+    padding: 0.625rem 0.75rem;
+    padding-bottom: calc(0.625rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .sf-btn {
+    padding: 0.625rem 1rem;
+    font-size: $font-sm;
+    min-height: 44px;
+  }
+
+  :host .mat-mdc-form-field {
+    .mdc-floating-label {
+      font-size: $font-sm !important;
+    }
+
+    .mat-mdc-input-element,
+    input.mat-mdc-input-element,
+    textarea.mat-mdc-input-element {
+      font-size: $font-sm;
+    }
+  }
+
+  .profile-avatar-ring {
+    width: 76px;
+    height: 76px;
+  }
+
+  .sf-gender-group {
+    padding: 0.6rem 0.75rem;
+  }
+
+  .sf-radio-row {
+    gap: 1rem;
+  }
+}
+
+// Small phones (360px – 479px)
+@media (min-width: 360px) and (max-width: 479px) {
+  .sf-row {
+    // Allow 2-col layout but let them wrap naturally
+    .sf-col-3 {
+      flex: 1 1 calc(50% - 0.375rem);
+      min-width: 100px;
+    }
+    .sf-col-4 {
+      flex: 1 1 calc(50% - 0.375rem);
+      min-width: 100px;
+    }
+  }
+
+  .profile-avatar-ring {
+    width: 88px;
+    height: 88px;
+  }
+}
+
+// Large phones / small tablets (480px – 767px)
+@media (min-width: 480px) and (max-width: 767px) {
+  .sf-scroll-area {
+    padding: 1rem 1.25rem 6.5rem;
+  }
+
+  .sf-step-content {
+    gap: 1rem;
+  }
+
+  .sf-card-header {
+    padding: 1rem 1.25rem 0.625rem;
+  }
+
+  .sf-card-body {
+    padding: 1rem 1.25rem 1.25rem;
+  }
+
+  .sf-row {
+    gap: 0.875rem;
+  }
+
+  .profile-avatar-ring {
+    width: 104px;
+    height: 104px;
+  }
+
+  .sf-profile-card {
+    padding: 2rem 1.25rem;
+  }
+
+  .sf-gender-group {
+    padding: 0.875rem 1.125rem;
+  }
+}
+
+// Tablets (768px – 1023px)
+@media (min-width: 768px) {
+  .sf-scroll-area {
+    padding: 1.5rem 2rem 6.5rem;
+    max-width: 720px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .sf-step-content {
+    gap: 1.25rem;
+  }
+
+  .sf-card {
+    border-radius: 20px;
+  }
+
+  .sf-card-header {
+    padding: 1.125rem 1.5rem 0.75rem;
+
+    .card-icon {
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+
+    h3 {
+      font-size: $font-md;
+    }
+  }
+
+  .sf-card-body {
+    padding: 1.125rem 1.5rem 1.5rem;
+  }
+
+  .sf-row {
+    gap: 1rem;
+  }
+
+  .sf-action-bar {
+    justify-content: center;
+
+    .sf-btn {
+      max-width: 240px;
+    }
+
+    .sf-btn-full {
+      max-width: 380px;
+    }
+  }
+
+  .profile-avatar-ring {
+    width: 112px;
+    height: 112px;
+  }
+
+  .sf-step-indicator .step .step-dot {
+    width: 36px;
+    height: 36px;
+    font-size: $font-sm;
+  }
+
+  .sf-step-indicator .step .step-label {
+    font-size: $font-sm;
+  }
+
+  .sf-step-indicator .step-line {
+    width: 72px;
+  }
+
+  .upload-hint {
+    font-size: $font-base;
+  }
+
+  :host .mat-mdc-form-field {
+    .mdc-floating-label {
+      font-size: $font-md !important;
+    }
+
+    .mat-mdc-input-element,
+    input.mat-mdc-input-element,
+    textarea.mat-mdc-input-element {
+      font-size: $font-md;
+    }
+
+    .mat-mdc-form-field-hint {
+      font-size: $font-xs;
+    }
+  }
+
+  :host .mat-mdc-radio-button .mdc-label,
+  :host .mat-mdc-radio-button label,
+  .sf-radio-row .mat-mdc-radio-button .mdc-label,
+  .sf-radio-row .mat-mdc-radio-button label {
+    font-size: $font-md !important;
+    color: rgba($white, 0.9) !important;
+  }
+
+  .sf-field-label {
+    font-size: $font-sm;
+  }
+
+  .sf-gender-group {
+    padding: 1rem 1.25rem;
+  }
+}
+
+// Large desktop (1024px+)
+@media (min-width: 1024px) {
+  .sf-scroll-area {
+    max-width: 840px;
+  }
+
+  .sf-card-header h3 {
+    font-size: $font-lg;
+  }
+
+  :host .mat-mdc-form-field {
+    .mdc-floating-label {
+      font-size: $font-md !important;
+    }
+
+    .mat-mdc-input-element,
+    input.mat-mdc-input-element,
+    textarea.mat-mdc-input-element {
+      font-size: $font-md;
+    }
+  }
+}

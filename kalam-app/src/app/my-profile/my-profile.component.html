@@ -1,58 +1,137 @@
-<div class="banner-block">
-    <div class="trans"></div>
-        <div class="banner-content">
-            
-            <div class="ac-logo">
-                <img class="ac-img" *ngIf="!logo" src="../../assets/logo/kLogo.png" alt="academy image"/>
-                <img class="ac-img" *ngIf="logo" [src]="logo" alt="academy image"/>
-            </div>
-            <div class="ac-name">
-                <p class="ac-info">{{academyName}}</p>
-                <p class="in-club">Football club in India</p>
-            </div>
-        </div>
-</div>
-<div class="content-p">
-    <div class="edit-profile" [ngClass]="notApproved.length > 0 || newStudents.length > 0 || paidStudentList.length > 0 ? 'space' : 'end'">
-        <!-- <button mat-raised-button color="primary" (click)="editProfile()">Edit Profile</button> -->
-        <button class="flicker" *ngIf="notApproved.length > 0" mat-raised-button (click)="approval()" color="accent">Approval</button>
-        <button class="flicker" *ngIf="newStudents.length > 0" mat-raised-button (click)="studentApproval()" color="accent">Student Approval</button>
-        <button class="flicker" *ngIf="paidStudentList.length > 0" mat-raised-button (click)="feesApproval()" color="accent">Fees Approval</button>
+<!-- ============================================ -->
+<!-- KALAM MY PROFILE - Black & Orange Sports Theme -->
+<!-- ============================================ -->
+
+<!-- Compact Profile Strip -->
+<section class="profile-strip">
+  <div class="strip-content">
+    <div class="logo-badge">
+      <div class="logo-ring">
+        <img class="academy-logo" *ngIf="!logo" src="../../assets/logo/kLogo.png" alt="academy logo" />
+        <img class="academy-logo" *ngIf="logo" [src]="logo" alt="academy logo" />
+      </div>
+      <span class="live-dot" *ngIf="allBtnDisabled"></span>
     </div>
-    <!-- <div class="user-details">
-        <div>
-            <img class="profile-img" *ngIf="coachDetails.imageUrl; else dummyImg" [src]="coachDetails.imageUrl" alt="profile image"/>
-            <ng-template #dummyImg><img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image"/></ng-template>
-        </div>
-        <div>
-            {{coachDetails.name}}
-        </div>
-        <div class="user-info">
-            Kalam ID: {{coachDetails.kalamId}}
-        </div>
-        <div class="user-info" *ngIf="coachDetails?.toCoach">
-            To Coach: {{coachDetails.toCoach.join(', ')}}
-        </div>
+    <div class="academy-meta">
+      <h2 class="academy-name">{{academyName}}</h2>
+      <div class="academy-subtitle">
+        <mat-icon class="subtitle-icon">sports_soccer</mat-icon>
+        <span>Football Academy</span>
+        <span class="meta-divider">|</span>
+        <mat-icon class="subtitle-icon">location_on</mat-icon>
+        <span>India</span>
+      </div>
+    </div>
+    <!-- <div class="strip-actions-inline">
+      <button class="icon-btn-ghost" *ngIf="owner" (click)="viewCoachData()" matTooltip="Coach Details">
+        <mat-icon>groups</mat-icon>
+      </button>
+      <button class="icon-btn-ghost" *ngIf="!owner" (click)="applyLeave()" matTooltip="Apply Leave">
+        <mat-icon>event_busy</mat-icon>
+      </button>
     </div> -->
-    <div class="ground-add" *ngIf="owner">
-        <button  mat-raised-button color="primary" (click)="addGround()">Add Ground</button>
-        <button  mat-raised-button color="primary" (click)="viewCoachData()">Coach Details</button>
-        <!-- <button  mat-raised-button color="primary" (click)="applyLeave()">Apply Leave</button> -->
+  </div>
+</section>
+
+<!-- Notification Alerts -->
+<section class="alerts-section" *ngIf="notApproved.length > 0 || newStudents.length > 0 || paidStudentList.length > 0">
+  <div class="alerts-container">
+    <button class="alert-chip" *ngIf="notApproved.length > 0" (click)="approval()">
+      <mat-icon>person_add</mat-icon>
+      <span class="alert-label">Coach</span>
+      <span class="alert-badge">{{notApproved.length}}</span>
+    </button>
+    <button class="alert-chip" *ngIf="newStudents.length > 0" (click)="studentApproval()">
+      <mat-icon>how_to_reg</mat-icon>
+      <span class="alert-label">Students</span>
+      <span class="alert-badge">{{newStudents.length}}</span>
+    </button>
+    <button class="alert-chip" *ngIf="paidStudentList.length > 0" (click)="feesApproval()">
+      <mat-icon>payments</mat-icon>
+      <span class="alert-label">Fees</span>
+      <span class="alert-badge">{{paidStudentList.length}}</span>
+    </button>
+  </div>
+</section>
+
+<!-- Quick Actions Bar -->
+<section class="actions-section">
+  <div class="actions-container" *ngIf="owner">
+    <button class="action-btn action-primary" (click)="addGround()">
+      <mat-icon>add_location_alt</mat-icon>
+      <span>Add Ground</span>
+    </button>
+    <button class="action-btn action-secondary" (click)="viewCoachData()">
+      <mat-icon>groups</mat-icon>
+      <span>Coach Details</span>
+    </button>
+  </div>
+  <div class="actions-container actions-end" *ngIf="!owner">
+    <button class="action-btn action-warn" (click)="applyLeave()">
+      <mat-icon>event_busy</mat-icon>
+      <span>Apply Leave</span>
+    </button>
+  </div>
+</section>
+
+<!-- Grounds Section -->
+<section class="grounds-section">
+  <div class="section-header">
+    <div class="section-title-row">
+      <mat-icon class="section-icon">stadium</mat-icon>
+      <h3 class="section-title">Training Grounds</h3>
     </div>
-    <div class="ground-add k-justify-content-end" *ngIf="!owner">
-        <button  mat-raised-button color="primary" (click)="applyLeave()">Apply Leave</button>
-    </div>
-    <div class="ground-items">
-        <div *ngFor="let ground of groundList" class="groundItem">
-            <div>
-                <div>{{ground.groundName}}</div>
-                <button class="t-student" *ngIf="allStudents.length > 0" (click)="viewAllStudents(ground.groundName)">Total Students {{ground.totalStudent}}</button>
-            </div>
-            <div>
-                <button class="btn-grnd" [disabled]="ground.disableInBtn || allBtnDisabled" (click)="in(ground)">IN</button>
-                <button class="btn-grnd btn-red" [disabled]="ground.disableOutBtn" (click)="out(ground)">OUT</button>
-            </div>
+    <span class="ground-count">{{groundList.length}} Ground{{groundList.length !== 1 ? 's' : ''}}</span>
+  </div>
+
+  <div class="grounds-grid">
+    <div *ngFor="let ground of groundList; let i = index" class="ground-card" [class.ground-active]="!ground.disableOutBtn">
+      <!-- Active indicator pulse -->
+      <div class="active-pulse" *ngIf="!ground.disableOutBtn"></div>
+
+      <div class="ground-card-header">
+        <div class="ground-icon-wrap">
+          <mat-icon class="ground-icon">sports_soccer</mat-icon>
         </div>
+        <div class="ground-info">
+          <h4 class="ground-name">{{ground.groundName}}</h4>
+          <button class="students-link" *ngIf="allStudents.length > 0" (click)="viewAllStudents(ground.groundName)">
+            <mat-icon class="link-icon">people</mat-icon>
+            {{ground.totalStudent}} Student{{ground.totalStudent !== 1 ? 's' : ''}}
+          </button>
+        </div>
+      </div>
+
+      <div class="ground-card-actions">
+        <button class="ground-btn ground-btn-in"
+                [disabled]="ground.disableInBtn || allBtnDisabled"
+                (click)="checkIn(ground)">
+          <mat-icon>login</mat-icon>
+          <span>IN</span>
+        </button>
+        <button class="ground-btn ground-btn-out"
+                [disabled]="ground.disableOutBtn"
+                (click)="out(ground)">
+          <mat-icon>logout</mat-icon>
+          <span>OUT</span>
+        </button>
+      </div>
+
+      <!-- Status bar at bottom -->
+      <div class="ground-status" [class.status-active]="!ground.disableOutBtn">
+        <span *ngIf="!ground.disableOutBtn">● Session Active</span>
+        <span *ngIf="ground.disableOutBtn">○ No Active Session</span>
+      </div>
     </div>
-    
-</div>
+  </div>
+
+  <!-- Empty state -->
+  <div class="empty-grounds" *ngIf="groundList.length === 0">
+    <mat-icon class="empty-icon">location_off</mat-icon>
+    <p>No training grounds added yet</p>
+    <button class="action-btn action-primary" *ngIf="owner" (click)="addGround()">
+      <mat-icon>add_location_alt</mat-icon>
+      <span>Add Your First Ground</span>
+    </button>
+  </div>
+</section>
