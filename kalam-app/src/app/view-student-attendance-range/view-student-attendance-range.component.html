@@ -1,58 +1,150 @@
 <ng-container>
   <ng-container>
     <div mat-dialog-content class="dialog-fullscreen-content">
-      <div class="rf-header custm-logo">
-        <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
-        <div class="header-title">{{title}} {{student.name}}</div>
+
+      <!-- ===== HEADER BAR ===== -->
+      <div class="sar-header">
+        <button class="sar-back-btn" (click)="cancel()">
+          <mat-icon>arrow_back_ios_new</mat-icon>
+        </button>
+        <div class="sar-header-info">
+          <h1 class="sar-header-title">{{student.name}}</h1>
+          <span class="sar-header-subtitle">
+            <mat-icon class="sar-subtitle-icon">event_note</mat-icon>
+            Attendance History
+          </span>
+        </div>
+        <div class="sar-header-badge">
+          <mat-icon>person</mat-icon>
+        </div>
       </div>
-      <div class="s-list">
-        <div class="sa-content">
-          <mat-form-field appearance="fill" class="range-field">
-            <mat-label>Attendance Range</mat-label>
-            <mat-date-range-input [min]="startOfMonth" [max]="endOfMonth" [formGroup]="attendanceRangeGroup"
-              [rangePicker]="attendanceRange">
-              <input matStartDate placeholder="Start date" formControlName="start">
-              <input matEndDate placeholder="End date" formControlName="end">
-            </mat-date-range-input>
-            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="attendanceRange"></mat-datepicker-toggle>
-            <mat-date-range-picker #attendanceRange></mat-date-range-picker>
-          </mat-form-field>
-          <div>
-            <button mat-raised-button color="primary" [disabled]="!attendanceRangeGroup.valid" class="btn-inc" (click)="search()">Search</button>
+
+      <!-- ===== MAIN CONTENT ===== -->
+      <div class="sar-body">
+
+        <!-- Filter Card -->
+        <div class="sar-filter-card">
+          <div class="sar-filter-header">
+            <mat-icon class="sar-filter-icon">date_range</mat-icon>
+            <span class="sar-filter-label">Select Date Range</span>
+          </div>
+          <div class="sar-filter-content">
+            <mat-form-field appearance="fill" class="sar-date-field">
+              <mat-label>Attendance Range</mat-label>
+              <mat-date-range-input [min]="startOfMonth" [max]="endOfMonth" [formGroup]="attendanceRangeGroup"
+                [rangePicker]="attendanceRange">
+                <input matStartDate placeholder="Start date" formControlName="start">
+                <input matEndDate placeholder="End date" formControlName="end">
+              </mat-date-range-input>
+              <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="attendanceRange"></mat-datepicker-toggle>
+              <mat-date-range-picker #attendanceRange></mat-date-range-picker>
+            </mat-form-field>
+            <button class="sar-search-btn" [disabled]="!attendanceRangeGroup.valid" (click)="search()">
+              <mat-icon>search</mat-icon>
+              <span>Search</span>
+            </button>
           </div>
         </div>
 
-        <div class="custom-table">
-          <table mat-table [dataSource]="dataSource" matSort class="tableFull">
-          
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-              <td mat-cell *matCellDef="let row"> {{row.name}} </td>
-            </ng-container>
-           
-            <ng-container matColumnDef="ground">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Ground </th>
-              <td mat-cell *matCellDef="let row">{{row.groundName}}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
-              <td mat-cell *matCellDef="let row">{{row.loginDate}} </td>
-            </ng-container>
-  
-            <ng-container matColumnDef="status">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header> Status </th>
-              <td mat-cell *matCellDef="let row"> 
-                <span *ngIf="row.status == 'IN'"><mat-icon class="done">done</mat-icon></span>
-                <span *ngIf="row.status == 'OUT'"><mat-icon class="clear">clear</mat-icon></span>   
-              </td>
-            </ng-container>
-          
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-          </table>
+        <!-- Summary Stats -->
+        <div class="sar-stats-bar" *ngIf="dataSource.data.length > 0">
+          <div class="sar-stat">
+            <span class="sar-stat-value sar-stat-total">{{dataSource.data.length}}</span>
+            <span class="sar-stat-label">Total Days</span>
+          </div>
+          <div class="sar-stat-divider"></div>
+          <div class="sar-stat">
+            <span class="sar-stat-value sar-stat-present">{{getPresentCount()}}</span>
+            <span class="sar-stat-label">Present</span>
+          </div>
+          <div class="sar-stat-divider"></div>
+          <div class="sar-stat">
+            <span class="sar-stat-value sar-stat-absent">{{getAbsentCount()}}</span>
+            <span class="sar-stat-label">Absent</span>
+          </div>
         </div>
+
+        <!-- ===== MOBILE CARD VIEW ===== -->
+        <div class="sar-cards-list" *ngIf="dataSource.data.length > 0">
+          <div class="sar-attendance-card" *ngFor="let row of dataSource.data"
+            [class.sar-card-present]="$any(row).status === 'IN'"
+            [class.sar-card-absent]="$any(row).status === 'OUT'">
+            <div class="sar-card-status-indicator"></div>
+            <div class="sar-card-content">
+              <div class="sar-card-top-row">
+                <div class="sar-card-name">
+                  <mat-icon class="sar-card-field-icon">person</mat-icon>
+                  <span>{{$any(row).name}}</span>
+                </div>
+                <span class="sar-card-status-badge"
+                  [class.badge-present]="$any(row).status === 'IN'"
+                  [class.badge-absent]="$any(row).status === 'OUT'">
+                  <mat-icon class="badge-icon">{{$any(row).status === 'IN' ? 'check_circle' : 'cancel'}}</mat-icon>
+                  {{statusLabel($any(row).status)}}
+                </span>
+              </div>
+              <div class="sar-card-bottom-row">
+                <div class="sar-card-detail">
+                  <mat-icon class="sar-card-field-icon">sports_soccer</mat-icon>
+                  <span>{{$any(row).groundName}}</span>
+                </div>
+                <div class="sar-card-detail">
+                  <mat-icon class="sar-card-field-icon">calendar_today</mat-icon>
+                  <span>{{$any(row).loginDate}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== DESKTOP TABLE VIEW ===== -->
+        <div class="sar-table-wrapper" *ngIf="dataSource.data.length > 0">
+          <div class="sar-table-card">
+            <table mat-table [dataSource]="dataSource" matSort class="sar-table">
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
+                <td mat-cell *matCellDef="let row">{{row.name}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="ground">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Ground</th>
+                <td mat-cell *matCellDef="let row">{{row.groundName}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+                <td mat-cell *matCellDef="let row">{{row.loginDate}}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                <td mat-cell *matCellDef="let row">
+                  <span class="sar-status-badge"
+                    [class.badge-present]="row.status === 'IN'"
+                    [class.badge-absent]="row.status === 'OUT'">
+                    <mat-icon class="badge-icon">{{row.status === 'IN' ? 'check_circle' : 'cancel'}}</mat-icon>
+                    {{statusLabel(row.status)}}
+                  </span>
+                </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+        </div>
+
+        <!-- ===== EMPTY STATE ===== -->
+        <div class="sar-empty-state" *ngIf="dataSource.data.length === 0">
+          <div class="sar-empty-icon-ring">
+            <mat-icon>event_busy</mat-icon>
+          </div>
+          <h4>No Attendance Records</h4>
+          <p>Select a date range and tap search to view attendance data.</p>
+        </div>
+
       </div>
     </div>
   </ng-container>

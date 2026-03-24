@@ -1,0 +1,145 @@
+<div class="qa-container">
+
+  <!-- Header -->
+  <div class="qa-header">
+    <button class="qa-back-btn" (click)="goHome()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="qa-header-text">
+      <h2 class="qa-title">Quick Attendance</h2>
+      <span class="qa-date">{{todayDisplay}}</span>
+    </div>
+  </div>
+
+  <!-- Ground Selector -->
+  <div class="qa-ground-selector">
+    <mat-form-field appearance="fill" class="qa-ground-field">
+      <mat-label>Select Ground</mat-label>
+      <mat-select [(ngModel)]="selectedGround" (ngModelChange)="onGroundChange()">
+        <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">
+          <mat-icon class="ground-option-icon">sports_soccer</mat-icon>
+          {{ground.groundName}}
+        </mat-option>
+      </mat-select>
+      <mat-icon matPrefix class="ground-prefix-icon">location_on</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Loading State -->
+  <div class="qa-loading" *ngIf="loading">
+    <mat-spinner diameter="36"></mat-spinner>
+    <span>Loading students...</span>
+  </div>
+
+  <!-- Content: After ground selected and loaded -->
+  <ng-container *ngIf="selectedGround && !loading && attendanceList.length > 0">
+
+    <!-- Stats Bar -->
+    <div class="qa-stats-bar">
+      <div class="qa-stat">
+        <span class="qa-stat-num">{{totalCount}}</span>
+        <span class="qa-stat-label">Total</span>
+      </div>
+      <div class="qa-stat qa-stat-present">
+        <span class="qa-stat-num">{{presentCount}}</span>
+        <span class="qa-stat-label">Present</span>
+      </div>
+      <div class="qa-stat qa-stat-absent">
+        <span class="qa-stat-num">{{absentCount}}</span>
+        <span class="qa-stat-label">Absent</span>
+      </div>
+    </div>
+
+    <!-- Search + Bulk Actions -->
+    <div class="qa-toolbar">
+      <div class="qa-search-wrap">
+        <mat-icon class="qa-search-icon">search</mat-icon>
+        <input type="text" class="qa-search-input" placeholder="Search by name or ID..."
+               [(ngModel)]="searchText" />
+        <button class="qa-search-clear" *ngIf="searchText" (click)="searchText = ''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+      <div class="qa-bulk-actions">
+        <button class="qa-bulk-btn qa-bulk-present" (click)="markAllPresent()">
+          <mat-icon>done_all</mat-icon>
+          <span>All Present</span>
+        </button>
+        <button class="qa-bulk-btn qa-bulk-absent" (click)="markAllAbsent()">
+          <mat-icon>remove_done</mat-icon>
+          <span>All Absent</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Student List -->
+    <div class="qa-student-list">
+      <div class="qa-student-row" *ngFor="let entry of filteredList; let i = index"
+           [class.qa-row-present]="entry.status === 'IN'"
+           [class.qa-row-absent]="entry.status === 'OUT'"
+           (click)="toggleStatus(entry)">
+
+        <!-- Row Number -->
+        <div class="qa-row-num">{{i + 1}}</div>
+
+        <!-- Avatar -->
+        <div class="qa-avatar" [class.qa-avatar-present]="entry.status === 'IN'"
+             [class.qa-avatar-absent]="entry.status === 'OUT'">
+          {{getInitials(entry.student.name)}}
+        </div>
+
+        <!-- Student Info -->
+        <div class="qa-student-info">
+          <span class="qa-student-name">{{entry.student.name}}</span>
+          <span class="qa-student-meta">
+            {{entry.student.kalamId}}
+            <span class="qa-meta-dot">•</span>
+            {{entry.student.underAge === 'open' ? 'Open' : 'U-' + (entry.student.underAge || '').split('-')[1]}}
+          </span>
+        </div>
+
+        <!-- Status Toggle -->
+        <button class="qa-toggle-btn"
+                [class.qa-toggle-present]="entry.status === 'IN'"
+                [class.qa-toggle-absent]="entry.status === 'OUT'"
+                (click)="$event.stopPropagation(); toggleStatus(entry)">
+          <mat-icon *ngIf="entry.status === 'IN'">check_circle</mat-icon>
+          <mat-icon *ngIf="entry.status === 'OUT'">cancel</mat-icon>
+          <span>{{entry.status === 'IN' ? 'P' : 'A'}}</span>
+        </button>
+
+        <!-- Already saved indicator -->
+        <div class="qa-saved-dot" *ngIf="entry.alreadySaved"
+             matTooltip="Saved">
+          <mat-icon>cloud_done</mat-icon>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Button (Floating) -->
+    <div class="qa-save-bar">
+      <button class="qa-save-btn" (click)="saveAttendance()" [disabled]="saving || unsavedCount === 0">
+        <mat-icon *ngIf="!saving">save</mat-icon>
+        <mat-spinner *ngIf="saving" diameter="20"></mat-spinner>
+        <span *ngIf="!saving">Save Attendance ({{unsavedCount}} unsaved)</span>
+        <span *ngIf="saving">Saving...</span>
+      </button>
+    </div>
+
+  </ng-container>
+
+  <!-- Empty State: Ground selected but no students -->
+  <div class="qa-empty" *ngIf="selectedGround && !loading && attendanceList.length === 0">
+    <mat-icon class="qa-empty-icon">people_outline</mat-icon>
+    <p class="qa-empty-text">No students found</p>
+    <span class="qa-empty-sub">No approved students are assigned to this ground</span>
+  </div>
+
+  <!-- Initial State: No ground selected -->
+  <div class="qa-empty" *ngIf="!selectedGround && !loading">
+    <mat-icon class="qa-empty-icon">touch_app</mat-icon>
+    <p class="qa-empty-text">Select a ground to begin</p>
+    <span class="qa-empty-sub">Choose a training ground above to mark attendance quickly</span>
+  </div>
+
+</div>

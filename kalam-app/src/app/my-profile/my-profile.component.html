@@ -65,8 +65,16 @@
       <mat-icon>groups</mat-icon>
       <span>Coach Details</span>
     </button>
+    <button class="action-btn action-attendance" (click)="quickAttendance()">
+      <mat-icon>fact_check</mat-icon>
+      <span>Quick Attendance</span>
+    </button>
   </div>
   <div class="actions-container actions-end" *ngIf="!owner">
+    <button class="action-btn action-attendance" (click)="quickAttendance()">
+      <mat-icon>fact_check</mat-icon>
+      <span>Quick Attendance</span>
+    </button>
     <button class="action-btn action-warn" (click)="applyLeave()">
       <mat-icon>event_busy</mat-icon>
       <span>Apply Leave</span>

@@ -53,6 +53,7 @@ import { ViewStudentAttendanceRangeComponent } from './view-student-attendance-r
 import { ViewStudentAttendanceDateWiseComponent } from './view-student-attendance-date-wise/view-student-attendance-date-wise.component';
 import { StudentPerformanceComponent } from './student-performance/student-performance.component';
 import { StudentAnalyticsComponent } from './student-analytics/student-analytics.component';
+import { QuickAttendanceComponent } from './quick-attendance/quick-attendance.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -76,7 +77,8 @@ import { StudentAnalyticsComponent } from './student-analytics/student-analytics
         ViewStudentAttendanceRangeComponent,
         ViewStudentAttendanceDateWiseComponent,
         StudentPerformanceComponent,
-        StudentAnalyticsComponent
+        StudentAnalyticsComponent,
+        QuickAttendanceComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

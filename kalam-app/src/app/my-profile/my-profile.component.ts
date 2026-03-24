@@ -315,4 +315,8 @@ export class MyProfileComponent implements OnInit {
       
     });
   }
+
+  quickAttendance() {
+    this.router.navigate(['/quick-attendance']);
+  }
 }

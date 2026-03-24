@@ -96,4 +96,12 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
     }
   }
 
+  getPresentCount(): number {
+    return this.dataSource.data.filter((row: any) => row.status === 'IN').length;
+  }
+
+  getAbsentCount(): number {
+    return this.dataSource.data.filter((row: any) => row.status === 'OUT').length;
+  }
+
 }

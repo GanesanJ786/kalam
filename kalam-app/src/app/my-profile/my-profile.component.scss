@@ -339,6 +339,17 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
+.action-attendance {
+  background: linear-gradient(135deg, $green, $green-dark);
+  color: $white;
+  box-shadow: 0 2px 10px rgba(0, 200, 83, 0.25);
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba(0, 200, 83, 0.4);
+    transform: translateY(-1px);
+  }
+}
+
 // ============================================
 // GROUNDS SECTION
 // ============================================
