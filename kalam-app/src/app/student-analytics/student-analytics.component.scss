@@ -244,6 +244,11 @@ $font-lg: 1.125rem;
       color: $grey-3 !important;
     }
   }
+  .sa-filter-row, .sa-toolbar {
+    .mat-mdc-select {
+      color: rgb(0 0 0 / 87%) !important
+    }
+  }
 }
 
 // ============================================
