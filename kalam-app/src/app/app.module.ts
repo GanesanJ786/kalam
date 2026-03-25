@@ -56,6 +56,7 @@ import { StudentAnalyticsComponent } from './student-analytics/student-analytics
 import { QuickAttendanceComponent } from './quick-attendance/quick-attendance.component';
 import { CoachTaskNotificationComponent } from './coach-task-notification/coach-task-notification.component';
 import { CoachTaskDialogComponent } from './coach-task-dialog/coach-task-dialog.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -107,7 +108,11 @@ import { CoachTaskDialogComponent } from './coach-task-dialog/coach-task-dialog.
         MatTableModule,
         MatSortModule,
         AngularFireModule.initializeApp(environment.firebase),
-        NgIdleKeepaliveModule.forRoot()], providers: [
+        NgIdleKeepaliveModule.forRoot(),
+        ServiceWorkerModule.register('ngsw-worker.js', {
+          enabled: environment.production,
+          registrationStrategy: 'registerWhenStable:30000'
+        })], providers: [
         {
             provide: HTTP_INTERCEPTORS,
             useClass: LoaderInterceptor,
