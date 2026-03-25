@@ -850,6 +850,18 @@ button.btn-grnd:disabled {
     width: 95vw !important;
   }
 
+  // Task dialog responsive override
+  .vca-task-dialog-panel {
+    max-width: 95vw !important;
+    width: 95vw !important;
+    max-height: 90vh !important;
+  }
+
+  .vca-task-dialog-panel .mat-mdc-dialog-container .mdc-dialog__surface {
+    max-height: 90vh !important;
+    overflow: hidden;
+  }
+
   .mat-mdc-dialog-title,
   [mat-dialog-title] {
     font-size: 1rem !important;
@@ -879,11 +891,20 @@ button.btn-grnd:disabled {
   .cdk-overlay-pane.mat-mdc-dialog-panel:not(.full-screen-modal) {
     max-width: 85vw !important;
   }
+
+  .vca-task-dialog-panel {
+    max-width: 85vw !important;
+    max-height: 90vh !important;
+  }
 }
 
 @media (min-width: 768px) {
   // Tablets landscape & desktops
   .cdk-overlay-pane.mat-mdc-dialog-panel:not(.full-screen-modal) {
+    max-width: 520px !important;
+  }
+
+  .vca-task-dialog-panel {
     max-width: 520px !important;
   }
 
@@ -901,6 +922,18 @@ button.btn-grnd:disabled {
   .mat-mdc-dialog-actions,
   [mat-dialog-actions] {
     padding: 1rem 1.75rem 1.5rem !important;
+  }
+}
+
+// Landscape mobile — allow dialog to use more vertical space
+@media (max-height: 500px) {
+  .vca-task-dialog-panel {
+    max-height: 96vh !important;
+  }
+
+  .vca-task-dialog-panel .mat-mdc-dialog-container .mdc-dialog__surface {
+    max-height: 96vh !important;
+    overflow: hidden;
   }
 }
 

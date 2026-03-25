@@ -7,6 +7,7 @@ import { RegistrationDetails } from '../sign-up/sign-up.component';
 import * as moment from 'moment';
 import { StudentDetails } from '../student-form/student-form.component';
 import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-students-by-ground.component';
+import { TaskService } from '../task.service';
 
 @Component({
     selector: 'app-my-profile',
@@ -28,8 +29,9 @@ export class MyProfileComponent implements OnInit {
   addressData: any;
   allStudents: StudentDetails[] = [];
   inCoachId: string = "";
+  pendingTaskCount: number = 0;
 
-  constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) {
+  constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog, private taskService: TaskService) {
     this.groundList = [];
     this.academyName = this.kalamService.getCoachData().academyName;
     this.logo = this.kalamService.getCoachData().logoUrl;
@@ -132,6 +134,7 @@ export class MyProfileComponent implements OnInit {
 
     //this.getLocation();
     this.coachDetails = this.kalamService.getCoachData();
+    this.loadPendingTaskCount();
     if(this.owner) {
       const query = {
         academyId: `A${this.kalamService.getCoachData().kalamId}`
@@ -187,6 +190,28 @@ export class MyProfileComponent implements OnInit {
       });
     }
   }
+
+  private loadPendingTaskCount(): void {
+    if (!this.owner) {
+      // Sub coach: count active tasks (Pending + Acknowledged) assigned to them
+      this.taskService.getActiveTasks(this.inCoachId).subscribe((res: any) => {
+        const allTasks = res.map((document: any) => ({
+          ...document.payload.doc.data() as {}
+        }));
+        this.pendingTaskCount = allTasks.filter((t: any) => t.status !== 'Completed').length;
+      });
+    } else {
+      // Head coach: count pending tasks they assigned
+      const academyId = `A${this.kalamService.getCoachData().kalamId}`;
+      this.taskService.getTasksByHeadCoach(academyId).subscribe((res: any) => {
+        const tasks = res.map((document: any) => ({
+          ...document.payload.doc.data() as {}
+        }));
+        this.pendingTaskCount = tasks.filter((t: any) => t.status === 'Pending').length;
+      });
+    }
+  }
+
   editProfile() {
     
   }
@@ -318,5 +343,9 @@ export class MyProfileComponent implements OnInit {
 
   quickAttendance() {
     this.router.navigate(['/quick-attendance']);
+  }
+
+  coachTasks() {
+    this.router.navigate(['/coach-tasks']);
   }
 }

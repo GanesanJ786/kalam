@@ -7,6 +7,7 @@ import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ViewStudentAttendanceDateWiseComponent } from '../view-student-attendance-date-wise/view-student-attendance-date-wise.component';
+import { CoachTaskDialogComponent } from '../coach-task-dialog/coach-task-dialog.component';
 
 const today = new Date();
 const month = today.getMonth();
@@ -31,24 +32,10 @@ export class ViewCoachAttendanceComponent implements OnInit {
   attendanceRangeGroup: any;
   startDate:  number = 1;
   endDate: number = 7;
+  taskEntries: any = [];
 
   constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog) { 
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    // this.kalamService.getCoachAttendanceData(this.coachId).subscribe((coach: any) => {
-    //   let coachData = coach.map((document: any) => {
-    //     return {
-    //       id: document.payload.doc.id,
-    //       ...document.payload.doc.data() as {}
-    //     }
-    //   });
-    //   this.allCoachList = coachData;
-    //   this.coachList = coachData.reduce((unique:any, o:any) => {
-    //       if(!unique.some((obj:any) => obj.inCoachId === o.inCoachId)) {
-    //         unique.push(o);
-    //       }
-    //       return unique;
-    //   },[]);
-    // })
 
     const query = {
       academyId: `A${this.kalamService.getCoachData().kalamId}`
@@ -85,18 +72,28 @@ export class ViewCoachAttendanceComponent implements OnInit {
           ...document.payload.doc.data() as {}
         }
       });
-      //console.log(obj)
       const dialogRef = this.dialog.open(ViewStudentAttendanceDateWiseComponent, {
         data: obj
       });
   
       dialogRef.afterClosed().subscribe(result => {
-        //console.log('The dialog was closed');
-        //console.log(result);
         
       });
     });
     
+  }
+
+  viewCoachTasks(coach: any) {
+    const dialogRef = this.dialog.open(CoachTaskDialogComponent, {
+      data: {
+        taskEntries: this.taskEntries,
+        coachName: coach.coachName
+      },
+      panelClass: 'vca-task-dialog-panel',
+      maxWidth: '95vw',
+      width: '480px',
+      maxHeight: '85vh'
+    });
   }
 
   gotoHome() {
@@ -126,14 +123,15 @@ export class ViewCoachAttendanceComponent implements OnInit {
 
       const filteredData = coachData.filter((item: any) => {
         const itemDate = new Date(this.kalamService.convertToISO(item.activeDate));
-        return itemDate >= new Date(this.kalamService.convertToISO(dateRange.start)) && itemDate <= new Date(this.kalamService.convertToISO(dateRange.end)); // Excludes exact matches
+        return itemDate >= new Date(this.kalamService.convertToISO(dateRange.start)) && itemDate <= new Date(this.kalamService.convertToISO(dateRange.end));
       });
-
-      //console.log(filteredData);
 
       coachData = filteredData;
 
-      let sortCoach = _.sortBy(coachData, ["loginDate", "loginTime","groundName"]);
+      // Separate TASK entries from regular attendance
+      this.taskEntries = coachData.filter((v: any) => v.status === 'TASK');
+
+      let sortCoach = _.sortBy(coachData.filter((v: any) => v.status !== 'TASK'), ["loginDate", "loginTime","groundName"]);
       let inCoach = sortCoach.filter((v:any) => v.status == "IN");
       let outCoach = sortCoach.filter((v:any) => v.status == "OUT");
       let leaveData = sortCoach.filter((v:any) => v.status == "LEAVE");
@@ -190,8 +188,6 @@ export class ViewCoachAttendanceComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //console.log('The dialog was closed');
-      //console.log(result);
       
     });
   }
@@ -202,6 +198,23 @@ export class ViewCoachAttendanceComponent implements OnInit {
 
   getLeaveCount(): number {
     return this.coachView.filter((c: any) => c.status === 'LEAVE').length;
+  }
+
+  getTaskStatusClass(status: string): string {
+    switch (status) {
+      case 'Pending': return 'task-pending';
+      case 'Acknowledged': return 'task-acknowledged';
+      case 'Completed': return 'task-completed';
+      default: return '';
+    }
+  }
+
+  getTaskPendingCount(): number {
+    return this.taskEntries.filter((t: any) => t.taskStatus === 'Pending').length;
+  }
+
+  getTaskCompletedCount(): number {
+    return this.taskEntries.filter((t: any) => t.taskStatus === 'Completed').length;
   }
 
 }

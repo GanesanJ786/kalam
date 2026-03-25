@@ -1,0 +1,113 @@
+<div class="ctd-dialog">
+  <!-- Header -->
+  <div class="ctd-header">
+    <div class="ctd-header-left">
+      <div class="ctd-header-icon-ring">
+        <mat-icon>assignment</mat-icon>
+      </div>
+      <div class="ctd-header-text">
+        <h2 class="ctd-title">Assigned Tasks</h2>
+        <span class="ctd-subtitle">{{ coachName }}</span>
+      </div>
+    </div>
+    <button class="ctd-close-btn" (click)="close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Stats Bar — Clickable Filters -->
+  <div class="ctd-stats-bar">
+    <button class="ctd-stat" [class.ctd-stat-active]="activeFilter === 'all'" (click)="setFilter('all')">
+      <span class="ctd-stat-value ctd-stat-total">{{ totalCount }}</span>
+      <span class="ctd-stat-label">Total</span>
+    </button>
+    <div class="ctd-stat-divider"></div>
+    <button class="ctd-stat" [class.ctd-stat-active]="activeFilter === 'Pending'" (click)="setFilter('Pending')">
+      <span class="ctd-stat-value ctd-stat-pending">{{ pendingCount }}</span>
+      <span class="ctd-stat-label">Pending</span>
+    </button>
+    <div class="ctd-stat-divider"></div>
+    <button class="ctd-stat" [class.ctd-stat-active]="activeFilter === 'Completed'" (click)="setFilter('Completed')">
+      <span class="ctd-stat-value ctd-stat-completed">{{ completedCount }}</span>
+      <span class="ctd-stat-label">Completed</span>
+    </button>
+  </div>
+
+  <!-- Task Cards -->
+  <div class="ctd-body" *ngIf="filteredTasks.length > 0">
+    <div *ngFor="let task of filteredTasks; let i = index" class="ctd-task-card"
+         [class.ctd-card-completed]="task.taskStatus === 'Completed'"
+         [class.ctd-card-pending]="task.taskStatus === 'Pending'"
+         [class.ctd-card-acknowledged]="task.taskStatus === 'Acknowledged'">
+
+      <!-- Left accent bar -->
+      <div class="ctd-card-accent" [ngClass]="getTaskStatusClass(task.taskStatus)"></div>
+
+      <div class="ctd-card-content">
+        <!-- Title + Status Row -->
+        <div class="ctd-card-top">
+          <div class="ctd-card-title-wrap">
+            <mat-icon class="ctd-card-icon">assignment</mat-icon>
+            <span class="ctd-card-title">{{ task.taskTitle }}</span>
+          </div>
+          <span class="ctd-status-badge" [ngClass]="getTaskStatusClass(task.taskStatus)">
+            <mat-icon class="ctd-badge-icon">{{ getTaskStatusIcon(task.taskStatus) }}</mat-icon>
+            <span>{{ task.taskStatus || 'Pending' }}</span>
+          </span>
+        </div>
+
+        <!-- Description Block -->
+        <div class="ctd-desc-block">
+          <span class="ctd-detail-label">Description</span>
+          <p class="ctd-desc-text">{{ task.taskDescription }}</p>
+        </div>
+
+        <!-- Assigned Info Row — 2 columns, equal width -->
+        <div class="ctd-info-grid">
+          <div class="ctd-info-cell">
+            <span class="ctd-detail-label">Assigned By</span>
+            <span class="ctd-detail-value">{{ task.taskAssignedBy }}</span>
+          </div>
+          <div class="ctd-info-cell">
+            <span class="ctd-detail-label">Assigned Date</span>
+            <span class="ctd-detail-value">{{ task.activeDate }}</span>
+          </div>
+        </div>
+
+        <!-- Response Info Row (if responded) — 2 columns, equal width -->
+        <div class="ctd-info-grid" *ngIf="task.taskRespondedDate">
+          <div class="ctd-info-cell ctd-info-responded">
+            <span class="ctd-detail-label">Responded Date</span>
+            <span class="ctd-detail-value">{{ task.taskRespondedDate }}</span>
+          </div>
+          <div class="ctd-info-cell ctd-info-responded">
+            <span class="ctd-detail-label">Responded Time</span>
+            <span class="ctd-detail-value">{{ task.taskRespondedTime }}</span>
+          </div>
+        </div>
+
+        <!-- Empty responded row placeholder for pending tasks -->
+        <div class="ctd-info-grid" *ngIf="!task.taskRespondedDate">
+          <div class="ctd-info-cell ctd-info-empty">
+            <span class="ctd-detail-label">Responded Date</span>
+            <span class="ctd-detail-value ctd-value-empty">—</span>
+          </div>
+          <div class="ctd-info-cell ctd-info-empty">
+            <span class="ctd-detail-label">Responded Time</span>
+            <span class="ctd-detail-value ctd-value-empty">—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="ctd-empty" *ngIf="filteredTasks.length === 0">
+    <div class="ctd-empty-icon-ring">
+      <mat-icon>{{ activeFilter === 'all' ? 'task_alt' : (activeFilter === 'Pending' ? 'pending' : 'check_circle') }}</mat-icon>
+    </div>
+    <h4>{{ activeFilter === 'all' ? 'No Tasks' : 'No ' + activeFilter + ' Tasks' }}</h4>
+    <p *ngIf="activeFilter === 'all'">No tasks assigned for this coach in the selected date range.</p>
+    <p *ngIf="activeFilter !== 'all'">No {{ activeFilter | lowercase }} tasks found. Try a different filter.</p>
+  </div>
+</div>

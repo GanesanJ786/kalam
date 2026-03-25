@@ -9,6 +9,7 @@ import { NewCoachApproveComponent } from './new-coach-approve/new-coach-approve.
 import { NewStudentsComponent } from './new-students/new-students.component';
 import { ApprovePaymentComponent } from './approve-payment/approve-payment.component';
 import { QuickAttendanceComponent } from './quick-attendance/quick-attendance.component';
+import { CoachTaskNotificationComponent } from './coach-task-notification/coach-task-notification.component';
 
 import { AuthGuardService } from './auth-guard.service';
 
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'new-students', component: NewStudentsComponent, canActivate: [AuthGuardService]},
   { path: 'fees-approval', component: ApprovePaymentComponent, canActivate: [AuthGuardService]},
   { path: 'quick-attendance', component: QuickAttendanceComponent, canActivate: [AuthGuardService]},
+  { path: 'coach-tasks', component: CoachTaskNotificationComponent, canActivate: [AuthGuardService]},
   { path: '**', redirectTo: 'login' }
 ];
 

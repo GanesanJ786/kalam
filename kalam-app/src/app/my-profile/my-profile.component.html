@@ -56,29 +56,45 @@
 
 <!-- Quick Actions Bar -->
 <section class="actions-section">
-  <div class="actions-container" *ngIf="owner">
-    <button class="action-btn action-primary" (click)="addGround()">
-      <mat-icon>add_location_alt</mat-icon>
-      <span>Add Ground</span>
-    </button>
-    <button class="action-btn action-secondary" (click)="viewCoachData()">
-      <mat-icon>groups</mat-icon>
-      <span>Coach Details</span>
-    </button>
-    <button class="action-btn action-attendance" (click)="quickAttendance()">
-      <mat-icon>fact_check</mat-icon>
-      <span>Quick Attendance</span>
-    </button>
-  </div>
-  <div class="actions-container actions-end" *ngIf="!owner">
-    <button class="action-btn action-attendance" (click)="quickAttendance()">
-      <mat-icon>fact_check</mat-icon>
-      <span>Quick Attendance</span>
-    </button>
-    <button class="action-btn action-warn" (click)="applyLeave()">
-      <mat-icon>event_busy</mat-icon>
-      <span>Apply Leave</span>
-    </button>
+  <div class="actions-scroll-wrapper">
+    <div class="actions-track" *ngIf="owner">
+      <button class="action-chip action-primary" (click)="addGround()">
+        <span class="chip-icon-wrap"><mat-icon>add_location_alt</mat-icon></span>
+        <span class="chip-label">Add<br>Ground</span>
+      </button>
+      <button class="action-chip action-secondary" (click)="viewCoachData()">
+        <span class="chip-icon-wrap"><mat-icon>groups</mat-icon></span>
+        <span class="chip-label">Coach<br>Details</span>
+      </button>
+      <button class="action-chip action-attendance" (click)="quickAttendance()">
+        <span class="chip-icon-wrap"><mat-icon>fact_check</mat-icon></span>
+        <span class="chip-label">Quick<br>Attendance</span>
+      </button>
+      <button class="action-chip action-task" [class.action-task-alert]="pendingTaskCount > 0" (click)="coachTasks()">
+        <span class="chip-icon-wrap">
+          <mat-icon>assignment</mat-icon>
+          <span class="task-count-badge" *ngIf="pendingTaskCount > 0">{{pendingTaskCount}}</span>
+        </span>
+        <span class="chip-label">Tasks</span>
+      </button>
+    </div>
+    <div class="actions-track" *ngIf="!owner">
+      <button class="action-chip action-attendance" (click)="quickAttendance()">
+        <span class="chip-icon-wrap"><mat-icon>fact_check</mat-icon></span>
+        <span class="chip-label">Quick<br>Attendance</span>
+      </button>
+      <button class="action-chip action-task" [class.action-task-alert]="pendingTaskCount > 0" (click)="coachTasks()">
+        <span class="chip-icon-wrap">
+          <mat-icon>assignment</mat-icon>
+          <span class="task-count-badge" *ngIf="pendingTaskCount > 0">{{pendingTaskCount}}</span>
+        </span>
+        <span class="chip-label">Tasks</span>
+      </button>
+      <button class="action-chip action-warn" (click)="applyLeave()">
+        <span class="chip-icon-wrap"><mat-icon>event_busy</mat-icon></span>
+        <span class="chip-label">Apply<br>Leave</span>
+      </button>
+    </div>
   </div>
 </section>
 

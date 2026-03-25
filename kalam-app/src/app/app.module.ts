@@ -54,6 +54,8 @@ import { ViewStudentAttendanceDateWiseComponent } from './view-student-attendanc
 import { StudentPerformanceComponent } from './student-performance/student-performance.component';
 import { StudentAnalyticsComponent } from './student-analytics/student-analytics.component';
 import { QuickAttendanceComponent } from './quick-attendance/quick-attendance.component';
+import { CoachTaskNotificationComponent } from './coach-task-notification/coach-task-notification.component';
+import { CoachTaskDialogComponent } from './coach-task-dialog/coach-task-dialog.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -78,7 +80,9 @@ import { QuickAttendanceComponent } from './quick-attendance/quick-attendance.co
         ViewStudentAttendanceDateWiseComponent,
         StudentPerformanceComponent,
         StudentAnalyticsComponent,
-        QuickAttendanceComponent
+        QuickAttendanceComponent,
+        CoachTaskNotificationComponent,
+        CoachTaskDialogComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

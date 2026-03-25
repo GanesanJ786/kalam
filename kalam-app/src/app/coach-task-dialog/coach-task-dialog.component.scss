@@ -1,0 +1,706 @@
+// ============================================
+// COACH TASK DIALOG - Black & Orange Sports Theme
+// ============================================
+
+$orange: #FF5722;
+$orange-light: #FF8A65;
+$orange-dark: #E64A19;
+$black-1: #0D0D0D;
+$black-2: #121212;
+$black-3: #1A1A1A;
+$black-4: #222222;
+$black-5: #2A2A2A;
+$grey-1: #333333;
+$grey-2: #555555;
+$grey-3: #999999;
+$white: #FFFFFF;
+$green: #00C853;
+$red: #FF1744;
+$yellow: #FFD600;
+$blue: #2979FF;
+$radius: 12px;
+
+// ============================================
+// DIALOG CONTAINER
+// ============================================
+.ctd-dialog {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  height: 100%;
+  background: $black-1;
+  border-radius: 16px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+// ============================================
+// HEADER
+// ============================================
+.ctd-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  background: linear-gradient(135deg, $black-2, $black-3);
+  border-bottom: 1px solid $grey-1;
+  flex-shrink: 0;
+}
+
+.ctd-header-left {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-width: 0;
+}
+
+.ctd-header-icon-ring {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba($blue, 0.12);
+  border: 1.5px solid rgba($blue, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: $blue;
+  }
+}
+
+.ctd-header-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.ctd-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: $white;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.ctd-subtitle {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: $grey-3;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ctd-close-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid $grey-1;
+  background: $black-4;
+  color: $grey-3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  padding: 0;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    border-color: $red;
+    color: $red;
+    background: rgba($red, 0.1);
+  }
+}
+
+// ============================================
+// STATS BAR — Clickable Filters
+// ============================================
+.ctd-stats-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: linear-gradient(160deg, $black-3, $black-2);
+  border-bottom: 1px solid $grey-1;
+  padding: 0.5rem 0.75rem;
+  flex-shrink: 0;
+}
+
+.ctd-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  gap: 0.15rem;
+  padding: 0.35rem 0.25rem;
+  border-radius: 10px;
+  border: 1.5px solid transparent;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+
+  &:hover {
+    background: rgba($white, 0.03);
+  }
+
+  &.ctd-stat-active {
+    background: rgba($white, 0.04);
+    border-color: rgba($white, 0.08);
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 25%;
+      right: 25%;
+      height: 2px;
+      border-radius: 2px;
+      background: $orange;
+    }
+  }
+}
+
+.ctd-stat-value {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  line-height: 1;
+}
+
+.ctd-stat-total {
+  color: $orange;
+  text-shadow: 0 0 16px rgba($orange, 0.3);
+}
+
+.ctd-stat-pending {
+  color: $yellow;
+  text-shadow: 0 0 16px rgba($yellow, 0.3);
+}
+
+.ctd-stat-completed {
+  color: $green;
+  text-shadow: 0 0 16px rgba($green, 0.3);
+}
+
+.ctd-stat-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: $grey-3;
+}
+
+.ctd-stat-divider {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(180deg, transparent, $grey-1, transparent);
+  flex-shrink: 0;
+}
+
+// ============================================
+// BODY — Scrollable task cards
+// ============================================
+.ctd-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: $grey-1 transparent;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $grey-1;
+    border-radius: 4px;
+  }
+}
+
+// ============================================
+// TASK CARD
+// ============================================
+.ctd-task-card {
+  display: flex;
+  flex-shrink: 0;
+  background: linear-gradient(145deg, $black-3, $black-4);
+  border: 1px solid $grey-1;
+  border-radius: $radius;
+  overflow: visible;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    border-color: rgba($white, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  &.ctd-card-pending {
+    border-left: none;
+  }
+
+  &.ctd-card-completed {
+    border-left: none;
+  }
+
+  &.ctd-card-acknowledged {
+    border-left: none;
+  }
+}
+
+.ctd-card-accent {
+  width: 4px;
+  flex-shrink: 0;
+
+  &.task-pending {
+    background: linear-gradient(180deg, $yellow, darken($yellow, 15%));
+  }
+
+  &.task-acknowledged {
+    background: linear-gradient(180deg, $blue, darken($blue, 12%));
+  }
+
+  &.task-completed {
+    background: linear-gradient(180deg, $green, darken($green, 10%));
+  }
+}
+
+.ctd-card-content {
+  flex: 1;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+  overflow: visible;
+}
+
+// --- Card Top: Title + Badge ---
+.ctd-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.ctd-card-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.ctd-card-icon {
+  font-size: 17px;
+  width: 17px;
+  height: 17px;
+  color: $grey-3;
+  flex-shrink: 0;
+}
+
+.ctd-card-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: $white;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.3;
+}
+
+// --- Status Badge ---
+.ctd-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  white-space: nowrap;
+
+  .ctd-badge-icon {
+    font-size: 12px;
+    width: 12px;
+    height: 12px;
+  }
+
+  &.task-pending {
+    background: rgba($yellow, 0.12);
+    color: $yellow;
+    border: 1px solid rgba($yellow, 0.25);
+  }
+
+  &.task-acknowledged {
+    background: rgba($blue, 0.12);
+    color: $blue;
+    border: 1px solid rgba($blue, 0.25);
+  }
+
+  &.task-completed {
+    background: rgba($green, 0.12);
+    color: $green;
+    border: 1px solid rgba($green, 0.2);
+  }
+}
+
+// --- Description Block ---
+.ctd-desc-block {
+  padding: 0.45rem 0.6rem;
+  background: rgba($black-5, 0.6);
+  border-radius: 8px;
+  border: 1px solid rgba($grey-1, 0.5);
+}
+
+.ctd-desc-text {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: rgba($white, 0.85);
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+// --- Info Grid — Proper 2-column layout ---
+.ctd-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.ctd-info-cell {
+  padding: 0.4rem 0.55rem;
+  background: rgba($black-5, 0.6);
+  border-radius: 8px;
+  border: 1px solid rgba($grey-1, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+
+  &.ctd-info-responded {
+    border-color: rgba($green, 0.15);
+    background: rgba($green, 0.03);
+  }
+
+  &.ctd-info-empty {
+    border-style: dashed;
+    border-color: rgba($grey-1, 0.35);
+    background: rgba($black-5, 0.3);
+  }
+}
+
+.ctd-detail-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: $orange-light;
+  line-height: 1.2;
+}
+
+.ctd-detail-value {
+  font-size: 0.78rem;
+  color: rgba($white, 0.85);
+  word-break: break-word;
+  line-height: 1.4;
+  font-weight: 500;
+
+  &.ctd-value-empty {
+    color: rgba($grey-3, 0.5);
+    font-style: italic;
+  }
+}
+
+// ============================================
+// EMPTY STATE
+// ============================================
+.ctd-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  gap: 0.5rem;
+
+  h4 {
+    color: $white;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  p {
+    color: $grey-3;
+    font-size: 0.8rem;
+    margin: 0;
+    max-width: 240px;
+    line-height: 1.5;
+  }
+}
+
+.ctd-empty-icon-ring {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba($grey-2, 0.15);
+  border: 2px solid rgba($grey-2, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.35rem;
+
+  mat-icon {
+    font-size: 30px;
+    width: 30px;
+    height: 30px;
+    color: $grey-3;
+  }
+}
+
+// ============================================
+// RESPONSIVE
+// ============================================
+@media (max-width: 359px) {
+  .ctd-header {
+    padding: 0.65rem 0.75rem;
+  }
+
+  .ctd-title {
+    font-size: 0.85rem;
+  }
+
+  .ctd-stat-value {
+    font-size: 1.25rem;
+  }
+
+  .ctd-body {
+    padding: 0.45rem;
+    gap: 0.5rem;
+  }
+
+  .ctd-card-content {
+    padding: 0.6rem;
+    gap: 0.4rem;
+  }
+
+  .ctd-card-top {
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .ctd-info-grid {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+
+  .ctd-info-cell {
+    padding: 0.3rem 0.4rem;
+  }
+
+  .ctd-detail-label {
+    font-size: 0.55rem;
+  }
+
+  .ctd-detail-value {
+    font-size: 0.72rem;
+  }
+
+  .ctd-desc-text {
+    font-size: 0.75rem;
+  }
+
+  .ctd-status-badge {
+    align-self: flex-start;
+  }
+}
+
+@media (min-width: 480px) {
+  .ctd-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .ctd-title {
+    font-size: 1.05rem;
+  }
+
+  .ctd-stat-value {
+    font-size: 1.75rem;
+  }
+
+  .ctd-body {
+    padding: 0.875rem;
+    gap: 0.75rem;
+  }
+
+  .ctd-card-content {
+    padding: 0.875rem 1rem;
+    gap: 0.55rem;
+  }
+
+  .ctd-info-cell {
+    padding: 0.45rem 0.65rem;
+  }
+
+  .ctd-detail-value {
+    font-size: 0.82rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .ctd-stat-value {
+    font-size: 2rem;
+  }
+
+  .ctd-stats-bar {
+    padding: 0.75rem 1.5rem;
+  }
+
+  .ctd-card-title {
+    font-size: 0.95rem;
+  }
+
+  .ctd-detail-value {
+    font-size: 0.85rem;
+  }
+
+  .ctd-desc-text {
+    font-size: 0.85rem;
+  }
+}
+
+// Landscape mobile — limited height, ensure scrollable body fills space
+@media (max-height: 500px) {
+  .ctd-dialog {
+    max-height: 95vh;
+  }
+
+  .ctd-header {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .ctd-header-icon-ring {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .ctd-title {
+    font-size: 0.85rem;
+  }
+
+  .ctd-subtitle {
+    font-size: 0.65rem;
+  }
+
+  .ctd-stats-bar {
+    padding: 0.3rem 0.5rem;
+  }
+
+  .ctd-stat {
+    padding: 0.2rem 0.15rem;
+  }
+
+  .ctd-stat-value {
+    font-size: 1.15rem;
+  }
+
+  .ctd-stat-label {
+    font-size: 0.55rem;
+  }
+
+  .ctd-stat-divider {
+    height: 20px;
+  }
+
+  .ctd-body {
+    padding: 0.4rem;
+    gap: 0.4rem;
+  }
+
+  .ctd-card-content {
+    padding: 0.5rem;
+    gap: 0.35rem;
+  }
+
+  .ctd-desc-block {
+    padding: 0.3rem 0.5rem;
+  }
+
+  .ctd-desc-text {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .ctd-info-grid {
+    gap: 0.3rem;
+  }
+
+  .ctd-info-cell {
+    padding: 0.25rem 0.4rem;
+  }
+
+  .ctd-detail-label {
+    font-size: 0.55rem;
+  }
+
+  .ctd-detail-value {
+    font-size: 0.72rem;
+  }
+
+  .ctd-empty {
+    padding: 1.5rem 1rem;
+  }
+}
+
+// Landscape + narrow width (small phones rotated)
+@media (max-height: 400px) and (max-width: 767px) {
+  .ctd-dialog {
+    max-height: 98vh;
+  }
+
+  .ctd-info-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem;
+  }
+
+  .ctd-card-top {
+    flex-wrap: wrap;
+  }
+}

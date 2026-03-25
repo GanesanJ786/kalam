@@ -1,0 +1,328 @@
+<!-- ============================================ -->
+<!-- COACH TASK NOTIFICATION - Black & Orange Theme -->
+<!-- ============================================ -->
+
+<div class="ctn-container">
+
+  <!-- ─── HEADER BAR ─── -->
+  <div class="ctn-header">
+    <button class="ctn-back-btn" (click)="goHome()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div class="ctn-header-info">
+      <h1 class="ctn-header-title">{{ isOwner ? 'Task Manager' : 'My Tasks' }}</h1>
+      <span class="ctn-header-subtitle">
+        <mat-icon class="ctn-subtitle-icon">person</mat-icon>
+        {{ myName }}
+        <span style="margin: 0 0.15rem; color: #333;">|</span>
+        {{ isOwner ? 'Head Coach' : 'Coach' }}
+      </span>
+    </div>
+    <div class="ctn-header-badge">
+      <mat-icon>assignment</mat-icon>
+    </div>
+  </div>
+
+  <!-- ─── BODY ─── -->
+  <div class="ctn-body">
+
+    <!-- ─── STATS BAR ─── -->
+    <div class="ctn-stats-bar">
+      <div class="ctn-stat">
+        <span class="ctn-stat-value ctn-stat-pending">{{ pendingCount }}</span>
+        <span class="ctn-stat-label">Pending</span>
+      </div>
+      <div class="ctn-stat-divider"></div>
+      <div class="ctn-stat">
+        <span class="ctn-stat-value ctn-stat-acknowledged">{{ acknowledgedCount }}</span>
+        <span class="ctn-stat-label">Acknowledged</span>
+      </div>
+      <div class="ctn-stat-divider"></div>
+      <div class="ctn-stat">
+        <span class="ctn-stat-value ctn-stat-completed">{{ completedCount }}</span>
+        <span class="ctn-stat-label">Completed</span>
+      </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HEAD COACH VIEW: Assign Tasks -->
+    <!-- ============================================ -->
+    <ng-container *ngIf="isOwner">
+
+      <!-- Toggle Assign Form Button -->
+      <button class="ctn-assign-toggle-btn" (click)="toggleAssignForm()">
+        <mat-icon>{{ showAssignForm ? 'close' : 'add_task' }}</mat-icon>
+        <span>{{ showAssignForm ? 'Cancel' : 'Assign New Task' }}</span>
+      </button>
+
+      <!-- Assign Task Form -->
+      <div class="ctn-form-card" *ngIf="showAssignForm">
+        <div class="ctn-form-header">
+          <mat-icon class="ctn-form-header-icon">edit_note</mat-icon>
+          <span class="ctn-form-header-label">New Task</span>
+        </div>
+        <div class="ctn-form-content">
+          <form [formGroup]="taskForm" (ngSubmit)="assignTask()">
+            <mat-form-field appearance="fill" class="ctn-field">
+              <mat-label>Select Coach</mat-label>
+              <mat-select formControlName="assignedTo">
+                <mat-option *ngFor="let coach of coachList" [value]="coach.kalamId">
+                  {{ coach.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="taskForm.get('assignedTo')?.hasError('required')">Coach is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="ctn-field">
+              <mat-label>Task Title</mat-label>
+              <input matInput formControlName="title">
+              <mat-error *ngIf="taskForm.get('title')?.hasError('required')">Title is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" class="ctn-field">
+              <mat-label>Description</mat-label>
+              <textarea matInput formControlName="description" rows="3"></textarea>
+              <mat-error *ngIf="taskForm.get('description')?.hasError('required')">Description is required</mat-error>
+            </mat-form-field>
+
+            <button type="submit" class="ctn-submit-btn" [disabled]="taskForm.invalid">
+              <mat-icon>send</mat-icon>
+              <span>Assign Task</span>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Assigned Tasks Section Header -->
+      <div class="ctn-section-header">
+        <mat-icon class="ctn-section-icon">history</mat-icon>
+        <span class="ctn-section-title">All Assigned Tasks</span>
+        <span class="ctn-section-count">{{ assignedTasks.length }}</span>
+      </div>
+
+      <!-- Assigned Tasks — Mobile Cards -->
+      <div class="ctn-cards-list">
+        <div class="ctn-task-card" *ngFor="let task of assignedTasks"
+             [ngClass]="getStatusClass(task.status)">
+          <div class="ctn-card-indicator" [ngClass]="getStatusClass(task.status)"></div>
+          <div class="ctn-card-body">
+            <div class="ctn-card-top">
+              <div class="ctn-card-title-wrap">
+                <mat-icon class="ctn-card-icon">assignment</mat-icon>
+                <span class="ctn-card-title">{{ task.title }}</span>
+              </div>
+              <span class="ctn-status-badge" [ngClass]="getStatusClass(task.status)">
+                {{ task.status }}
+              </span>
+            </div>
+            <p class="ctn-card-desc">{{ task.description }}</p>
+            <div class="ctn-card-meta">
+              <div class="ctn-card-detail">
+                <mat-icon class="ctn-card-field-icon">person</mat-icon>
+                <span>{{ task.assignedToName }}</span>
+              </div>
+              <div class="ctn-card-detail">
+                <mat-icon class="ctn-card-field-icon">calendar_today</mat-icon>
+                <span>{{ task.assignedDate }}</span>
+              </div>
+              <div class="ctn-card-detail" *ngIf="task.respondedDate">
+                <mat-icon class="ctn-card-field-icon">check_circle</mat-icon>
+                <span>{{ task.respondedDate }}</span>
+              </div>
+            </div>
+            <div class="ctn-card-actions" *ngIf="task.status === 'Pending'">
+              <button class="ctn-action-btn ctn-btn-delete" (click)="deleteTask(task)">
+                <mat-icon>delete_outline</mat-icon>
+                <span>Delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Assigned Tasks — Desktop Table -->
+      <div class="ctn-table-wrapper">
+        <div class="ctn-table-card">
+          <table mat-table [dataSource]="assignedTasks" class="ctn-table">
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let task">{{ task.assignedDate }}</td>
+            </ng-container>
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Title</th>
+              <td mat-cell *matCellDef="let task">{{ task.title }}</td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let task">{{ task.description }}</td>
+            </ng-container>
+            <ng-container matColumnDef="assignedTo">
+              <th mat-header-cell *matHeaderCellDef>Assigned To</th>
+              <td mat-cell *matCellDef="let task">{{ task.assignedToName }}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let task">
+                <span class="ctn-status-badge" [ngClass]="getStatusClass(task.status)">{{ task.status }}</span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="historyDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: historyDisplayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Empty State (Head Coach) -->
+      <div class="ctn-empty-state" *ngIf="assignedTasks.length === 0 && !loadingHistory">
+        <div class="ctn-empty-icon-ring">
+          <mat-icon>assignment_late</mat-icon>
+        </div>
+        <h4>No Tasks Yet</h4>
+        <p>Tap "Assign New Task" to create a task for your coaches.</p>
+      </div>
+    </ng-container>
+
+    <!-- ============================================ -->
+    <!-- SUB COACH VIEW: Notifications + History -->
+    <!-- ============================================ -->
+    <ng-container *ngIf="!isOwner">
+
+      <!-- Active Tasks Section Header (Pending + Acknowledged — stays until Completed) -->
+      <div class="ctn-section-header" *ngIf="activeTasks.length > 0">
+        <mat-icon class="ctn-section-icon ctn-icon-pulse">notifications_active</mat-icon>
+        <span class="ctn-section-title">Active Tasks</span>
+        <span class="ctn-section-count ctn-count-alert">{{ activeTasks.length }}</span>
+      </div>
+
+      <!-- Active Task Notification Cards -->
+      <div class="ctn-cards-list" *ngIf="activeTasks.length > 0">
+        <div class="ctn-task-card ctn-notification-card" *ngFor="let task of activeTasks"
+             [class.ctn-acknowledged-card]="task.status === 'Acknowledged'">
+          <div class="ctn-card-indicator" [ngClass]="getStatusClass(task.status)"></div>
+          <div class="ctn-card-body">
+            <div class="ctn-card-top">
+              <div class="ctn-card-title-wrap">
+                <mat-icon class="ctn-card-icon ctn-icon-notify">notifications</mat-icon>
+                <span class="ctn-card-title">{{ task.title }}</span>
+              </div>
+              <span class="ctn-status-badge" [ngClass]="getStatusClass(task.status)">
+                {{ task.status }}
+              </span>
+            </div>
+            <p class="ctn-card-desc">{{ task.description }}</p>
+            <div class="ctn-card-meta">
+              <div class="ctn-card-detail">
+                <mat-icon class="ctn-card-field-icon">person</mat-icon>
+                <span>From: {{ task.assignedByName }}</span>
+              </div>
+              <div class="ctn-card-detail">
+                <mat-icon class="ctn-card-field-icon">calendar_today</mat-icon>
+                <span>{{ task.assignedDate }}</span>
+              </div>
+              <div class="ctn-card-detail" *ngIf="task.respondedDate">
+                <mat-icon class="ctn-card-field-icon">schedule</mat-icon>
+                <span>Responded: {{ task.respondedDate }}</span>
+              </div>
+            </div>
+            <div class="ctn-card-actions">
+              <!-- Acknowledge button: only for Pending tasks -->
+              <button class="ctn-action-btn ctn-btn-acknowledge"
+                      *ngIf="task.status === 'Pending'"
+                      (click)="respondToTask(task, 'Acknowledged')">
+                <mat-icon>thumb_up_alt</mat-icon>
+                <span>Acknowledge</span>
+              </button>
+              <!-- Complete button: always enabled until task is Completed -->
+              <button class="ctn-action-btn ctn-btn-complete"
+                      (click)="respondToTask(task, 'Completed')">
+                <mat-icon>check_circle</mat-icon>
+                <span>Complete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Task History Section Header -->
+      <div class="ctn-section-header">
+        <mat-icon class="ctn-section-icon">history</mat-icon>
+        <span class="ctn-section-title">Task History</span>
+        <span class="ctn-section-count">{{ taskHistory.length }}</span>
+      </div>
+
+      <!-- History — Mobile Cards (only completed tasks) -->
+      <div class="ctn-cards-list">
+        <ng-container *ngFor="let task of taskHistory">
+          <div class="ctn-task-card" *ngIf="task.status === 'Completed'"
+               [ngClass]="getStatusClass(task.status)">
+            <div class="ctn-card-indicator" [ngClass]="getStatusClass(task.status)"></div>
+            <div class="ctn-card-body">
+              <div class="ctn-card-top">
+                <div class="ctn-card-title-wrap">
+                  <mat-icon class="ctn-card-icon">task_alt</mat-icon>
+                  <span class="ctn-card-title">{{ task.title }}</span>
+                </div>
+                <span class="ctn-status-badge" [ngClass]="getStatusClass(task.status)">
+                  {{ task.status }}
+                </span>
+              </div>
+              <p class="ctn-card-desc">{{ task.description }}</p>
+              <div class="ctn-card-meta">
+                <div class="ctn-card-detail">
+                  <mat-icon class="ctn-card-field-icon">calendar_today</mat-icon>
+                  <span>Assigned: {{ task.assignedDate }}</span>
+                </div>
+                <div class="ctn-card-detail" *ngIf="task.respondedDate">
+                  <mat-icon class="ctn-card-field-icon">check_circle</mat-icon>
+                  <span>Completed: {{ task.respondedDate }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+
+      <!-- History — Desktop Table -->
+      <div class="ctn-table-wrapper">
+        <div class="ctn-table-card">
+          <table mat-table [dataSource]="taskHistory" class="ctn-table">
+            <ng-container matColumnDef="date">
+              <th mat-header-cell *matHeaderCellDef>Date</th>
+              <td mat-cell *matCellDef="let task">{{ task.assignedDate }}</td>
+            </ng-container>
+            <ng-container matColumnDef="title">
+              <th mat-header-cell *matHeaderCellDef>Title</th>
+              <td mat-cell *matCellDef="let task">{{ task.title }}</td>
+            </ng-container>
+            <ng-container matColumnDef="description">
+              <th mat-header-cell *matHeaderCellDef>Description</th>
+              <td mat-cell *matCellDef="let task">{{ task.description }}</td>
+            </ng-container>
+            <ng-container matColumnDef="assignedTo">
+              <th mat-header-cell *matHeaderCellDef>Responded</th>
+              <td mat-cell *matCellDef="let task">{{ task.respondedDate || '—' }}</td>
+            </ng-container>
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef>Status</th>
+              <td mat-cell *matCellDef="let task">
+                <span class="ctn-status-badge" [ngClass]="getStatusClass(task.status)">{{ task.status }}</span>
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="historyDisplayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: historyDisplayedColumns;"></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Empty State (Sub Coach) -->
+      <div class="ctn-empty-state" *ngIf="activeTasks.length === 0 && taskHistory.length === 0 && !loadingTasks && !loadingHistory">
+        <div class="ctn-empty-icon-ring">
+          <mat-icon>task_alt</mat-icon>
+        </div>
+        <h4>All Clear!</h4>
+        <p>No tasks assigned to you right now. Check back later.</p>
+      </div>
+    </ng-container>
+
+  </div>
+</div>

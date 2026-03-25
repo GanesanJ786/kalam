@@ -49,12 +49,12 @@
             </div>
 
             <!-- Empty State -->
-            <div *ngIf="coachView.length === 0 && coachVal" class="vca-empty-state">
+            <div *ngIf="coachView.length === 0 && taskEntries.length === 0 && coachVal" class="vca-empty-state">
                 <div class="vca-empty-icon-ring">
                     <mat-icon>event_busy</mat-icon>
                 </div>
                 <h4>No Records Found</h4>
-                <p>No attendance data for the selected date range.</p>
+                <p>No attendance data or tasks for the selected date range.</p>
             </div>
 
             <div *ngIf="!coachVal" class="vca-empty-state">
@@ -88,21 +88,9 @@
                 <div *ngFor="let coach of coachView; let i = index" class="vca-card vca-attendance-item"
                     [class.vca-leave]="coach.status === 'LEAVE'" [class.vca-present]="coach.status !== 'LEAVE'">
 
-                    <!-- Status badge -->
-                    <div class="vca-status-badge" [class.leave]="coach.status === 'LEAVE'">
-                        <mat-icon>{{coach.status === 'LEAVE' ? 'event_busy' : 'check_circle'}}</mat-icon>
-                        <span>{{coach.status === 'LEAVE' ? 'Leave' : 'Present'}}</span>
-                    </div>
-
-                    <!-- View Student Attendance Action -->
-                    <button *ngIf="coach.status !== 'LEAVE'" class="vca-view-student-btn" mat-icon-button
-                        (click)="viewStudentAttendance(coach)">
-                        <mat-icon>calendar_today</mat-icon>
-                    </button>
-
-                    <div class="vca-attendance-content">
-                        <!-- Row 1: Name + Ground -->
-                        <div class="vca-att-row vca-att-primary">
+                    <!-- Card Header Row: Name + Ground | Status Badge + Actions -->
+                    <div class="vca-card-top-row">
+                        <div class="vca-card-identity">
                             <div class="vca-att-field">
                                 <mat-icon class="vca-field-icon">person</mat-icon>
                                 <span class="vca-field-value">{{coach.coachName}}</span>
@@ -112,8 +100,31 @@
                                 <span class="vca-field-value">{{coach.groundName}}</span>
                             </div>
                         </div>
+                        <div class="vca-card-actions-row">
+                            <!-- Status badge -->
+                            <div class="vca-status-badge" [class.leave]="coach.status === 'LEAVE'">
+                                <mat-icon>{{coach.status === 'LEAVE' ? 'event_busy' : 'check_circle'}}</mat-icon>
+                                <span>{{coach.status === 'LEAVE' ? 'Leave' : 'Present'}}</span>
+                            </div>
+                            <!-- Action Buttons Group -->
+                            <div *ngIf="coach.status !== 'LEAVE'" class="vca-action-group">
+                                <button class="vca-action-btn vca-action-attendance" mat-icon-button
+                                    matTooltip="View Student Attendance"
+                                    (click)="viewStudentAttendance(coach)">
+                                    <mat-icon>calendar_today</mat-icon>
+                                </button>
+                                <button class="vca-action-btn vca-action-task" mat-icon-button
+                                    matTooltip="View Tasks"
+                                    (click)="viewCoachTasks(coach)">
+                                    <mat-icon>assignment</mat-icon>
+                                    <span class="vca-task-badge" *ngIf="taskEntries.length > 0">{{taskEntries.length}}</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
 
-                        <!-- Row 2: Topics + Notes -->
+                    <div class="vca-attendance-content">
+                        <!-- Row 1: Topics + Notes -->
                         <div class="vca-att-row" *ngIf="coach.status !== 'LEAVE'">
                             <div class="vca-att-detail">
                                 <span class="vca-detail-label">Topics</span>
@@ -125,7 +136,7 @@
                             </div>
                         </div>
 
-                        <!-- Row 3: Login / Logout Times -->
+                        <!-- Row 2: Login / Logout Times -->
                         <div class="vca-att-row vca-time-row" *ngIf="coach.status !== 'LEAVE'">
                             <div class="vca-time-block">
                                 <div class="vca-time-header">
