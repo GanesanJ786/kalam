@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KalamService } from '../kalam.service';

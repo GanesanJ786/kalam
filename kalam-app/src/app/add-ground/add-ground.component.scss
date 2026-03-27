@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 // ============================================
 // Add Ground Dialog - Black & Orange Theme
 // ============================================
@@ -17,6 +25,16 @@
   mat-form-field {
     width: 100%;
   }
+}
+
+.dialog-form-content input[matInput]::placeholder,
+.dialog-form-content textarea[matInput]::placeholder {
+  color: rgba(255, 255, 255, 0.5) !important;
+  opacity: 1;
+}
+
+.dialog-form-content textarea[matInput] {
+  line-height: 1.45;
 }
 
 // --- Location Dialog ---

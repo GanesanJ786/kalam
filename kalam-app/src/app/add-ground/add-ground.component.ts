@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Component, OnInit, Inject } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {MatDialog, MAT_DIALOG_DATA as MAT_DIALOG_DATA, MatDialogRef as MatDialogRef} from '@angular/material/dialog';

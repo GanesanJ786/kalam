@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
@@ -42,7 +50,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .rf-container {
   width: 100%;
   margin: auto;
-  background-color: #f1f1f1;
+  background: linear-gradient(180deg, #0D0D0D 0%, #121212 100%);
   min-height: 100vh;
   height: 100%;
   box-sizing: border-box;
@@ -257,6 +265,7 @@ button.btn-grnd:disabled {
     display: flex;
     flex-direction: column;
     background: #0D0D0D;
+    padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
   }
 
   .mat-mdc-tab-body {
@@ -276,10 +285,19 @@ button.btn-grnd:disabled {
   .mat-mdc-tab-header {
     border-bottom: none;
     background: linear-gradient(180deg, #0D0D0D 0%, #1A1A1A 100%);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.55);
+    position: fixed;
+    left: 0;
+    right: 0;
+    width: 100%;
+    transform: none;
+    bottom: 0;
+    z-index: 120;
+    border: none;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   // Tab label container
@@ -298,7 +316,7 @@ button.btn-grnd:disabled {
     min-width: 0 !important;
     opacity: 1 !important;
     padding: 0 !important;
-    height: 52px;
+    height: 72px;
     transition: background 0.3s ease;
 
     .mdc-tab__content {
@@ -308,9 +326,9 @@ button.btn-grnd:disabled {
     // Inactive icon color
     .mat-icon {
       color: rgba(255, 255, 255, 0.4);
-      font-size: 26px;
-      width: 26px;
-      height: 26px;
+      font-size: 23px;
+      width: 23px;
+      height: 23px;
       transition: color 0.3s ease, transform 0.3s ease, filter 0.3s ease;
     }
 
@@ -339,19 +357,17 @@ button.btn-grnd:disabled {
       transform: scale(1.15);
       filter: drop-shadow(0 0 8px rgba(255, 87, 34, 0.5));
     }
+
+    .k-bottom-tab-text {
+      color: #FF5722;
+    }
   }
 
-  // Active ink bar indicator
+  // Hide default Material tab underline to avoid double active border.
   .mat-mdc-tab-header .mdc-tab-indicator__content--underline,
   .mdc-tab-indicator__content--underline {
-    border-color: #FF5722 !important;
-    border-width: 3px !important;
-    border-radius: 3px 3px 0 0;
-  }
-
-  // Active indicator
-  .mdc-tab-indicator--active .mdc-tab-indicator__content--underline {
-    border-color: #FF5722 !important;
+    opacity: 0 !important;
+    border-color: transparent !important;
   }
 
   // Override default text color on focus
@@ -363,6 +379,51 @@ button.btn-grnd:disabled {
   // Focus indicator override
   .mat-mdc-tab .mat-mdc-focus-indicator::before {
     border-color: rgba(255, 87, 34, 0.3);
+  }
+}
+
+.k-bottom-tab-label {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+}
+
+.k-bottom-tab-text {
+  font-size: 0.72rem;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: none;
+  transition: color 0.3s ease;
+}
+
+@media (max-width: 600px) {
+  .tab-menu-cust {
+    .mat-mdc-tab-body-wrapper {
+      padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .mat-mdc-tab-header {
+      width: 100%;
+      bottom: 0;
+    }
+
+    .mat-mdc-tab {
+      height: 68px;
+
+      .mat-icon {
+        font-size: 21px;
+        width: 21px;
+        height: 21px;
+      }
+    }
+  }
+
+  .k-bottom-tab-text {
+    font-size: 0.68rem;
   }
 }
 

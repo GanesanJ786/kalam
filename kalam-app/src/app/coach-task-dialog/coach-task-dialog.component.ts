@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 

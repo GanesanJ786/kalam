@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 // ============================================
 // KALAM MY PROFILE - Black & Orange Sports Theme
 // ============================================
@@ -193,6 +201,81 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 // ============================================
+// ACADEMY JOIN CODE STRIP
+// ============================================
+.join-code-section {
+  background: $black-1;
+  border-top: 1px solid $black-3;
+  padding: 0.5rem 1rem 0.7rem;
+}
+
+.join-code-container {
+  max-width: 960px;
+  margin: 0 auto;
+  background: linear-gradient(145deg, $black-3, $black-4);
+  border: 1px solid rgba(255, 87, 34, 0.35);
+  border-radius: 10px;
+  padding: 0.55rem 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.join-code-meta {
+  min-width: 0;
+}
+
+.join-code-label {
+  color: $grey-light;
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.45px;
+  text-transform: uppercase;
+}
+
+.join-code-value {
+  color: $white;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  margin-top: 0.15rem;
+}
+
+.join-code-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  border: 1px solid $orange;
+  background: rgba(255, 87, 34, 0.08);
+  color: $orange;
+  border-radius: 8px;
+  padding: 0.35rem 0.6rem;
+  min-height: 34px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all $fast;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    color: $orange-light;
+    border-color: $orange-light;
+    background: rgba(255, 87, 34, 0.16);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+// ============================================
 // NOTIFICATION ALERTS
 // ============================================
 .alerts-section {
@@ -298,6 +381,38 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:active {
     transform: scale(0.95);
+  }
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  border: none;
+  border-radius: 10px;
+  padding: 0.55rem 1rem;
+  min-height: 44px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all $med;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:focus-visible {
+    outline: 2px solid rgba(255, 87, 34, 0.55);
+    outline-offset: 2px;
+  }
+
+  &:active {
+    transform: scale(0.97);
   }
 }
 
@@ -706,6 +821,17 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.85rem;
     margin: 0 0 1rem;
     font-weight: 500;
+  }
+
+  .action-btn {
+    margin-top: 0.35rem;
+    min-width: 280px;
+    box-shadow: 0 6px 18px rgba(255, 87, 34, 0.28);
+
+    &:hover {
+      box-shadow: 0 8px 24px rgba(255, 87, 34, 0.4);
+      transform: translateY(-2px);
+    }
   }
 }
 

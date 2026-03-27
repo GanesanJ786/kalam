@@ -1,3 +1,11 @@
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
 <ng-container [ngSwitch]="data.dialogType">
     <ng-container *ngSwitchCase="'Ground'">
         <h1 mat-dialog-title>
@@ -6,11 +14,11 @@
         </h1>
         <form [formGroup]="addGround" #form="ngForm">
             <div mat-dialog-content class="dialog-form-content">
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" floatLabel="always">
                   <mat-label>Ground name</mat-label>
                   <input matInput formControlName="groundName" placeholder="Enter ground name">
               </mat-form-field>
-              <mat-form-field appearance="fill">
+              <mat-form-field appearance="fill" floatLabel="always">
                   <mat-label>Address</mat-label>
                   <textarea matInput formControlName="groundAddress" rows="3" placeholder="Enter ground address"></textarea>
               </mat-form-field>
@@ -120,7 +128,7 @@
                 </mat-form-field>
                 <mat-form-field appearance="fill">
                     <mat-label>Reason</mat-label>
-                    <textarea matInput formControlName="reasonOfLeave" rows="3" placeholder="Reason for leave..."></textarea>
+                    <textarea matInput formControlName="reasonOfLeave" rows="3"></textarea>
                 </mat-form-field>
             </div>
             <div mat-dialog-actions>

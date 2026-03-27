@@ -1,5 +1,16 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { DEFAULT_INTERRUPTSOURCES, Idle } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { KalamService } from './kalam.service';
@@ -33,7 +44,7 @@ export class AppComponent {
     return this.kalamService.getCoachData()?.kalamId == "123456789123"
   }
 
-  constructor(private idle: Idle, public ete: ExportToExcelService, private keepalive: Keepalive, private router: Router, private kalamService: KalamService) {
+  constructor(private idle: Idle, public ete: ExportToExcelService, private keepalive: Keepalive, private kalamService: KalamService) {
     // sets an idle timeout of 30 seconds, for testing purposes.
     idle.setIdle(7200);
     // sets a timeout period of 5 seconds. after 10 seconds of inactivity, the user will be considered timed out.
@@ -42,12 +53,11 @@ export class AppComponent {
     idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
 
     idle.onIdleEnd.subscribe(() => this.idleState = 'No longer idle.');
-    idle.onTimeout.subscribe(() => {
+    idle.onTimeout.subscribe(async () => {
       this.idleState = 'Timed out!';
       this.timedOut = true;
-      this.router.navigate([`/login`]);
-      sessionStorage.removeItem("coachDetails");
-      this.kalamService.resetAll();
+      await this.kalamService.logoutAndClearSession();
+      window.location.replace('/login');
     });
     idle.onIdleStart.subscribe(() => this.idleState = 'You\'ve gone idle!');
     idle.onTimeoutWarning.subscribe((countdown) => this.idleState = 'You will time out in ' + countdown + ' seconds!');

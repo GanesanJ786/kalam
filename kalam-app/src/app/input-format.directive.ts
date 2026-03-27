@@ -1,16 +1,28 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Directive, ElementRef, forwardRef, HostListener, Input, Renderer2 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Directive({
-    selector: '[appAadharNumber]',
+    selector: '[appInputFormat]',
     providers: [{
             provide: NG_VALUE_ACCESSOR,
-            useExisting: forwardRef(() => AadharNumberDirective),
+            useExisting: forwardRef(() => InputFormatDirective),
             multi: true
         }],
     standalone: false
 })
-export class AadharNumberDirective implements ControlValueAccessor {
+export class InputFormatDirective implements ControlValueAccessor {
 
   
    @Input('numbericOnly') numberOnly:boolean = false;
@@ -26,15 +38,16 @@ export class AadharNumberDirective implements ControlValueAccessor {
     ) {
     }
 
-    @HostListener('input', ['$event.target.value'])
-    onInputChange(value: string) {
+    @HostListener('input', ['$event'])
+    onInputChange(event: Event) {
+      const value = (event.target as HTMLInputElement).value;
       let filteredValue: string = "";
       if(this.numberOnly) {
         filteredValue = numberOnlyFormat(value);
       }else if(this.alphaOnly) {
         filteredValue = alphabetOnlyFormat(value);
       }else {
-        filteredValue = aadharFormat(value);
+        filteredValue = value;
       }
        
       this.updateTextInput(filteredValue, this.value !== filteredValue);
@@ -70,11 +83,6 @@ export class AadharNumberDirective implements ControlValueAccessor {
         value = value ? String(value) : '';
         this.updateTextInput(value, false);
     }
-}
-
-function aadharFormat(value: string): string {
-    return value.replace(/\D/g, "").split(/(?:([\d]{4}))/g).filter(s => s.length > 0).join("-")
-    
 }
 
 function numberOnlyFormat(value: string): string {

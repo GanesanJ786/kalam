@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 // ============================================
 // STUDENT FORM - Black & Orange Sports Theme
 // Professional, Responsive, Hybrid Design
@@ -426,7 +434,7 @@ $font-lg: 1.125rem;   // 18px
     .mat-mdc-input-element,
     input.mat-mdc-input-element,
     textarea.mat-mdc-input-element {
-      color: $white !important;
+      //color: $white !important;
       caret-color: $orange;
       font-size: $font-base;
       line-height: 1.4;
@@ -463,7 +471,6 @@ $font-lg: 1.125rem;   // 18px
 
   // --- Select ---
   .mat-mdc-select {
-    color: $white !important;
     font-size: $font-base;
 
     .mat-mdc-select-trigger {

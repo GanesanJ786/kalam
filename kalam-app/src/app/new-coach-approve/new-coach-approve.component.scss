@@ -1,7 +1,295 @@
-.custGrid-5 {
-  grid-template: auto/15% 20% 20% 20% 25%;
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+$orange: #ff5722;
+$orange-dark: #e64a19;
+$orange-light: #ff8a65;
+$orange-glow: rgba(255, 87, 34, 0.25);
+$black-1: #0d0d0d;
+$black-2: #121212;
+$black-3: #1a1a1a;
+$black-4: #222222;
+$grey-dark: #333333;
+$grey-light: #a0a0a0;
+$white: #ffffff;
+$green: #00c853;
+$green-dark: #009624;
+$red: #ff1744;
+$red-dark: #d50000;
+
+:host {
+  display: block;
+  min-height: 100vh;
+  background: $black-2;
 }
-.rowBg {
-  background-color: #1c5636 ;
-  color: #ffffff;
+
+.nca-page {
+  min-height: 100vh;
+  background: $black-2;
+}
+
+.nca-shell {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.nca-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.9rem;
+}
+
+.nca-home-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  border: 1px solid $orange;
+  border-radius: 8px;
+  background: rgba(255, 87, 34, 0.08);
+  color: $orange;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  mat-icon {
+    font-size: 17px;
+    width: 17px;
+    height: 17px;
+  }
+
+  &:hover {
+    border-color: $orange-light;
+    color: $orange-light;
+    background: rgba(255, 87, 34, 0.16);
+  }
+}
+
+.nca-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: $white;
+  background: linear-gradient(135deg, $orange, $orange-dark);
+  box-shadow: 0 2px 8px $orange-glow;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.nca-table {
+  display: block;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid $grey-dark;
+  background: linear-gradient(145deg, $black-3, $black-4);
+}
+
+.nca-table-head,
+.nca-row {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr 1.4fr 1.1fr 1.1fr;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  align-items: center;
+}
+
+.nca-table-head {
+  background: rgba(255, 87, 34, 0.1);
+  color: $orange-light;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.nca-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.03);
+  }
+}
+
+.nca-cell {
+  color: $white;
+  font-size: 0.82rem;
+  word-break: break-word;
+}
+
+.nca-name {
+  font-weight: 700;
+}
+
+.nca-actions {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.nca-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  border: none;
+  border-radius: 7px;
+  padding: 0.4rem 0.6rem;
+  color: $white;
+  font-size: 0.72rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.nca-approve {
+  background: linear-gradient(135deg, $green, $green-dark);
+
+  &:hover {
+    box-shadow: 0 3px 14px rgba(0, 200, 83, 0.35);
+  }
+}
+
+.nca-reject {
+  background: linear-gradient(135deg, $red, $red-dark);
+
+  &:hover {
+    box-shadow: 0 3px 14px rgba(255, 23, 68, 0.35);
+  }
+}
+
+.nca-cards {
+  display: none;
+}
+
+.nca-empty {
+  border: 1px solid $grey-dark;
+  border-radius: 12px;
+  background: linear-gradient(145deg, $black-3, $black-4);
+  padding: 2.2rem 1rem;
+  text-align: center;
+  color: $white;
+
+  h3 {
+    margin: 0.8rem 0 0.35rem;
+    font-size: 1.05rem;
+    color: $orange-light;
+  }
+
+  p {
+    margin: 0 0 1rem;
+    color: $grey-light;
+    font-size: 0.84rem;
+  }
+}
+
+.nca-empty-icon {
+  font-size: 52px;
+  width: 52px;
+  height: 52px;
+  color: $orange;
+}
+
+@media (max-width: 900px) {
+  .nca-table {
+    display: none;
+  }
+
+  .nca-cards {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .nca-card {
+    border: 1px solid $grey-dark;
+    border-radius: 12px;
+    background: linear-gradient(145deg, $black-3, $black-4);
+    padding: 0.8rem;
+  }
+
+  .nca-card-title {
+    color: $white;
+    font-size: 0.92rem;
+    font-weight: 800;
+    margin-bottom: 0.65rem;
+  }
+
+  .nca-card-line {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: $grey-light;
+    font-size: 0.78rem;
+    margin-bottom: 0.4rem;
+
+    mat-icon {
+      color: $orange;
+      font-size: 15px;
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+  }
+
+  .nca-card-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.45rem;
+    margin-top: 0.55rem;
+  }
+
+  .nca-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .nca-shell {
+    padding: 0.8rem;
+  }
+
+  .nca-topbar {
+    margin-bottom: 0.75rem;
+  }
+
+  .nca-home-btn {
+    padding: 0.42rem 0.62rem;
+    font-size: 0.75rem;
+  }
+
+  .nca-badge {
+    font-size: 0.68rem;
+    padding: 0.35rem 0.55rem;
+  }
+
+  .nca-card-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }

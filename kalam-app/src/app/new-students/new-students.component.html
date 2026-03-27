@@ -1,28 +1,89 @@
-<div class="sf-container">
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<div class="nsa-page">
     <app-header [title]="title"></app-header>
-    <div class="sf-content">
-        <div class="gotoHome">
-            <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
+
+    <section class="nsa-shell">
+        <div class="nsa-topbar">
+            <button class="nsa-home-btn" type="button" (click)="gotoHome()">
+                <mat-icon>arrow_back</mat-icon>
+                <span>Home</span>
+            </button>
+            <div class="nsa-badge" *ngIf="students?.length > 0">
+                <mat-icon>pending_actions</mat-icon>
+                <span>{{students.length}} pending</span>
+            </div>
         </div>
-        <div *ngIf="students?.length > 0">
-            <div class="grid-container custGrid-5">
-                <div class="header">Name</div>
-                <div class="header">Mobile</div>
-                <div class="header">Address</div>
-                <div class="header">Coach</div>  
-                <div class="header">Action</div>
-                <ng-container *ngFor="let student of students">
-                    <div class="rowBg">{{student.name}}</div>
-                    <div class="rowBg">{{student.whatsappNum}}</div>
-                    <div class="rowBg">{{student.address}}</div>
-                    <div class="rowBg">{{student.coachName}}</div>
-                    <div class="rowBg"> 
-                        <button class="btn-grnd" style="margin-bottom: 1em;margin-left: 0;" (click)="approve(student)">Approve</button>
-                        <button class="btn-grnd btn-red" style="margin-left: 0;" (click)="reject(student)">Reject</button> 
-                    </div>
-                </ng-container>
+
+        <div class="nsa-table" *ngIf="students?.length > 0">
+            <div class="nsa-table-head">
+                <div>Name</div>
+                <div>Mobile</div>
+                <div>Address</div>
+                <div>Coach</div>
+                <div>Action</div>
+            </div>
+
+            <div class="nsa-row" *ngFor="let student of students">
+                <div class="nsa-cell nsa-name">{{student.name}}</div>
+                <div class="nsa-cell">{{student.whatsappNum}}</div>
+                <div class="nsa-cell">{{student.address || '-'}}</div>
+                <div class="nsa-cell">{{student.coachName || '-'}}</div>
+                <div class="nsa-cell nsa-actions">
+                    <button class="nsa-btn nsa-approve" type="button" (click)="approve(student)">
+                        <mat-icon>check_circle</mat-icon>
+                        <span>Approve</span>
+                    </button>
+                    <button class="nsa-btn nsa-reject" type="button" (click)="reject(student)">
+                        <mat-icon>cancel</mat-icon>
+                        <span>Reject</span>
+                    </button>
                 </div>
+            </div>
         </div>
-       
-    </div>
+
+        <div class="nsa-cards" *ngIf="students?.length > 0">
+            <div class="nsa-card" *ngFor="let student of students">
+                <div class="nsa-card-title">{{student.name}}</div>
+                <div class="nsa-card-line">
+                    <mat-icon>call</mat-icon>
+                    <span>{{student.whatsappNum}}</span>
+                </div>
+                <div class="nsa-card-line">
+                    <mat-icon>home</mat-icon>
+                    <span>{{student.address || '-'}}</span>
+                </div>
+                <div class="nsa-card-line">
+                    <mat-icon>groups</mat-icon>
+                    <span>{{student.coachName || '-'}}</span>
+                </div>
+                <div class="nsa-card-actions">
+                    <button class="nsa-btn nsa-approve" type="button" (click)="approve(student)">
+                        <mat-icon>check_circle</mat-icon>
+                        <span>Approve</span>
+                    </button>
+                    <button class="nsa-btn nsa-reject" type="button" (click)="reject(student)">
+                        <mat-icon>cancel</mat-icon>
+                        <span>Reject</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nsa-empty" *ngIf="!students?.length">
+            <mat-icon class="nsa-empty-icon">verified</mat-icon>
+            <h3>All Caught Up</h3>
+            <p>No students are pending approval right now.</p>
+            <button class="nsa-home-btn" type="button" (click)="gotoHome()">
+                <mat-icon>home</mat-icon>
+                <span>Go Home</span>
+            </button>
+        </div>
+    </section>
 </div>

@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Component, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
@@ -18,7 +30,6 @@ export interface StudentDetails {
   dob: any;
   age: number;
   gender: string;
-  aadharNum: string;
   fatherName: string;
   motherName: string;
   fatherOcc: string;
@@ -146,7 +157,6 @@ export class StudentFormComponent implements OnInit {
       dob: new UntypedFormControl(this.studentDetails.dob, [Validators.required]),
       age: new UntypedFormControl(this.studentDetails.age,[Validators.required]),
       gender: new UntypedFormControl(this.studentDetails.gender, [Validators.required]),
-      aadharNum: new UntypedFormControl(this.studentDetails.aadharNum,[Validators.required]),
       fatherName: new UntypedFormControl(this.studentDetails.fatherName, [Validators.required]),
       motherName: new UntypedFormControl(this.studentDetails.motherName,[Validators.required]),
       fatherOcc: new UntypedFormControl(this.studentDetails.fatherOcc, [Validators.required]),
@@ -180,10 +190,10 @@ export class StudentFormComponent implements OnInit {
 
   btnValidation() {
     this.studentForm.valueChanges.subscribe((val:StudentDetails) => {
-      if(this.form1 && val.name && val.dob && val.aadharNum && val.age && val.gender 
+      if(this.form1 && val.name && val.dob && val.age && val.gender 
         && val.fatherName && val.fatherOcc && val.motherName && val.motherOcc
         && val.mobileNum && val.whatsappNum) {
-          if(!this.studentForm.controls['name']['errors'] && !this.studentForm.controls['dob']['errors'] && !this.studentForm.controls['aadharNum']['errors'] && !this.studentForm.controls['age']['errors'] && !this.studentForm.controls['emailId']['errors'] && !this.studentForm.controls['gender']['errors'] 
+          if(!this.studentForm.controls['name']['errors'] && !this.studentForm.controls['dob']['errors'] && !this.studentForm.controls['age']['errors'] && !this.studentForm.controls['emailId']['errors'] && !this.studentForm.controls['gender']['errors'] 
             && !this.studentForm.controls['fatherName']['errors'] && !this.studentForm.controls['fatherOcc']['errors'] && !this.studentForm.controls['motherName']['errors'] && !this.studentForm.controls['motherOcc']['errors']
             && !this.studentForm.controls['mobileNum']['errors'] && !this.studentForm.controls['whatsappNum']['errors']) {
               this.form1Validation = false;
@@ -215,7 +225,7 @@ export class StudentFormComponent implements OnInit {
     let studentForm: StudentDetails = {...this.studentForm.value};
     let obj = {...this.studentForm.value};
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    studentForm.kalamId = obj.aadharNum.replaceAll("-",'');
+    studentForm.kalamId = String(Date.now()).slice(-7);
     studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
     studentForm.underAge = this.underAgeCalc(studentForm.dob);
     if(url) {
@@ -251,7 +261,7 @@ export class StudentFormComponent implements OnInit {
   onSubmit() {
     this.loaderService.show();
     if(this.selectedImage) {
-      var filePath = `student/${this.studentForm.value.name}_${this.studentForm.value.aadharNum}_${new Date().getTime()}`;
+      var filePath = `student/${this.studentForm.value.name}_${this.studentForm.value.emailId}_${new Date().getTime()}`;
       const fileRef = this.storage.ref(filePath);
       this.storage.upload(filePath,this.selectedImage).snapshotChanges().pipe(
         finalize(() => {

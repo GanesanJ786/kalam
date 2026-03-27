@@ -1,3 +1,11 @@
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
 <ng-container>
     <ng-container>
         <div mat-dialog-content class="dialog-fullscreen-content">
@@ -10,11 +18,11 @@
                     <img class="dummy-img" src="../../assets/logo/profileImg.png" alt="profile image" />
                 </div>
                 <div class="s-name">{{student.name}}</div>
-                <div class="s-ground s-competency" *ngIf="student?.competency">
+                <div class="s-ground s-competency" *ngIf="student.competency">
                     {{student.competency}}</div>
                 <div class="s-ground">{{student.groundName}}
                     <span>({{student.underAge}})</span>
-                    <span *ngIf="student?.scholarship && student?.scholarship !== '0'"> Scholarship
+                    <span *ngIf="student.scholarship && student.scholarship !== '0'"> Scholarship
                         ({{student.scholarship}})</span>
                 </div>
             </div>
@@ -22,12 +30,10 @@
                 <div class="s-bacis">
                     <div class="s-cb s-cb-label">
                         <div>POSITION</div>
-                        <div>AADHAR</div>
                         <div>DOB</div>
                     </div>
                     <div class="s-cb">
                         <div>{{getSportLabel(student.playingPostion)}}</div>
-                        <div>{{student.aadharNum}}</div>
                         <div>{{student.dob}}</div>
                     </div>
                 </div>

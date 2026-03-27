@@ -1,3 +1,11 @@
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
 
 
   <div class="rf-container">
@@ -7,7 +15,10 @@
                 <mat-tab-group [selectedIndex]="tabIndex" (selectedTabChange)="tabChanged($event)">
                     <mat-tab>
                        <ng-template mat-tab-label>
-                        <mat-icon class="example-tab-icon">home</mat-icon>
+                        <span class="k-bottom-tab-label">
+                          <mat-icon class="example-tab-icon">home</mat-icon>
+                          <span class="k-bottom-tab-text">Home</span>
+                        </span>
                       </ng-template>
                       <ng-template matTabContent>
                         <!-- Content 1 - Loaded: {{getTimeLoaded(1) | date:'medium'}} -->
@@ -16,7 +27,10 @@
                     </mat-tab>
                     <mat-tab>
                       <ng-template mat-tab-label>
-                        <mat-icon>people</mat-icon>
+                        <span class="k-bottom-tab-label">
+                          <mat-icon>people</mat-icon>
+                          <span class="k-bottom-tab-text">Teams</span>
+                        </span>
                       </ng-template>
                       
                       <ng-template matTabContent>
@@ -26,7 +40,10 @@
                     </mat-tab>
                     <mat-tab *ngIf="owner">
                       <ng-template mat-tab-label>
-                        <mat-icon>card_membership</mat-icon>
+                        <span class="k-bottom-tab-label">
+                          <mat-icon>card_membership</mat-icon>
+                          <span class="k-bottom-tab-text">Scholarship</span>
+                        </span>
                       </ng-template>
                       <ng-template matTabContent>
                         <app-studentscholarship></app-studentscholarship>
@@ -34,7 +51,10 @@
                     </mat-tab>
                     <mat-tab>
                       <ng-template mat-tab-label>
-                         <mat-icon> bar_chart</mat-icon>
+                        <span class="k-bottom-tab-label">
+                          <mat-icon>bar_chart</mat-icon>
+                          <span class="k-bottom-tab-text">Analysis</span>
+                        </span>
                       </ng-template>
                      
                       <ng-template matTabContent>

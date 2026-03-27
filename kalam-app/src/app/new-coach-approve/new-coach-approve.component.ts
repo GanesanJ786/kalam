@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KalamService } from '../kalam.service';
@@ -11,7 +23,7 @@ import { KalamService } from '../kalam.service';
 export class NewCoachApproveComponent implements OnInit {
 
   coaches: any = [];
-  title: string = "New coaches yet to be approved";
+  title: string = "Coach Approval Queue";
 
   constructor(private router: Router,private kalamService: KalamService) {
     
@@ -42,9 +54,6 @@ export class NewCoachApproveComponent implements OnInit {
 
   getCoachData() {
     this.coaches = this.kalamService.getNewCoachesList();
-    if(this.coaches.length == 0) {
-      this.gotoHome();
-    }
   }
 
 }

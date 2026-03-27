@@ -9,7 +9,6 @@
 <div class="login-page">
   <div class="login-container">
 
-    <!-- Left Panel - Branding -->
     <div class="login-left">
       <div class="left-glow"></div>
       <div class="branding-content">
@@ -34,33 +33,31 @@
       </div>
     </div>
 
-    <!-- Right Panel - Login Form -->
     <div class="login-right">
       <div class="login-card">
-
-        <!-- Mobile Logo (visible only on small screens) -->
         <div class="mobile-logo">
           <div class="logo-header-mobile"></div>
         </div>
 
         <div class="login-header">
-          <h1 class="login-title">Welcome Back</h1>
-          <p class="login-subtitle">Sign in to your account to continue</p>
+          <h1 class="login-title">{{ forgotMode ? 'Reset Password' : 'Welcome Back' }}</h1>
+          <p class="login-subtitle" *ngIf="!forgotMode">Sign in to your account to continue</p>
+          <p class="login-subtitle" *ngIf="forgotMode">We will send a password reset link to your Gmail</p>
         </div>
 
-        <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+        <form *ngIf="!forgotMode" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label class="form-label">Email Address</label>
             <div class="input-wrapper">
               <mat-icon class="input-icon">email</mat-icon>
-              <input class="form-input" formControlName="username" type="email" placeholder="your@email.com" />
+              <input class="form-input" formControlName="email" type="email" placeholder="your@email.com" />
             </div>
             <span class="error-message"
-              *ngIf="signInForm.get('username')?.touched && signInForm.get('username')?.hasError('required')">
+              *ngIf="signInForm.get('email')?.touched && signInForm.get('email')?.hasError('required')">
               Email is required
             </span>
             <span class="error-message"
-              *ngIf="signInForm.get('username')?.touched && signInForm.get('username')?.hasError('pattern') && !signInForm.get('username')?.hasError('required')">
+              *ngIf="signInForm.get('email')?.touched && signInForm.get('email')?.hasError('pattern') && !signInForm.get('email')?.hasError('required')">
               Enter a valid email address
             </span>
           </div>
@@ -68,12 +65,11 @@
           <div class="form-group">
             <div class="password-header">
               <label class="form-label">Password</label>
-              <a class="forgot-link" href="javascript:void(0)">Forgot?</a>
+              <a class="forgot-link" href="javascript:void(0)" (click)="toggleForgot()">Forgot?</a>
             </div>
             <div class="input-wrapper">
               <mat-icon class="input-icon">lock</mat-icon>
-              <input class="form-input" formControlName="password" type="password"
-                placeholder="Enter your password" />
+              <input class="form-input" formControlName="password" type="password" placeholder="Enter your password" />
             </div>
             <span class="error-message"
               *ngIf="signInForm.get('password')?.touched && signInForm.get('password')?.hasError('required')">
@@ -87,16 +83,47 @@
           </button>
         </form>
 
-        <p class="divider-text">Don't have an account?</p>
+        <form *ngIf="forgotMode" [formGroup]="resetForm" (ngSubmit)="sendResetLink()">
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <div class="input-wrapper">
+              <mat-icon class="input-icon">email</mat-icon>
+              <input class="form-input" formControlName="resetEmail" type="email" placeholder="your@email.com" />
+            </div>
+            <span class="error-message"
+              *ngIf="resetForm.get('resetEmail')?.touched && resetForm.get('resetEmail')?.hasError('required')">
+              Email is required
+            </span>
+            <span class="error-message"
+              *ngIf="resetForm.get('resetEmail')?.touched && resetForm.get('resetEmail')?.hasError('pattern') && !resetForm.get('resetEmail')?.hasError('required')">
+              Enter a valid email address
+            </span>
+          </div>
 
-        <button class="create-btn" (click)="signUp()">
-          <mat-icon class="btn-icon">group_add</mat-icon>
-          <span>Create New Account</span>
-        </button>
+          <button class="signin-btn" type="submit">
+            <mat-icon class="btn-icon">mail</mat-icon>
+            <span>Send Reset Link</span>
+          </button>
+
+          <p class="divider-text">Remembered your password?</p>
+          <button class="create-btn" type="button" (click)="toggleForgot()">
+            <mat-icon class="btn-icon">arrow_back</mat-icon>
+            <span>Back To Login</span>
+          </button>
+        </form>
+
+        <ng-container *ngIf="!forgotMode">
+          <p class="divider-text">Don't have an account?</p>
+
+          <button class="create-btn" (click)="signUp()">
+            <mat-icon class="btn-icon">group_add</mat-icon>
+            <span>Create New Account</span>
+          </button>
+        </ng-container>
 
         <div class="footer-links">
           <a href="javascript:void(0)">Privacy Policy</a>
-          <span class="dot">·</span>
+          <span class="dot">.</span>
           <a href="javascript:void(0)">Terms of Service</a>
         </div>
       </div>

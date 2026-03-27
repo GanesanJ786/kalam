@@ -1,3 +1,11 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 // ============================================
 // SIGN UP / EDIT PROFILE - Black & Orange Sports Theme
 // Professional, Responsive, Hybrid App Design
@@ -434,6 +442,32 @@ $font-xl: 1.25rem;
   display: flex;
   gap: 0.75rem;
   padding: 0.75rem 0 1.25rem;
+}
+
+.su-join-code-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 0.35rem;
+}
+
+.su-join-copy-btn {
+  background: rgba($orange, 0.12);
+  border: 1px solid rgba($orange, 0.55);
+  color: $orange-light;
+  min-height: 40px;
+  padding: 0.55rem 1rem;
+  font-size: $font-xs;
+
+  &:hover {
+    background: rgba($orange, 0.2);
+    border-color: $orange;
+    color: $white;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
 .su-btn {

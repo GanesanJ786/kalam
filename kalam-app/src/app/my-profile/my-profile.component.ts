@@ -1,5 +1,18 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { KalamService } from 'src/app/kalam.service';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
@@ -8,6 +21,7 @@ import * as moment from 'moment';
 import { StudentDetails } from '../student-form/student-form.component';
 import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-students-by-ground.component';
 import { TaskService } from '../task.service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
     selector: 'app-my-profile',
@@ -26,15 +40,23 @@ export class MyProfileComponent implements OnInit {
   paidStudentList: any = [];
   academyName: string = "";
   logo: string = "";
+  academyJoinCode: string = "";
   addressData: any;
   allStudents: StudentDetails[] = [];
   inCoachId: string = "";
   pendingTaskCount: number = 0;
 
-  constructor(private router: Router, private kalamService: KalamService, public dialog: MatDialog, private taskService: TaskService) {
+  constructor(
+    private router: Router,
+    private kalamService: KalamService,
+    public dialog: MatDialog,
+    private taskService: TaskService,
+    private snackBar: MatSnackBar
+  ) {
     this.groundList = [];
     this.academyName = this.kalamService.getCoachData().academyName;
     this.logo = this.kalamService.getCoachData().logoUrl;
+    this.academyJoinCode = this.kalamService.getCoachData().academyJoinCode || '';
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
     this.inCoachId = this.kalamService.getCoachData().kalamId;
@@ -134,6 +156,8 @@ export class MyProfileComponent implements OnInit {
 
     //this.getLocation();
     this.coachDetails = this.kalamService.getCoachData();
+    this.academyJoinCode = this.coachDetails?.academyJoinCode || '';
+    this.ensureAcademyJoinCodeForOwner();
     this.loadPendingTaskCount();
     if(this.owner) {
       const query = {
@@ -208,6 +232,60 @@ export class MyProfileComponent implements OnInit {
           ...document.payload.doc.data() as {}
         }));
         this.pendingTaskCount = tasks.filter((t: any) => t.status === 'Pending').length;
+      });
+    }
+  }
+
+  private async ensureAcademyJoinCodeForOwner(): Promise<void> {
+    if (!this.owner || this.academyJoinCode) {
+      return;
+    }
+
+    if (!this.coachDetails?.id) {
+      return;
+    }
+
+    const generatedCode = await this.generateUniqueAcademyJoinCode(this.coachDetails.academyName);
+    this.coachDetails.academyJoinCode = generatedCode;
+    this.academyJoinCode = generatedCode;
+    this.kalamService.editCoachDetails(this.coachDetails);
+    this.kalamService.cacheCoachData(this.coachDetails);
+  }
+
+  private async generateUniqueAcademyJoinCode(academyName: string): Promise<string> {
+    const prefix = (academyName || 'KALAM')
+      .toUpperCase()
+      .replace(/[^A-Z0-9]/g, '')
+      .slice(0, 4)
+      .padEnd(4, 'X');
+
+    while (true) {
+      const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+      const code = `${prefix}-${randomPart}`;
+      const res: any = await firstValueFrom(this.kalamService.getAcademyByJoiningCode(code));
+      if (!res.length) {
+        return code;
+      }
+    }
+  }
+
+  async copyJoinCode(): Promise<void> {
+    if (!this.academyJoinCode) {
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(this.academyJoinCode);
+      this.snackBar.open('Academy joining code copied.', '', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: 2500,
+      });
+    } catch {
+      this.snackBar.open(`Join code: ${this.academyJoinCode}`, '', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        duration: 4000,
       });
     }
   }

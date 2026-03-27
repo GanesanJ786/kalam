@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -72,7 +84,7 @@ export class LoginComponent implements OnInit {
       });
       if(data.length > 0) {
         if(data[0].approved) {
-          sessionStorage.setItem('coachDetails', JSON.stringify(data[0]));
+          this.kalamService.cacheCoachData(data[0]);
           // let coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
           // this.kalamService.getAllStudents(coachId).subscribe((res: any) => {
           //   let data = res.map((document: any) => {

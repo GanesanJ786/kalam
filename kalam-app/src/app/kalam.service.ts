@@ -1,7 +1,22 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { firstValueFrom } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { StudentData, UserLogin } from './login/login.component';
 import { RegistrationDetails } from './sign-up/sign-up.component';
 import { StudentDetails } from './student-form/student-form.component'; 
@@ -13,7 +28,14 @@ import { environment } from 'src/environments/environment';
 })
 export class KalamService {
 
-  constructor(private fireStore: AngularFirestore, private http: HttpClient) { }
+  private readonly coachStorageKey = 'coachDetails';
+  private readonly logoutInProgressKey = 'kalamLogoutInProgress';
+
+  constructor(
+    private fireStore: AngularFirestore,
+    private http: HttpClient,
+    private fireAuth: AngularFireAuth
+  ) { }
 
   getCoachInfo: RegistrationDetails = {} as RegistrationDetails;
   //apiUrl: string = "https://kalam-nodemailer.onrender.com"
@@ -72,7 +94,7 @@ export class KalamService {
   }
 
   editCoachDetails(item: RegistrationDetails) {
-    this.fireStore.doc("coachDetails/"+item.id).update(item);
+    return this.fireStore.doc("coachDetails/"+item.id).update(item);
   }
 
   deleteStudentDetails(item: StudentDetails) {
@@ -80,21 +102,131 @@ export class KalamService {
   }
 
   setCoachProfile(profile: RegistrationDetails) {
-    this.fireStore.collection("coachDetails").add({...profile});
+    return this.fireStore.collection("coachDetails").add({...profile});
   }
 
   loginDetails(query:UserLogin) {
     return this.fireStore.collection('coachDetails', ref => ref.where('emailId', '==', `${query.username}`).where("password", "==", `${query.password}`)).snapshotChanges();
   }
 
-  getCoachData() {
-    let coachDetails: any = sessionStorage.getItem("coachDetails");
-    if (coachDetails) {
-        let coachProfile = JSON.parse(coachDetails)
-        return coachProfile;
-    }else {
+  getCoachByEmail(email: string) {
+    return this.fireStore.collection('coachDetails', ref => ref.where('emailId', '==', `${email}`)).snapshotChanges();
+  }
+
+  loginWithFirebase(email: string, password: string) {
+    return this.fireAuth.signInWithEmailAndPassword(email, password);
+  }
+
+  createFirebaseAccount(email: string, password: string) {
+    return this.fireAuth.createUserWithEmailAndPassword(email, password);
+  }
+
+  async sendEmailVerification() {
+    const currentUser = await this.fireAuth.currentUser;
+    if (!currentUser) {
+      throw new Error('No authenticated user found for email verification.');
+    }
+    return currentUser.sendEmailVerification();
+  }
+
+  getCurrentFirebaseUser() {
+    return this.fireAuth.currentUser;
+  }
+
+  async reloadCurrentFirebaseUser() {
+    const currentUser = await this.fireAuth.currentUser;
+    if (!currentUser) {
       return null;
     }
+    await currentUser.reload();
+    return this.fireAuth.currentUser;
+  }
+
+  sendPasswordReset(email: string) {
+    return this.fireAuth.sendPasswordResetEmail(email);
+  }
+
+  logoutFromFirebase() {
+    return this.fireAuth.signOut();
+  }
+
+  markLogoutInProgress() {
+    localStorage.setItem(this.logoutInProgressKey, '1');
+  }
+
+  clearLogoutInProgress() {
+    localStorage.removeItem(this.logoutInProgressKey);
+  }
+
+  isLogoutInProgress() {
+    return localStorage.getItem(this.logoutInProgressKey) === '1';
+  }
+
+  async logoutAndClearSession(): Promise<void> {
+    this.markLogoutInProgress();
+    this.clearCoachData();
+    this.resetAll();
+
+    try {
+      await this.logoutFromFirebase();
+    } finally {
+      this.clearLogoutInProgress();
+    }
+  }
+
+  async isFirebaseSessionActive(): Promise<boolean> {
+    const authUser = await firstValueFrom(this.fireAuth.authState.pipe(take(1)));
+    return !!authUser;
+  }
+
+  async restoreCoachDataFromFirebaseSession(): Promise<RegistrationDetails | null> {
+    const currentUser = await this.fireAuth.currentUser;
+    if (!currentUser?.email) {
+      return null;
+    }
+
+    const res: any = await firstValueFrom(this.getCoachByEmail(currentUser.email));
+    const data = res.map((document: any) => ({
+      id: document.payload.doc.id,
+      ...(document.payload.doc.data() as {})
+    }));
+
+    if (!data.length || !data[0].approved) {
+      return null;
+    }
+
+    const coachProfile = data[0] as RegistrationDetails;
+    this.cacheCoachData(coachProfile);
+    return coachProfile;
+  }
+
+  getCoachData() {
+    const coachDetails = localStorage.getItem(this.coachStorageKey) || sessionStorage.getItem(this.coachStorageKey);
+    if (!coachDetails) {
+      return null;
+    }
+
+    try {
+      const coachProfile = JSON.parse(coachDetails);
+      // Backfill localStorage if we only had legacy sessionStorage data.
+      localStorage.setItem(this.coachStorageKey, coachDetails);
+      return coachProfile;
+    } catch {
+      this.clearCoachData();
+      return null;
+    }
+  }
+
+  cacheCoachData(coachData: RegistrationDetails) {
+    const payload = JSON.stringify(coachData);
+    localStorage.setItem(this.coachStorageKey, payload);
+    // Keep sessionStorage in sync for backward compatibility.
+    sessionStorage.setItem(this.coachStorageKey, payload);
+  }
+
+  clearCoachData() {
+    localStorage.removeItem(this.coachStorageKey);
+    sessionStorage.removeItem(this.coachStorageKey);
   }
 
   setCoachData(coachInfo: RegistrationDetails) {
@@ -135,6 +267,12 @@ export class KalamService {
 
   getAllAcademy() {
     return this.fireStore.collection('coachDetails').snapshotChanges();
+  }
+
+  getAcademyByJoiningCode(joiningCode: string) {
+    return this.fireStore.collection('coachDetails', ref =>
+      ref.where('academyJoinCode', '==', `${joiningCode}`)
+    ).snapshotChanges();
   }
 
   addGroundDetails(ground: any) {

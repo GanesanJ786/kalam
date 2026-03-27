@@ -1,3 +1,11 @@
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
 <div class="su-page">
   <app-header [title]="title"></app-header>
 
@@ -52,7 +60,7 @@
         <div class="su-card-body">
           <mat-form-field appearance="fill" class="su-full-width">
             <mat-label>Full Name</mat-label>
-            <input matInput formControlName="name" appAadharNumber [alphabetOnly]="true">
+            <input matInput formControlName="name" appInputFormat [alphabetOnly]="true">
           </mat-form-field>
 
           <mat-form-field appearance="fill" class="su-full-width">
@@ -71,19 +79,13 @@
             </mat-form-field>
           </div>
 
-          <div class="su-row">
-            <mat-form-field appearance="fill" class="su-half">
-              <mat-label>Date of Birth</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="dob" (dateChange)="dateSelected('change', $event)">
-              <mat-hint>MM/DD/YYYY</mat-hint>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
-            <mat-form-field appearance="fill" class="su-half">
-              <mat-label>Aadhar Number</mat-label>
-              <input [readonly]="editAccess" matInput formControlName="aadharNum" minlength="14" maxlength="14" appAadharNumber>
-            </mat-form-field>
-          </div>
+          <mat-form-field appearance="fill" class="su-full-width">
+            <mat-label>Date of Birth</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="dob" (dateChange)="dateSelected('change', $event)">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
 
           <div class="su-row su-row-align">
             <div class="su-gender-group su-half">
@@ -104,7 +106,7 @@
           <div class="su-row su-row-align">
             <mat-form-field appearance="fill" class="su-half">
               <mat-label>WhatsApp Number</mat-label>
-              <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
+              <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appInputFormat [numbericOnly]='true'>
             </mat-form-field>
             <div class="su-role-group su-half" *ngIf="!editAccess">
               <span class="su-field-label">Role <span class="su-required">*</span></span>
@@ -136,21 +138,41 @@
             <mat-label>Address</mat-label>
             <textarea matInput formControlName="address" rows="3"></textarea>
           </mat-form-field>
+          <mat-form-field appearance="fill" class="su-full-width" *ngIf="editAccess && registrationForm.value.academyJoinCode">
+            <mat-label>Academy Joining Code</mat-label>
+            <input matInput formControlName="academyJoinCode" readonly>
+            <mat-hint>Share this code with employees to join your academy</mat-hint>
+          </mat-form-field>
+          <div class="su-join-code-actions" *ngIf="editAccess && registrationForm.value.academyJoinCode">
+            <button class="su-btn su-join-copy-btn" type="button" (click)="copyJoinCode()">
+              <mat-icon>content_copy</mat-icon>
+              <span>Copy Joining Code</span>
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- ====== ACADEMY SELECTION SECTION (Employee) ====== -->
+      <!-- ====== ACADEMY JOIN CODE SECTION (Employee) ====== -->
       <div class="su-card" *ngIf="registrationForm.controls['academyOwned'].value == 'N' && !editAccess">
         <div class="su-card-header">
           <mat-icon class="su-card-icon">domain</mat-icon>
-          <h3>Select Academy</h3>
+          <h3>Join Academy</h3>
         </div>
         <div class="su-card-body">
           <mat-form-field appearance="fill" class="su-full-width">
-            <mat-label>Choose Your Academy</mat-label>
-            <mat-select formControlName="academyName" (selectionChange)="academySelection()">
-              <mat-option *ngFor="let academy of academyList" [value]="academy.value">{{academy.key}}</mat-option>
-            </mat-select>
+            <mat-label>Academy Joining Code</mat-label>
+            <input matInput formControlName="academyJoinCode" placeholder="Enter code from academy admin" (blur)="verifyJoiningCode()">
+            <mat-hint>Ask your academy admin for the joining code</mat-hint>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="su-full-width" *ngIf="registrationForm.value.academyName">
+            <mat-label>Mapped Academy</mat-label>
+            <input matInput [value]="registrationForm.value.academyName" readonly>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="su-full-width" *ngIf="registrationForm.value.address">
+            <mat-label>Academy Address</mat-label>
+            <textarea matInput [value]="registrationForm.value.address" rows="3" readonly></textarea>
           </mat-form-field>
         </div>
       </div>

@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
@@ -10,11 +22,13 @@ import { NewStudentsComponent } from './new-students/new-students.component';
 import { ApprovePaymentComponent } from './approve-payment/approve-payment.component';
 import { QuickAttendanceComponent } from './quick-attendance/quick-attendance.component';
 import { CoachTaskNotificationComponent } from './coach-task-notification/coach-task-notification.component';
+import { AccountComponent } from './account/account.component';
 
 import { AuthGuardService } from './auth-guard.service';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent},
+  { path: 'login', component: AccountComponent},
+  { path: 'legacy-login', component: LoginComponent},
   { path: 'home', component: HomeComponent, canActivate: [AuthGuardService] },
   { path: 'student-form', component: StudentFormComponent, canActivate: [AuthGuardService] },
   { path: 'sign-up', component: SignUpComponent },

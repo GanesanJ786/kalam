@@ -1,3 +1,11 @@
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
 <div class="sf-shell">
     <app-header [title]="title"></app-header>
 
@@ -53,7 +61,7 @@
                         <div class="sf-row">
                             <mat-form-field appearance="fill" [class.sf-col-8]="editAccess" [class.sf-col-12]="!editAccess">
                                 <mat-label>Name</mat-label>
-                                <input matInput formControlName="name" appAadharNumber [alphabetOnly]="true">
+                                <input matInput formControlName="name" appInputFormat [alphabetOnly]="true">
                             </mat-form-field>
                             <mat-form-field *ngIf="editAccess" appearance="fill" class="sf-col-4">
                                 <mat-label>Competency Level</mat-label>
@@ -91,10 +99,6 @@
                                     <mat-radio-button value="female">Female</mat-radio-button>
                                 </mat-radio-group>
                             </div>
-                            <mat-form-field appearance="fill" class="sf-col-6">
-                                <mat-label>Aadhar Number</mat-label>
-                                <input matInput formControlName="aadharNum" minlength="14" maxlength="14" appAadharNumber>
-                            </mat-form-field>
                         </div>
 
                         <div class="sf-row">
@@ -116,7 +120,7 @@
                         <div class="sf-row">
                             <mat-form-field appearance="fill" class="sf-col-6">
                                 <mat-label>Father's / Guardian</mat-label>
-                                <input matInput formControlName="fatherName" appAadharNumber [alphabetOnly]="true" placeholder="Enter name">
+                                <input matInput formControlName="fatherName" appInputFormat [alphabetOnly]="true" placeholder="Enter name">
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="sf-col-6">
                                 <mat-label>Occupation</mat-label>
@@ -126,7 +130,7 @@
                         <div class="sf-row">
                             <mat-form-field appearance="fill" class="sf-col-6">
                                 <mat-label>Mother's / Guardian</mat-label>
-                                <input matInput formControlName="motherName" appAadharNumber [alphabetOnly]="true" placeholder="Enter name">
+                                <input matInput formControlName="motherName" appInputFormat [alphabetOnly]="true" placeholder="Enter name">
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="sf-col-6">
                                 <mat-label>Occupation</mat-label>
@@ -146,11 +150,11 @@
                         <div class="sf-row">
                             <mat-form-field appearance="fill" class="sf-col-6">
                                 <mat-label>Mobile Number</mat-label>
-                                <input matInput formControlName="mobileNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
+                                <input matInput formControlName="mobileNum" maxlength="10" minlength="10" appInputFormat [numbericOnly]='true'>
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="sf-col-6">
                                 <mat-label>WhatsApp Number</mat-label>
-                                <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
+                                <input matInput formControlName="whatsappNum" maxlength="10" minlength="10" appInputFormat [numbericOnly]='true'>
                             </mat-form-field>
                         </div>
                     </div>
@@ -170,11 +174,11 @@
                         <div class="sf-row">
                             <mat-form-field appearance="fill" class="sf-col-6">
                                 <mat-label>Emergency Contact Person</mat-label>
-                                <input matInput formControlName="emgContactName" appAadharNumber [alphabetOnly]="true">
+                                <input matInput formControlName="emgContactName" appInputFormat [alphabetOnly]="true">
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="sf-col-6">
                                 <mat-label>Number</mat-label>
-                                <input matInput formControlName="emgContactNum" maxlength="10" minlength="10" appAadharNumber [numbericOnly]='true'>
+                                <input matInput formControlName="emgContactNum" maxlength="10" minlength="10" appInputFormat [numbericOnly]='true'>
                             </mat-form-field>
                         </div>
                     </div>
@@ -250,16 +254,16 @@
                         <div class="sf-row">
                             <mat-form-field appearance="fill" class="sf-col-4">
                                 <mat-label>Jersey Size</mat-label>
-                                <input matInput formControlName="jersySize" appAadharNumber [numbericOnly]='true'>
+                                <input matInput formControlName="jersySize" appInputFormat [numbericOnly]='true'>
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="sf-col-4">
                                 <mat-label>Height</mat-label>
-                                <input matInput formControlName="height" placeholder="Cm" appAadharNumber [numbericOnly]='true'>
+                                <input matInput formControlName="height" placeholder="Cm" appInputFormat [numbericOnly]='true'>
                                 <span matSuffix class="sf-suffix">cm</span>
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="sf-col-4">
                                 <mat-label>Weight</mat-label>
-                                <input matInput formControlName="weight" appAadharNumber [numbericOnly]='true'>
+                                <input matInput formControlName="weight" appInputFormat [numbericOnly]='true'>
                                 <span matSuffix class="sf-suffix">kg</span>
                             </mat-form-field>
                         </div>

@@ -1,28 +1,89 @@
-<div class="sf-container">
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<div class="nca-page">
     <app-header [title]="title"></app-header>
-    <div class="sf-content">
-        <div class="gotoHome">
-            <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
+
+    <section class="nca-shell">
+        <div class="nca-topbar">
+            <button class="nca-home-btn" type="button" (click)="gotoHome()">
+                <mat-icon>arrow_back</mat-icon>
+                <span>Home</span>
+            </button>
+            <div class="nca-badge" *ngIf="coaches?.length > 0">
+                <mat-icon>pending_actions</mat-icon>
+                <span>{{coaches.length}} pending</span>
+            </div>
         </div>
-        <div *ngIf="coaches?.length > 0">
-            <div class="grid-container custGrid-5">
-                <div class="header">Name</div>
-                <div class="header">Mobile</div>
-                <div class="header">Email</div>
-                <div class="header">To Coach</div>  
-                <div class="header">Action</div>
-                <ng-container *ngFor="let coach of coaches">
-                    <div class="rowBg">{{coach.name}}</div>
-                    <div class="rowBg">{{coach.whatsappNum}}</div>
-                    <div class="rowBg">{{coach.emailId}}</div>
-                    <div class="rowBg" *ngIf="coach?.toCoach">{{coach.toCoach.join(', ')}}</div>
-                    <div class="rowBg"> 
-                        <button class="btn-grnd" style="margin-bottom: 1em;margin-left: 0;" (click)="approve(coach)">Approve</button>
-                        <button class="btn-grnd btn-red" style="margin-left: 0;" (click)="reject(coach)">Reject</button> 
-                    </div>
-                </ng-container>
+
+        <div class="nca-table" *ngIf="coaches?.length > 0">
+            <div class="nca-table-head">
+                <div>Name</div>
+                <div>Mobile</div>
+                <div>Email</div>
+                <div>Sports</div>
+                <div>Action</div>
+            </div>
+
+            <div class="nca-row" *ngFor="let coach of coaches">
+                <div class="nca-cell nca-name">{{coach.name}}</div>
+                <div class="nca-cell">{{coach.whatsappNum}}</div>
+                <div class="nca-cell">{{coach.emailId}}</div>
+                <div class="nca-cell">{{coach?.toCoach?.join(', ') || '-'}}</div>
+                <div class="nca-cell nca-actions">
+                    <button class="nca-btn nca-approve" type="button" (click)="approve(coach)">
+                        <mat-icon>check_circle</mat-icon>
+                        <span>Approve</span>
+                    </button>
+                    <button class="nca-btn nca-reject" type="button" (click)="reject(coach)">
+                        <mat-icon>cancel</mat-icon>
+                        <span>Reject</span>
+                    </button>
                 </div>
+            </div>
         </div>
-       
-    </div>
+
+        <div class="nca-cards" *ngIf="coaches?.length > 0">
+            <div class="nca-card" *ngFor="let coach of coaches">
+                <div class="nca-card-title">{{coach.name}}</div>
+                <div class="nca-card-line">
+                    <mat-icon>call</mat-icon>
+                    <span>{{coach.whatsappNum}}</span>
+                </div>
+                <div class="nca-card-line">
+                    <mat-icon>email</mat-icon>
+                    <span>{{coach.emailId}}</span>
+                </div>
+                <div class="nca-card-line">
+                    <mat-icon>sports_soccer</mat-icon>
+                    <span>{{coach?.toCoach?.join(', ') || '-'}}</span>
+                </div>
+                <div class="nca-card-actions">
+                    <button class="nca-btn nca-approve" type="button" (click)="approve(coach)">
+                        <mat-icon>check_circle</mat-icon>
+                        <span>Approve</span>
+                    </button>
+                    <button class="nca-btn nca-reject" type="button" (click)="reject(coach)">
+                        <mat-icon>cancel</mat-icon>
+                        <span>Reject</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nca-empty" *ngIf="!coaches?.length">
+            <mat-icon class="nca-empty-icon">verified_user</mat-icon>
+            <h3>All Caught Up</h3>
+            <p>No coaches are pending approval right now.</p>
+            <button class="nca-home-btn" type="button" (click)="gotoHome()">
+                <mat-icon>home</mat-icon>
+                <span>Go Home</span>
+            </button>
+        </div>
+    </section>
 </div>

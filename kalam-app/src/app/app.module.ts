@@ -1,3 +1,15 @@
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
+/**
+ * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+ * Unauthorized copying or distribution is strictly prohibited.
+ */
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -34,10 +46,11 @@ import { StudentFormComponent } from './student-form/student-form.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { environment } from '../environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireAuthModule } from '@angular/fire/compat/auth';
 import { HomeComponent } from './home/home.component';
 import { MyProfileComponent } from './my-profile/my-profile.component';
 import { MyTeamsComponent } from './my-teams/my-teams.component';
-import { AadharNumberDirective } from './aadhar-number.directive';
+import { InputFormatDirective } from './input-format.directive';
 import { LoaderInterceptor } from './loader.interceptor';
 import { LoaderComponent } from './loader/loader.component';
 import { AddGroundComponent } from './add-ground/add-ground.component';
@@ -57,6 +70,7 @@ import { QuickAttendanceComponent } from './quick-attendance/quick-attendance.co
 import { CoachTaskNotificationComponent } from './coach-task-notification/coach-task-notification.component';
 import { CoachTaskDialogComponent } from './coach-task-dialog/coach-task-dialog.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { AccountComponent } from './account/account.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -66,7 +80,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         HomeComponent,
         MyProfileComponent,
         MyTeamsComponent,
-        AadharNumberDirective,
+        InputFormatDirective,
         LoaderComponent,
         AddGroundComponent,
         ViewCoachAttendanceComponent,
@@ -83,7 +97,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         StudentAnalyticsComponent,
         QuickAttendanceComponent,
         CoachTaskNotificationComponent,
-        CoachTaskDialogComponent
+        CoachTaskDialogComponent,
+        AccountComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
@@ -108,6 +123,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
         MatTableModule,
         MatSortModule,
         AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule,
         NgIdleKeepaliveModule.forRoot(),
         ServiceWorkerModule.register('ngsw-worker.js', {
           enabled: environment.production,
