@@ -18,6 +18,7 @@ import { RatingLevel, SelectItemNum } from '../constant';
 import { KalamService } from '../kalam.service';
 import { StudentDetails } from '../student-form/student-form.component';
 import * as moment from 'moment';
+import { take } from 'rxjs/operators';
 
 export interface StudentPerformance {
   numberofGoals: number;
@@ -143,7 +144,7 @@ export class StudentPerformanceComponent implements OnInit {
 
   loadPastPerformances() {
     if (this.data.kalamId) {
-      this.kalamService.getStudentPerformance(this.data.kalamId).subscribe((res: any) => {
+      this.kalamService.getStudentPerformance(this.data.kalamId).pipe(take(1)).subscribe((res: any) => {
         this.pastPerformances = res.map((doc: any) => ({
           id: doc.payload.doc.id,
           ...doc.payload.doc.data() as {}

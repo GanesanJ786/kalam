@@ -10,7 +10,7 @@
  * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
  * Unauthorized copying or distribution is strictly prohibited.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { KalamService } from '../kalam.service';
@@ -19,7 +19,8 @@ import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { take } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import { ViewStudentAttendanceDateWiseComponent } from '../view-student-attendance-date-wise/view-student-attendance-date-wise.component';
 import { CoachTaskDialogComponent } from '../coach-task-dialog/coach-task-dialog.component';
 
@@ -33,7 +34,9 @@ const year = today.getFullYear();
     styleUrls: ['./view-coach-attendance.component.scss'],
     standalone: false
 })
-export class ViewCoachAttendanceComponent implements OnInit {
+export class ViewCoachAttendanceComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   coachList: any = [];
   coachId: string = "";
@@ -56,14 +59,8 @@ export class ViewCoachAttendanceComponent implements OnInit {
     const query = {
       academyId: `A${this.kalamService.getCoachData().kalamId}`
     }
-    this.kalamService.getAcademyCoaches(query).subscribe((coach:any) => {
-      let obj = coach.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
-      this.coachList = obj;
+    this.kalamService.getAcademyCoachesCached(query).pipe(takeUntil(this.destroy$)).subscribe((obj:any) => {
+      this.coachList = [...obj];
       // Add head coach (self) at start so they can view their own attendance
       const coachData = this.kalamService.getCoachData();
       this.coachList.unshift({
@@ -143,7 +140,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
       start: moment(this.attendanceRangeGroup.value.start).format('MM-DD-YYYY'),
       end: moment(this.attendanceRangeGroup.value.end).format('MM-DD-YYYY')
     }
-    this.kalamService.getACoachAttendanceData(query, dateRange).subscribe((coach:any) => {
+    this.kalamService.getACoachAttendanceData(query, dateRange).pipe(take(1)).subscribe((coach:any) => {
       let coachData = coach.map((document: any) => {
         return {
           id: document.payload.doc.id,
@@ -264,6 +261,11 @@ export class ViewCoachAttendanceComponent implements OnInit {
       return `${moment(start).format('MMM D')} – ${moment(end).format('MMM D, YYYY')}`;
     }
     return '';
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

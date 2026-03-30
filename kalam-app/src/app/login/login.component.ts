@@ -22,6 +22,7 @@ import {
   MatSnackBarVerticalPosition as MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { LoaderService } from '../loader.service';
+import { take } from 'rxjs/operators';
 
 export interface UserLogin {
   username: string;
@@ -74,7 +75,7 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.loaderService.show();
-    this.kalamService.loginDetails(this.signInForm.value).subscribe((res: any) => {
+    this.kalamService.loginDetails(this.signInForm.value).pipe(take(1)).subscribe((res: any) => {
       this.loaderService.hide();
       let data = res.map((document: any) => {
         return {

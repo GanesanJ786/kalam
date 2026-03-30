@@ -10,7 +10,7 @@
  * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
  * Unauthorized copying or distribution is strictly prohibited.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { LoaderService } from '../loader.service';
 import { MatDialog } from '@angular/material/dialog';
 import { KalamService } from '../kalam.service';
@@ -18,6 +18,8 @@ import { Router } from '@angular/router';
 import { StudentDetails } from '../student-form/student-form.component';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource as MatTableDataSource } from '@angular/material/table';
@@ -30,7 +32,9 @@ import { MatTableDataSource as MatTableDataSource } from '@angular/material/tabl
     styleUrls: ['./studentscholarship.component.scss'],
     standalone: false
 })
-export class StudentscholarshipComponent implements OnInit {
+export class StudentscholarshipComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   groundList: any = [];
   coachId: string | undefined;
@@ -55,18 +59,12 @@ export class StudentscholarshipComponent implements OnInit {
    
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
-    this.kalamService.getAllApprovedStudent(this.coachId).subscribe((res: any) => {
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
-      this.allStudents =  data;
+    this.kalamService.getAllApprovedStudentCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
+      this.allStudents = [...data];
       let currentMonth = moment().startOf("month").format('MMMM');
 
 
-      this.kalamService.getAllInactiveStudents(this.coachId).subscribe((res: any) => {
+      this.kalamService.getAllInactiveStudents(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
         let inActive = res.map((document: any) => {
           return {
             id: document.payload.doc.id,
@@ -95,13 +93,7 @@ export class StudentscholarshipComponent implements OnInit {
         this.underList();
       });
     });
-    this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
+    this.kalamService.getGroundDetailsCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
       this.groundList = data;
     });
   }
@@ -228,6 +220,11 @@ export class StudentscholarshipComponent implements OnInit {
       this.kalamService.approvedStudent(student);
       //console.log(student);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
 }

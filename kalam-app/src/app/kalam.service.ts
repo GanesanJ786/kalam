@@ -15,8 +15,8 @@ import { HttpClient } from '@angular/common/http';
 
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { firstValueFrom } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { firstValueFrom, Observable, of } from 'rxjs';
+import { take, map, tap, shareReplay } from 'rxjs/operators';
 import { StudentData, UserLogin } from './login/login.component';
 import { RegistrationDetails } from './sign-up/sign-up.component';
 import { StudentDetails } from './student-form/student-form.component'; 
@@ -47,6 +47,12 @@ export class KalamService {
   paidStudentList: any = [];
   getCoachesAttendance: any = [];
 
+  // In-memory caches for frequently accessed data
+  private _groundDetailsCache: Map<string, Observable<any[]>> = new Map();
+  private _approvedStudentsCache: Map<string, Observable<any[]>> = new Map();
+  private _studentDetailsCache: Map<string, Observable<any[]>> = new Map();
+  private _academyCoachesCache: Map<string, Observable<any[]>> = new Map();
+
   convertToISO(dateString: string) {
     // Split the MM-DD-YYYY string into parts
     const [month, day, year] = dateString.split('-');
@@ -59,6 +65,87 @@ export class KalamService {
 
   resetAll() {
     this.getCoachesAttendance = [];
+    this._groundDetailsCache.clear();
+    this._approvedStudentsCache.clear();
+    this._studentDetailsCache.clear();
+    this._academyCoachesCache.clear();
+  }
+
+  private mapDocs(res: any): any[] {
+    return res.map((document: any) => ({
+      id: document.payload.doc.id,
+      ...document.payload.doc.data() as {}
+    }));
+  }
+
+  getGroundDetailsCached(academyId: any): Observable<any[]> {
+    const key = String(academyId);
+    if (!this._groundDetailsCache.has(key)) {
+      this._groundDetailsCache.set(key,
+        this.getGroundDetails(academyId).pipe(
+          map(res => this.mapDocs(res)),
+          shareReplay({ bufferSize: 1, refCount: true })
+        )
+      );
+    }
+    return this._groundDetailsCache.get(key)!;
+  }
+
+  getAllApprovedStudentCached(coachId: any): Observable<any[]> {
+    const key = String(coachId);
+    if (!this._approvedStudentsCache.has(key)) {
+      this._approvedStudentsCache.set(key,
+        this.getAllApprovedStudent(coachId).pipe(
+          map(res => this.mapDocs(res)),
+          shareReplay({ bufferSize: 1, refCount: true })
+        )
+      );
+    }
+    return this._approvedStudentsCache.get(key)!;
+  }
+
+  getStudentDetailsCached(coachId: any): Observable<any[]> {
+    const key = String(coachId);
+    if (!this._studentDetailsCache.has(key)) {
+      this._studentDetailsCache.set(key,
+        this.getStudentDetails(coachId).pipe(
+          map(res => this.mapDocs(res)),
+          shareReplay({ bufferSize: 1, refCount: true })
+        )
+      );
+    }
+    return this._studentDetailsCache.get(key)!;
+  }
+
+  getAcademyCoachesCached(query: any): Observable<any[]> {
+    const key = String(query.academyId);
+    if (!this._academyCoachesCache.has(key)) {
+      this._academyCoachesCache.set(key,
+        this.getAcademyCoaches(query).pipe(
+          map(res => this.mapDocs(res)),
+          shareReplay({ bufferSize: 1, refCount: true })
+        )
+      );
+    }
+    return this._academyCoachesCache.get(key)!;
+  }
+
+  invalidateGroundCache(academyId?: string) {
+    if (academyId) {
+      this._groundDetailsCache.delete(String(academyId));
+    } else {
+      this._groundDetailsCache.clear();
+    }
+  }
+
+  invalidateStudentCache(coachId?: string) {
+    if (coachId) {
+      this._approvedStudentsCache.delete(String(coachId));
+      this._studentDetailsCache.delete(String(coachId));
+    } else {
+      this._approvedStudentsCache.clear();
+      this._studentDetailsCache.clear();
+    }
   }
 
   addStudentPerformace(studentPerformance: StudentPerformance) {
@@ -83,6 +170,7 @@ export class KalamService {
 
   setStudentDetails(list: StudentDetails) {
     this.fireStore.collection("studentDetails").add({...list});
+    this.invalidateStudentCache();
   }
 
   // addStudentPerformace(id: string, studentPerformance: StudentPerformance) {
@@ -91,6 +179,7 @@ export class KalamService {
 
   editStudentDetails(item: StudentDetails) {
     this.fireStore.doc("studentDetails/"+item.id).update(item);
+    this.invalidateStudentCache();
   }
 
   editCoachDetails(item: RegistrationDetails) {
@@ -99,6 +188,7 @@ export class KalamService {
 
   deleteStudentDetails(item: StudentDetails) {
     this.fireStore.doc("studentDetails/"+item.id).delete();
+    this.invalidateStudentCache();
   }
 
   setCoachProfile(profile: RegistrationDetails) {
@@ -277,6 +367,7 @@ export class KalamService {
 
   addGroundDetails(ground: any) {
     this.fireStore.collection("groundDetails").add({...ground});
+    this.invalidateGroundCache(ground.academyId);
   }
 
   getGroundDetails(academyId: any) {
@@ -338,18 +429,22 @@ export class KalamService {
 
   approvedCoach(coach: any) {
     this.fireStore.doc("coachDetails/"+coach.id).update(coach);
+    this._academyCoachesCache.clear();
   }
 
   deleteCoach(coach: any) {
     this.fireStore.doc("coachDetails/"+coach.id).delete();
+    this._academyCoachesCache.clear();
   }
 
   approvedStudent(student: any) {
     this.fireStore.doc("studentDetails/"+student.id).update(student);
+    this.invalidateStudentCache();
   }
 
   deleteStudent(student: any) {
     this.fireStore.doc("studentDetails/"+student.id).delete();
+    this.invalidateStudentCache();
   }
 
   getAcademyAllStudentAttendanceData(academyId:string, dateRange: any) {

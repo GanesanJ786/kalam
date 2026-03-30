@@ -14,6 +14,7 @@ import {
 import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
 import { RegistrationDetails } from '../sign-up/sign-up.component';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-account',
@@ -96,7 +97,7 @@ export class AccountComponent implements OnInit {
         }
       }
 
-      this.kalamService.getCoachByEmail(email).subscribe({
+      this.kalamService.getCoachByEmail(email).pipe(take(1)).subscribe({
         next: (res: any) => {
           this.loaderService.hide();
           const data = res.map((document: any) => ({

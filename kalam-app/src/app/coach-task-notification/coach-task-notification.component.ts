@@ -10,7 +10,7 @@
  * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
  * Unauthorized copying or distribution is strictly prohibited.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -19,6 +19,8 @@ import * as _ from 'lodash';
 
 import { KalamService } from '../kalam.service';
 import { TaskService, CoachTask } from '../task.service';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 const today = new Date();
 const month = today.getMonth();
@@ -30,7 +32,9 @@ const year = today.getFullYear();
   templateUrl: './coach-task-notification.component.html',
   styleUrl: './coach-task-notification.component.scss'
 })
-export class CoachTaskNotificationComponent implements OnInit {
+export class CoachTaskNotificationComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   // Role flags
   isOwner: boolean = false;
@@ -109,11 +113,7 @@ export class CoachTaskNotificationComponent implements OnInit {
 
   private loadCoachList(): void {
     const query = { academyId: this.academyId };
-    this.kalamService.getAcademyCoaches(query).subscribe((res: any) => {
-      const data = res.map((document: any) => ({
-        id: document.payload.doc.id,
-        ...document.payload.doc.data() as {}
-      }));
+    this.kalamService.getAcademyCoachesCached(query).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
       this.coachList = data.filter((c: any) => c.kalamId !== this.myKalamId && c.approved);
       // Add self (Head Coach) at the beginning for self-task creation
       this.coachList.unshift({
@@ -125,7 +125,7 @@ export class CoachTaskNotificationComponent implements OnInit {
 
   private loadAssignedTasks(): void {
     this.loadingHistory = true;
-    this.taskService.getTasksByHeadCoach(this.academyId).subscribe((res: any) => {
+    this.taskService.getTasksByHeadCoach(this.academyId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.assignedTasks = res.map((document: any) => ({
         id: document.payload.doc.id,
         ...document.payload.doc.data() as {}
@@ -198,7 +198,7 @@ export class CoachTaskNotificationComponent implements OnInit {
    */
   private loadActiveTasks(): void {
     this.loadingTasks = true;
-    this.taskService.getActiveTasks(this.myKalamId).subscribe((res: any) => {
+    this.taskService.getActiveTasks(this.myKalamId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       const allTasks: CoachTask[] = res.map((document: any) => ({
         id: document.payload.doc.id,
         ...document.payload.doc.data() as {}
@@ -212,7 +212,7 @@ export class CoachTaskNotificationComponent implements OnInit {
 
   private loadTaskHistory(): void {
     this.loadingHistory = true;
-    this.taskService.getTaskHistory(this.myKalamId).subscribe((res: any) => {
+    this.taskService.getTaskHistory(this.myKalamId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.taskHistory = res.map((document: any) => ({
         id: document.payload.doc.id,
         ...document.payload.doc.data() as {}
@@ -285,5 +285,10 @@ export class CoachTaskNotificationComponent implements OnInit {
 
   goHome(): void {
     this.router.navigate(['/home']);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

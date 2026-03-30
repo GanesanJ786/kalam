@@ -17,6 +17,7 @@ import { KalamService } from './kalam.service';
 import { ExportToExcelService } from './export-to-excel.service';
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-root',
@@ -90,7 +91,7 @@ export class AppComponent {
       end: moment().subtract(1,'months').endOf('month').format('MM-DD-YYYY')
     }
 
-    this.kalamService.getAcademyAllStudentAttendanceData("718906821407", dateRange).subscribe((res: any) => {
+    this.kalamService.getAcademyAllStudentAttendanceData("718906821407", dateRange).pipe(take(1)).subscribe((res: any) => {
       let data = res.map((document: any) => {
         return {
           id: document.payload.doc.id,
@@ -141,7 +142,6 @@ export class AppComponent {
 
   exportToExcel() {
     let coachView = [];
-    let stopLoop = false;
     const query = {
       academyId: `718906821407`,
       inCoachId: "216038235025"
@@ -157,8 +157,7 @@ export class AppComponent {
     }
 
     
-      this.kalamService.getAllCoachAttendanceData(query, dateRange).subscribe((coach: any) => {
-        if(!stopLoop) {
+      this.kalamService.getAllCoachAttendanceData(query, dateRange).pipe(take(1)).subscribe((coach: any) => {
           let coachData = coach.map((document: any) => {
             return {
               id: document.payload.doc.id,
@@ -234,8 +233,6 @@ export class AppComponent {
           // coachData.forEach((val:any) => {
           //   this.kalamService.deleteCoachesAttendance(val.id);
           // })
-          stopLoop = true; 
-        }
       });
     
   }

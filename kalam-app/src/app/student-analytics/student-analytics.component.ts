@@ -10,7 +10,7 @@
  * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
  * Unauthorized copying or distribution is strictly prohibited.
  */
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource as MatTableDataSource } from '@angular/material/table';
@@ -20,6 +20,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { KalamService } from '../kalam.service';
 import * as moment from 'moment';
 import { StudentDetails } from '../student-form/student-form.component';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-student-analytics',
@@ -27,7 +29,9 @@ import { StudentDetails } from '../student-form/student-form.component';
     styleUrls: ['./student-analytics.component.scss'],
     standalone: false
 })
-export class StudentAnalyticsComponent implements OnInit {
+export class StudentAnalyticsComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   coachId: string | undefined;
   owner: boolean = true;
@@ -55,13 +59,7 @@ export class StudentAnalyticsComponent implements OnInit {
   constructor(private router: Router, private loaderService: LoaderService, public dialog: MatDialog,  private kalamService: KalamService) { 
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A", "") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
-    this.kalamService.getAllApprovedStudent(this.coachId).subscribe((res: any) => {
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
+    this.kalamService.getAllApprovedStudentCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
       this.allStudents = data;
     });
   }
@@ -175,5 +173,10 @@ export class StudentAnalyticsComponent implements OnInit {
 
   getFilteredFemaleCount(): number {
     return this.filteredStudentList.filter((s: any) => s.gender === 'female').length;
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

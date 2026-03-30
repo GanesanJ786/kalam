@@ -17,6 +17,7 @@ import { StudentDetails } from '../student-form/student-form.component';
 import { SportsList, getSportIcon } from '../constant';
 import { StudentPerformance, StudentPerformanceComponent } from '../student-performance/student-performance.component';
 import * as _ from 'lodash';
+import { take } from 'rxjs/operators';
 
 @Component({
     selector: 'app-view-student-data',
@@ -48,7 +49,7 @@ export class ViewStudentDataComponent implements OnInit {
 
   getStudentPerformance() {
     if(this.student.kalamId){
-      this.kalamService.getStudentPerformance(this.student.kalamId).subscribe((res: any) => {
+      this.kalamService.getStudentPerformance(this.student.kalamId).pipe(take(1)).subscribe((res: any) => {
         let data = res.map((document: any) => {
           return {
             id: document.payload.doc.id,

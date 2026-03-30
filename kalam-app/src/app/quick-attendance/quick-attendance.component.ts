@@ -10,7 +10,7 @@
  * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
  * Unauthorized copying or distribution is strictly prohibited.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KalamService } from '../kalam.service';
 import { getSportIcon } from '../constant';
@@ -19,6 +19,8 @@ import { StudentDetails } from '../student-form/student-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 interface AttendanceEntry {
   student: StudentDetails;
@@ -33,7 +35,9 @@ interface AttendanceEntry {
   templateUrl: './quick-attendance.component.html',
   styleUrl: './quick-attendance.component.scss'
 })
-export class QuickAttendanceComponent implements OnInit {
+export class QuickAttendanceComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   groundList: any[] = [];
   selectedGround: string = '';
@@ -63,11 +67,8 @@ export class QuickAttendanceComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
-      this.groundList = res.map((document: any) => ({
-        id: document.payload.doc.id,
-        ...document.payload.doc.data() as {}
-      }));
+    this.kalamService.getGroundDetailsCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
+      this.groundList = data;
     });
   }
 
@@ -78,16 +79,12 @@ export class QuickAttendanceComponent implements OnInit {
     this.searchText = '';
 
     // Get all approved students for this ground
-    this.kalamService.getAllApprovedStudent(this.coachId).subscribe((res: any) => {
-      const students: StudentDetails[] = res.map((document: any) => ({
-        id: document.payload.doc.id,
-        ...document.payload.doc.data() as {}
-      }));
+    this.kalamService.getAllApprovedStudentCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((students: any) => {
 
       // Filter by selected ground
       this.allStudents = students
-        .filter(s => s.groundName === this.selectedGround)
-        .sort((a, b) => (a.name || '').localeCompare(b.name || ''));
+        .filter((s: any) => s.groundName === this.selectedGround)
+        .sort((a: any, b: any) => (a.name || '').localeCompare(b.name || ''));
 
       // Build attendance list defaulting to IN (present)
       this.attendanceList = this.allStudents.map(student => ({
@@ -97,7 +94,7 @@ export class QuickAttendanceComponent implements OnInit {
       }));
 
       // Check existing attendance for today
-      this.kalamService.getStudentAttendanceData(this.coachId!, this.todayDate).subscribe((stud: any) => {
+      this.kalamService.getStudentAttendanceData(this.coachId!, this.todayDate).pipe(takeUntil(this.destroy$)).subscribe((stud: any) => {
         const todayRecords = stud.map((document: any) => ({
           id: document.payload.doc.id,
           ...document.payload.doc.data() as {}
@@ -243,5 +240,10 @@ export class QuickAttendanceComponent implements OnInit {
     const parts = name.trim().split(' ');
     if (parts.length >= 2) return (parts[0][0] + parts[1][0]).toUpperCase();
     return parts[0][0].toUpperCase();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

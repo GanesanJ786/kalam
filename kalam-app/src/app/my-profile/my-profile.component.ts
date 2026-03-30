@@ -10,7 +10,7 @@
  * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
  * Unauthorized copying or distribution is strictly prohibited.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -22,7 +22,8 @@ import * as moment from 'moment';
 import { StudentDetails } from '../student-form/student-form.component';
 import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-students-by-ground.component';
 import { TaskService } from '../task.service';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-my-profile',
@@ -30,7 +31,9 @@ import { firstValueFrom } from 'rxjs';
     styleUrls: ['./my-profile.component.scss'],
     standalone: false
 })
-export class MyProfileComponent implements OnInit {
+export class MyProfileComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   groundList: any = [];
   coachId: string | undefined;
@@ -81,7 +84,7 @@ export class MyProfileComponent implements OnInit {
     this.inCoachId = this.kalamService.getCoachData().kalamId;
 
     if(!this.owner) {
-      this.kalamService.getHeadCoache(this.coachId).subscribe((res: any) => {
+      this.kalamService.getHeadCoache(this.coachId).pipe(take(1)).subscribe((res: any) => {
         let data = res.map((document: any) => {
           return {
             id: document.payload.doc.id,
@@ -92,16 +95,10 @@ export class MyProfileComponent implements OnInit {
       })
     }
     
-    this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
+    this.kalamService.getGroundDetailsCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
       this.groundList = data;
 
-      this.kalamService.getCurrentCoachIn(this.inCoachId, moment().format("MM-DD-YYYY")).subscribe((coach: any) => {
+      this.kalamService.getCurrentCoachIn(this.inCoachId, moment().format("MM-DD-YYYY")).pipe(takeUntil(this.destroy$)).subscribe((coach: any) => {
         this.allBtnDisabled = false;
         let coachDataIn = coach.map((document: any) => {
           return {
@@ -109,9 +106,8 @@ export class MyProfileComponent implements OnInit {
             ...document.payload.doc.data() as {}
           }
         });
-        //this.attendanceLoop(coachData);
 
-        this.kalamService.getCurrentCoachOut(this.inCoachId, moment().format("MM-DD-YYYY")).subscribe((coach: any) => {
+        this.kalamService.getCurrentCoachOut(this.inCoachId, moment().format("MM-DD-YYYY")).pipe(takeUntil(this.destroy$)).subscribe((coach: any) => {
           this.allBtnDisabled = false;
           let coachDataOut = coach.map((document: any) => {
             return {
@@ -192,20 +188,13 @@ export class MyProfileComponent implements OnInit {
       const query = {
         academyId: `A${this.kalamService.getCoachData().kalamId}`
       }
-      this.kalamService.getAcademyCoaches(query).subscribe((coach:any) => {
-        let obj = coach.map((document: any) => {
-          return {
-            id: document.payload.doc.id,
-            ...document.payload.doc.data() as {}
-          }
-        });
-
+      this.kalamService.getAcademyCoachesCached(query).pipe(takeUntil(this.destroy$)).subscribe((obj:any) => {
         this.notApproved = obj.filter((res:any) => !res.approved);
         this.kalamService.setNewCoachesList(this.notApproved);
         //this.router.navigate([`/new-coaches`]);
       });
 
-      this.kalamService.newStudentList({coachId: this.coachId}).subscribe((res: any) => {
+      this.kalamService.newStudentList({coachId: this.coachId}).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
         let obj = res.map((document: any) => {
           return {
             id: document.payload.doc.id,
@@ -217,7 +206,7 @@ export class MyProfileComponent implements OnInit {
         this.kalamService.setNewStudentsList(this.newStudents);
       });
 
-      this.kalamService.feesApprove({coachId: this.coachId}).subscribe((res: any) => {
+      this.kalamService.feesApprove({coachId: this.coachId}).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
         let obj = res.map((document: any) => {
           return {
             id: document.payload.doc.id,
@@ -229,13 +218,7 @@ export class MyProfileComponent implements OnInit {
         this.kalamService.paidStudentList = this.paidStudentList ;
       });
 
-      this.kalamService.getStudentDetails(this.coachId).subscribe((res: any) => {
-        let data = res.map((document: any) => {
-          return {
-            id: document.payload.doc.id,
-            ...document.payload.doc.data() as {}
-          }
-        });
+      this.kalamService.getStudentDetailsCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
         this.allStudents = data.filter((res: StudentDetails) => res.approved);
         this.groundList.forEach((element: any) => {
           element.totalStudent = this.allStudents.filter((res:any) => res.groundName == element.groundName).length;
@@ -247,7 +230,7 @@ export class MyProfileComponent implements OnInit {
   private loadPendingTaskCount(): void {
     if (!this.owner) {
       // Sub coach: count active tasks (Pending + Acknowledged) assigned to them
-      this.taskService.getActiveTasks(this.inCoachId).subscribe((res: any) => {
+      this.taskService.getActiveTasks(this.inCoachId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
         const allTasks = res.map((document: any) => ({
           ...document.payload.doc.data() as {}
         }));
@@ -256,7 +239,7 @@ export class MyProfileComponent implements OnInit {
     } else {
       // Head coach: count pending tasks they assigned
       const academyId = `A${this.kalamService.getCoachData().kalamId}`;
-      this.taskService.getTasksByHeadCoach(academyId).subscribe((res: any) => {
+      this.taskService.getTasksByHeadCoach(academyId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
         const tasks = res.map((document: any) => ({
           ...document.payload.doc.data() as {}
         }));
@@ -462,5 +445,10 @@ export class MyProfileComponent implements OnInit {
 
   coachTasks() {
     this.router.navigate(['/coach-tasks']);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

@@ -10,13 +10,14 @@
  * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
  * Unauthorized copying or distribution is strictly prohibited.
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { Router, ActivatedRoute } from '@angular/router';
 import * as moment from 'moment';
-import { finalize } from 'rxjs/operators';
+import { finalize, take, takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
 
 import { KalamService } from '../kalam.service';
@@ -95,7 +96,9 @@ export interface StudentDetails {
       ])
     ]
 })
-export class StudentFormComponent implements OnInit {
+export class StudentFormComponent implements OnInit, OnDestroy {
+
+  private destroy$ = new Subject<void>();
 
   studentForm!: UntypedFormGroup;
   studentDetails: StudentDetails;
@@ -170,13 +173,7 @@ export class StudentFormComponent implements OnInit {
     });
 
 
-    this.kalamService.getGroundDetails(this.coachId).subscribe((res: any) => {
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
+    this.kalamService.getGroundDetailsCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
       this.groundList = data;
     });
     this.studentForm = new UntypedFormGroup({
@@ -476,5 +473,10 @@ export class StudentFormComponent implements OnInit {
 
   btnText() {
     return this.editAccess ? "UPDATE" : "SUBMIT";
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
