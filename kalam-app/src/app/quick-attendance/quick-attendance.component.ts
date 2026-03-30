@@ -13,6 +13,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KalamService } from '../kalam.service';
+import { getSportIcon } from '../constant';
 import { LoaderService } from '../loader.service';
 import { StudentDetails } from '../student-form/student-form.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -44,6 +45,8 @@ export class QuickAttendanceComponent implements OnInit {
   saving: boolean = false;
   allStudents: StudentDetails[] = [];
   searchText: string = '';
+  coachSports: string[] = [];
+  getSportIcon = getSportIcon;
 
   constructor(
     private kalamService: KalamService,
@@ -56,6 +59,7 @@ export class QuickAttendanceComponent implements OnInit {
       : this.kalamService.getCoachData().kalamId;
     this.todayDate = moment().format('MM-DD-YYYY');
     this.todayDisplay = moment().format('dddd, DD MMM YYYY');
+    this.coachSports = this.kalamService.getCoachData().toCoach || [];
   }
 
   ngOnInit(): void {

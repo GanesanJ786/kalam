@@ -55,7 +55,7 @@
         <div class="position-header"
              *ngIf="!studentList[index-1] || student.playingPostion !== studentList[index-1].playingPostion">
           <div class="position-accent"></div>
-          <mat-icon class="position-icon">sports_soccer</mat-icon>
+          <mat-icon class="position-icon">{{getSportIcon(student.preferredSport)}}</mat-icon>
           <h3 class="position-title">{{getSportLabel(student.playingPostion)}}</h3>
         </div>
 
@@ -159,7 +159,7 @@
         <div class="att-header">
           <div>Name</div>
           <div>Category</div>
-          <div>Ground</div>
+          <div>Venue</div>
           <div>Status</div>
           <div>Date</div>
         </div>

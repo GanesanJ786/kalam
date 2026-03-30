@@ -108,6 +108,24 @@ $radius: 12px;
   text-overflow: ellipsis;
 }
 
+.ctd-date-range {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.62rem;
+  font-weight: 600;
+  color: rgba($blue, 0.8);
+  letter-spacing: 0.3px;
+  margin-top: 0.05rem;
+}
+
+.ctd-date-icon {
+  font-size: 11px;
+  width: 11px;
+  height: 11px;
+  color: rgba($blue, 0.7);
+}
+
 .ctd-close-btn {
   width: 34px;
   height: 34px;

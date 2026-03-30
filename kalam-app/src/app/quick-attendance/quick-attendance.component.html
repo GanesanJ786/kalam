@@ -25,7 +25,7 @@
       <mat-label>Select Ground</mat-label>
       <mat-select [(ngModel)]="selectedGround" (ngModelChange)="onGroundChange()">
         <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">
-          <mat-icon class="ground-option-icon">sports_soccer</mat-icon>
+          <mat-icon class="ground-option-icon">{{coachSports?.length ? getSportIcon(coachSports[0]) : 'sports'}}</mat-icon>
           {{ground.groundName}}
         </mat-option>
       </mat-select>

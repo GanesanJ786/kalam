@@ -91,13 +91,34 @@
                             </mat-form-field>
                         </div>
 
-                        <div class="sf-row sf-row-align-center">
-                            <div class="sf-col-6 sf-gender-group">
-                                <label class="sf-field-label">Gender</label>
-                                <mat-radio-group formControlName="gender" class="sf-radio-row">
-                                    <mat-radio-button value="male">Male</mat-radio-button>
-                                    <mat-radio-button value="female">Female</mat-radio-button>
-                                </mat-radio-group>
+                        <div class="sf-icon-select-row">
+                            <div class="sf-icon-select-group">
+                                <label class="sf-field-label">Gender *</label>
+                                <div class="sf-icon-select-grid">
+                                    <div *ngFor="let opt of genderOptions"
+                                         class="sf-icon-tile"
+                                         [class.selected]="studentForm.get('gender')?.value === opt.value"
+                                         (click)="selectGender(opt.value)">
+                                        <div class="sf-icon-tile-circle">
+                                            <mat-icon>{{opt.icon}}</mat-icon>
+                                        </div>
+                                        <span class="sf-icon-tile-label">{{opt.label}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sf-icon-select-group">
+                                <label class="sf-field-label">Occupation / Status *</label>
+                                <div class="sf-icon-select-grid">
+                                    <div *ngFor="let opt of occupationOptions"
+                                         class="sf-icon-tile"
+                                         [class.selected]="studentForm.get('occupationStatus')?.value === opt.value"
+                                         (click)="selectOccupation(opt.value)">
+                                        <div class="sf-icon-tile-circle">
+                                            <mat-icon>{{opt.icon}}</mat-icon>
+                                        </div>
+                                        <span class="sf-icon-tile-label">{{opt.label}}</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -111,7 +132,7 @@
                 </div>
 
                 <!-- Family Info Card -->
-                <div class="sf-card">
+                <div class="sf-card" *ngIf="isStudent">
                     <div class="sf-card-header">
                         <mat-icon class="card-icon">family_restroom</mat-icon>
                         <h3>Family Details</h3>
@@ -173,7 +194,7 @@
                     <div class="sf-card-body">
                         <div class="sf-row">
                             <mat-form-field appearance="fill" class="sf-col-6">
-                                <mat-label>Emergency Contact Person</mat-label>
+                                <mat-label>Contact Person</mat-label>
                                 <input matInput formControlName="emgContactName" appInputFormat [alphabetOnly]="true">
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="sf-col-6">
@@ -185,7 +206,7 @@
                 </div>
 
                 <!-- Education Card -->
-                <div class="sf-card">
+                <div class="sf-card" *ngIf="isStudent">
                     <div class="sf-card-header">
                         <mat-icon class="card-icon">school</mat-icon>
                         <h3>Education</h3>
@@ -211,13 +232,29 @@
                         <h3>Sports Profile</h3>
                     </div>
                     <div class="sf-card-body">
+                        <!-- Preferred Sport Icon Picker -->
+                        <div class="sf-sport-picker">
+                            <label class="sf-field-label">Preferred Sport *</label>
+                            <div class="sf-sport-grid">
+                                <div *ngFor="let sport of sportOptions"
+                                     class="sf-sport-tile"
+                                     [class.selected]="studentForm.get('preferredSport')?.value === sport.value"
+                                     (click)="selectSport(sport.value)">
+                                    <div class="sf-sport-icon-wrap">
+                                        <mat-icon>{{sport.icon}}</mat-icon>
+                                    </div>
+                                    <span class="sf-sport-label">{{sport.label}}</span>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="sf-row">
                             <mat-form-field appearance="fill" class="sf-col-6">
-                                <mat-label>Previous Academy Played</mat-label>
+                                <mat-label>Previous Academy?</mat-label>
                                 <input matInput formControlName="preAcademyPlayed">
                             </mat-form-field>
-                            <mat-form-field appearance="fill" class="sf-col-6">
-                                <mat-label>Playing Position</mat-label>
+                            <mat-form-field *ngIf="isPositionSport" appearance="fill" class="sf-col-6">
+                                <mat-label>Position</mat-label>
                                 <mat-select formControlName="playingPostion">
                                     <mat-option value="goalkeeper">Goalkeeper</mat-option>
                                     <mat-option value="defenders">Defenders</mat-option>
@@ -229,13 +266,29 @@
                                 </mat-select>
                             </mat-form-field>
                         </div>
+
+                        <!-- Skill Level Icon Picker (non-position sports) -->
+                        <div class="sf-skill-picker" *ngIf="isSkillSport">
+                            <label class="sf-field-label">Skill Level *</label>
+                            <div class="sf-icon-select-grid sf-skill-grid">
+                                <div *ngFor="let skill of skillLevelOptions"
+                                     class="sf-icon-tile sf-skill-tile"
+                                     [class.selected]="studentForm.get('skillLevel')?.value === skill.value"
+                                     (click)="selectSkillLevel(skill.value)">
+                                    <div class="sf-icon-tile-circle">
+                                        <mat-icon>{{skill.icon}}</mat-icon>
+                                    </div>
+                                    <span class="sf-icon-tile-label">{{skill.label}}</span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="sf-row">
                             <mat-form-field appearance="fill" class="sf-col-6">
                                 <mat-label>Any Medical Issue</mat-label>
                                 <input matInput formControlName="anyMedicalIssue">
                             </mat-form-field>
                             <mat-form-field appearance="fill" class="sf-col-6">
-                                <mat-label>Ground Name</mat-label>
+                                <mat-label>Venue</mat-label>
                                 <mat-select formControlName="groundName">
                                     <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
                                 </mat-select>

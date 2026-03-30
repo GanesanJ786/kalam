@@ -50,6 +50,20 @@ export interface ChessPerformance {
   timeUsage: string;
 }
 
+export interface FitnessPerformance {
+  gameTitle: string;
+  gameDate: string;
+  kalamId: string;
+  coachId: string;
+  endurance: number;
+  strength: number;
+  flexibility: number;
+  speed: number;
+  balance: number;
+  coreStrength: number;
+  recovery: number;
+}
+
 @Component({
     selector: 'app-student-performance',
     templateUrl: './student-performance.component.html',
@@ -63,18 +77,24 @@ export class StudentPerformanceComponent implements OnInit {
     private kalamService: KalamService) { 
     this.studentPerformance = {} as StudentPerformance;
     this.chessPerformance = {} as ChessPerformance;
+    this.fitnessPerformance = {} as FitnessPerformance;
     this.ratingLevel = RatingLevel;
+    this.sportType = this.data.preferredSport || 'football';
     }
 
   title = "Add Student Performance";
   addStudentPerformance!: UntypedFormGroup;
   studentPerformance: StudentPerformance;
   chessPerformance: ChessPerformance;
+  fitnessPerformance: FitnessPerformance;
   sportType: string = 'football';
 
   ratingLevel: SelectItemNum[] = [];
+  pastPerformances: any[] = [];
+  isSmartFilled = false;
 
   ngOnInit(): void {
+    this.loadPastPerformances();
     this.addStudentPerformance = new UntypedFormGroup({
        ...(this.sportType == 'football' && {
         gameDate: new UntypedFormControl(this.studentPerformance.gameDate,[Validators.required]),
@@ -102,6 +122,17 @@ export class StudentPerformanceComponent implements OnInit {
         moveAccuracy: new UntypedFormControl(this.chessPerformance.moveAccuracy,[Validators.required]),
         mistakes: new UntypedFormControl(this.chessPerformance.mistakes,[Validators.required]),
         timeUsage: new UntypedFormControl(this.chessPerformance.timeUsage,[Validators.required]),
+      }),
+       ...(this.sportType == 'fitness' && {
+        gameTitle: new UntypedFormControl(this.fitnessPerformance.gameTitle,[Validators.required]),
+        gameDate: new UntypedFormControl(this.fitnessPerformance.gameDate,[Validators.required]),
+        endurance: new UntypedFormControl(this.fitnessPerformance.endurance,[Validators.required]),
+        strength: new UntypedFormControl(this.fitnessPerformance.strength,[Validators.required]),
+        flexibility: new UntypedFormControl(this.fitnessPerformance.flexibility,[Validators.required]),
+        speed: new UntypedFormControl(this.fitnessPerformance.speed,[Validators.required]),
+        balance: new UntypedFormControl(this.fitnessPerformance.balance,[Validators.required]),
+        coreStrength: new UntypedFormControl(this.fitnessPerformance.coreStrength,[Validators.required]),
+        recovery: new UntypedFormControl(this.fitnessPerformance.recovery,[Validators.required]),
       })
       });
   }
@@ -109,6 +140,55 @@ export class StudentPerformanceComponent implements OnInit {
   cancel(){
     this.dialogRef.close();
   }
+
+  loadPastPerformances() {
+    if (this.data.kalamId) {
+      this.kalamService.getStudentPerformance(this.data.kalamId).subscribe((res: any) => {
+        this.pastPerformances = res.map((doc: any) => ({
+          id: doc.payload.doc.id,
+          ...doc.payload.doc.data() as {}
+        }));
+      });
+    }
+  }
+
+  smartFill() {
+    const excludeFields = ['gameDate', 'gameTitle', 'result', 'timeUsage'];
+    const ratingFields = Object.keys(this.addStudentPerformance.controls)
+      .filter(key => !excludeFields.includes(key));
+
+    if (this.pastPerformances.length > 0) {
+      // Use averages from past performance data
+      for (const field of ratingFields) {
+        const values = this.pastPerformances
+          .map(p => p[field])
+          .filter(v => v !== undefined && v !== null && !isNaN(Number(v)));
+        if (values.length > 0) {
+          const avg = Math.round(values.reduce((a: number, b: number) => a + b, 0) / values.length);
+          this.addStudentPerformance.get(field)?.setValue(avg);
+        }
+      }
+    } else {
+      // Use competency-based defaults
+      const competency = (this.data.competency || '').toLowerCase();
+      let base: number;
+      if (competency === 'advanced') {
+        base = 7;
+      } else if (competency === 'intermediate') {
+        base = 5;
+      } else {
+        base = 3;
+      }
+      for (const field of ratingFields) {
+        this.addStudentPerformance.get(field)?.setValue(base);
+      }
+    }
+
+    // Auto-set today's date
+    this.addStudentPerformance.get('gameDate')?.setValue(new Date());
+    this.isSmartFilled = true;
+  }
+
   save(){
     console.log(this.addStudentPerformance.value)
     if (this.addStudentPerformance.invalid) {

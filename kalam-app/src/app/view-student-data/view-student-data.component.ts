@@ -14,7 +14,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import {MatDialog, MAT_DIALOG_DATA as MAT_DIALOG_DATA, MatDialogRef as MatDialogRef} from '@angular/material/dialog';
 import { KalamService } from '../kalam.service';
 import { StudentDetails } from '../student-form/student-form.component';
-import { SportsList } from '../constant';
+import { SportsList, getSportIcon } from '../constant';
 import { StudentPerformance, StudentPerformanceComponent } from '../student-performance/student-performance.component';
 import * as _ from 'lodash';
 
@@ -29,7 +29,8 @@ export class ViewStudentDataComponent implements OnInit {
   title: string = "PLAYER";
   student: StudentDetails;
   panelOpenState = false;
-  studentPerData: StudentPerformance[] = [];
+  studentPerData: any[] = [];
+  getSportIcon = getSportIcon;
   
   constructor(
     private kalamService: KalamService,
@@ -62,8 +63,20 @@ export class ViewStudentDataComponent implements OnInit {
   cancel(){
     this.dialogRef.close();
   }
+  positionSports = ['football', 'hockey'];
+
+  get isPositionSport(): boolean {
+    return this.positionSports.includes(this.student?.preferredSport || '');
+  }
+
   getSportLabel(value: string) {
-    return SportsList.filter(res => res.value == value)[0].label;
+    const match = SportsList.filter(res => res.value == value)[0];
+    return match ? match.label : value || '';
+  }
+
+  getSkillLevelLabel(value: string): string {
+    if (!value) return '';
+    return value.charAt(0).toUpperCase() + value.slice(1);
   }
 
   addPerform(){

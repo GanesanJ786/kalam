@@ -80,11 +80,11 @@
                     </mat-select>
                 </mat-form-field>
 
-                <!-- Ground Filter -->
+                <!-- Venue Filter -->
                 <mat-form-field appearance="fill" class="sa-toolbar-field">
-                    <mat-label>Ground</mat-label>
+                    <mat-label>Venue</mat-label>
                     <mat-select [(ngModel)]="filterGround" (selectionChange)="onFilterOrSortChange()">
-                        <mat-option value="all">All Grounds</mat-option>
+                        <mat-option value="all">All Venues</mat-option>
                         <mat-option *ngFor="let g of uniqueGrounds" [value]="g">{{g}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -96,7 +96,7 @@
                     <mat-select [(ngModel)]="sortBy" (selectionChange)="onFilterOrSortChange()">
                         <mat-option value="name">Name</mat-option>
                         <mat-option value="gender">Gender</mat-option>
-                        <mat-option value="ground">Ground</mat-option>
+                        <mat-option value="ground">Venue</mat-option>
                         <mat-option value="dob">Date of Birth</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -150,7 +150,7 @@
                             <span class="sa-detail-value sa-position">{{row.playingPostion}}</span>
                         </div>
                         <div class="sa-detail-block">
-                            <span class="sa-detail-label">Ground</span>
+                            <span class="sa-detail-label">Venue</span>
                             <span class="sa-detail-value">{{row.groundName}}</span>
                         </div>
                     </div>

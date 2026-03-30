@@ -10,20 +10,20 @@
     <app-header [title]="title"></app-header>
 
     <div class="vca-body">
-        <!-- Top bar: Home button -->
-        <div class="vca-top-bar">
-            <button class="vca-home-btn" mat-icon-button (click)="gotoHome()">
-                <mat-icon>home</mat-icon>
-            </button>
-            <div class="vca-top-title">
-                <mat-icon class="vca-top-icon">supervisor_account</mat-icon>
-                <span>Coach Attendance</span>
-            </div>
-            <div class="vca-spacer"></div>
-        </div>
-
         <!-- Scrollable content -->
         <div class="vca-scroll-area">
+
+            <!-- Breadcrumb nav row -->
+            <div class="vca-nav-row">
+                <button class="vca-back-btn" mat-icon-button (click)="gotoHome()">
+                    <mat-icon>arrow_back</mat-icon>
+                </button>
+                <div class="vca-breadcrumb">
+                    <span class="vca-breadcrumb-parent" (click)="gotoHome()">Home</span>
+                    <mat-icon class="vca-breadcrumb-sep">chevron_right</mat-icon>
+                    <span class="vca-breadcrumb-current">Coach Attendance</span>
+                </div>
+            </div>
 
             <!-- Filter Card: Date Range + Coach Selector -->
             <div class="vca-card vca-filter-card">
@@ -91,12 +91,42 @@
                 </div>
             </div>
 
+            <!-- ===== TASK BANNER — Click to view tasks ===== -->
+            <div *ngIf="taskEntries.length > 0" class="vca-task-banner" (click)="viewCoachTasks()">
+                <div class="vca-task-banner-left">
+                    <div class="vca-task-banner-icon-ring">
+                        <mat-icon>assignment</mat-icon>
+                    </div>
+                    <div class="vca-task-banner-info">
+                        <span class="vca-task-banner-title">Assigned Tasks</span>
+                        <span class="vca-task-banner-date">
+                            <mat-icon class="vca-task-banner-date-icon">date_range</mat-icon>
+                            {{getDateRangeLabel()}}
+                        </span>
+                    </div>
+                </div>
+                <div class="vca-task-banner-right">
+                    <div class="vca-task-banner-counts">
+                        <span class="vca-task-banner-count vca-task-banner-pending" *ngIf="getTaskPendingCount() > 0">
+                            {{getTaskPendingCount()}} Pending
+                        </span>
+                        <span class="vca-task-banner-count vca-task-banner-done" *ngIf="getTaskCompletedCount() > 0">
+                            {{getTaskCompletedCount()}} Done
+                        </span>
+                    </div>
+                    <div class="vca-task-banner-badge">
+                        <span>{{taskEntries.length}}</span>
+                    </div>
+                    <mat-icon class="vca-task-banner-arrow">chevron_right</mat-icon>
+                </div>
+            </div>
+
             <!-- ===== MOBILE: Card-based attendance view ===== -->
             <div *ngIf="coachView.length > 0" class="vca-attendance-cards">
                 <div *ngFor="let coach of coachView; let i = index" class="vca-card vca-attendance-item"
                     [class.vca-leave]="coach.status === 'LEAVE'" [class.vca-present]="coach.status !== 'LEAVE'">
 
-                    <!-- Card Header Row: Name + Ground | Status Badge + Actions -->
+                    <!-- Card Header Row: Name + Venue | Status Badge + Actions -->
                     <div class="vca-card-top-row">
                         <div class="vca-card-identity">
                             <div class="vca-att-field">
@@ -104,7 +134,7 @@
                                 <span class="vca-field-value">{{coach.coachName}}</span>
                             </div>
                             <div class="vca-att-field vca-ground-field" *ngIf="coach.status !== 'LEAVE'">
-                                <mat-icon class="vca-field-icon">sports_soccer</mat-icon>
+                                <mat-icon class="vca-field-icon">{{getSportIcon(selectedCoachSport)}}</mat-icon>
                                 <span class="vca-field-value">{{coach.groundName}}</span>
                             </div>
                         </div>
@@ -120,12 +150,6 @@
                                     matTooltip="View Student Attendance"
                                     (click)="viewStudentAttendance(coach)">
                                     <mat-icon>calendar_today</mat-icon>
-                                </button>
-                                <button class="vca-action-btn vca-action-task" mat-icon-button
-                                    matTooltip="View Tasks"
-                                    (click)="viewCoachTasks(coach)">
-                                    <mat-icon>assignment</mat-icon>
-                                    <span class="vca-task-badge" *ngIf="taskEntries.length > 0">{{taskEntries.length}}</span>
                                 </button>
                             </div>
                         </div>
@@ -153,7 +177,7 @@
                                 </div>
                                 <span class="vca-time-value">{{logInValue(coach)}}</span>
                                 <button *ngIf="coach.loginAddress" class="vca-location-btn"
-                                    (click)="viewLocation(coach.loginAddress, coach.logoutAddress)">
+                                    (click)="viewLocation(coach.loginAddress, coach.logoutAddress, coach.loginCoords, coach.logoutCoords)">
                                     <mat-icon>location_on</mat-icon>
                                 </button>
                             </div>
@@ -165,7 +189,7 @@
                                 </div>
                                 <span class="vca-time-value">{{coach.logOffDataTime}}</span>
                                 <button *ngIf="coach.logoutAddress" class="vca-location-btn"
-                                    (click)="viewLocation(coach.loginAddress, coach.logoutAddress)">
+                                    (click)="viewLocation(coach.loginAddress, coach.logoutAddress, coach.loginCoords, coach.logoutCoords)">
                                     <mat-icon>location_on</mat-icon>
                                 </button>
                             </div>

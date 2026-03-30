@@ -80,6 +80,32 @@ export const RatingLevel: SelectItemNum[] = [
     {value:10, label: 10}
 ]
 
+export interface SportIconItem {
+    value: string;
+    label: string;
+    icon: string;
+}
+
+export const SportsIconMap: SportIconItem[] = [
+    { value: 'football', label: 'Football', icon: 'sports_soccer' },
+    { value: 'volleyball', label: 'Volleyball', icon: 'sports_volleyball' },
+    { value: 'badminton', label: 'Badminton', icon: 'sports_tennis' },
+    { value: 'cricket', label: 'Cricket', icon: 'sports_cricket' },
+    { value: 'hockey', label: 'Hockey', icon: 'sports_hockey' },
+    { value: 'chess', label: 'Chess', icon: 'psychology' },
+    { value: 'fitness', label: 'Fitness', icon: 'fitness_center' },
+];
+
+export function getSportIcon(sport: string): string {
+    const match = SportsIconMap.find(s => s.value === (sport || '').toLowerCase());
+    return match ? match.icon : 'sports';
+}
+
+export function getSportLabel(sport: string): string {
+    const match = SportsIconMap.find(s => s.value === (sport || '').toLowerCase());
+    return match ? match.label : sport || '';
+}
+
 export const Logo = {
     logoUrl: ``
 }

@@ -16,6 +16,10 @@
       <div class="ctd-header-text">
         <h2 class="ctd-title">Assigned Tasks</h2>
         <span class="ctd-subtitle">{{ coachName }}</span>
+        <span class="ctd-date-range" *ngIf="dateRange">
+          <mat-icon class="ctd-date-icon">date_range</mat-icon>
+          {{ dateRange.start }} – {{ dateRange.end }}
+        </span>
       </div>
     </div>
     <button class="ctd-close-btn" (click)="close()">
@@ -82,27 +86,11 @@
           </div>
         </div>
 
-        <!-- Response Info Row (if responded) — 2 columns, equal width -->
-        <div class="ctd-info-grid" *ngIf="task.taskRespondedDate">
-          <div class="ctd-info-cell ctd-info-responded">
-            <span class="ctd-detail-label">Responded Date</span>
-            <span class="ctd-detail-value">{{ task.taskRespondedDate }}</span>
-          </div>
-          <div class="ctd-info-cell ctd-info-responded">
-            <span class="ctd-detail-label">Responded Time</span>
-            <span class="ctd-detail-value">{{ task.taskRespondedTime }}</span>
-          </div>
-        </div>
-
-        <!-- Empty responded row placeholder for pending tasks -->
-        <div class="ctd-info-grid" *ngIf="!task.taskRespondedDate">
-          <div class="ctd-info-cell ctd-info-empty">
-            <span class="ctd-detail-label">Responded Date</span>
-            <span class="ctd-detail-value ctd-value-empty">—</span>
-          </div>
-          <div class="ctd-info-cell ctd-info-empty">
-            <span class="ctd-detail-label">Responded Time</span>
-            <span class="ctd-detail-value ctd-value-empty">—</span>
+        <!-- Task Date Range -->
+        <div class="ctd-info-grid">
+          <div class="ctd-info-cell" style="grid-column: 1 / -1;">
+            <span class="ctd-detail-label">Task Date Range</span>
+            <span class="ctd-detail-value">{{ task.taskDateStart && task.taskDateEnd ? task.taskDateStart + ' – ' + task.taskDateEnd : task.activeDate || '—' }}</span>
           </div>
         </div>
       </div>

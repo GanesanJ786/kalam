@@ -63,57 +63,83 @@ $font-lg: 1.125rem;
   flex: 1;
   overflow: hidden;
 }
-
 // ============================================
-// TOP BAR — Home + Title
+// NAV ROW — Breadcrumb navigation
 // ============================================
-.vca-top-bar {
+.vca-nav-row {
   display: flex;
   align-items: center;
-  padding: 0.5rem 0.75rem;
-  background: linear-gradient(180deg, $black-2 0%, $black-3 100%);
-  border-bottom: 1px solid $grey-1;
-  flex-shrink: 0;
-  min-height: 52px;
+  gap: 0.375rem;
+  margin-bottom: 0.875rem;
 }
 
-.vca-home-btn {
+.vca-back-btn {
   color: $orange-light !important;
   flex-shrink: 0;
-  transition: color 0.2s ease, transform 0.2s ease;
+  width: 32px !important;
+  height: 32px !important;
+  line-height: 32px !important;
+  padding: 0 !important;
+  display: inline-flex !important;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, background 0.2s ease;
+
+  .mat-mdc-button-touch-target {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    margin: 0 !important;
+  }
 
   &:hover {
     color: $orange !important;
-    transform: scale(1.1);
+    background: rgba($orange, 0.08) !important;
   }
 }
 
-.vca-top-title {
+.vca-breadcrumb {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  flex: 1;
-  justify-content: center;
+  gap: 0.2rem;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
 
-  .vca-top-icon {
-    color: $orange;
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
-  }
+.vca-breadcrumb-parent {
+  font-size: $font-sm;
+  font-weight: 600;
+  color: $grey-3;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  white-space: nowrap;
 
-  span {
-    font-size: $font-base;
-    font-weight: 700;
-    color: $white;
-    text-transform: uppercase;
-    letter-spacing: 0.8px;
+  &:hover {
+    color: $orange-light;
   }
 }
 
-.vca-spacer {
-  width: 40px;
+.vca-breadcrumb-sep {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+  color: $grey-2;
   flex-shrink: 0;
+}
+
+.vca-breadcrumb-current {
+  font-size: $font-sm;
+  font-weight: 700;
+  color: $orange-light;
+  letter-spacing: 0.3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // ============================================
@@ -747,6 +773,159 @@ $blue: #2979FF;
 }
 
 // ============================================
+// TASK BANNER — Compact tap-to-view card
+// ============================================
+$blue: #2979FF;
+
+.vca-task-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  margin-top: 0.875rem;
+  margin-bottom: 0.875rem;
+  background: linear-gradient(160deg, $black-3 0%, $black-2 100%);
+  border: 1px solid rgba($blue, 0.25);
+  border-left: 4px solid $blue;
+  border-radius: $radius-md;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  -webkit-tap-highlight-color: transparent;
+
+  &:hover {
+    border-color: rgba($blue, 0.5);
+    box-shadow: 0 4px 20px rgba($blue, 0.12);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.985);
+  }
+}
+
+.vca-task-banner-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.vca-task-banner-icon-ring {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba($blue, 0.1);
+  border: 1.5px solid rgba($blue, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: $blue;
+  }
+}
+
+.vca-task-banner-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.vca-task-banner-title {
+  font-size: $font-sm;
+  font-weight: 800;
+  color: $white;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+
+.vca-task-banner-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: $font-xs;
+  color: $grey-3;
+  font-weight: 600;
+}
+
+.vca-task-banner-date-icon {
+  font-size: 12px;
+  width: 12px;
+  height: 12px;
+  color: rgba($blue, 0.7);
+}
+
+.vca-task-banner-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.vca-task-banner-counts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.1rem;
+}
+
+.vca-task-banner-count {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  line-height: 1.2;
+}
+
+$yellow: #FFD600;
+
+.vca-task-banner-pending {
+  color: $yellow;
+}
+
+.vca-task-banner-done {
+  color: $green;
+}
+
+.vca-task-banner-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $blue, darken($blue, 12%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px rgba($blue, 0.3);
+
+  span {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: $white;
+    line-height: 1;
+  }
+}
+
+.vca-task-banner-arrow {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: $grey-3;
+  transition: transform 0.2s ease;
+
+  .vca-task-banner:hover & {
+    transform: translateX(2px);
+    color: $blue;
+  }
+}
+
+// ============================================
 // RESPONSIVE
 // ============================================
 
@@ -779,8 +958,25 @@ $blue: #2979FF;
     }
   }
 
-  .vca-top-title span {
-    font-size: $font-sm;
+  .vca-nav-row {
+    margin-bottom: 0.5rem;
+  }
+
+  .vca-back-btn {
+    width: 30px !important;
+    height: 30px !important;
+    line-height: 30px !important;
+
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+
+  .vca-breadcrumb-parent,
+  .vca-breadcrumb-current {
+    font-size: $font-xs;
   }
 
   .vca-stats-bar {

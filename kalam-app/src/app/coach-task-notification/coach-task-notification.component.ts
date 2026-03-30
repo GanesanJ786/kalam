@@ -20,6 +20,10 @@ import * as _ from 'lodash';
 import { KalamService } from '../kalam.service';
 import { TaskService, CoachTask } from '../task.service';
 
+const today = new Date();
+const month = today.getMonth();
+const year = today.getFullYear();
+
 @Component({
   selector: 'app-coach-task-notification',
   standalone: false,
@@ -46,7 +50,12 @@ export class CoachTaskNotificationComponent implements OnInit {
 
   // Task History (both roles)
   taskHistory: CoachTask[] = [];
-  historyDisplayedColumns: string[] = ['date', 'title', 'description', 'assignedTo', 'status'];
+  historyDisplayedColumns: string[] = ['date', 'title', 'description', 'assignedTo', 'status', 'actions'];
+
+  // Date range filter
+  taskDateRangeGroup!: UntypedFormGroup;
+  startOfMonth: any;
+  endOfMonth: any;
 
   // Loading states
   loadingTasks: boolean = false;
@@ -77,6 +86,16 @@ export class CoachTaskNotificationComponent implements OnInit {
       assignedTo: new UntypedFormControl('', [Validators.required])
     });
 
+    // Initialize date range picker
+    const todayDate = new Date().getDate();
+    const startDate = todayDate > 7 ? todayDate - 7 : 1;
+    this.startOfMonth = new Date(moment().startOf('month').format('YYYY-MM-DD hh:mm'));
+    this.endOfMonth = new Date(moment().endOf('month').format('YYYY-MM-DD hh:mm'));
+    this.taskDateRangeGroup = new UntypedFormGroup({
+      start: new UntypedFormControl(new Date(year, month, startDate)),
+      end: new UntypedFormControl(new Date(year, month, todayDate)),
+    });
+
     if (this.isOwner) {
       this.loadCoachList();
       this.loadAssignedTasks();
@@ -96,6 +115,11 @@ export class CoachTaskNotificationComponent implements OnInit {
         ...document.payload.doc.data() as {}
       }));
       this.coachList = data.filter((c: any) => c.kalamId !== this.myKalamId && c.approved);
+      // Add self (Head Coach) at the beginning for self-task creation
+      this.coachList.unshift({
+        kalamId: this.myKalamId,
+        name: `${this.myName} (Self)`
+      });
     });
   }
 
@@ -140,7 +164,11 @@ export class CoachTaskNotificationComponent implements OnInit {
       academyId: this.academyId,
       assignedDate: moment().format('MM-DD-YYYY'),
       assignedTime: moment().format('HH:mm:ss'),
-      status: 'Pending'
+      status: 'Pending',
+      taskDateStart: this.taskDateRangeGroup.value.start
+        ? moment(this.taskDateRangeGroup.value.start).format('MM-DD-YYYY') : '',
+      taskDateEnd: this.taskDateRangeGroup.value.end
+        ? moment(this.taskDateRangeGroup.value.end).format('MM-DD-YYYY') : ''
     };
 
     this.taskService.createTask(task, this.coachId);
@@ -194,6 +222,10 @@ export class CoachTaskNotificationComponent implements OnInit {
     });
   }
 
+  isSelfTask(task: CoachTask): boolean {
+    return task.assignedTo === this.myKalamId;
+  }
+
   respondToTask(task: CoachTask, status: 'Acknowledged' | 'Completed'): void {
     this.taskService.respondToTask(task.id!, status, task.attendanceDocId);
     this._snackBar.open(`Task marked as ${status}!`, '', {
@@ -212,6 +244,19 @@ export class CoachTaskNotificationComponent implements OnInit {
       case 'Completed': return 'status-completed';
       default: return '';
     }
+  }
+
+  getTaskDateRange(task: CoachTask): string {
+    if (task.taskDateStart && task.taskDateEnd) {
+      const start = moment(task.taskDateStart, 'MM-DD-YYYY');
+      const end = moment(task.taskDateEnd, 'MM-DD-YYYY');
+      return start.format('MMM D') + ' – ' + end.format('MMM D, YYYY');
+    }
+    // Fallback for tasks created before date range was added
+    if (task.assignedDate) {
+      return moment(task.assignedDate, 'MM-DD-YYYY').format('MMM D, YYYY');
+    }
+    return '—';
   }
 
   get pendingCount(): number {

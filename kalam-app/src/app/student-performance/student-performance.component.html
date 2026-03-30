@@ -16,6 +16,12 @@
             <mat-icon class="dialog-title-icon">emoji_events</mat-icon>
             {{title}}
         </h1>
+        <div class="smart-fill-bar">
+            <button class="smart-fill-btn" (click)="smartFill()" [disabled]="isSmartFilled" type="button">
+                <mat-icon>auto_fix_high</mat-icon>
+                <span>{{isSmartFilled ? 'Smart Filled' : (pastPerformances.length > 0 ? 'Smart Fill (from history)' : 'Smart Fill (from level)')}}</span>
+            </button>
+        </div>
         <form [formGroup]="addStudentPerformance" #form="ngForm">
             <div class="ratingsSection">
                 <ng-container *ngIf="sportType == 'football'">
@@ -165,6 +171,62 @@
                     <mat-form-field appearance="fill">
                         <mat-label>Time Usage</mat-label>
                         <input matInput formControlName="timeUsage" placeholder="Specify in minutes">
+                    </mat-form-field>
+                </ng-container>
+                <ng-container *ngIf="sportType == 'fitness'">
+                    <mat-form-field appearance="fill">
+                        <mat-label>Session Title</mat-label>
+                        <input matInput formControlName="gameTitle">
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Date</mat-label>
+                        <input matInput [matDatepicker]="fitnessPicker" formControlName="gameDate">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matSuffix [for]="fitnessPicker">
+                          </mat-datepicker-toggle>
+                        <mat-datepicker #fitnessPicker></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Endurance</mat-label>
+                        <mat-select formControlName="endurance">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Strength</mat-label>
+                        <mat-select formControlName="strength">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Flexibility</mat-label>
+                        <mat-select formControlName="flexibility">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Speed / Agility</mat-label>
+                        <mat-select formControlName="speed">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Balance</mat-label>
+                        <mat-select formControlName="balance">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Core Strength</mat-label>
+                        <mat-select formControlName="coreStrength">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill">
+                        <mat-label>Recovery</mat-label>
+                        <mat-select formControlName="recovery">
+                            <mat-option *ngFor="let rating of ratingLevel" [value]="rating.value">{{rating.label}}</mat-option>
+                        </mat-select>
                     </mat-form-field>
                 </ng-container>
             </div>

@@ -48,6 +48,9 @@ export interface StudentDetails {
   height: string;
   weight: string;
   address: string;
+  occupationStatus?: string;
+  preferredSport?: string;
+  skillLevel?: string;
   kalamId?: string;
   underAge?: string;
   imageUrl: string;
@@ -109,6 +112,31 @@ export class StudentFormComponent implements OnInit {
   profileImg: boolean = false;
   scholarship: SelectItem[] = [];
   competencyLevel: SelectItem[] = [];
+  sportOptions = [
+    { value: 'football', label: 'Football', icon: 'sports_soccer' },
+    { value: 'volleyball', label: 'Volleyball', icon: 'sports_volleyball' },
+    { value: 'badminton', label: 'Badminton', icon: 'sports_tennis' },
+    { value: 'cricket', label: 'Cricket', icon: 'sports_cricket' },
+    { value: 'chess', label: 'Chess', icon: 'psychology' },
+    { value: 'hockey', label: 'Hockey', icon: 'sports_hockey' },
+    { value: 'fitness', label: 'Fitness', icon: 'fitness_center' },
+  ];
+  genderOptions = [
+    { value: 'male', label: 'Male', icon: 'male' },
+    { value: 'female', label: 'Female', icon: 'female' },
+    { value: 'other', label: 'Other', icon: 'transgender' },
+  ];
+  occupationOptions = [
+    { value: 'student', label: 'Student', icon: 'school' },
+    { value: 'professional', label: 'Professional', icon: 'work' },
+    { value: 'other', label: 'Other', icon: 'person' },
+  ];
+  skillLevelOptions = [
+    { value: 'beginner', label: 'Beginner', icon: 'emoji_events' },
+    { value: 'intermediate', label: 'Intermediate', icon: 'trending_up' },
+    { value: 'advanced', label: 'Advanced', icon: 'star' },
+  ];
+  positionSports = ['football', 'hockey'];
 
   constructor(private kalamService: KalamService, private router: Router,
     private _snackBar: MatSnackBar,
@@ -153,6 +181,7 @@ export class StudentFormComponent implements OnInit {
     });
     this.studentForm = new UntypedFormGroup({
       imageUrl: new UntypedFormControl("", []),
+      occupationStatus: new UntypedFormControl(this.studentDetails.occupationStatus || 'student', [Validators.required]),
       name: new UntypedFormControl(this.studentDetails.name,[Validators.required]),
       dob: new UntypedFormControl(this.studentDetails.dob, [Validators.required]),
       age: new UntypedFormControl(this.studentDetails.age,[Validators.required]),
@@ -161,7 +190,7 @@ export class StudentFormComponent implements OnInit {
       motherName: new UntypedFormControl(this.studentDetails.motherName,[Validators.required]),
       fatherOcc: new UntypedFormControl(this.studentDetails.fatherOcc, [Validators.required]),
       motherOcc: new UntypedFormControl(this.studentDetails.motherOcc,[Validators.required]),
-      emailId: new UntypedFormControl(this.studentDetails.emailId, [Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
+      emailId: new UntypedFormControl(this.studentDetails.emailId, [Validators.required,Validators.email,Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$')]),
       mobileNum: new UntypedFormControl(this.studentDetails.mobileNum,[Validators.required]),
       whatsappNum: new UntypedFormControl(this.studentDetails.whatsappNum, [Validators.required]),
       emgContactName: new UntypedFormControl(this.studentDetails.emgContactName,[Validators.required]),
@@ -176,8 +205,22 @@ export class StudentFormComponent implements OnInit {
       weight: new UntypedFormControl(this.studentDetails.weight, [Validators.required]),
       address: new UntypedFormControl(this.studentDetails.address, [Validators.required]),
       groundName: new UntypedFormControl(this.studentDetails.groundName, [Validators.required]),
+      preferredSport: new UntypedFormControl(this.studentDetails.preferredSport || '', [Validators.required]),
+      skillLevel: new UntypedFormControl(this.studentDetails.skillLevel || '', []),
       scholarship: new UntypedFormControl(this.studentDetails.scholarship, []),
       competency: new UntypedFormControl(this.studentDetails.competency, []),
+    });
+
+    this.onOccupationStatusChange(this.studentForm.get('occupationStatus')?.value || 'student');
+
+    this.studentForm.get('occupationStatus')?.valueChanges.subscribe((status: string) => {
+      this.onOccupationStatusChange(status);
+    });
+
+    this.onSportChange(this.studentForm.get('preferredSport')?.value || '');
+
+    this.studentForm.get('preferredSport')?.valueChanges.subscribe((sport: string) => {
+      this.onSportChange(sport);
     });
 
     this.btnValidation();
@@ -188,35 +231,106 @@ export class StudentFormComponent implements OnInit {
   }
 
 
+  get isStudent(): boolean {
+    return this.studentForm?.get('occupationStatus')?.value === 'student';
+  }
+
+  get isPositionSport(): boolean {
+    const sport = this.studentForm?.get('preferredSport')?.value;
+    return this.positionSports.includes(sport);
+  }
+
+  get isSkillSport(): boolean {
+    const sport = this.studentForm?.get('preferredSport')?.value;
+    return sport && !this.positionSports.includes(sport);
+  }
+
+  onOccupationStatusChange(status: string) {
+    const familyFields = ['fatherName', 'motherName', 'fatherOcc', 'motherOcc'];
+    const educationFields = ['institutionName', 'studying'];
+    const fields = [...familyFields, ...educationFields];
+
+    if (status === 'student') {
+      fields.forEach(f => {
+        this.studentForm.get(f)?.setValidators([Validators.required]);
+        this.studentForm.get(f)?.updateValueAndValidity();
+      });
+    } else {
+      fields.forEach(f => {
+        this.studentForm.get(f)?.clearValidators();
+        this.studentForm.get(f)?.updateValueAndValidity();
+      });
+    }
+  }
+
+  selectSport(value: string) {
+    this.studentForm.get('preferredSport')?.setValue(value);
+    this.studentForm.get('preferredSport')?.markAsTouched();
+  }
+
+  selectSkillLevel(value: string) {
+    this.studentForm.get('skillLevel')?.setValue(value);
+    this.studentForm.get('skillLevel')?.markAsTouched();
+  }
+
+  onSportChange(sport: string) {
+    if (this.positionSports.includes(sport)) {
+      this.studentForm.get('playingPostion')?.setValidators([Validators.required]);
+      this.studentForm.get('skillLevel')?.clearValidators();
+      this.studentForm.get('skillLevel')?.setValue('');
+    } else if (sport) {
+      this.studentForm.get('skillLevel')?.setValidators([Validators.required]);
+      this.studentForm.get('playingPostion')?.clearValidators();
+      this.studentForm.get('playingPostion')?.setValue('');
+    } else {
+      this.studentForm.get('playingPostion')?.setValidators([Validators.required]);
+      this.studentForm.get('skillLevel')?.clearValidators();
+    }
+    this.studentForm.get('playingPostion')?.updateValueAndValidity();
+    this.studentForm.get('skillLevel')?.updateValueAndValidity();
+  }
+
+  selectGender(value: string) {
+    this.studentForm.get('gender')?.setValue(value);
+    this.studentForm.get('gender')?.markAsTouched();
+  }
+
+  selectOccupation(value: string) {
+    this.studentForm.get('occupationStatus')?.setValue(value);
+    this.studentForm.get('occupationStatus')?.markAsTouched();
+  }
+
   btnValidation() {
     this.studentForm.valueChanges.subscribe((val:StudentDetails) => {
-      if(this.form1 && val.name && val.dob && val.age && val.gender 
-        && val.fatherName && val.fatherOcc && val.motherName && val.motherOcc
-        && val.mobileNum && val.whatsappNum) {
-          if(!this.studentForm.controls['name']['errors'] && !this.studentForm.controls['dob']['errors'] && !this.studentForm.controls['age']['errors'] && !this.studentForm.controls['emailId']['errors'] && !this.studentForm.controls['gender']['errors'] 
-            && !this.studentForm.controls['fatherName']['errors'] && !this.studentForm.controls['fatherOcc']['errors'] && !this.studentForm.controls['motherName']['errors'] && !this.studentForm.controls['motherOcc']['errors']
-            && !this.studentForm.controls['mobileNum']['errors'] && !this.studentForm.controls['whatsappNum']['errors']) {
-              this.form1Validation = false;
-            }else {
-              this.form1Validation = true;
-            }
-      }else {
-        this.form1Validation = true;
-      } 
+      if(this.form1) {
+        const baseValid = val.name && val.dob && val.age && val.gender && val.mobileNum && val.whatsappNum;
+        const familyValid = !this.isStudent || (val.fatherName && val.fatherOcc && val.motherName && val.motherOcc);
+        if(baseValid && familyValid) {
+          const noBaseErrors = !this.studentForm.controls['name']['errors'] && !this.studentForm.controls['dob']['errors'] && !this.studentForm.controls['age']['errors'] && !this.studentForm.controls['emailId']['errors'] && !this.studentForm.controls['gender']['errors']
+            && !this.studentForm.controls['mobileNum']['errors'] && !this.studentForm.controls['whatsappNum']['errors'];
+          const noFamilyErrors = !this.isStudent || (!this.studentForm.controls['fatherName']['errors'] && !this.studentForm.controls['fatherOcc']['errors'] && !this.studentForm.controls['motherName']['errors'] && !this.studentForm.controls['motherOcc']['errors']);
+          this.form1Validation = !(noBaseErrors && noFamilyErrors);
+        }else {
+          this.form1Validation = true;
+        }
+      }
 
-      if(this.form2 && val.emgContactName && val.emgContactNum && val.institutionName && val.studying && val.groundName
-        && val.preAcademyPlayed && val.playingPostion && val.anyMedicalIssue && val.jersySize
-        && val.height && val.weight && val.address){
-          if(!this.studentForm.controls['emgContactName']['errors'] && !this.studentForm.controls['emgContactNum']['errors'] && !this.studentForm.controls['institutionName']['errors'] && !this.studentForm.controls['studying']['errors'] && !this.studentForm.controls['groundName']['errors'] 
-            && !this.studentForm.controls['preAcademyPlayed']['errors'] && !this.studentForm.controls['playingPostion']['errors'] && !this.studentForm.controls['anyMedicalIssue']['errors'] && !this.studentForm.controls['jersySize']['errors']
-            && !this.studentForm.controls['height']['errors'] && !this.studentForm.controls['weight']['errors'] && !this.studentForm.controls['address']['errors']) {
-              this.form2Validation = false;
-          }else {
-            this.form2Validation = true;
-          }
-
-      }else {
-        this.form2Validation = true;
+      if(this.form2) {
+        const educationValid = !this.isStudent || (val.institutionName && val.studying);
+        const posOrSkill = this.isPositionSport ? val.playingPostion : (this.isSkillSport ? (this.studentForm.get('skillLevel')?.value) : true);
+        const baseValid2 = val.emgContactName && val.emgContactNum && val.groundName
+          && val.preAcademyPlayed && val.anyMedicalIssue && val.jersySize
+          && val.height && val.weight && val.address && val.preferredSport && posOrSkill;
+        if(baseValid2 && educationValid){
+          const noBaseErrors2 = !this.studentForm.controls['emgContactName']['errors'] && !this.studentForm.controls['emgContactNum']['errors'] && !this.studentForm.controls['groundName']['errors'] 
+            && !this.studentForm.controls['preAcademyPlayed']['errors'] && !this.studentForm.controls['anyMedicalIssue']['errors'] && !this.studentForm.controls['jersySize']['errors']
+            && !this.studentForm.controls['height']['errors'] && !this.studentForm.controls['weight']['errors'] && !this.studentForm.controls['address']['errors'] && !this.studentForm.controls['preferredSport']['errors']
+            && !this.studentForm.controls['playingPostion']['errors'] && !this.studentForm.controls['skillLevel']['errors'];
+          const noEduErrors = !this.isStudent || (!this.studentForm.controls['institutionName']['errors'] && !this.studentForm.controls['studying']['errors']);
+          this.form2Validation = !(noBaseErrors2 && noEduErrors);
+        }else {
+          this.form2Validation = true;
+        }
       }
     });
   }
@@ -225,7 +339,6 @@ export class StudentFormComponent implements OnInit {
     let studentForm: StudentDetails = {...this.studentForm.value};
     let obj = {...this.studentForm.value};
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    studentForm.kalamId = String(Date.now()).slice(-7);
     studentForm.dob = moment(obj.dob).format("MM/DD/YYYY");
     studentForm.underAge = this.underAgeCalc(studentForm.dob);
     if(url) {
@@ -235,17 +348,24 @@ export class StudentFormComponent implements OnInit {
     }else if(this.editAccess) {
       studentForm['imageUrl'] = !this.imgSrc.includes("./assets/images/upload.png") ? this.imgSrc : '';
     }
-    studentForm['coachId'] = coachId;
-    studentForm['approved'] = false;
-    studentForm['doj'] = moment().format("MM/DD/YYYY");
-    studentForm['coachName'] = this.kalamService.getCoachData().name;
-    if(this.kalamService.getCoachData().academyOwned == "Y") {
-      studentForm['approved'] =   true;
-    }   
     if(this.editAccess) {
+      // Preserve system identifiers on edit
+      studentForm.kalamId = this.studentDetails.kalamId;
+      studentForm['coachId'] = this.studentDetails.coachId;
+      studentForm['approved'] = this.studentDetails.approved;
+      studentForm['doj'] = this.studentDetails.doj;
+      studentForm['coachName'] = this.studentDetails.coachName;
       studentForm.id = this.studentDetails.id;
       this.kalamService.editStudentDetails(studentForm);
     }else {
+      studentForm.kalamId = String(Date.now()).slice(-7);
+      studentForm['coachId'] = coachId;
+      studentForm['approved'] = false;
+      studentForm['doj'] = moment().format("MM/DD/YYYY");
+      studentForm['coachName'] = this.kalamService.getCoachData().name;
+      if(this.kalamService.getCoachData().academyOwned == "Y") {
+        studentForm['approved'] = true;
+      }
       this.kalamService.setStudentDetails(studentForm);
       this._snackBar.open("New student successfully added.", '', {
         horizontalPosition: "center",

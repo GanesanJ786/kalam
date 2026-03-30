@@ -38,6 +38,16 @@
 }
 
 // --- Location Dialog ---
+.location-dialog-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.location-dialog-content {
+  padding-bottom: 0.5rem !important;
+}
+
 .location-block {
   background: #222222;
   border-radius: 10px;
@@ -49,6 +59,14 @@
   &:hover {
     border-color: rgba(255, 87, 34, 0.3);
   }
+}
+
+.location-block-login {
+  border-left: 3px solid #00C853;
+}
+
+.location-block-logout {
+  border-left: 3px solid #FF1744;
 }
 
 .location-label {
@@ -83,4 +101,52 @@
   line-height: 1.45;
   color: rgba(255, 255, 255, 0.9);
   word-break: break-word;
+}
+
+.location-coords {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin: 0.3rem 0 0 0;
+  font-size: 0.72rem;
+  color: #999999;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.3px;
+
+  mat-icon {
+    font-size: 13px;
+    width: 13px;
+    height: 13px;
+    color: #FF8A65;
+  }
+}
+
+.open-map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  padding: 0.35rem 0.75rem;
+  background: rgba(255, 87, 34, 0.1);
+  border: 1px solid rgba(255, 87, 34, 0.3);
+  border-radius: 6px;
+  color: #FF8A65;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    background: rgba(255, 87, 34, 0.2);
+    border-color: rgba(255, 87, 34, 0.5);
+    color: #FF5722;
+  }
 }

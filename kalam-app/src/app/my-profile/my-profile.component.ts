@@ -15,6 +15,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { KalamService } from 'src/app/kalam.service';
+import { getSportIcon, getSportLabel as getSportNameLabel } from '../constant';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { RegistrationDetails } from '../sign-up/sign-up.component';
 import * as moment from 'moment';
@@ -45,6 +46,23 @@ export class MyProfileComponent implements OnInit {
   allStudents: StudentDetails[] = [];
   inCoachId: string = "";
   pendingTaskCount: number = 0;
+  coachSports: string[] = [];
+  getSportIcon = getSportIcon;
+  getSportNameLabel = getSportNameLabel;
+
+  getGroundSportIcon(groundName: string): string {
+    const students = this.allStudents.filter((s: any) => s.groundName === groundName && s.preferredSport);
+    if (students.length > 0) {
+      const sportCounts: Record<string, number> = {};
+      students.forEach((s: any) => {
+        const sport = (s.preferredSport || '').toLowerCase();
+        sportCounts[sport] = (sportCounts[sport] || 0) + 1;
+      });
+      const topSport = Object.keys(sportCounts).sort((a, b) => sportCounts[b] - sportCounts[a])[0];
+      return getSportIcon(topSport);
+    }
+    return this.coachSports?.length ? getSportIcon(this.coachSports[0]) : 'sports';
+  }
 
   constructor(
     private router: Router,
@@ -57,6 +75,7 @@ export class MyProfileComponent implements OnInit {
     this.academyName = this.kalamService.getCoachData().academyName;
     this.logo = this.kalamService.getCoachData().logoUrl;
     this.academyJoinCode = this.kalamService.getCoachData().academyJoinCode || '';
+    this.coachSports = this.kalamService.getCoachData().toCoach || [];
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
     this.owner = this.kalamService.getCoachData().academyId ? false : true;
     this.inCoachId = this.kalamService.getCoachData().kalamId;
@@ -110,26 +129,36 @@ export class MyProfileComponent implements OnInit {
 
   coachDetails: RegistrationDetails = {} as RegistrationDetails;
 
-  getLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position: any) => {
-        if (position) {
-          console.log("Latitude: " + position.coords.latitude +
-            "Longitude: " + position.coords.longitude);
-            this.kalamService.getLocationAddress(position).subscribe((res:any) => {
+  getLocation(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position: any) => {
+          if (position) {
+            this.kalamService.getLocationAddress(position).subscribe((res: any) => {
               this.addressData = res.results[0];
-              // this.vilage = addressData.components.village+', ';
-              // this.address = addressData.components.state_district+" - "
-              //+addressData.components.postcode;
-              // console.log(addressData.formatted);
-              // console.log(`${addressData.components.village}, ${addressData.components.state_district}`);
-            })
-        }
-      },
-      (error: any) => console.log(error));
-    } else {
-      alert("Geolocation is not supported by this browser.");
-    }
+              this.addressData._coords = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+              };
+              resolve(this.addressData);
+            }, (err: any) => {
+              // Geocoding failed but we still have coords
+              this.addressData = {
+                formatted: `${position.coords.latitude.toFixed(6)}, ${position.coords.longitude.toFixed(6)}`,
+                _coords: { lat: position.coords.latitude, lng: position.coords.longitude }
+              };
+              resolve(this.addressData);
+            });
+          }
+        },
+        (error: any) => {
+          console.log(error);
+          reject(error);
+        });
+      } else {
+        reject('Geolocation is not supported by this browser.');
+      }
+    });
   }
 
   attendanceLoop(coachDataIn: any, coachDataOut: any) {
@@ -343,17 +372,18 @@ export class MyProfileComponent implements OnInit {
     });
   }
 
-  checkIn(ground: any){
-    this.getLocation();
+  async checkIn(ground: any){
+    try {
+      await this.getLocation();
+    } catch(e) {}
     const dialogRef = this.dialog.open(AddGroundComponent, {
       disableClose: true,
       data: {groundName: "", groundAddress: "", dialogType: "Topics"},
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //console.log('The dialog was closed');
-      //console.log(result);
-      const attendance = {
+      if (!result) return;
+      const attendance: any = {
         groundName: ground.groundName,
         academyId: this.coachId,
         inCoachId: this.kalamService.getCoachData().kalamId,
@@ -365,23 +395,27 @@ export class MyProfileComponent implements OnInit {
         loginAddress: this.addressData?.formatted,
         status: "IN"
       }
+      if (this.addressData?._coords) {
+        attendance.loginCoords = this.addressData._coords;
+      }
       this.kalamService.coachAttendance(attendance);
     });
 
     
   }
 
-  out(ground: any){
-    this.getLocation();
+  async out(ground: any){
+    try {
+      await this.getLocation();
+    } catch(e) {}
     const dialogRef = this.dialog.open(AddGroundComponent, {
       disableClose: true,
       data: {groundName: "", groundAddress: "", dialogType: "Notes"},
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      //console.log('The dialog was closed');
-      //console.log(result);
-      const attendance = {
+      if (!result) return;
+      const attendance: any = {
         groundName: ground.groundName,
         academyId: this.coachId,
         inCoachId: this.kalamService.getCoachData().kalamId,
@@ -392,6 +426,9 @@ export class MyProfileComponent implements OnInit {
         notes: result.data.notes,
         logoutAddress: this.addressData?.formatted,
         status: "OUT"
+      }
+      if (this.addressData?._coords) {
+        attendance.logoutCoords = this.addressData._coords;
       }
       this.kalamService.coachAttendance(attendance);
     });

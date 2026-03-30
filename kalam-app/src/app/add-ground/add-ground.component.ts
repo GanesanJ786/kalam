@@ -26,6 +26,8 @@ export interface DialogData {
   amount?: string;
   loginAddress?: string;
   logoutAddress?: string;
+  loginCoords?: { lat: number; lng: number };
+  logoutCoords?: { lat: number; lng: number };
 }
 
 @Component({
@@ -85,6 +87,13 @@ export class AddGroundComponent implements OnInit {
         Validators.required
       ]),
     });
+  }
+
+  openInGoogleMaps(type: string): void {
+    const coords = type === 'login' ? this.data.loginCoords : this.data.logoutCoords;
+    if (coords) {
+      window.open(`https://www.google.com/maps?q=${coords.lat},${coords.lng}`, '_blank');
+    }
   }
 
   cancel(){

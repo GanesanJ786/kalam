@@ -1,5 +1,5 @@
 # KALAM
-## The Football Academy Management Platform Built for India
+## The Sports Academy Management Platform Built for India
 
 ---
 
@@ -24,11 +24,13 @@ Today, most football academies in India operate the same way:
 
 ## What Is Kalam?
 
-Kalam is a **cloud-based football academy management system** that handles:
+Kalam is a **cloud-based sports academy management system** that handles:
 
+- **Multi-sport academies** — Football, Hockey, Volleyball, Badminton, Cricket, Chess, and Fitness
 - Student registration, profiles, and roster management
 - Daily student and coach attendance with GPS logging
-- Match and training performance tracking
+- **Sport-specific performance tracking** with dedicated metrics per sport
+- **Smart Fill** — AI-assisted performance entry using historical data or competency levels
 - Monthly fee collection and scholarship management
 - Coach hiring, onboarding, and approval workflows
 - Multi-ground, multi-coach operations from a single dashboard
@@ -113,7 +115,7 @@ Every assigned task is automatically logged as a `TASK` entry in the coach atten
 ### Student Management
 
 **Complete Student Profiles**
-Every student is registered with a comprehensive profile — personal details, Aadhar ID, emergency contacts, medical conditions, height/weight/jersey size, education information, previous academy experience, and football-specific data (playing position, age group, competency level).
+Every student is registered with a comprehensive profile — personal details, Aadhar ID, emergency contacts, medical conditions, height/weight/jersey size, education information, previous academy experience, and sport-specific data. Football and Hockey players select a playing position; all other sports capture a skill level (Beginner/Intermediate/Advanced). Students choose from 7 supported sports: Football, Hockey, Volleyball, Badminton, Cricket, Chess, and Fitness.
 
 **Age Group Classification**
 Students are automatically classified into age categories: U-5, U-8, U-10, U-12, U-14, U-16, U-18, U-21, or Open — keeping rosters organized without manual sorting.
@@ -147,8 +149,9 @@ Formatted, professional .xlsx reports with blue headers, conditional color forma
 
 ### Performance Tracking
 
-Kalam captures **football-specific performance data** per match or training session — not generic fields, but metrics that actually matter on the pitch:
+Kalam captures **sport-specific performance data** per match or training session — not generic fields, but metrics that actually matter for each sport:
 
+**Football & Hockey**
 | Category | What Kalam Records |
 |---|---|
 | **Attacking** | Goals, Assists, Shots on target, Shots off target, Chances created, Accurate crosses |
@@ -157,7 +160,37 @@ Kalam captures **football-specific performance data** per match or training sess
 | **Discipline** | Fouls committed, Fouls suffered |
 | **Overall** | Game sense rating (1–10) |
 
-Every entry is dated and tied to a game title. Over time, each student builds a full performance history that coaches can use for development decisions.
+**Chess**
+| Category | What Kalam Records |
+|---|---|
+| **Result** | Win / Loss / Tie |
+| **Analysis** | Move accuracy, Mistakes/Blunders, Time usage |
+
+**Fitness**
+| Category | What Kalam Records |
+|---|---|
+| **Physical** | Endurance, Strength, Flexibility, Speed/Agility |
+| **Functional** | Balance, Core Strength, Recovery |
+
+Every entry is dated and tied to a game or session title. Over time, each student builds a full performance history that coaches can use for development decisions.
+
+**Position vs. Skill Level** — Football and Hockey students display their playing position (Goalkeeper, Defenders, Midfielders, Forwards, etc.). All other sports display a Skill Level (Beginner, Intermediate, Advanced) instead — automatically determined by the selected sport.
+
+---
+
+### 🆕 Smart Fill — AI-Assisted Performance Entry
+
+**The Problem:** Manually selecting 7–15 dropdown values for every student after every session is slow — coaches often skip performance tracking because it takes too long.
+
+**Kalam's Solution:** A one-tap **Smart Fill** button on the performance form.
+
+- **From History** — if the student has past performance records, Smart Fill calculates the average of each metric and pre-fills all rating fields automatically
+- **From Competency Level** — if no past data exists, it uses the student's competency level as a baseline (Advanced = 7, Intermediate = 5, Beginner = 3)
+- Auto-sets today's date
+- Works for all sport types — Football, Fitness, Chess
+- Coach can review and adjust any pre-filled value before saving
+
+**Result:** A coach can complete a full performance entry in under 30 seconds — type the title, tap Smart Fill, adjust 1–2 values, save.
 
 ---
 
@@ -285,7 +318,9 @@ The same platform handles a single-ground startup and a multi-city academy netwo
 
 | | Excel / Sheets | Generic Sports ERP | **Kalam** |
 |---|---|---|---|
-| Football-specific metrics | No | Rarely | **Yes** |
+| Multi-sport support | No | Sometimes | **Yes — 7 sports** |
+| Sport-specific metrics | No | Rarely | **Yes — per sport** |
+| AI-assisted data entry | No | No | **Yes — Smart Fill** |
 | Multi-user, real-time access | No | Yes | **Yes** |
 | India-ready (Aadhar, INR) | Manual | Usually not | **Yes** |
 | Scholarship workflows | Manual | Generic | **Built-in** |
@@ -304,7 +339,7 @@ The same platform handles a single-ground startup and a multi-city academy netwo
 Opens the dashboard. Sees 3 students pending approval, 2 coach payments awaiting sign-off, and last month's attendance summary. Approves from the dashboard. Exports a scholarship report for the management meeting. **Assigns a task to the assistant coach to prepare for Saturday's match** — title, description, one tap. Done in 10 minutes.
 
 **Head Coach — Training Day**
-Arrives at the ground. Marks login. Runs the session. Records topics and notes. **Opens Quick Attendance — selects the ground, toggles two absent students, saves. 30 students marked in 45 seconds.** After training, opens a student's profile to enter performance data from the match yesterday. **Checks the Task Manager — sees the assistant coach acknowledged yesterday's equipment task.** Logs out. All data is in the system.
+Arrives at the ground. Marks login. Runs the session. Records topics and notes. **Opens Quick Attendance — selects the ground, toggles two absent students, saves. 30 students marked in 45 seconds.** After training, opens a student's profile to enter performance data. **Taps Smart Fill — all metrics pre-populate from past averages. Adjusts two values, saves. Full performance entry in 30 seconds.** **Checks the Task Manager — sees the assistant coach acknowledged yesterday's equipment task.** Logs out. All data is in the system.
 
 **Assistant Coach — Registration Day**
 A new student arrives. Fills in the multi-step digital registration form including position, age group, and medical information. Uploads a profile photo. Submits. The student sits in the approval queue. No paper form changes hands. **Opens My Tasks — sees a new task from the head coach. Taps Acknowledge, then completes it after the session. The head coach sees the update instantly.**
@@ -385,7 +420,7 @@ Volume discounts available for academy networks and federations. Custom onboardi
 
 ## What's Coming
 
-**AI Copilot** — currently in active development. The next version of Kalam will embed an AI assistant directly into the platform — helping coaches surface insights from performance data, flag attendance patterns, and reduce the time spent on routine decisions.
+**AI Copilot** — now partially live with **Smart Fill** for performance entry. The next version will expand the AI assistant to surface insights from performance data, flag attendance patterns, recommend training focus areas, and reduce the time spent on routine decisions.
 
 ---
 
@@ -404,6 +439,17 @@ Volume discounts available for academy networks and federations. Custom onboardi
 | **Login Redesign** | Login page rebuilt with branded dark theme |
 | **Responsive Overhaul** | Every screen optimized for small phones, landscape, tablets, and desktop |
 
+## Recent Release — March 2026
+
+| Feature | Description |
+|---|---|
+| **Multi-Sport Support** | 7 sports supported — Football, Hockey, Volleyball, Badminton, Cricket, Chess, Fitness |
+| **Sport-Specific Performance** | Dedicated performance forms per sport — Football/Hockey metrics, Chess analysis, Fitness tracking |
+| **Fitness Performance Tracking** | Endurance, Strength, Flexibility, Speed/Agility, Balance, Core Strength, Recovery |
+| **Smart Fill** | AI-assisted one-tap performance entry using past averages or competency-based defaults |
+| **Dynamic Position / Skill Level** | Position displayed for Football/Hockey; Skill Level (Beginner/Intermediate/Advanced) for all other sports |
+| **Sport-Aware Student Profiles** | Student view adapts labels and data fields based on the student's selected sport |
+
 ---
 
 ## Next Steps
@@ -416,6 +462,6 @@ Volume discounts available for academy networks and federations. Custom onboardi
 
 ---
 
-*Kalam — Football Academy Management Platform*
+*Kalam — Sports Academy Management Platform*
 *Serving academies across India | Built on Firebase | Production-ready*
 *Document prepared: March 2026*

@@ -14,10 +14,12 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { KalamService } from '../kalam.service';
+import { getSportIcon } from '../constant';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { take } from 'rxjs/operators';
 import { ViewStudentAttendanceDateWiseComponent } from '../view-student-attendance-date-wise/view-student-attendance-date-wise.component';
 import { CoachTaskDialogComponent } from '../coach-task-dialog/coach-task-dialog.component';
 
@@ -38,7 +40,9 @@ export class ViewCoachAttendanceComponent implements OnInit {
   allCoachList: any = [];
   coachVal: string = '';
   coachView: any = [];
-  title: string = "Coaches Details";
+  title: string = "Coach Attendance";
+  getSportIcon = getSportIcon;
+  selectedCoachSport: string = '';
   startOfMonth: any;
   endOfMonth: any;
   attendanceRangeGroup: any;
@@ -60,6 +64,12 @@ export class ViewCoachAttendanceComponent implements OnInit {
         }
       });
       this.coachList = obj;
+      // Add head coach (self) at start so they can view their own attendance
+      const coachData = this.kalamService.getCoachData();
+      this.coachList.unshift({
+        kalamId: coachData.kalamId,
+        name: `${coachData.name} (Self)`
+      });
     });
   }
 
@@ -77,7 +87,7 @@ export class ViewCoachAttendanceComponent implements OnInit {
   }
 
   viewStudentAttendance(coach: any) {
-    this.kalamService.getStudentAttendanceByCoachDatewise(coach).subscribe((coach:any) => {
+    this.kalamService.getStudentAttendanceByCoachDatewise(coach).pipe(take(1)).subscribe((coach:any) => {
       let obj = coach.map((document: any) => {
         return {
           id: document.payload.doc.id,
@@ -95,11 +105,17 @@ export class ViewCoachAttendanceComponent implements OnInit {
     
   }
 
-  viewCoachTasks(coach: any) {
+  viewCoachTasks() {
+    const selectedCoach = this.coachList.find((c: any) => c.kalamId === this.coachVal);
+    const dateRange = {
+      start: moment(this.attendanceRangeGroup.value.start).format('MM/DD/YYYY'),
+      end: moment(this.attendanceRangeGroup.value.end).format('MM/DD/YYYY')
+    };
     const dialogRef = this.dialog.open(CoachTaskDialogComponent, {
       data: {
         taskEntries: this.taskEntries,
-        coachName: coach.coachName
+        coachName: selectedCoach ? selectedCoach.name : '',
+        dateRange: dateRange
       },
       panelClass: 'vca-task-dialog-panel',
       maxWidth: '95vw',
@@ -117,6 +133,8 @@ export class ViewCoachAttendanceComponent implements OnInit {
     }
   }
   coachSelection() {
+    const selectedCoach = this.coachList.find((c: any) => c.kalamId === this.coachVal);
+    this.selectedCoachSport = selectedCoach?.toCoach?.[0] || '';
     const query = {
       academyId: `${this.kalamService.getCoachData().kalamId}`,
       inCoachId: this.coachVal
@@ -154,19 +172,23 @@ export class ViewCoachAttendanceComponent implements OnInit {
         if(outCoachData) {
           inC.logOffDataTime = `${outCoachData.logoffDate} ${outCoachData.logoffTime}`;
           inC.logoutAddress = outCoachData.logoutAddress ? outCoachData.logoutAddress : null;
+          inC.logoutCoords = outCoachData.logoutCoords || null;
           inC.notes = outCoachData.notes;
           outCoachData.matched = true;
         }else {
           inC.logOffDataTime = "-"
           inC.logoutAddress = null;
+          inC.logoutCoords = null;
         }
       });
       if(leaveData.length > 0) {
         inCoach = inCoach.concat(leaveData);
-        this.coachView = _.sortBy(inCoach, ["loginDate"]);
-      }else {
-        this.coachView = inCoach;
       }
+      this.coachView = inCoach.sort((a: any, b: any) => {
+        const dateTimeA = new Date(`${this.kalamService.convertToISO(a.loginDate)}T${a.loginTime || '00:00:00'}`).getTime();
+        const dateTimeB = new Date(`${this.kalamService.convertToISO(b.loginDate)}T${b.loginTime || '00:00:00'}`).getTime();
+        return dateTimeB - dateTimeA;
+      });
       
       });
   }
@@ -193,10 +215,16 @@ export class ViewCoachAttendanceComponent implements OnInit {
     }
   }
 
-  viewLocation(loginAddress:string, logoutAddress: string) {
+  viewLocation(loginAddress:string, logoutAddress: string, loginCoords?: any, logoutCoords?: any) {
     const dialogRef = this.dialog.open(AddGroundComponent, {
       disableClose: false,
-      data: {loginAddress: loginAddress, logoutAddress: logoutAddress, dialogType: "Location"},
+      data: {
+        loginAddress: loginAddress,
+        logoutAddress: logoutAddress,
+        loginCoords: loginCoords || null,
+        logoutCoords: logoutCoords || null,
+        dialogType: "Location"
+      },
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -227,6 +255,15 @@ export class ViewCoachAttendanceComponent implements OnInit {
 
   getTaskCompletedCount(): number {
     return this.taskEntries.filter((t: any) => t.taskStatus === 'Completed').length;
+  }
+
+  getDateRangeLabel(): string {
+    const start = this.attendanceRangeGroup.value.start;
+    const end = this.attendanceRangeGroup.value.end;
+    if (start && end) {
+      return `${moment(start).format('MMM D')} – ${moment(end).format('MMM D, YYYY')}`;
+    }
+    return '';
   }
 
 }

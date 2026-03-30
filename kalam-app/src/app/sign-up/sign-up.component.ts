@@ -25,6 +25,7 @@ import { finalize } from 'rxjs/operators';
 import { firstValueFrom } from 'rxjs';
 
 import { KalamService } from '../kalam.service';
+import { SportsIconMap } from '../constant';
 import * as moment from 'moment';
 import { LoaderService } from '../loader.service';
 
@@ -50,11 +51,6 @@ export interface RegistrationDetails {
   logoUrl?: string;
 }
 
-interface Sports {
-  sportName: string;
-  sportValue: string;
-}
-
 @Component({
     selector: 'app-sign-up',
     templateUrl: './sign-up.component.html',
@@ -76,13 +72,7 @@ export class SignUpComponent implements OnInit {
    }
   registrationForm!: UntypedFormGroup;
   registerDeatils: RegistrationDetails
-  sports:Sports[] = [
-    {sportName: 'Football', sportValue: 'football'},
-    {sportName: 'Badminton', sportValue: 'badminton'},
-    {sportName: 'Volleyball', sportValue: 'volleyball'},
-    {sportName: 'Cricket', sportValue: 'cricket'},
-    {sportName: 'Hockey', sportValue: 'hockey'},
-  ]
+  sports = SportsIconMap;
   selectedImage: any = null;
   imgSrc: string = "./assets/images/upload.png";
   horizontalPosition: MatSnackBarHorizontalPosition = 'end';
@@ -147,6 +137,10 @@ export class SignUpComponent implements OnInit {
     this.setRoleBasedValidators();
 
     if(this.editAccess) {
+      this.registrationForm.get('password')?.clearValidators();
+      this.registrationForm.get('password')?.updateValueAndValidity();
+      this.registrationForm.get('confirmPassword')?.clearValidators();
+      this.registrationForm.get('confirmPassword')?.updateValueAndValidity();
       this.registrationForm.updateValueAndValidity({ onlySelf: false, emitEvent: true })
     }
   }
@@ -249,7 +243,7 @@ export class SignUpComponent implements OnInit {
       return;
     }
 
-    if(this.registrationForm.value.password !== this.registrationForm.value.confirmPassword) {
+    if(!this.editAccess && this.registrationForm.value.password !== this.registrationForm.value.confirmPassword) {
       this.openSnackBar('passwordNotMatch');
       return;
     }
@@ -308,8 +302,19 @@ export class SignUpComponent implements OnInit {
       const fileRef = this.storage.ref(filePath);
       this.storage.upload(filePath,this.selectedImage).snapshotChanges().pipe(
         finalize(() => {
-          fileRef.getDownloadURL().subscribe((url) => {
-            this.formData(url);
+          fileRef.getDownloadURL().subscribe({
+            next: (url) => {
+              this.formData(url);
+            },
+            error: () => {
+              this.loaderService.hide();
+              this._snackBar.open('Unable to upload profile image. Please try again.', '', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                duration: 6000,
+                panelClass: ['red-snackbar']
+              });
+            }
           });
         })
       ).subscribe({
@@ -332,7 +337,6 @@ export class SignUpComponent implements OnInit {
     try {
       let coachForm: RegistrationDetails = {...this.registrationForm.value};
       let obj = {...this.registrationForm.value}
-      coachForm.kalamId = String(Date.now()).slice(-7);
       coachForm.password = '';
       coachForm.confirmPassword = '';
       if(url) {
@@ -342,12 +346,13 @@ export class SignUpComponent implements OnInit {
       }
       
       coachForm.dob = moment(obj.dob).format("MM/DD/YYYY");
-      if(this.ownerData) {
-        coachForm.approved = false;
-      }else {
-        coachForm.approved = true;
-      }
       if(this.editAccess) {
+        // Preserve system identifiers on edit
+        coachForm.kalamId = this.registerDeatils.kalamId;
+        coachForm.academyId = this.registerDeatils.academyId;
+        coachForm.academyOwned = this.registerDeatils.academyOwned;
+        coachForm.approved = this.registerDeatils.approved;
+        coachForm.academyJoinCode = this.registerDeatils.academyJoinCode;
         //coachForm['imageUrl'] = obj.imageUrl;
         coachForm.id = this.registerDeatils.id;
         if(this.logoUrl) {
@@ -355,13 +360,21 @@ export class SignUpComponent implements OnInit {
         }else {
           coachForm.logoUrl = "";
         }
-        if(!this.imgSrc.includes("./assets/images/upload.png")) {
+        if(url) {
+          coachForm.imageUrl = url;
+        } else if(!this.imgSrc.includes("./assets/images/upload.png")) {
           coachForm.imageUrl = this.imgSrc;
         }else {
           coachForm.imageUrl = "";
         }
         await this.kalamService.editCoachDetails(coachForm)
       }else {
+        coachForm.kalamId = String(Date.now()).slice(-7);
+        if(this.ownerData) {
+          coachForm.approved = false;
+        }else {
+          coachForm.approved = true;
+        }
         if (coachForm.academyOwned === 'Y') {
           coachForm.academyJoinCode = await this.generateUniqueAcademyJoinCode(coachForm.academyName);
           await this.kalamService.setCoachProfile(coachForm);
@@ -492,12 +505,33 @@ export class SignUpComponent implements OnInit {
       this.loaderService.show();
       this.storage.upload(filePath,this.selectLogo).snapshotChanges().pipe(
         finalize(() => {
-          fileRef.getDownloadURL().subscribe((url) => {
-            this.loaderService.hide();
-            this.logoUrl = url;
+          fileRef.getDownloadURL().subscribe({
+            next: (url) => {
+              this.loaderService.hide();
+              this.logoUrl = url;
+            },
+            error: () => {
+              this.loaderService.hide();
+              this._snackBar.open('Unable to upload academy logo. Please try again.', '', {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                duration: 6000,
+                panelClass: ['red-snackbar']
+              });
+            }
           });
         })
-      ).subscribe();
+      ).subscribe({
+        error: () => {
+          this.loaderService.hide();
+          this._snackBar.open('Unable to upload academy logo. Please try again.', '', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            duration: 6000,
+            panelClass: ['red-snackbar']
+          });
+        }
+      });
     }else {
       this.logoSrc = "./assets/images/upload.png";
       this.selectLogo = null;

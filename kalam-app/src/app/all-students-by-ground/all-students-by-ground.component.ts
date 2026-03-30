@@ -10,16 +10,13 @@
  * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
  * Unauthorized copying or distribution is strictly prohibited.
  */
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { StudentDetails } from '../student-form/student-form.component';
 import { KalamService } from '../kalam.service';
 import { MAT_DIALOG_DATA as MAT_DIALOG_DATA, MatDialog, MatDialogRef as MatDialogRef } from '@angular/material/dialog';
-import { SportsList } from '../constant';
+import { SportsList, getSportIcon } from '../constant';
 import * as _ from 'lodash';
 import { ViewStudentDataComponent } from '../view-student-data/view-student-data.component';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource as MatTableDataSource } from '@angular/material/table';
 import * as moment from 'moment';
 
 @Component({
@@ -33,13 +30,9 @@ export class AllStudentsByGroundComponent implements OnInit {
   title: string = "List of Students in ";
   students: StudentDetails[] = [];
   groundName: string | undefined;
-  displayedColumns: string[] = ['name','institutionName','mobileNum','payment'];
-
-  dataSource = new MatTableDataSource();
-
-  @ViewChild(MatPaginator) paginator: MatPaginator | undefined;
-  @ViewChild(MatSort)
-  sort: MatSort = new MatSort;
+  paidCount: number = 0;
+  unpaidCount: number = 0;
+  getSportIcon = getSportIcon;
 
   constructor(
     private kalamService: KalamService,
@@ -80,12 +73,8 @@ export class AllStudentsByGroundComponent implements OnInit {
       } 
     });
 
-    this.dataSource.data = this.students;
-    //console.log(this.students);
-    setTimeout(() => {
-     // console.log(this.sort) //not undefined
-      this.dataSource.sort = this.sort; 
-    })
+    this.paidCount = this.students.filter(s => s.payment === 'Paid' || s.payment === 'Free').length;
+    this.unpaidCount = this.students.filter(s => s.payment === 'Not Paid').length;
   }
 
   callNum(num: string) {
@@ -97,7 +86,8 @@ export class AllStudentsByGroundComponent implements OnInit {
   }
 
   getSportLabel(value: string) {
-    return SportsList.filter(res => res.value == value)[0].label;
+    const match = SportsList.filter(res => res.value == value)[0];
+    return match ? match.label : value || '';
   }
 
   genderMapper(gender: string) {

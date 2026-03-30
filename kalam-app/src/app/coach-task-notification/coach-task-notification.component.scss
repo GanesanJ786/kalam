@@ -288,6 +288,57 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 // ============================================
+// DATE RANGE FILTER CARD
+// ============================================
+.ctn-filter-card {
+  background: linear-gradient(145deg, $black-3, $black-4);
+  border-radius: $radius;
+  border: 1px solid $grey-dark;
+  border-top: 3px solid $orange;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba($orange, 0.08);
+}
+
+.ctn-filter-header {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.85rem;
+  border-bottom: 1px solid rgba($white, 0.04);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0.85rem;
+    right: 0.85rem;
+    height: 2px;
+    background: linear-gradient(90deg, rgba($orange, 0.5), transparent 70%);
+    border-radius: 1px;
+  }
+}
+
+.ctn-filter-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  color: $orange;
+}
+
+.ctn-filter-label {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: $white;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.ctn-filter-body {
+  padding: 0.85rem;
+}
+
+// ============================================
 // ASSIGN TOGGLE BUTTON
 // ============================================
 .ctn-assign-toggle-btn {
@@ -819,6 +870,83 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     padding: 0.6rem 0.75rem !important;
     border-bottom: none !important;
   }
+}
+
+// ============================================
+// TABLE ACTION BUTTONS
+// ============================================
+.ctn-table-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.ctn-table-action-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.2s ease;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &:hover {
+    transform: scale(1.15);
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  &.ctn-btn-acknowledge {
+    background: rgba($blue, 0.1);
+    border-color: rgba($blue, 0.3);
+    color: $blue;
+
+    &:hover {
+      background: rgba($blue, 0.2);
+      border-color: rgba($blue, 0.5);
+      box-shadow: 0 0 10px rgba($blue, 0.25);
+    }
+  }
+
+  &.ctn-btn-complete {
+    background: rgba($green, 0.1);
+    border-color: rgba($green, 0.3);
+    color: $green;
+
+    &:hover {
+      background: rgba($green, 0.2);
+      border-color: rgba($green, 0.5);
+      box-shadow: 0 0 10px rgba($green, 0.25);
+    }
+  }
+
+  &.ctn-btn-delete {
+    background: rgba($red, 0.1);
+    border-color: rgba($red, 0.3);
+    color: $red;
+
+    &:hover {
+      background: rgba($red, 0.2);
+      border-color: rgba($red, 0.5);
+      box-shadow: 0 0 10px rgba($red, 0.25);
+    }
+  }
+}
+
+.ctn-table-no-action {
+  color: $grey-mid;
+  font-size: 0.8rem;
 }
 
 // ============================================

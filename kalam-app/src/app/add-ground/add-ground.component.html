@@ -10,17 +10,17 @@
     <ng-container *ngSwitchCase="'Ground'">
         <h1 mat-dialog-title>
           <mat-icon class="dialog-title-icon">add_location_alt</mat-icon>
-          Add Ground Details
+          Add Venue Details
         </h1>
         <form [formGroup]="addGround" #form="ngForm">
             <div mat-dialog-content class="dialog-form-content">
               <mat-form-field appearance="fill" floatLabel="always">
-                  <mat-label>Ground name</mat-label>
-                  <input matInput formControlName="groundName" placeholder="Enter ground name">
+                  <mat-label>Venue name</mat-label>
+                  <input matInput formControlName="groundName" placeholder="Enter venue name">
               </mat-form-field>
               <mat-form-field appearance="fill" floatLabel="always">
                   <mat-label>Address</mat-label>
-                  <textarea matInput formControlName="groundAddress" rows="3" placeholder="Enter ground address"></textarea>
+                  <textarea matInput formControlName="groundAddress" rows="3" placeholder="Enter venue address"></textarea>
               </mat-form-field>
             </div>
             <div mat-dialog-actions>
@@ -87,24 +87,41 @@
     </ng-container>
 
     <ng-container *ngSwitchCase="'Location'">
-        <h1 mat-dialog-title>
+        <h1 mat-dialog-title class="location-dialog-title">
           <mat-icon class="dialog-title-icon">my_location</mat-icon>
-          Coach In &amp; Out Location
+          Coach Location
         </h1>
-        <div mat-dialog-content class="dialog-form-content">
-            <div class="location-block">
+        <div mat-dialog-content class="dialog-form-content location-dialog-content">
+            <!-- Address blocks -->
+            <div class="location-block location-block-login">
                 <div class="location-label">
                   <mat-icon class="location-icon location-in">login</mat-icon>
                   <span>Login Address</span>
                 </div>
                 <p class="location-value">{{data.loginAddress || '—'}}</p>
+                <p class="location-coords" *ngIf="data.loginCoords">
+                    <mat-icon>gps_fixed</mat-icon>
+                    {{data.loginCoords.lat.toFixed(6)}}, {{data.loginCoords.lng.toFixed(6)}}
+                </p>
+                <button *ngIf="data.loginCoords" class="open-map-link" (click)="openInGoogleMaps('login')">
+                    <mat-icon>open_in_new</mat-icon>
+                    Open in Maps
+                </button>
             </div>
-            <div class="location-block">
+            <div class="location-block location-block-logout">
                 <div class="location-label">
                   <mat-icon class="location-icon location-out">logout</mat-icon>
                   <span>Logout Address</span>
                 </div>
                 <p class="location-value">{{data.logoutAddress || '—'}}</p>
+                <p class="location-coords" *ngIf="data.logoutCoords">
+                    <mat-icon>gps_fixed</mat-icon>
+                    {{data.logoutCoords.lat.toFixed(6)}}, {{data.logoutCoords.lng.toFixed(6)}}
+                </p>
+                <button *ngIf="data.logoutCoords" class="open-map-link" (click)="openInGoogleMaps('logout')">
+                    <mat-icon>open_in_new</mat-icon>
+                    Open in Maps
+                </button>
             </div>
         </div>
         <div mat-dialog-actions>

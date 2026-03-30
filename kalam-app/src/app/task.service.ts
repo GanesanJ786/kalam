@@ -26,6 +26,8 @@ export interface CoachTask {
   assignedDate: string;      // MM-DD-YYYY
   assignedTime: string;      // HH:mm:ss
   status: 'Pending' | 'Acknowledged' | 'Completed';
+  taskDateStart?: string;    // MM-DD-YYYY — task date range start
+  taskDateEnd?: string;      // MM-DD-YYYY — task date range end
   respondedDate?: string;
   respondedTime?: string;
   attendanceDocId?: string;  // linked coachAttendance document id
@@ -57,7 +59,9 @@ export class TaskService {
       taskTitle: task.title,
       taskDescription: task.description,
       taskAssignedBy: task.assignedByName,
-      taskStatus: 'Pending'
+      taskStatus: 'Pending',
+      taskDateStart: task.taskDateStart || '',
+      taskDateEnd: task.taskDateEnd || ''
     };
 
     this.fireStore.collection('coachAttendance').add({ ...attendanceData }).then((docRef) => {

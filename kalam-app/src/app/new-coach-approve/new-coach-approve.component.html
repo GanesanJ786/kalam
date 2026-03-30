@@ -34,7 +34,7 @@
                 <div class="nca-cell nca-name">{{coach.name}}</div>
                 <div class="nca-cell">{{coach.whatsappNum}}</div>
                 <div class="nca-cell">{{coach.emailId}}</div>
-                <div class="nca-cell">{{coach?.toCoach?.join(', ') || '-'}}</div>
+                <div class="nca-cell"><ng-container *ngFor="let sport of coach?.toCoach; let last = last"><mat-icon class="nca-sport-icon">{{getSportIcon(sport)}}</mat-icon>{{getSportLabel(sport)}}<span *ngIf="!last">, </span></ng-container><span *ngIf="!coach?.toCoach?.length">-</span></div>
                 <div class="nca-cell nca-actions">
                     <button class="nca-btn nca-approve" type="button" (click)="approve(coach)">
                         <mat-icon>check_circle</mat-icon>
@@ -60,8 +60,8 @@
                     <span>{{coach.emailId}}</span>
                 </div>
                 <div class="nca-card-line">
-                    <mat-icon>sports_soccer</mat-icon>
-                    <span>{{coach?.toCoach?.join(', ') || '-'}}</span>
+                    <mat-icon>{{coach?.toCoach?.length ? getSportIcon(coach.toCoach[0]) : 'sports'}}</mat-icon>
+                    <span>{{coach?.toCoach?.length ? coach.toCoach.map(getSportLabel).join(', ') : '-'}}</span>
                 </div>
                 <div class="nca-card-actions">
                     <button class="nca-btn nca-approve" type="button" (click)="approve(coach)">

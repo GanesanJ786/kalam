@@ -13,6 +13,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { KalamService } from '../kalam.service';
+import { getSportIcon, getSportLabel } from '../constant';
 
 @Component({
     selector: 'app-new-coach-approve',
@@ -24,6 +25,8 @@ export class NewCoachApproveComponent implements OnInit {
 
   coaches: any = [];
   title: string = "Coach Approval Queue";
+  getSportIcon = getSportIcon;
+  getSportLabel = getSportLabel;
 
   constructor(private router: Router,private kalamService: KalamService) {
     

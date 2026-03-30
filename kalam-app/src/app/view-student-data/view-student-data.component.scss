@@ -58,6 +58,27 @@
   }
 }
 
+.s-sport-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+  padding: 3px 10px;
+  background: rgba(255, 87, 34, 0.12);
+  border: 1px solid rgba(255, 87, 34, 0.3);
+  border-radius: 14px;
+  font-size: 0.72rem;
+  color: #FF8A65;
+  font-weight: 600;
+}
+
+.s-sport-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+  color: #FF5722;
+}
+
 // --- Basic Info / Physical Stats ---
 .s-bacis {
   background: linear-gradient(135deg, #1A1A1A, #222222);

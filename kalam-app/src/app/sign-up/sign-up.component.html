@@ -68,7 +68,7 @@
             <input matInput formControlName="emailId" type="email">
           </mat-form-field>
 
-          <div class="su-row">
+          <div class="su-row" *ngIf="!editAccess">
             <mat-form-field appearance="fill" class="su-half">
               <mat-label>Password</mat-label>
               <input matInput type="password" formControlName="password">
@@ -98,7 +98,9 @@
             <mat-form-field appearance="fill" class="su-half">
               <mat-label>Sports to Coach</mat-label>
               <mat-select formControlName="toCoach" multiple>
-                <mat-option *ngFor="let sport of sports" [value]="sport.sportValue">{{sport.sportName}}</mat-option>
+                <mat-option *ngFor="let sport of sports" [value]="sport.value">
+                  <mat-icon class="su-sport-icon">{{sport.icon}}</mat-icon>{{sport.label}}
+                </mat-option>
               </mat-select>
             </mat-form-field>
           </div>

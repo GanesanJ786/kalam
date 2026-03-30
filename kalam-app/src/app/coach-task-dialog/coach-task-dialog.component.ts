@@ -23,6 +23,7 @@ export class CoachTaskDialogComponent {
 
   taskEntries: any[] = [];
   coachName: string = '';
+  dateRange: any = null;
   activeFilter: string = 'all'; // 'all' | 'Pending' | 'Completed' | 'Acknowledged'
 
   constructor(
@@ -31,6 +32,7 @@ export class CoachTaskDialogComponent {
   ) {
     this.taskEntries = data.taskEntries || [];
     this.coachName = data.coachName || '';
+    this.dateRange = data.dateRange || null;
     // Sort by date descending (newest first)
     this.sortByDateDescending();
   }

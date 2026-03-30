@@ -12,7 +12,7 @@
  */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SportsList, UnderAge } from '../constant';
+import { SportsList, UnderAge, getSportIcon } from '../constant';
 import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
 import { StudentDetails } from '../student-form/student-form.component';
@@ -30,6 +30,8 @@ import { ViewStudentAttendanceRangeComponent } from '../view-student-attendance-
     standalone: false
 })
 export class MyTeamsComponent implements OnInit {
+
+  getSportIcon = getSportIcon;
 
   constructor(private router: Router, private loaderService: LoaderService, public dialog: MatDialog,  private kalamService: KalamService) {
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
@@ -269,11 +271,13 @@ export class MyTeamsComponent implements OnInit {
   }
 
   getSportLabel(value: string) {
-    return SportsList.filter(res => res.value == value)[0].label;
+    const match = SportsList.filter(res => res.value == value)[0];
+    return match ? match.label : value || '';
   }
 
   getUnderAgeLabel(value: string) {
-    return UnderAge.filter(res => res.value == value)[0].label;
+    const match = UnderAge.filter(res => res.value == value)[0];
+    return match ? match.label : value || '';
   }
 
   checkIn(student: StudentDetails, eve?: boolean) {

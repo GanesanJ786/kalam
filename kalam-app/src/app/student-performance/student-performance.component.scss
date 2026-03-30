@@ -66,3 +66,40 @@
     color: #999999 !important;
   }
 }
+
+// Smart Fill button
+.smart-fill-bar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 2% 0.25rem;
+}
+
+.smart-fill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: linear-gradient(135deg, #ff6d00, #ff9100);
+  color: #000;
+  border: none;
+  border-radius: 20px;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s, box-shadow 0.2s;
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover:not(:disabled) {
+    box-shadow: 0 2px 8px rgba(255, 109, 0, 0.4);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+}
