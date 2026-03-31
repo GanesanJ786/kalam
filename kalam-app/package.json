@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:connect-kalam": "node scripts/build-connect-kalam.js",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "genComp": "ng g c student-performance"
