@@ -63,7 +63,6 @@ export class MyTeamsComponent implements OnInit, OnDestroy {
   allStudentAttendance: any = [];
 
   ngOnInit(): void {
-    
   }
 
   getStudentAttendance() {
@@ -233,14 +232,22 @@ export class MyTeamsComponent implements OnInit, OnDestroy {
     this.router.navigate([`/student-form`]);
   }
 
+  selectAge(value: string) {
+    this.ageType = value;
+    this.underSelection();
+  }
+
+  selectGround(value: string) {
+    this.groundName = value;
+    this.underSelection();
+  }
+
   underSelection() {
     if(this.ageType && this.groundName) {
       if(this.groundName == "all") {
         this.getStudentListUnderAge();
-        //this.getStudentAttendance();
       }else{
         this.getStudentList();
-        //this.getStudentAttendance();
       }
     }
   }

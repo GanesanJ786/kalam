@@ -8,54 +8,64 @@
 -->
 <div class="ss-shell">
 
-    <!-- Filter Card -->
-    <div class="ss-card ss-filter-card">
-        <div class="ss-card-header">
-            <mat-icon class="ss-card-icon">filter_list</mat-icon>
-            <h3>Filters</h3>
-        </div>
-        <div class="ss-card-body">
-            <div class="ss-filter-row">
-                <mat-form-field appearance="fill" class="ss-field">
-                    <mat-label>Age Group</mat-label>
-                    <mat-select [(ngModel)]="ageType">
-                        <mat-option value="all">All</mat-option>
-                        <mat-option *ngFor="let under of underCategory" [value]="under.value">{{under.key}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill" class="ss-field">
-                    <mat-label>Select Ground</mat-label>
-                    <mat-select [(ngModel)]="groundName">
-                        <mat-option value="all">All</mat-option>
-                        <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">{{ground.groundName}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+    <!-- Filter Panel: Chip-based -->
+    <div class="ss-filter-panel">
+        <!-- Age Group Row -->
+        <div class="ss-filter-row">
+            <span class="ss-filter-label">
+                <mat-icon class="ss-filter-label-icon">category</mat-icon>
+                GROUP
+            </span>
+            <div class="ss-chip-scroll">
+                <button class="ss-filter-chip" [class.ss-chip-active]="ageType === 'all'" (click)="selectAge('all')">All</button>
+                <button *ngFor="let under of underCategory" class="ss-filter-chip"
+                    [class.ss-chip-active]="ageType === under.value"
+                    (click)="selectAge(under.value)">
+                    {{under.key}}
+                </button>
             </div>
-            <div class="ss-filter-row">
-                <mat-form-field appearance="fill" class="ss-field">
-                    <mat-label>Scholarship</mat-label>
-                    <mat-select [(ngModel)]="scholarshipType">
-                        <mat-option value="yes">Yes</mat-option>
-                        <mat-option value="no">No</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div class="ss-search-action">
-                    <button class="ss-search-btn" [disabled]="!ageType || !groundName || !scholarshipType" (click)="search()">
-                        <mat-icon>search</mat-icon>
-                        <span>Search</span>
-                    </button>
-                </div>
+        </div>
+
+        <div class="ss-filter-divider"></div>
+
+        <!-- Ground Row -->
+        <div class="ss-filter-row">
+            <span class="ss-filter-label">
+                <mat-icon class="ss-filter-label-icon">place</mat-icon>
+                VENUE
+            </span>
+            <div class="ss-chip-scroll">
+                <button class="ss-filter-chip" [class.ss-chip-active]="groundName === 'all'" (click)="selectGround('all')">All</button>
+                <button *ngFor="let ground of groundList" class="ss-filter-chip"
+                    [class.ss-chip-active]="groundName === ground.groundName"
+                    (click)="selectGround(ground.groundName)">
+                    {{ground.groundName}}
+                </button>
+            </div>
+        </div>
+
+        <div class="ss-filter-divider"></div>
+
+        <!-- Scholarship Row -->
+        <div class="ss-filter-row">
+            <span class="ss-filter-label">
+                <mat-icon class="ss-filter-label-icon">school</mat-icon>
+                TYPE
+            </span>
+            <div class="ss-chip-scroll">
+                <button class="ss-filter-chip" [class.ss-chip-active]="scholarshipType === 'yes'" (click)="selectScholarship('yes')">Scholarship</button>
+                <button class="ss-filter-chip" [class.ss-chip-active]="scholarshipType === 'no'" (click)="selectScholarship('no')">Payment</button>
             </div>
         </div>
     </div>
 
-    <!-- Empty State: Before Search -->
+    <!-- Empty State -->
     <div *ngIf="finalStudentList.length === 0" class="ss-empty-state">
         <div class="ss-empty-icon-ring">
             <mat-icon>card_membership</mat-icon>
         </div>
-        <h4>Search Students</h4>
-        <p>Select filters and tap search to view scholarship & payment details.</p>
+        <h4>Select Filters</h4>
+        <p>Choose age group, venue and type to view student details.</p>
     </div>
 
     <!-- Results Section -->
@@ -89,51 +99,56 @@
 
         <!-- Student Cards -->
         <div class="ss-student-cards">
-            <div *ngFor="let row of finalStudentList; let i = index" class="ss-card ss-student-item"
+            <div *ngFor="let row of finalStudentList; let i = index" class="ss-student-item"
                 [class.ss-inactive]="row?.inActive">
 
-                <!-- Status indicator -->
-                <div class="ss-student-badge" [class.inactive]="row?.inActive">
-                    <mat-icon>{{row?.inActive ? 'person_off' : 'person'}}</mat-icon>
-                    <span>{{row?.inActive ? 'Inactive' : 'Active'}}</span>
-                </div>
-
-                <div class="ss-student-content">
-                    <!-- Row 1: Name & Age Group -->
-                    <div class="ss-student-row ss-student-primary">
-                        <div class="ss-student-field">
-                            <mat-icon class="ss-field-icon">person</mat-icon>
-                            <span class="ss-field-value">{{row.name}}</span>
-                            <span class="ss-gender-tag">{{genderMapper(row.gender)}}</span>
-                        </div>
-                        <div class="ss-student-field ss-age-field">
-                            <mat-icon class="ss-field-icon">category</mat-icon>
-                            <span class="ss-field-value">{{row.underAge}}</span>
+                <!-- Left accent bar by CSS -->
+                <div class="ss-student-header">
+                    <div class="ss-student-avatar" [class.inactive]="row?.inActive">
+                        {{row.name?.charAt(0)}}
+                    </div>
+                    <div class="ss-student-info">
+                        <span class="ss-student-name">{{row.name}}</span>
+                        <div class="ss-student-meta">
+                            <span class="ss-meta-chip ss-meta-age">
+                                <mat-icon>category</mat-icon>
+                                {{row.underAge}}
+                            </span>
+                            <span class="ss-meta-chip ss-meta-gender">
+                                <mat-icon>{{row.gender === 'male' ? 'male' : 'female'}}</mat-icon>
+                                {{genderMapper(row.gender)}}
+                            </span>
                         </div>
                     </div>
-
-                    <!-- Row 2: Payment/Scholarship Info -->
-                    <div class="ss-student-row">
-                        <div class="ss-detail-chip" *ngIf="!isScholarship"
-                            [class.ss-chip-paid]="row.payment === 'Paid'"
-                            [class.ss-chip-unpaid]="row.payment !== 'Paid'">
-                            <mat-icon>{{row.payment === 'Paid' ? 'check_circle' : 'warning'}}</mat-icon>
-                            <span>{{row.payment}}</span>
-                        </div>
-                        <div class="ss-detail-chip ss-chip-scholarship" *ngIf="isScholarship">
-                            <mat-icon>school</mat-icon>
-                            <span>{{row.scholarship}}</span>
-                        </div>
+                    <!-- Status badge -->
+                    <div class="ss-status-badge" [class.inactive]="row?.inActive">
+                        {{row?.inActive ? 'Inactive' : 'Active'}}
                     </div>
                 </div>
 
-                <!-- Action Button -->
-                <button class="ss-action-btn" *ngIf="!row?.inActive" (click)="inActive(row)">
-                    <mat-icon>person_off</mat-icon>
-                </button>
-                <button class="ss-action-btn ss-activate-btn" *ngIf="row?.inActive" (click)="activate(row)">
-                    <mat-icon>person_add</mat-icon>
-                </button>
+                <div class="ss-student-footer">
+                    <!-- Payment/Scholarship chip -->
+                    <div class="ss-info-chip" *ngIf="!isScholarship"
+                        [class.ss-chip-paid]="row.payment === 'Paid'"
+                        [class.ss-chip-unpaid]="row.payment !== 'Paid'">
+                        <mat-icon>{{row.payment === 'Paid' ? 'check_circle' : 'warning'}}</mat-icon>
+                        <span>{{row.payment}}</span>
+                    </div>
+                    <div class="ss-info-chip ss-chip-scholarship" *ngIf="isScholarship">
+                        <mat-icon>school</mat-icon>
+                        <span>{{row.scholarship}}</span>
+                    </div>
+
+                    <!-- Action -->
+                    <button class="ss-action-btn" *ngIf="!row?.inActive" (click)="inActive(row)">
+                        <mat-icon>person_off</mat-icon>
+                        <span>Deactivate</span>
+                    </button>
+                    <button class="ss-action-btn ss-activate-btn" *ngIf="row?.inActive" (click)="activate(row)">
+                        <mat-icon>person_add</mat-icon>
+                        <span>Activate</span>
+                    </button>
+                </div>
             </div>
         </div>
 

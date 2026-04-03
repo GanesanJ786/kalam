@@ -25,33 +25,41 @@
                 </div>
             </div>
 
-            <!-- Filter Card: Date Range + Coach Selector -->
-            <div class="vca-card vca-filter-card">
-                <div class="vca-card-header">
-                    <mat-icon class="card-icon">filter_list</mat-icon>
-                    <h3>Filters</h3>
+            <!-- Filter Panel: Chip-based Coach + Date Range -->
+            <div class="vca-filter-panel">
+                <!-- Coach Row -->
+                <div class="vca-filter-row">
+                    <span class="vca-filter-label">
+                        <mat-icon class="vca-filter-label-icon">person</mat-icon>
+                        COACH
+                    </span>
+                    <div class="vca-chip-scroll">
+                        <button *ngFor="let coach of coachList"
+                            class="vca-filter-chip"
+                            [class.vca-chip-active]="coachVal === coach.kalamId"
+                            (click)="selectCoach(coach.kalamId)">
+                            {{coach.name}}
+                        </button>
+                    </div>
                 </div>
-                <div class="vca-card-body">
-                    <div class="vca-row">
-                        <mat-form-field appearance="fill" class="vca-col-7">
-                            <mat-label>Attendance Range</mat-label>
-                            <mat-date-range-input [min]="startOfMonth" [max]="endOfMonth"
-                                [formGroup]="attendanceRangeGroup" [rangePicker]="attendanceRange">
-                                <input matStartDate placeholder="Start date" formControlName="start">
-                                <input matEndDate (dateChange)="dateChange($event)" placeholder="End date"
-                                    formControlName="end">
-                            </mat-date-range-input>
-                            <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
-                            <mat-datepicker-toggle matIconSuffix [for]="attendanceRange"></mat-datepicker-toggle>
-                            <mat-date-range-picker #attendanceRange></mat-date-range-picker>
-                        </mat-form-field>
-                        <mat-form-field appearance="fill" class="vca-col-5">
-                            <mat-label>Select Coach</mat-label>
-                            <mat-select [(ngModel)]="coachVal" (ngModelChange)="coachSelection()">
-                                <mat-option *ngFor="let coach of coachList"
-                                    [value]="coach.kalamId">{{coach.name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
+
+                <div class="vca-filter-divider"></div>
+
+                <!-- Date Range Row -->
+                <div class="vca-filter-row">
+                    <span class="vca-filter-label">
+                        <mat-icon class="vca-filter-label-icon">date_range</mat-icon>
+                        RANGE
+                    </span>
+                    <div class="vca-date-range-inline">
+                        <mat-date-range-input [min]="startOfMonth" [max]="endOfMonth"
+                            [formGroup]="attendanceRangeGroup" [rangePicker]="attendanceRange">
+                            <input matStartDate placeholder="Start" formControlName="start">
+                            <input matEndDate (dateChange)="dateChange($event)" placeholder="End"
+                                formControlName="end">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle [for]="attendanceRange"></mat-datepicker-toggle>
+                        <mat-date-range-picker #attendanceRange></mat-date-range-picker>
                     </div>
                 </div>
             </div>
@@ -156,6 +164,18 @@
                     </div>
 
                     <div class="vca-attendance-content">
+                        <!-- Leave date + reason row -->
+                        <div class="vca-att-row vca-leave-date-row" *ngIf="coach.status === 'LEAVE'">
+                            <div class="vca-att-detail">
+                                <span class="vca-detail-label">Date</span>
+                                <span class="vca-detail-value">{{coach.activeDate || coach.loginDate || '-'}}</span>
+                            </div>
+                            <div class="vca-att-detail" *ngIf="coach.notes">
+                                <span class="vca-detail-label">Reason</span>
+                                <span class="vca-detail-value">{{coach.notes}}</span>
+                            </div>
+                        </div>
+
                         <!-- Row 1: Topics + Notes -->
                         <div class="vca-att-row" *ngIf="coach.status !== 'LEAVE'">
                             <div class="vca-att-detail">

@@ -19,18 +19,21 @@
     </div>
   </div>
 
-  <!-- Ground Selector -->
-  <div class="qa-ground-selector">
-    <mat-form-field appearance="fill" class="qa-ground-field">
-      <mat-label>Select Ground</mat-label>
-      <mat-select [(ngModel)]="selectedGround" (ngModelChange)="onGroundChange()">
-        <mat-option *ngFor="let ground of groundList" [value]="ground.groundName">
-          <mat-icon class="ground-option-icon">{{coachSports?.length ? getSportIcon(coachSports[0]) : 'sports'}}</mat-icon>
+  <!-- Ground Selector (Chip Set) -->
+  <div class="qa-filter-panel">
+    <div class="qa-filter-row">
+      <span class="qa-filter-label">
+        <mat-icon>place</mat-icon> VENUE
+      </span>
+      <div class="qa-chip-scroll">
+        <button class="qa-chip"
+                *ngFor="let ground of groundList"
+                [class.qa-chip-active]="selectedGround === ground.groundName"
+                (click)="selectGround(ground.groundName)">
           {{ground.groundName}}
-        </mat-option>
-      </mat-select>
-      <mat-icon matPrefix class="ground-prefix-icon">location_on</mat-icon>
-    </mat-form-field>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- Loading State -->
@@ -146,8 +149,8 @@
   <!-- Initial State: No ground selected -->
   <div class="qa-empty" *ngIf="!selectedGround && !loading">
     <mat-icon class="qa-empty-icon">touch_app</mat-icon>
-    <p class="qa-empty-text">Select a ground to begin</p>
-    <span class="qa-empty-sub">Choose a training ground above to mark attendance quickly</span>
+    <p class="qa-empty-text">Select a venue to begin</p>
+    <span class="qa-empty-sub">Tap a venue chip above to mark attendance quickly</span>
   </div>
 
 </div>

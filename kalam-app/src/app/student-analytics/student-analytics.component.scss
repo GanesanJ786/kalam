@@ -1,37 +1,25 @@
-/**
- * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
- * Unauthorized copying or distribution is strictly prohibited.
- */
-/**
- * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
- * Unauthorized copying or distribution is strictly prohibited.
- */
 // ============================================
-// STUDENT ANALYTICS - Black & Orange Sports Theme
-// Professional, Responsive, Hybrid App Design
+// STUDENT ANALYTICS - Chip-based Filter Design
+// Consistent with Coach Attendance & Teams
 // ============================================
 
 // --- Tokens ---
 $orange: #FF5722;
 $orange-light: #FF8A65;
 $orange-dark: #E64A19;
-$black-0: #000000;
-$black-1: #0D0D0D;
 $black-2: #121212;
 $black-3: #1A1A1A;
 $black-4: #222222;
-$black-5: #2A2A2A;
 $grey-1: #333333;
 $grey-2: #555555;
 $grey-3: #999999;
 $grey-4: #BBBBBB;
 $white: #FFFFFF;
 $green: #00C853;
-$red: #FF1744;
 $blue: #2979FF;
 $pink: #F50057;
+$cyan: #00BCD4;
 $radius-sm: 8px;
-$radius-md: 12px;
 $radius-lg: 16px;
 
 $font-xs: 0.75rem;
@@ -54,208 +42,115 @@ $font-lg: 1.125rem;
 }
 
 // ============================================
-// CARD
+// FILTER PANEL (Chip-based)
 // ============================================
-.sa-card {
+.sa-filter-panel {
   background: linear-gradient(160deg, $black-3 0%, $black-2 100%);
   border: 1px solid $grey-1;
   border-radius: $radius-lg;
-  overflow: hidden;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    border-color: rgba($orange, 0.2);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
-  }
-}
-
-.sa-card-header {
+  padding: 0.875rem 1rem;
   display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.875rem 1.125rem 0.5rem;
-  border-bottom: 1px solid rgba($white, 0.04);
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 1.125rem;
-    right: 1.125rem;
-    height: 2px;
-    background: linear-gradient(90deg, rgba($orange, 0.5), transparent 70%);
-    border-radius: 1px;
-  }
-
-  .sa-card-icon {
-    color: $orange;
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-  }
-
-  h3 {
-    margin: 0;
-    color: $white;
-    font-size: $font-base;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    line-height: 1.3;
-  }
-}
-
-.sa-card-body {
-  padding: 1rem 1.125rem 1.125rem;
-}
-
-// ============================================
-// FILTER CARD
-// ============================================
-.sa-filter-card {
-  border-top: 3px solid $orange;
-  box-shadow: 0 2px 16px rgba($orange, 0.08);
+  flex-direction: column;
+  gap: 0;
 }
 
 .sa-filter-row {
   display: flex;
+  align-items: center;
   gap: 0.75rem;
-  flex-wrap: wrap;
-  align-items: flex-start;
+  padding: 0.5rem 0;
 }
 
-.sa-field {
-  flex: 1 1 calc(50% - 0.375rem);
-  min-width: 120px;
+.sa-filter-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: $orange;
+  font-size: $font-xs;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 70px;
+
+  .sa-filter-label-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
 }
 
-.sa-search-action {
-  flex: 1 1 calc(50% - 0.375rem);
-  min-width: 120px;
+.sa-chip-scroll {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.25rem 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.sa-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 0.4rem 0.875rem;
+  border-radius: 20px;
+  border: 1px solid rgba($white, 0.12);
+  background: transparent;
+  color: rgba($white, 0.6);
+  font-size: $font-sm;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  flex-shrink: 0;
+  letter-spacing: 0.3px;
+
+  &:hover {
+    border-color: rgba($orange, 0.4);
+    color: rgba($white, 0.85);
+    background: rgba($orange, 0.06);
+  }
+
+  &.sa-chip-active {
+    background: linear-gradient(135deg, $orange, $orange-dark);
+    color: $white;
+    border-color: $orange;
+    font-weight: 700;
+    box-shadow: 0 2px 12px rgba($orange, 0.3);
+  }
+}
+
+.sa-filter-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba($white, 0.06), transparent);
+}
+
+.sa-dir-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba($orange, 0.3);
+  background: rgba($orange, 0.08);
+  color: $orange-light;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 0.25rem;
-}
-
-.sa-search-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  background: linear-gradient(135deg, $orange, $orange-dark) !important;
-  color: $white !important;
-  border: none;
-  border-radius: $radius-md;
-  padding: 0.65rem 1.75rem;
-  font-weight: 700;
-  font-size: $font-sm;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  box-shadow: 0 3px 12px rgba($orange, 0.3);
+  flex-shrink: 0;
   transition: all 0.25s ease;
+  padding: 0;
 
   mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
   }
 
-  &:hover:not(:disabled) {
-    box-shadow: 0 5px 20px rgba($orange, 0.45);
-    transform: translateY(-1px);
-  }
-
-  &:active:not(:disabled) {
-    transform: scale(0.97);
-  }
-
-  &:disabled {
-    background: $grey-1 !important;
-    color: $grey-2 !important;
-    box-shadow: none;
-    cursor: not-allowed;
-  }
-}
-
-// ============================================
-// FORM FIELDS
-// ============================================
-:host {
-  .mat-mdc-form-field {
-    width: 100%;
-
-    .mdc-text-field--filled {
-      background: $black-4 !important;
-      border-radius: $radius-sm $radius-sm 0 0 !important;
-      border-bottom: 2px solid $grey-1 !important;
-      transition: border-color 0.2s ease;
-      min-height: 52px;
-
-      &:hover {
-        border-bottom-color: $grey-2 !important;
-      }
-
-      &.mdc-text-field--focused {
-        border-bottom-color: $orange !important;
-      }
-    }
-
-    .mat-mdc-form-field-focus-overlay {
-      background: rgba($orange, 0.04) !important;
-    }
-
-    .mdc-floating-label {
-      color: $grey-3 !important;
-      font-size: $font-base !important;
-    }
-
-    .mdc-floating-label--float-above {
-      color: $orange-light !important;
-      font-size: $font-base !important;
-    }
-
-    .mat-mdc-input-element,
-    input.mat-mdc-input-element {
-      color: $white !important;
-      caret-color: $orange;
-      font-size: $font-base;
-    }
-
-    .mdc-line-ripple::after {
-      border-bottom-color: $orange !important;
-    }
-
-    .mat-mdc-form-field-hint {
-      color: $grey-2;
-      font-size: $font-xs;
-    }
-
-    .mat-mdc-form-field-subscript-wrapper {
-      padding: 0 !important;
-    }
-
-    .mat-mdc-form-field-infix {
-      min-height: 48px;
-      padding-top: 22px !important;
-      padding-bottom: 6px !important;
-    }
-  }
-
-  .mat-mdc-select {
-    font-size: $font-base;
-    color: rgba($white, 0.87) !important;
-
-    .mat-mdc-select-arrow {
-      color: $grey-3 !important;
-    }
-  }
-  .sa-filter-row, .sa-toolbar {
-    .mat-mdc-select {
-      color: rgb(0 0 0 / 87%) !important
-    }
+  &:hover {
+    background: rgba($orange, 0.2);
+    border-color: rgba($orange, 0.5);
   }
 }
 
@@ -271,21 +166,8 @@ $font-lg: 1.125rem;
   text-align: center;
   gap: 0.75rem;
 
-  h4 {
-    color: $white;
-    font-size: $font-md;
-    font-weight: 700;
-    margin: 0;
-    letter-spacing: 0.3px;
-  }
-
-  p {
-    color: $grey-3;
-    font-size: $font-sm;
-    margin: 0;
-    max-width: 260px;
-    line-height: 1.5;
-  }
+  h4 { color: $white; font-size: $font-md; font-weight: 700; margin: 0; }
+  p { color: $grey-3; font-size: $font-sm; margin: 0; max-width: 260px; line-height: 1.5; }
 }
 
 .sa-empty-icon-ring {
@@ -299,12 +181,7 @@ $font-lg: 1.125rem;
   justify-content: center;
   margin-bottom: 0.5rem;
 
-  mat-icon {
-    color: $orange;
-    font-size: 36px;
-    width: 36px;
-    height: 36px;
-  }
+  mat-icon { color: $orange; font-size: 36px; width: 36px; height: 36px; }
 }
 
 // ============================================
@@ -314,7 +191,6 @@ $font-lg: 1.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0;
   background: linear-gradient(160deg, $black-3 0%, $black-2 100%);
   border: 1px solid $grey-1;
   border-radius: $radius-lg;
@@ -336,25 +212,10 @@ $font-lg: 1.125rem;
   line-height: 1;
 }
 
-.sa-stat-total {
-  color: $orange;
-  text-shadow: 0 0 20px rgba($orange, 0.3);
-}
-
-.sa-stat-male {
-  color: $blue;
-  text-shadow: 0 0 20px rgba($blue, 0.3);
-}
-
-.sa-stat-female {
-  color: $pink;
-  text-shadow: 0 0 20px rgba($pink, 0.3);
-}
-
-.sa-stat-all {
-  color: $grey-4;
-  text-shadow: 0 0 12px rgba($grey-4, 0.15);
-}
+.sa-stat-total { color: $orange; text-shadow: 0 0 20px rgba($orange, 0.3); }
+.sa-stat-male { color: $blue; text-shadow: 0 0 20px rgba($blue, 0.3); }
+.sa-stat-female { color: $pink; text-shadow: 0 0 20px rgba($pink, 0.3); }
+.sa-stat-all { color: $grey-4; text-shadow: 0 0 12px rgba($grey-4, 0.15); }
 
 .sa-stat-label {
   font-size: 0.65rem;
@@ -372,70 +233,7 @@ $font-lg: 1.125rem;
 }
 
 // ============================================
-// SORT & FILTER TOOLBAR
-// ============================================
-.sa-toolbar {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  background: linear-gradient(160deg, $black-3 0%, $black-2 100%);
-  border: 1px solid $grey-1;
-  border-radius: $radius-lg;
-  padding: 0.875rem 1rem;
-}
-
-.sa-toolbar-row {
-  display: flex;
-  gap: 0.625rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.sa-toolbar-field {
-  flex: 1 1 calc(50% - 0.3125rem);
-  min-width: 0;
-}
-
-.sa-sort-dir-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  background: rgba($orange, 0.12);
-  color: $orange-light;
-  border: 1px solid rgba($orange, 0.25);
-  border-radius: $radius-md;
-  padding: 0.55rem 1rem;
-  font-weight: 700;
-  font-size: $font-xs;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  flex-shrink: 0;
-  white-space: nowrap;
-  height: 42px;
-  box-sizing: border-box;
-
-  mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    transition: transform 0.3s ease;
-  }
-
-  &:hover {
-    background: rgba($orange, 0.2);
-    border-color: rgba($orange, 0.45);
-    color: $orange;
-  }
-
-  &:active {
-    transform: scale(0.95);
-  }
-}
-
-// ============================================
-// NO RESULTS STATE
+// NO RESULTS
 // ============================================
 .sa-no-results {
   display: flex;
@@ -445,15 +243,8 @@ $font-lg: 1.125rem;
   padding: 2rem 1rem;
   color: $grey-3;
   font-size: $font-sm;
-  text-align: center;
 
-  mat-icon {
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
-    color: $grey-2;
-    flex-shrink: 0;
-  }
+  mat-icon { font-size: 22px; width: 22px; height: 22px; color: $grey-2; }
 }
 
 // ============================================
@@ -466,38 +257,44 @@ $font-lg: 1.125rem;
 }
 
 .sa-player-item {
+  background: linear-gradient(160deg, $black-3 0%, $black-2 100%);
+  border: 1px solid $grey-1;
+  border-radius: $radius-lg;
+  overflow: hidden;
   position: relative;
-  overflow: visible;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
-  // Left accent bar — default orange
+  // Left accent
   &::before {
     content: '';
     position: absolute;
-    left: 0;
-    top: 12px;
-    bottom: 12px;
+    left: 0; top: 0; bottom: 0;
     width: 4px;
-    border-radius: 0 4px 4px 0;
     background: linear-gradient(180deg, $orange, $orange-dark);
-    transition: background 0.3s ease;
   }
 
-  // Male accent
   &.sa-player-male::before {
     background: linear-gradient(180deg, $blue, darken($blue, 12%));
   }
 
-  // Female accent
   &.sa-player-female::before {
     background: linear-gradient(180deg, $pink, darken($pink, 12%));
   }
+
+  &:hover {
+    border-color: rgba($orange, 0.2);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+  }
 }
 
-// --- Serial Number ---
+.sa-player-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem 0.5rem 1.25rem;
+}
+
 .sa-serial {
-  position: absolute;
-  bottom: 0.6rem;
-  right: 0.75rem;
   width: 24px;
   height: 24px;
   border-radius: 50%;
@@ -508,88 +305,87 @@ $font-lg: 1.125rem;
   display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: -0.3px;
+  flex-shrink: 0;
   border: 1px solid rgba($white, 0.06);
 }
 
-// --- Gender Badge ---
-.sa-gender-badge {
-  display: inline-flex;
+.sa-player-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $blue, darken($blue, 12%));
+  color: $white;
+  font-size: $font-md;
+  font-weight: 800;
+  display: flex;
   align-items: center;
-  gap: 0.3rem;
-  position: absolute;
-  top: 0.65rem;
-  right: 0.75rem;
-  padding: 0.2rem 0.55rem;
-  border-radius: 20px;
-  font-size: 0.65rem;
-  font-weight: 700;
+  justify-content: center;
+  flex-shrink: 0;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  background: rgba($blue, 0.15);
-  color: $blue;
-  border: 1px solid rgba($blue, 0.25);
-
-  mat-icon {
-    font-size: 13px;
-    width: 13px;
-    height: 13px;
-  }
 
   &.female {
-    background: rgba($pink, 0.15);
-    color: $pink;
-    border-color: rgba($pink, 0.25);
+    background: linear-gradient(135deg, $pink, darken($pink, 12%));
   }
 }
 
-// --- Content layout ---
-.sa-player-content {
-  padding: 0.75rem 0.875rem 0.75rem 1.125rem;
+.sa-player-info {
+  flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.25rem;
 }
 
-.sa-player-row {
+.sa-player-name {
+  color: $white;
+  font-size: $font-base;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sa-player-meta {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  align-items: center;
-}
-
-.sa-player-primary {
-  padding-right: 4.25rem;
-}
-
-.sa-player-field {
-  display: flex;
-  align-items: center;
   gap: 0.4rem;
+  flex-wrap: wrap;
+}
 
-  .sa-field-icon {
-    color: $orange-light;
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
-    flex-shrink: 0;
+.sa-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 6px;
+  font-size: 0.65rem;
+  font-weight: 700;
+
+  mat-icon { font-size: 12px; width: 12px; height: 12px; }
+
+  &.sa-meta-gender {
+    background: rgba($blue, 0.1);
+    color: $blue;
+    border: 1px solid rgba($blue, 0.2);
+
+    &.female {
+      background: rgba($pink, 0.1);
+      color: $pink;
+      border-color: rgba($pink, 0.2);
+    }
   }
 
-  .sa-field-value {
-    color: $white;
-    font-size: $font-base;
-    font-weight: 600;
-    letter-spacing: 0.2px;
-    line-height: 1.3;
-    word-break: break-word;
+  &.sa-meta-dob {
+    background: rgba($cyan, 0.1);
+    color: $cyan;
+    border: 1px solid rgba($cyan, 0.2);
   }
 }
 
-// --- Detail Blocks ---
 .sa-player-details {
   display: flex;
   gap: 0.4rem;
   flex-wrap: wrap;
+  padding: 0 1rem 0.75rem 1.25rem;
 }
 
 .sa-detail-block {
@@ -610,7 +406,6 @@ $font-lg: 1.125rem;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   color: $orange-light;
-  line-height: 1.2;
 }
 
 .sa-detail-value {
@@ -629,312 +424,58 @@ $font-lg: 1.125rem;
 // ============================================
 // RESPONSIVE
 // ============================================
-
-// Very small phones (< 360px)
 @media (max-width: 359px) {
-  .sa-shell {
-    padding: 0.5rem;
-    padding-bottom: 1.5rem;
-    gap: 0.625rem;
-  }
-
-  .sa-card-header {
-    padding: 0.625rem 0.75rem 0.4rem;
-    h3 { font-size: $font-sm; }
-  }
-
-  .sa-card-body {
-    padding: 0.75rem;
-  }
-
-  .sa-filter-row {
-    gap: 0.5rem;
-
-    .sa-field {
-      flex: 1 1 100%;
-      min-width: 0;
-    }
-
-    .sa-search-action {
-      flex: 1 1 100%;
-    }
-  }
-
-  .sa-stats-bar {
-    padding: 0.625rem 0.5rem;
-  }
-
-  .sa-stat-value {
-    font-size: 1.25rem;
-  }
-
-  .sa-stat-label {
-    font-size: 0.6rem;
-  }
-
-  .sa-toolbar {
-    padding: 0.625rem 0.5rem;
-    gap: 0.375rem;
-  }
-
-  .sa-toolbar-row {
-    gap: 0.4rem;
-  }
-
-  .sa-toolbar-field {
-    flex: 1 1 100%;
-  }
-
-  .sa-sort-dir-btn {
-    width: 100%;
-    justify-content: center;
-    height: 38px;
-    padding: 0.45rem 0.75rem;
-  }
-
-  .sa-player-content {
-    padding: 0.625rem 0.625rem 0.625rem 0.875rem;
-  }
-
-  .sa-player-primary {
-    padding-right: 3.75rem;
-  }
-
-  .sa-player-field .sa-field-value {
-    font-size: $font-sm;
-  }
-
-  .sa-detail-block {
-    min-width: 55px;
-    padding: 0.3rem 0.4rem;
-  }
-
-  .sa-detail-label {
-    font-size: 0.575rem;
-  }
-
-  .sa-detail-value {
-    font-size: $font-xs;
-  }
-
-  .sa-gender-badge {
-    font-size: 0.6rem;
-    padding: 0.15rem 0.45rem;
-  }
-
-  .sa-serial {
-    width: 20px;
-    height: 20px;
-    font-size: 0.575rem;
-  }
+  .sa-shell { padding: 0.5rem; gap: 0.625rem; }
+  .sa-filter-panel { padding: 0.625rem 0.5rem; }
+  .sa-filter-label { font-size: 0.65rem; min-width: 55px; }
+  .sa-filter-chip { padding: 0.3rem 0.625rem; font-size: $font-xs; }
+  .sa-stats-bar { padding: 0.625rem 0.5rem; }
+  .sa-stat-value { font-size: 1.25rem; }
+  .sa-player-header { padding: 0.625rem 0.75rem 0.375rem 1rem; gap: 0.5rem; }
+  .sa-player-avatar { width: 34px; height: 34px; font-size: $font-sm; }
+  .sa-player-name { font-size: $font-sm; }
+  .sa-player-details { padding: 0 0.75rem 0.625rem 1rem; }
+  .sa-detail-block { min-width: 55px; padding: 0.3rem 0.4rem; }
+  .sa-serial { width: 20px; height: 20px; font-size: 0.575rem; }
+  .sa-dir-btn { width: 30px; height: 30px; }
 }
 
-// Small phones (360px – 479px)
-@media (min-width: 360px) and (max-width: 479px) {
-  .sa-filter-row {
-    .sa-field {
-      flex: 1 1 calc(50% - 0.375rem);
-    }
-
-    .sa-search-action {
-      flex: 1 1 calc(50% - 0.375rem);
-    }
-  }
-
-  .sa-toolbar-field {
-    flex: 1 1 calc(50% - 0.3125rem);
-  }
-}
-
-// Large phones / small tablets (480px – 767px)
 @media (min-width: 480px) and (max-width: 767px) {
-  .sa-shell {
-    padding: 1rem 1.25rem 2rem;
-  }
-
-  .sa-card-header {
-    padding: 1rem 1.25rem 0.5rem;
-  }
-
-  .sa-card-body {
-    padding: 1rem 1.25rem 1.25rem;
-  }
-
-  .sa-stats-bar {
-    padding: 1rem 1.25rem;
-  }
-
-  .sa-stat-value {
-    font-size: 1.75rem;
-  }
-
-  .sa-toolbar {
-    padding: 1rem 1.25rem;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.625rem;
-  }
-
-  .sa-toolbar-row {
-    flex: 1 1 100%;
-  }
-
-  .sa-player-content {
-    padding: 0.875rem 1.125rem 0.875rem 1.375rem;
-  }
-
-  .sa-detail-block {
-    padding: 0.5rem 0.65rem;
-  }
+  .sa-shell { padding: 1rem 1.25rem 2rem; }
+  .sa-filter-panel { padding: 1rem 1.25rem; }
+  .sa-stats-bar { padding: 1rem 1.25rem; }
+  .sa-stat-value { font-size: 1.75rem; }
+  .sa-player-header { padding: 1rem 1.25rem 0.625rem 1.5rem; }
+  .sa-player-details { padding: 0 1.25rem 1rem 1.5rem; }
+  .sa-detail-block { padding: 0.5rem 0.65rem; }
 }
 
-// Tablets (768px+)
 @media (min-width: 768px) {
-  .sa-shell {
-    padding: 1.5rem 2rem 2.5rem;
-    max-width: 800px;
-    margin: 0 auto;
-    width: 100%;
-    gap: 1rem;
-  }
-
-  .sa-card {
-    border-radius: 20px;
-  }
-
-  .sa-card-header {
-    padding: 1.125rem 1.5rem 0.625rem;
-
-    .sa-card-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
-    }
-
-    h3 { font-size: $font-md; }
-  }
-
-  .sa-card-body {
-    padding: 1.125rem 1.5rem 1.5rem;
-  }
-
-  .sa-stats-bar {
-    padding: 1.25rem 2rem;
-    border-radius: 20px;
-  }
-
-  .sa-stat-value {
-    font-size: 2rem;
-  }
-
-  .sa-stat-label {
-    font-size: $font-xs;
-  }
-
-  .sa-toolbar {
-    border-radius: 20px;
-    padding: 1.125rem 1.5rem;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .sa-toolbar-row {
-    flex: 1 1 100%;
-    gap: 0.75rem;
-  }
-
-  .sa-toolbar-field {
-    flex: 1 1 calc(50% - 0.375rem);
-  }
-
-  .sa-sort-dir-btn {
-    height: 48px;
-    padding: 0.625rem 1.25rem;
-    font-size: $font-sm;
-  }
-
-  .sa-player-cards {
-    gap: 1rem;
-  }
-
-  .sa-player-item {
-    border-radius: 20px;
-
-    &::before {
-      top: 16px;
-      bottom: 16px;
-      width: 5px;
-    }
-  }
-
-  .sa-player-content {
-    padding: 1rem 1.375rem 1rem 1.625rem;
-    gap: 0.75rem;
-  }
-
-  .sa-player-field .sa-field-value {
-    font-size: $font-md;
-  }
-
-  .sa-detail-block {
-    padding: 0.625rem 0.875rem;
-  }
-
-  .sa-detail-label {
-    font-size: $font-xs;
-  }
-
-  .sa-detail-value {
-    font-size: $font-base;
-  }
-
-  .sa-gender-badge {
-    font-size: $font-xs;
-    padding: 0.25rem 0.625rem;
-  }
-
-  .sa-serial {
-    width: 28px;
-    height: 28px;
-    font-size: $font-xs;
-  }
-
+  .sa-shell { padding: 1.5rem 2rem 2.5rem; max-width: 800px; margin: 0 auto; width: 100%; gap: 1rem; }
+  .sa-filter-panel { border-radius: 20px; padding: 1.125rem 1.5rem; }
+  .sa-filter-chip { padding: 0.45rem 1rem; font-size: $font-base; }
+  .sa-stats-bar { padding: 1.25rem 2rem; border-radius: 20px; }
+  .sa-stat-value { font-size: 2rem; }
+  .sa-stat-label { font-size: $font-xs; }
+  .sa-player-cards { gap: 1rem; }
+  .sa-player-item { border-radius: 20px; &::before { width: 5px; } }
+  .sa-player-avatar { width: 46px; height: 46px; font-size: $font-lg; }
+  .sa-player-name { font-size: $font-md; }
+  .sa-player-header { padding: 1.125rem 1.5rem 0.625rem 1.75rem; }
+  .sa-player-details { padding: 0 1.5rem 1rem 1.75rem; }
+  .sa-detail-block { padding: 0.625rem 0.875rem; }
+  .sa-detail-label { font-size: $font-xs; }
+  .sa-detail-value { font-size: $font-base; }
+  .sa-serial { width: 28px; height: 28px; font-size: $font-xs; }
   .sa-empty-state {
     padding: 4rem 2rem;
     h4 { font-size: $font-lg; }
     p { font-size: $font-base; max-width: 320px; }
   }
-
-  .sa-empty-icon-ring {
-    width: 96px;
-    height: 96px;
-
-    mat-icon {
-      font-size: 42px;
-      width: 42px;
-      height: 42px;
-    }
-  }
+  .sa-empty-icon-ring { width: 96px; height: 96px; mat-icon { font-size: 42px; width: 42px; height: 42px; } }
 }
 
-// Large desktop (1024px+)
 @media (min-width: 1024px) {
-  .sa-shell {
-    max-width: 900px;
-  }
-
-  .sa-player-cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .sa-toolbar-row {
-    flex: 1 1 auto;
-  }
-
-  .sa-card-header h3 {
-    font-size: $font-lg;
-  }
+  .sa-shell { max-width: 900px; }
+  .sa-player-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
 }

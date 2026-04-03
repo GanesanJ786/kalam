@@ -2,35 +2,37 @@
  * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
  * Unauthorized copying or distribution is strictly prohibited.
  */
-/**
- * Copyright (c) 2024-2026 Kalam. All Rights Reserved.
- * Unauthorized copying or distribution is strictly prohibited.
- */
 // ============================================
-// STUDENT ATTENDANCE RANGE - Black & Orange Sports Theme
-// Professional, responsive, hybrid-ready
+// STUDENT ATTENDANCE RANGE — Consistent with Coach Attendance
+// Black & Orange Sports Theme
 // ============================================
 
+// --- Tokens (matching coach attendance) ---
 $orange: #FF5722;
-$orange-dark: #E64A19;
 $orange-light: #FF8A65;
-$orange-glow: rgba(255, 87, 34, 0.25);
+$orange-dark: #E64A19;
+$orange-glow: rgba(255, 87, 34, 0.35);
+$black-0: #000000;
 $black-1: #0D0D0D;
 $black-2: #121212;
 $black-3: #1A1A1A;
 $black-4: #222222;
 $black-5: #2A2A2A;
-$grey-dark: #333333;
-$grey-mid: #555555;
-$grey-light: #999999;
+$grey-1: #333333;
+$grey-2: #555555;
+$grey-3: #999999;
+$grey-4: #BBBBBB;
 $white: #FFFFFF;
 $green: #00C853;
-$green-dark: #009624;
 $red: #FF1744;
-$red-dark: #D50000;
-$radius: 12px;
-$fast: 0.2s ease;
-$med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$font-xs: 0.75rem;
+$font-sm: 0.8125rem;
+$font-base: 0.9375rem;
+$font-md: 1rem;
+$font-lg: 1.125rem;
 
 // ============================================
 // FULLSCREEN DIALOG CONTENT
@@ -43,6 +45,18 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   display: flex;
   flex-direction: column;
   min-height: 100%;
+}
+
+// ============================================
+// SHELL — Full wrapper
+// ============================================
+.sar-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: $black-1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 // ============================================
@@ -65,7 +79,7 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   width: 38px;
   height: 38px;
   border-radius: 10px;
-  border: 1px solid $grey-dark;
+  border: 1px solid $grey-1;
   background: $black-4;
   color: $orange-light;
   display: inline-flex;
@@ -73,7 +87,7 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   justify-content: center;
   cursor: pointer;
   flex-shrink: 0;
-  transition: all $fast;
+  transition: all 0.2s ease;
 
   mat-icon {
     font-size: 18px;
@@ -117,443 +131,356 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   align-items: center;
   gap: 0.25rem;
   font-size: 0.65rem;
-  color: $grey-light;
+  color: $grey-3;
   font-weight: 600;
   letter-spacing: 0.4px;
   text-transform: uppercase;
 }
 
-.sar-subtitle-icon {
-  font-size: 13px;
-  width: 13px;
-  height: 13px;
-  color: $orange-light;
-}
+// ============================================
+// SCROLL AREA
+// ============================================
+.sar-scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.875rem;
+  padding-bottom: 2rem;
+  scrollbar-width: thin;
+  scrollbar-color: $grey-1 transparent;
+  -webkit-overflow-scrolling: touch;
 
-.sar-header-badge {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  background: rgba(255, 87, 34, 0.1);
-  border: 1.5px solid rgba(255, 87, 34, 0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
 
-  mat-icon {
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
-    color: $orange;
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $grey-1;
+    border-radius: 4px;
   }
 }
 
 // ============================================
-// BODY
+// FILTER PANEL — Chip style (matches coach attendance)
 // ============================================
-.sar-body {
-  flex: 1;
+.sar-filter-panel {
+  background: linear-gradient(160deg, $black-3 0%, $black-4 100%);
+  border: 1px solid $grey-1;
+  border-radius: $radius-lg;
+  padding: 0.65rem 0.75rem;
   display: flex;
   flex-direction: column;
-  padding: 0.75rem;
-  gap: 0.75rem;
-  max-width: 960px;
-  margin: 0 auto;
-  width: 100%;
-  box-sizing: border-box;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  gap: 0.55rem;
+  margin-bottom: 0.875rem;
 }
 
-// ============================================
-// FILTER CARD
-// ============================================
-.sar-filter-card {
-  background: linear-gradient(145deg, $black-3, $black-4);
-  border-radius: $radius;
-  border: 1px solid $grey-dark;
-  overflow: hidden;
-}
-
-.sar-filter-header {
+.sar-filter-row {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  padding: 0.6rem 0.85rem;
-  background: rgba(255, 87, 34, 0.06);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-}
-
-.sar-filter-icon {
-  font-size: 18px;
-  width: 18px;
-  height: 18px;
-  color: $orange;
+  gap: 0.55rem;
 }
 
 .sar-filter-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: $white;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-}
-
-.sar-filter-content {
-  display: flex;
-  align-items: flex-start;
-  gap: 0.75rem;
-  padding: 0.85rem;
-  flex-wrap: wrap;
-}
-
-.sar-date-field {
-  flex: 1;
-  min-width: 200px;
-
-  // Make date range input text white for dark theme visibility
-  ::ng-deep {
-    .mat-mdc-input-element,
-    .mat-date-range-input-inner,
-    input {
-      color: $white !important;
-      caret-color: $orange !important;
-    }
-
-    .mat-mdc-floating-label,
-    .mat-mdc-form-field-label,
-    .mdc-floating-label {
-      color: $orange-light !important;
-    }
-
-    .mat-date-range-input-separator {
-      color: $white !important;
-    }
-
-    .mat-mdc-form-field-hint {
-      color: $grey-light !important;
-    }
-
-    .mdc-text-field--filled:not(.mdc-text-field--disabled) {
-      background-color: $black-5 !important;
-    }
-
-    .mdc-line-ripple::before {
-      border-bottom-color: $grey-dark !important;
-    }
-
-    .mdc-line-ripple::after {
-      border-bottom-color: $orange !important;
-    }
-
-    .mat-datepicker-toggle {
-      color: $orange-light !important;
-    }
-
-    // Placeholder text
-    input::placeholder {
-      color: $grey-light !important;
-      opacity: 1;
-    }
-  }
-}
-
-.sar-search-btn {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  border: none;
-  border-radius: 10px;
-  padding: 0.7rem 1.25rem;
-  font-size: 0.78rem;
+  gap: 0.25rem;
+  font-size: 0.68rem;
   font-weight: 700;
-  letter-spacing: 0.4px;
   text-transform: uppercase;
-  cursor: pointer;
-  background: linear-gradient(135deg, $orange, $orange-dark);
-  color: $white;
-  box-shadow: 0 3px 12px $orange-glow;
-  transition: all $med;
+  letter-spacing: 0.5px;
+  color: $orange-light;
   white-space: nowrap;
   flex-shrink: 0;
+  min-width: 4.5rem;
+}
 
-  mat-icon {
-    font-size: 18px;
-    width: 18px;
-    height: 18px;
+.sar-filter-label-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+  color: $orange;
+}
+
+// --- Inline Date Range Picker ---
+.sar-date-range-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba($white, 0.04);
+  border: 1.5px solid rgba($white, 0.1);
+  border-radius: 50px;
+  padding: 0.2rem 0.35rem 0.2rem 0.75rem;
+  transition: border-color 0.2s ease;
+  flex: 1;
+  min-width: 0;
+  max-width: 280px;
+
+  &:focus-within {
+    border-color: rgba($orange, 0.5);
+    background: rgba($orange, 0.04);
   }
 
-  &:hover {
-    box-shadow: 0 5px 20px rgba(255, 87, 34, 0.45);
-    transform: translateY(-1px);
+  .mat-date-range-input {
+    font-size: 0.72rem;
+    color: rgba($white, 0.85);
+    flex: 1;
+    min-width: 0;
   }
 
-  &:active {
-    transform: scale(0.97);
+  input {
+    color: rgba($white, 0.85) !important;
+    font-size: 0.72rem !important;
+    font-weight: 600;
+    caret-color: $orange;
+
+    &::placeholder {
+      color: rgba($white, 0.35) !important;
+    }
   }
 
-  &:disabled {
-    background: $grey-dark;
-    color: $grey-mid;
-    box-shadow: none;
-    cursor: not-allowed;
-    transform: none;
+  .mat-datepicker-toggle {
+    color: $orange !important;
+    flex-shrink: 0;
+
+    button {
+      width: 28px !important;
+      height: 28px !important;
+
+      .mat-mdc-button-touch-target {
+        width: 28px !important;
+        height: 28px !important;
+      }
+    }
+
+    .mat-icon {
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+    }
   }
 }
 
 // ============================================
-// SUMMARY STATS BAR
+// STATS BAR — Summary metrics
 // ============================================
 .sar-stats-bar {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0;
-  background: linear-gradient(145deg, $black-3, $black-4);
-  border-radius: $radius;
-  border: 1px solid $grey-dark;
-  padding: 0.65rem 0.5rem;
+  background: linear-gradient(160deg, $black-3 0%, $black-2 100%);
+  border: 1px solid $grey-1;
+  border-radius: $radius-lg;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.875rem;
 }
 
 .sar-stat {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
+  flex: 1;
+  gap: 0.25rem;
 }
 
 .sar-stat-value {
-  font-size: 1.35rem;
+  font-size: 1.75rem;
   font-weight: 900;
-  line-height: 1;
   letter-spacing: -0.5px;
+  line-height: 1;
 }
 
 .sar-stat-total {
   color: $orange;
-  text-shadow: 0 0 12px $orange-glow;
+  text-shadow: 0 0 20px rgba($orange, 0.3);
 }
 
 .sar-stat-present {
   color: $green;
-  text-shadow: 0 0 12px rgba(0, 200, 83, 0.25);
+  text-shadow: 0 0 20px rgba($green, 0.3);
 }
 
 .sar-stat-absent {
   color: $red;
-  text-shadow: 0 0 12px rgba(255, 23, 68, 0.25);
+  text-shadow: 0 0 20px rgba($red, 0.3);
 }
 
 .sar-stat-label {
-  font-size: 0.62rem;
+  font-size: $font-xs;
   font-weight: 700;
-  color: $grey-light;
   text-transform: uppercase;
-  letter-spacing: 0.6px;
+  letter-spacing: 1px;
+  color: $grey-3;
 }
 
 .sar-stat-divider {
   width: 1px;
-  height: 32px;
-  background: $grey-dark;
+  height: 36px;
+  background: linear-gradient(180deg, transparent, $grey-1, transparent);
   flex-shrink: 0;
 }
 
 // ============================================
-// MOBILE CARD VIEW (shown on mobile, hidden on desktop)
+// ATTENDANCE CARDS — Mobile-first card layout
 // ============================================
-.sar-cards-list {
+.sar-attendance-cards {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.75rem;
 }
 
-.sar-attendance-card {
-  display: flex;
-  border-radius: $radius;
-  background: linear-gradient(145deg, $black-3, $black-4);
-  border: 1px solid $grey-dark;
-  overflow: hidden;
-  transition: all $med;
+.sar-attendance-item {
+  position: relative;
+  overflow: visible;
+  background: linear-gradient(160deg, $black-3 0%, $black-2 100%);
+  border: 1px solid $grey-1;
+  border-radius: $radius-lg;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
-  &:active {
-    transform: scale(0.985);
+  &:hover {
+    border-color: rgba($orange, 0.2);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
   }
 
-  &.sar-card-present {
-    .sar-card-status-indicator {
-      background: linear-gradient(180deg, $green, $green-dark);
-    }
+  // Left accent bar
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    bottom: 12px;
+    width: 4px;
+    border-radius: 0 4px 4px 0;
+    background: linear-gradient(180deg, $green, darken($green, 10%));
+    transition: background 0.3s ease;
   }
 
-  &.sar-card-absent {
-    .sar-card-status-indicator {
-      background: linear-gradient(180deg, $red, $red-dark);
-    }
+  &.sar-absent::before {
+    background: linear-gradient(180deg, $red, darken($red, 10%));
   }
 }
 
-.sar-card-status-indicator {
-  width: 4px;
-  flex-shrink: 0;
-}
-
-.sar-card-content {
-  flex: 1;
-  padding: 0.65rem 0.75rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-  min-width: 0;
-}
-
+// --- Card Top Row: Identity + Status ---
 .sar-card-top-row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem 0.625rem 1.25rem;
+  border-bottom: 1px solid rgba($grey-1, 0.5);
 }
 
-.sar-card-name {
+.sar-card-identity {
   display: flex;
   align-items: center;
-  gap: 0.3rem;
-  min-width: 0;
+  gap: 0.625rem;
+  flex-wrap: wrap;
   flex: 1;
-
-  span {
-    font-size: 0.88rem;
-    font-weight: 700;
-    color: $white;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+  min-width: 0;
 }
 
-.sar-card-field-icon {
-  font-size: 15px;
-  width: 15px;
-  height: 15px;
-  color: $grey-light;
+.sar-att-field {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.sar-field-icon {
+  color: $orange-light;
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
 }
 
-.sar-card-status-badge,
+.sar-field-value {
+  color: $white;
+  font-size: $font-base;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+}
+
+.sar-ground-field {
+  .sar-field-value {
+    color: rgba($white, 0.8);
+    font-weight: 500;
+  }
+}
+
+// --- Status Badge ---
 .sar-status-badge {
   display: inline-flex;
   align-items: center;
-  gap: 0.2rem;
-  font-size: 0.68rem;
+  gap: 0.35rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 20px;
+  font-size: $font-xs;
   font-weight: 700;
-  letter-spacing: 0.5px;
-  padding: 0.2rem 0.55rem;
-  border-radius: 50px;
-  flex-shrink: 0;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba($green, 0.15);
+  color: $green;
+  border: 1px solid rgba($green, 0.25);
+  white-space: nowrap;
+  flex-shrink: 0;
 
-  &.badge-present {
-    color: $green;
-    background: rgba(0, 200, 83, 0.1);
-    border: 1px solid rgba(0, 200, 83, 0.2);
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
   }
 
-  &.badge-absent {
+  &.absent {
+    background: rgba($red, 0.15);
     color: $red;
-    background: rgba(255, 23, 68, 0.1);
-    border: 1px solid rgba(255, 23, 68, 0.2);
+    border-color: rgba($red, 0.25);
   }
 }
 
-.badge-icon {
-  font-size: 13px !important;
-  width: 13px !important;
-  height: 13px !important;
+// --- Content layout ---
+.sar-attendance-content {
+  padding: 0.75rem 1rem 0.875rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
 }
 
-.sar-card-bottom-row {
+// --- Attendance rows ---
+.sar-att-row {
   display: flex;
-  align-items: center;
-  gap: 1rem;
   flex-wrap: wrap;
+  gap: 0.625rem;
 }
 
-.sar-card-detail {
+.sar-att-detail {
   display: flex;
-  align-items: center;
-  gap: 0.25rem;
-
-  span {
-    font-size: 0.72rem;
-    font-weight: 600;
-    color: $grey-light;
-    letter-spacing: 0.2px;
-  }
+  flex-direction: column;
+  gap: 0.15rem;
+  flex: 1;
+  min-width: 100px;
+  padding: 0.5rem 0.625rem;
+  background: rgba($black-4, 0.6);
+  border-radius: $radius-sm;
+  border: 1px solid rgba($grey-1, 0.5);
 }
 
-// ============================================
-// DESKTOP TABLE VIEW (hidden on mobile, shown on tablet+)
-// ============================================
-.sar-table-wrapper {
-  display: none;
+.sar-detail-label {
+  font-size: $font-xs;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: $orange-light;
 }
 
-.sar-table-card {
-  background: linear-gradient(145deg, $black-3, $black-4);
-  border-radius: $radius;
-  border: 1px solid $grey-dark;
-  overflow: hidden;
-}
-
-.sar-table {
-  width: 100%;
-  background: transparent !important;
-
-  // Header row
-  .mat-mdc-header-row,
-  .mat-header-row {
-    background: rgba(255, 87, 34, 0.06) !important;
-  }
-
-  .mat-mdc-header-cell,
-  .mat-header-cell {
-    color: $orange-light !important;
-    font-weight: 700 !important;
-    font-size: 0.72rem !important;
-    text-transform: uppercase;
-    letter-spacing: 0.6px;
-    border-bottom: 1px solid $grey-dark !important;
-    padding: 0.65rem 0.75rem !important;
-  }
-
-  // Data rows
-  .mat-mdc-row,
-  .mat-row {
-    background: transparent !important;
-    transition: background $fast;
-
-    &:hover {
-      background: rgba(255, 87, 34, 0.04) !important;
-    }
-
-    &:not(:last-child) {
-      .mat-mdc-cell,
-      .mat-cell {
-        border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
-      }
-    }
-  }
-
-  .mat-mdc-cell,
-  .mat-cell {
-    color: rgba(255, 255, 255, 0.88) !important;
-    font-size: 0.82rem !important;
-    font-weight: 500;
-    padding: 0.6rem 0.75rem !important;
-    border-bottom: none !important;
-  }
+.sar-detail-value {
+  font-size: $font-sm;
+  color: rgba($white, 0.85);
+  word-break: break-word;
+  line-height: 1.4;
 }
 
 // ============================================
@@ -566,43 +493,42 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   justify-content: center;
   padding: 3rem 1.5rem;
   text-align: center;
-  flex: 1;
-}
+  gap: 0.75rem;
 
-.sar-empty-icon-ring {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
-  background: rgba(255, 87, 34, 0.06);
-  border: 2px solid $grey-dark;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
+  h4 {
+    color: $white;
+    font-size: $font-md;
+    font-weight: 700;
+    margin: 0;
+    letter-spacing: 0.3px;
+  }
 
-  mat-icon {
-    font-size: 34px;
-    width: 34px;
-    height: 34px;
-    color: $grey-mid;
+  p {
+    color: $grey-3;
+    font-size: $font-sm;
+    margin: 0;
+    max-width: 260px;
+    line-height: 1.5;
   }
 }
 
-.sar-empty-state h4 {
-  margin: 0 0 0.35rem;
-  font-size: 1rem;
-  font-weight: 700;
-  color: $white;
-  letter-spacing: 0.2px;
-}
+.sar-empty-icon-ring {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba($orange, 0.15), rgba($orange, 0.05));
+  border: 2px solid rgba($orange, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
 
-.sar-empty-state p {
-  margin: 0;
-  font-size: 0.8rem;
-  color: $grey-light;
-  font-weight: 500;
-  line-height: 1.5;
-  max-width: 260px;
+  mat-icon {
+    color: $orange;
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+  }
 }
 
 // ============================================
@@ -618,42 +544,36 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.95rem;
   }
 
-  .sar-body {
+  .sar-scroll-area {
     padding: 0.6rem;
-    gap: 0.6rem;
   }
 
-  .sar-filter-content {
-    flex-direction: column;
-    align-items: stretch;
-    padding: 0.75rem;
+  .sar-filter-panel {
+    padding: 0.5rem 0.6rem;
   }
 
-  .sar-date-field {
-    min-width: 0;
-    width: 100%;
-  }
-
-  .sar-search-btn {
-    width: 100%;
-    justify-content: center;
-    padding: 0.65rem;
+  .sar-date-range-inline {
+    max-width: 100%;
   }
 
   .sar-stat-value {
-    font-size: 1.15rem;
+    font-size: 1.35rem;
   }
 
   .sar-stat-label {
     font-size: 0.58rem;
   }
 
-  .sar-cards-list {
-    display: flex;
+  .sar-card-top-row {
+    padding: 0.65rem 0.75rem 0.5rem 1rem;
   }
 
-  .sar-table-wrapper {
-    display: none;
+  .sar-attendance-content {
+    padding: 0.6rem 0.75rem 0.65rem 1rem;
+  }
+
+  .sar-field-value {
+    font-size: $font-sm;
   }
 }
 
@@ -669,27 +589,17 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 1.1rem;
   }
 
-  .sar-body {
+  .sar-scroll-area {
     padding: 0.85rem;
-    gap: 0.85rem;
   }
 
   .sar-stat-value {
     font-size: 1.5rem;
   }
-
-  .sar-cards-list {
-    display: flex;
-  }
-
-  .sar-table-wrapper {
-    display: none;
-  }
 }
 
 // ============================================
 // RESPONSIVE — Tablets landscape (>=768px)
-// Switch to table view
 // ============================================
 @media (min-width: 768px) {
   .sar-header {
@@ -701,18 +611,8 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 1.2rem;
   }
 
-  .sar-header-badge {
-    width: 44px;
-    height: 44px;
-  }
-
-  .sar-body {
+  .sar-scroll-area {
     padding: 1rem 1.5rem;
-    gap: 1rem;
-  }
-
-  .sar-filter-content {
-    align-items: center;
   }
 
   .sar-stats-bar {
@@ -727,13 +627,10 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 0.65rem;
   }
 
-  // Hide cards, show table
-  .sar-cards-list {
-    display: none;
-  }
-
-  .sar-table-wrapper {
-    display: block;
+  .sar-attendance-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
   }
 }
 
@@ -749,32 +646,13 @@ $med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 1.3rem;
   }
 
-  .sar-header-badge {
-    width: 48px;
-    height: 48px;
-
-    mat-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
-    }
-  }
-
-  .sar-body {
+  .sar-scroll-area {
     padding: 1.25rem 2rem;
+    max-width: 960px;
+    margin: 0 auto;
   }
 
   .sar-stat-value {
     font-size: 1.85rem;
-  }
-
-  .sar-table .mat-mdc-cell,
-  .sar-table .mat-cell {
-    font-size: 0.85rem !important;
-  }
-
-  .sar-table .mat-mdc-header-cell,
-  .sar-table .mat-header-cell {
-    font-size: 0.76rem !important;
   }
 }

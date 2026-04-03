@@ -77,7 +77,7 @@ export class AccountComponent implements OnInit {
 
     this.loaderService.show();
     try {
-      if (true) {
+      if (false) {
         await this.kalamService.loginWithFirebase(email, password);
         const currentUser = await this.kalamService.reloadCurrentFirebaseUser();
         if (!currentUser?.emailVerified) {

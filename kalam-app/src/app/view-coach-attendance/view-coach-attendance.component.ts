@@ -129,6 +129,12 @@ export class ViewCoachAttendanceComponent implements OnInit, OnDestroy {
       this.coachSelection();
     }
   }
+
+  selectCoach(kalamId: string) {
+    this.coachVal = kalamId;
+    this.coachSelection();
+  }
+
   coachSelection() {
     const selectedCoach = this.coachList.find((c: any) => c.kalamId === this.coachVal);
     this.selectedCoachSport = selectedCoach?.toCoach?.[0] || '';

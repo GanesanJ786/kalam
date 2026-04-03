@@ -8,31 +8,78 @@
 -->
 <div class="sa-shell">
 
-    <!-- Filter Card -->
-    <div class="sa-card sa-filter-card">
-        <div class="sa-card-header">
-            <mat-icon class="sa-card-icon">filter_list</mat-icon>
-            <h3>Filters</h3>
-        </div>
-        <div class="sa-card-body">
-            <div class="sa-filter-row">
-                <mat-form-field appearance="fill" class="sa-field">
-                    <mat-label>Select Year</mat-label>
-                    <mat-select [(ngModel)]="selectedYear">
-                        <mat-option *ngFor="let year of listOfYears" [value]="year">{{year}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <div class="sa-search-action">
-                    <button class="sa-search-btn" [disabled]="!selectedYear" (click)="search()">
-                        <mat-icon>search</mat-icon>
-                        <span>Search</span>
-                    </button>
-                </div>
+    <!-- Filter Panel: Chip-based -->
+    <div class="sa-filter-panel">
+        <!-- Year Row -->
+        <div class="sa-filter-row">
+            <span class="sa-filter-label">
+                <mat-icon class="sa-filter-label-icon">calendar_today</mat-icon>
+                YEAR
+            </span>
+            <div class="sa-chip-scroll">
+                <button *ngFor="let year of listOfYears" class="sa-filter-chip"
+                    [class.sa-chip-active]="selectedYear === year"
+                    (click)="selectYear(year)">
+                    {{year}}
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Empty State: Before Search -->
+    <!-- Secondary Filters: Gender + Venue + Sort (shown after search) -->
+    <div class="sa-filter-panel sa-secondary-filters" *ngIf="finalStudentList.length > 0">
+        <!-- Gender Row -->
+        <div class="sa-filter-row">
+            <span class="sa-filter-label">
+                <mat-icon class="sa-filter-label-icon">wc</mat-icon>
+                GENDER
+            </span>
+            <div class="sa-chip-scroll">
+                <button class="sa-filter-chip" [class.sa-chip-active]="filterGender === 'all'" (click)="selectGender('all')">All</button>
+                <button class="sa-filter-chip" [class.sa-chip-active]="filterGender === 'male'" (click)="selectGender('male')">Male</button>
+                <button class="sa-filter-chip" [class.sa-chip-active]="filterGender === 'female'" (click)="selectGender('female')">Female</button>
+            </div>
+        </div>
+
+        <div class="sa-filter-divider"></div>
+
+        <!-- Venue Row -->
+        <div class="sa-filter-row">
+            <span class="sa-filter-label">
+                <mat-icon class="sa-filter-label-icon">place</mat-icon>
+                VENUE
+            </span>
+            <div class="sa-chip-scroll">
+                <button class="sa-filter-chip" [class.sa-chip-active]="filterGround === 'all'" (click)="selectVenue('all')">All</button>
+                <button *ngFor="let g of uniqueGrounds" class="sa-filter-chip"
+                    [class.sa-chip-active]="filterGround === g"
+                    (click)="selectVenue(g)">
+                    {{g}}
+                </button>
+            </div>
+        </div>
+
+        <div class="sa-filter-divider"></div>
+
+        <!-- Sort Row -->
+        <div class="sa-filter-row">
+            <span class="sa-filter-label">
+                <mat-icon class="sa-filter-label-icon">sort</mat-icon>
+                SORT
+            </span>
+            <div class="sa-chip-scroll">
+                <button class="sa-filter-chip" [class.sa-chip-active]="sortBy === 'name'" (click)="selectSort('name')">Name</button>
+                <button class="sa-filter-chip" [class.sa-chip-active]="sortBy === 'gender'" (click)="selectSort('gender')">Gender</button>
+                <button class="sa-filter-chip" [class.sa-chip-active]="sortBy === 'ground'" (click)="selectSort('ground')">Venue</button>
+                <button class="sa-filter-chip" [class.sa-chip-active]="sortBy === 'dob'" (click)="selectSort('dob')">DOB</button>
+            </div>
+            <button class="sa-dir-btn" (click)="toggleSortDirection()">
+                <mat-icon>{{sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
+            </button>
+        </div>
+    </div>
+
+    <!-- Empty State -->
     <div *ngIf="finalStudentList.length === 0" class="sa-empty-state">
         <div class="sa-empty-icon-ring">
             <mat-icon>bar_chart</mat-icon>
@@ -67,48 +114,6 @@
             </div>
         </div>
 
-        <!-- Sort & Filter Toolbar -->
-        <div class="sa-toolbar">
-            <div class="sa-toolbar-row">
-                <!-- Gender Filter -->
-                <mat-form-field appearance="fill" class="sa-toolbar-field">
-                    <mat-label>Gender</mat-label>
-                    <mat-select [(ngModel)]="filterGender" (selectionChange)="onFilterOrSortChange()">
-                        <mat-option value="all">All</mat-option>
-                        <mat-option value="male">Male</mat-option>
-                        <mat-option value="female">Female</mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <!-- Venue Filter -->
-                <mat-form-field appearance="fill" class="sa-toolbar-field">
-                    <mat-label>Venue</mat-label>
-                    <mat-select [(ngModel)]="filterGround" (selectionChange)="onFilterOrSortChange()">
-                        <mat-option value="all">All Venues</mat-option>
-                        <mat-option *ngFor="let g of uniqueGrounds" [value]="g">{{g}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <div class="sa-toolbar-row">
-                <!-- Sort By -->
-                <mat-form-field appearance="fill" class="sa-toolbar-field">
-                    <mat-label>Sort By</mat-label>
-                    <mat-select [(ngModel)]="sortBy" (selectionChange)="onFilterOrSortChange()">
-                        <mat-option value="name">Name</mat-option>
-                        <mat-option value="gender">Gender</mat-option>
-                        <mat-option value="ground">Venue</mat-option>
-                        <mat-option value="dob">Date of Birth</mat-option>
-                    </mat-select>
-                </mat-form-field>
-
-                <!-- Sort Direction Toggle -->
-                <button class="sa-sort-dir-btn" (click)="toggleSortDirection()" [title]="sortDirection === 'asc' ? 'Ascending' : 'Descending'">
-                    <mat-icon>{{sortDirection === 'asc' ? 'arrow_upward' : 'arrow_downward'}}</mat-icon>
-                    <span>{{sortDirection === 'asc' ? 'A–Z' : 'Z–A'}}</span>
-                </button>
-            </div>
-        </div>
-
         <!-- No results after filtering -->
         <div *ngIf="filteredStudentList.length === 0" class="sa-no-results">
             <mat-icon>search_off</mat-icon>
@@ -117,42 +122,40 @@
 
         <!-- Player Cards -->
         <div class="sa-player-cards" *ngIf="filteredStudentList.length > 0">
-            <div *ngFor="let row of filteredStudentList; let i = index" class="sa-card sa-player-item"
+            <div *ngFor="let row of filteredStudentList; let i = index" class="sa-player-item"
                  [class.sa-player-male]="row.gender === 'male'"
                  [class.sa-player-female]="row.gender === 'female'">
 
-                <!-- Serial number -->
-                <div class="sa-serial">{{i + 1}}</div>
-
-                <!-- Gender badge -->
-                <div class="sa-gender-badge" [class.female]="row.gender === 'female'">
-                    <mat-icon>{{row.gender === 'male' ? 'male' : 'female'}}</mat-icon>
-                    <span>{{genderMapper(row.gender)}}</span>
-                </div>
-
-                <div class="sa-player-content">
-                    <!-- Row 1: Name -->
-                    <div class="sa-player-row sa-player-primary">
-                        <div class="sa-player-field">
-                            <mat-icon class="sa-field-icon">person</mat-icon>
-                            <span class="sa-field-value">{{row.name}}</span>
+                <div class="sa-player-header">
+                    <!-- Serial -->
+                    <div class="sa-serial">{{i + 1}}</div>
+                    <!-- Avatar -->
+                    <div class="sa-player-avatar" [class.female]="row.gender === 'female'">
+                        {{row.name?.charAt(0)}}
+                    </div>
+                    <div class="sa-player-info">
+                        <span class="sa-player-name">{{row.name}}</span>
+                        <div class="sa-player-meta">
+                            <span class="sa-meta-chip sa-meta-gender" [class.female]="row.gender === 'female'">
+                                <mat-icon>{{row.gender === 'male' ? 'male' : 'female'}}</mat-icon>
+                                {{genderMapper(row.gender)}}
+                            </span>
+                            <span class="sa-meta-chip sa-meta-dob" *ngIf="row.dob">
+                                <mat-icon>cake</mat-icon>
+                                {{row.dob}}
+                            </span>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Row 2: Details -->
-                    <div class="sa-player-row sa-player-details">
-                        <div class="sa-detail-block">
-                            <span class="sa-detail-label">DOB</span>
-                            <span class="sa-detail-value">{{row.dob}}</span>
-                        </div>
-                        <div class="sa-detail-block" *ngIf="row.playingPostion">
-                            <span class="sa-detail-label">Position</span>
-                            <span class="sa-detail-value sa-position">{{row.playingPostion}}</span>
-                        </div>
-                        <div class="sa-detail-block">
-                            <span class="sa-detail-label">Venue</span>
-                            <span class="sa-detail-value">{{row.groundName}}</span>
-                        </div>
+                <div class="sa-player-details">
+                    <div class="sa-detail-block" *ngIf="row.playingPostion">
+                        <span class="sa-detail-label">Position</span>
+                        <span class="sa-detail-value sa-position">{{row.playingPostion}}</span>
+                    </div>
+                    <div class="sa-detail-block" *ngIf="row.groundName">
+                        <span class="sa-detail-label">Venue</span>
+                        <span class="sa-detail-value">{{row.groundName}}</span>
                     </div>
                 </div>
             </div>

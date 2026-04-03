@@ -7,31 +7,60 @@
   Unauthorized copying or distribution is strictly prohibited.
 -->
 <div class="sf-container">
-    <app-header [title]="title"></app-header>
-    <div class="sf-content">
-        <div class="gotoHome">
-            <button mat-raised-button color="primary" (click)="gotoHome()">Home</button>
-        </div>
-        <div *ngIf="students?.length > 0">
-            <div class="grid-container custGrid-6 font-0-7em">
-                <div class="header">Name</div>
-                <div class="header">Under</div>
-                <div class="header">Coach</div>
-                <div class="header">Date</div>
-                <div class="header">Amount</div>  
-                <div class="header">Action</div>
-                <ng-container *ngFor="let student of students">
-                    <div class="rowBg">{{student.name}}</div>
-                    <div class="rowBg">{{student.underAge}}</div>
-                    <div class="rowBg">{{student.fessCollectedBy}}</div>
-                    <div class="rowBg">{{student.feesPaidDate}}</div>
-                    <div class="rowBg">{{student.feesAmount}}</div>
-                    <div class="rowBg"> 
-                        <button class="btn-grnd" style="padding: 0.5rem 0.5rem;margin-bottom: 1em;margin-left: 0;font-size: 0.7rem;" (click)="approve(student)">Received</button>
-                    </div>
-                </ng-container>
-                </div>
-        </div>
-       
+  <app-header [title]="title"></app-header>
+  <div class="sf-content">
+
+    <!-- Top bar: Home button + pending count -->
+    <div class="ap-top-bar">
+      <button class="ap-home-btn" (click)="gotoHome()">
+        <mat-icon>arrow_back</mat-icon> Home
+      </button>
+      <span class="ap-pending-badge" *ngIf="students?.length > 0">
+        {{students.length}} Pending
+      </span>
     </div>
+
+    <!-- Payment cards -->
+    <div class="ap-list" *ngIf="students?.length > 0">
+      <div class="ap-card" *ngFor="let student of students; let i = index">
+        <div class="ap-card-header">
+          <div class="ap-avatar">
+            <span class="ap-avatar-letter">{{student.name?.charAt(0)}}</span>
+          </div>
+          <div class="ap-info">
+            <span class="ap-name">{{student.name}}</span>
+            <div class="ap-meta">
+              <span class="ap-chip ap-chip-age">
+                <mat-icon>category</mat-icon> {{student.underAge}}
+              </span>
+              <span class="ap-chip ap-chip-coach">
+                <mat-icon>sports</mat-icon> {{student.fessCollectedBy}}
+              </span>
+            </div>
+          </div>
+          <div class="ap-amount-badge">
+            <span class="ap-amount-label">Amount</span>
+            <span class="ap-amount-value">₹{{student.feesAmount}}</span>
+          </div>
+        </div>
+        <div class="ap-card-actions">
+          <div class="ap-date-info">
+            <mat-icon>event</mat-icon>
+            <span>{{student.feesPaidDate}}</span>
+          </div>
+          <button class="ap-approve-btn" (click)="approve(student)">
+            <mat-icon>check_circle</mat-icon> Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="ap-empty" *ngIf="!students || students.length === 0">
+      <mat-icon class="ap-empty-icon">payments</mat-icon>
+      <p class="ap-empty-title">No pending payments</p>
+      <p class="ap-empty-sub">All fees have been confirmed</p>
+    </div>
+
+  </div>
 </div>

@@ -1,0 +1,120 @@
+===========================================
+  Kalam Demo - Recording Scenes 1-9
+===========================================
+
+
+[0.0s] === scene01_opening ===
+  Login page loaded
+
+[5.3s] === scene02_login_home ===
+  Email typed
+  Password typed
+  Sign In clicked
+  Home dashboard loaded
+
+[19.3s] === scene03_add_ground ===
+  ✅ Clicked: Add Venue chip
+  Dialog opened
+  Venue name set
+  Address set
+  Dialog closed (demo only — ground already exists)
+
+[38.8s] === scene04_student_form ===
+  Student form loaded
+  ✅ Name: Rahul
+  Setting DOB via Angular API...
+  DOB: 06/05/1991, Age calculated
+  ✅ Clicked: Gender: Male
+  ✅ Clicked: Occupation: Professional
+  ✅ Email: testEmail@gmail.com
+  ⚠️ Mobile failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('i
+  ⚠️ WhatsApp failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('i
+  ✅ Clicked: NEXT
+  Step 2: Sports & Academy Details
+  ⚠️ Emergency Name failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('i
+  ⚠️ Emergency Number failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('i
+  ⚠️ Click failed: Sport: Fitness — locator.waitFor: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for locator
+  ⚠️ Click failed: Sport: Fitness — locator.waitFor: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for locator
+  ⚠️ Click failed: Sport: Fitness (alt) — locator.waitFor: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for locator
+  ⚠️ Previous Academy failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('i
+  ⚠️ Click failed: Skill: Beginner — locator.waitFor: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for locator
+  ⚠️ Medical Issue failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('i
+  ⚠️ Click failed: Venue dropdown — locator.waitFor: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for locator
+  ⚠️ Click failed: First venue — locator.waitFor: Timeout 15000ms exceeded.
+Call log:
+[2m  - waiting for locator
+  Dismissed venue overlay
+  ⚠️ Jersey Size failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('i
+  ⚠️ Height failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('i
+  ⚠️ Weight failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('i
+  ⚠️ Address failed: locator.click: Timeout 5000ms exceeded.
+Call log:
+[2m  - waiting for locator('t
+
+[321.3s] === scene05_quick_attendance ===
+  Quick Attendance loaded
+  ✅ Clicked: Ground dropdown
+  ✅ Clicked: First ground
+  1 student(s) loaded
+  ✅ Clicked: All Present
+
+[340.4s] === scene06_coach_checkin ===
+  1 ground card(s)
+  Checked IN
+
+[351.6s] === scene07_teams ===
+  Teams tab loaded
+
+[369.7s] === scene08_tasks ===
+  Task Manager loaded
+  ✅ Clicked: Assign New Task
+  ✅ Clicked: Coach dropdown
+  ✅ Clicked: First coach
+
+[397.0s] === scene09_closing ===
+
+Stopping recording (total 409.1s)...
+Timestamps: /Users/ganesan/Documents/Ganesan/Claude_Kalam/kalam/kalam-app/demo-video/output/scene-timestamps.json
+
+Splitting into scene clips...
+  scene01_opening.webm (5.3s)
+  scene02_login_home.webm (14.0s)
+  scene03_add_ground.webm (19.5s)
+  scene04_student_form.webm (282.5s)
+  scene05_quick_attendance.webm (19.1s)
+  scene06_coach_checkin.webm (11.2s)
+  scene07_teams.webm (18.2s)
+  scene08_tasks.webm (27.3s)
+  scene09_closing.webm (12.1s)
+
+Done! Scenes 1-9 recorded and split.
+   Clips: /Users/ganesan/Documents/Ganesan/Claude_Kalam/kalam/kalam-app/demo-video/output/clips
+   Next: node merge-video.js

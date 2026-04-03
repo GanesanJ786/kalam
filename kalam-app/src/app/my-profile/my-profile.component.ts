@@ -91,7 +91,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
             ...document.payload.doc.data() as {}
           }
         });
-        this.logo = data[0].logoUrl ? data[0].logoUrl : "";
+        this.logo = data.length > 0 && data[0].logoUrl ? data[0].logoUrl : "";
       })
     }
     
@@ -419,6 +419,10 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   }
   viewCoachData() {
     this.router.navigate([`/coachDetails`]);
+  }
+
+  getActiveGround(): any {
+    return this.groundList.find((g: any) => !g.disableOutBtn) || null;
   }
 
   viewAllStudents(groundName: string) {

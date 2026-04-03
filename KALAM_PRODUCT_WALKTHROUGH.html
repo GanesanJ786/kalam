@@ -1,0 +1,1417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kalam — Product Walkthrough</title>
+<style>
+  /* ===== PRINT & PAGE SETUP ===== */
+  @page {
+    size: A4;
+    margin: 20mm 18mm;
+  }
+  @media print {
+    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .page-break { page-break-before: always; }
+    .no-break { page-break-inside: avoid; }
+    .screenshot-box { border: 2px dashed #ccc !important; }
+    .screenshot-box img { max-width: 240px; max-height: 420px; }
+  }
+
+  /* ===== BASE ===== */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #1a1a2e;
+    line-height: 1.6;
+    background: #fff;
+  }
+
+  /* ===== COVER PAGE ===== */
+  .cover {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+    color: #fff;
+    padding: 60px 40px;
+  }
+  .cover-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 28px;
+    background: linear-gradient(135deg, #e94560, #ff6b35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 32px;
+    box-shadow: 0 20px 60px rgba(233, 69, 96, 0.3);
+  }
+  .cover h1 {
+    font-size: 52px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+  .cover .tagline {
+    font-size: 22px;
+    color: #a8b2d1;
+    margin-bottom: 48px;
+    font-weight: 300;
+  }
+  .cover-meta {
+    display: flex;
+    gap: 32px;
+    font-size: 14px;
+    color: #8892b0;
+  }
+  .cover-meta span { display: flex; align-items: center; gap: 6px; }
+  .cover-divider {
+    width: 80px;
+    height: 3px;
+    background: linear-gradient(90deg, #e94560, #ff6b35);
+    border-radius: 2px;
+    margin: 32px auto;
+  }
+  .cover-subtitle {
+    font-size: 16px;
+    color: #8892b0;
+    max-width: 500px;
+    line-height: 1.8;
+  }
+
+  /* ===== TOC ===== */
+  .toc {
+    padding: 60px 48px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .toc h2 {
+    font-size: 28px;
+    color: #1a1a2e;
+    margin-bottom: 32px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #e94560;
+    display: inline-block;
+  }
+  .toc-list { list-style: none; }
+  .toc-list li {
+    display: flex;
+    align-items: baseline;
+    padding: 10px 0;
+    border-bottom: 1px dotted #ddd;
+  }
+  .toc-num {
+    width: 36px;
+    font-weight: 700;
+    color: #e94560;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .toc-title {
+    flex: 1;
+    font-size: 16px;
+    color: #1a1a2e;
+  }
+  .toc-page {
+    font-size: 14px;
+    color: #888;
+    margin-left: 12px;
+  }
+
+  /* ===== SECTION PAGES ===== */
+  .section {
+    padding: 48px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .section-num {
+    font-size: 13px;
+    font-weight: 700;
+    color: #e94560;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+  .section h2 {
+    font-size: 30px;
+    font-weight: 700;
+    color: #1a1a2e;
+    margin-bottom: 8px;
+  }
+  .section-desc {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 28px;
+    line-height: 1.7;
+  }
+
+  /* Screenshot placeholder */
+  .screenshot-box {
+    background: #f8f9fa;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 40px 24px;
+    text-align: center;
+    margin: 24px 0;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    position: relative;
+  }
+  .screenshot-box:hover {
+    border-color: #e65100;
+    background: #fff3e0;
+  }
+  .screenshot-box .ss-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+    opacity: 0.4;
+  }
+  .screenshot-box .ss-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #1a1a2e;
+    margin-bottom: 6px;
+  }
+  .screenshot-box .ss-hint {
+    font-size: 13px;
+    color: #888;
+    max-width: 400px;
+    line-height: 1.5;
+  }
+  .screenshot-box.has-image {
+    padding: 10px;
+    border-style: solid;
+    border-color: #e0e0e0;
+    min-height: auto;
+    background: #fff;
+  }
+  .screenshot-box.has-image:hover {
+    border-color: #e65100;
+  }
+  .screenshot-box.has-image .ss-icon,
+  .screenshot-box.has-image .ss-hint {
+    display: none;
+  }
+  .screenshot-box.has-image .ss-label {
+    font-size: 11px;
+    color: #888;
+    margin-top: 6px;
+    margin-bottom: 0;
+  }
+  .screenshot-box img {
+    max-width: 280px;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 12px;
+    border: 2px solid #222;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .screenshot-box .ss-replace-hint {
+    display: none;
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    background: rgba(0,0,0,0.6);
+    color: #fff;
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+  .screenshot-box.has-image:hover .ss-replace-hint {
+    display: block;
+  }
+
+  /* Toolbar for save/export */
+  .ss-toolbar {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 1000;
+    display: flex;
+    gap: 10px;
+  }
+  .ss-toolbar button {
+    background: #e65100;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(230,81,0,0.4);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .ss-toolbar button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(230,81,0,0.5);
+  }
+  .ss-toolbar .ss-count {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  @media print {
+    .ss-toolbar { display: none !important; }
+    .ss-replace-hint { display: none !important; }
+    .screenshot-box { cursor: default; }
+  }
+
+  /* Feature highlights */
+  .features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 20px 0;
+  }
+  .feature-card {
+    background: #f0f4ff;
+    border-radius: 10px;
+    padding: 16px 18px;
+    border-left: 4px solid #e94560;
+  }
+  .feature-card h4 {
+    font-size: 14px;
+    color: #1a1a2e;
+    margin-bottom: 4px;
+  }
+  .feature-card p {
+    font-size: 13px;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  /* Steps */
+  .steps { margin: 20px 0; }
+  .step {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+  .step-num {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e94560, #ff6b35);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-content h4 {
+    font-size: 15px;
+    color: #1a1a2e;
+    margin-bottom: 2px;
+  }
+  .step-content p {
+    font-size: 13px;
+    color: #666;
+    line-height: 1.5;
+  }
+
+  /* Info callout */
+  .callout {
+    background: #fff8f0;
+    border-left: 4px solid #ff6b35;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin: 20px 0;
+    font-size: 14px;
+    color: #333;
+  }
+  .callout strong { color: #e94560; }
+
+  /* Role tags */
+  .role-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 16px;
+  }
+  .role-owner { background: #e94560; color: #fff; }
+  .role-coach { background: #2196F3; color: #fff; }
+  .role-both { background: #1a1a2e; color: #fff; }
+
+  /* Two-col layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 20px 0;
+  }
+  .two-col .screenshot-box img {
+    max-width: 220px;
+    max-height: 400px;
+  }
+
+  /* Summary table */
+  .summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  .summary-table th {
+    background: #1a1a2e;
+    color: #fff;
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 600;
+  }
+  .summary-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #eee;
+  }
+  .summary-table tr:nth-child(even) td { background: #f8f9fa; }
+
+  .accent { color: #e94560; font-weight: 600; }
+  .subtle { color: #888; font-size: 13px; }
+
+  /* Divider */
+  hr.section-divider {
+    border: none;
+    height: 1px;
+    background: #e5e7eb;
+    margin: 32px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ========================================== -->
+<!-- COVER PAGE -->
+<!-- ========================================== -->
+<div class="cover">
+  <div class="cover-logo">K</div>
+  <h1>KALAM</h1>
+  <p class="tagline">Sports Academy Management Platform</p>
+  <div class="cover-divider"></div>
+  <p class="cover-subtitle">
+    A complete digital solution for managing sports academies — students, coaches, attendance, performance tracking, payments, and analytics. All in one place.
+  </p>
+  <div style="margin-top: 48px;"></div>
+  <div class="cover-meta">
+    <span>📋 Product Walkthrough</span>
+    <span>📅 April 2026</span>
+    <span>🔒 Confidential</span>
+  </div>
+</div>
+
+<!-- ========================================== -->
+<!-- TABLE OF CONTENTS -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="toc">
+  <h2>Table of Contents</h2>
+  <ol class="toc-list">
+    <li><span class="toc-num">01</span><span class="toc-title">Login & Authentication</span></li>
+    <li><span class="toc-num">02</span><span class="toc-title">Home Dashboard — Profile & Academy Overview</span></li>
+    <li><span class="toc-num">03</span><span class="toc-title">Quick Actions & Notifications</span></li>
+    <li><span class="toc-num">04</span><span class="toc-title">Training Venues & Check-In/Out</span></li>
+    <li><span class="toc-num">05</span><span class="toc-title">Teams — Player Management</span></li>
+    <li><span class="toc-num">06</span><span class="toc-title">Add / Edit Student</span></li>
+    <li><span class="toc-num">07</span><span class="toc-title">Quick Attendance</span></li>
+    <li><span class="toc-num">08</span><span class="toc-title">Student Attendance History</span></li>
+    <li><span class="toc-num">09</span><span class="toc-title">Coach Attendance View</span></li>
+    <li><span class="toc-num">10</span><span class="toc-title">Student Performance Tracking</span></li>
+    <li><span class="toc-num">11</span><span class="toc-title">Scholarship & Payment Management</span></li>
+    <li><span class="toc-num">12</span><span class="toc-title">Player Analytics</span></li>
+    <li><span class="toc-num">13</span><span class="toc-title">Fees Approval</span></li>
+    <li><span class="toc-num">14</span><span class="toc-title">Coach & Student Approval</span></li>
+    <li><span class="toc-num">15</span><span class="toc-title">Coach Tasks</span></li>
+    <li><span class="toc-num">16</span><span class="toc-title">User Roles & Permissions</span></li>
+  </ol>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 1: LOGIN -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 01</div>
+  <h2>Login & Registration</h2>
+  <p class="section-desc">
+    Kalam provides a clean, mobile-first authentication experience. Coaches and academy owners sign in on the <strong>Welcome Back</strong> screen using their registered email and password. New users register through a dedicated <strong>Registration Form</strong> with profile setup and personal details.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">🔐</div>
+      <div class="ss-label">Screenshot: Login Screen</div>
+      <div class="ss-hint">The "Welcome Back" sign-in screen with email, password, Sign In button, and Create New Account option.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📝</div>
+      <div class="ss-label">Screenshot: Registration Form</div>
+      <div class="ss-hint">The multi-section registration form with Profile Setup and Personal Details fields.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:1.5rem; color:#e8540a;">Login Screen — "Welcome Back"</h3>
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>🏷️ Academy Branding</h4>
+      <p>Kalam logo at the top with "Welcome Back" greeting and subtitle — "Sign in to your account to continue"</p>
+    </div>
+    <div class="feature-card">
+      <h4>📧 Email & Password</h4>
+      <p>Email address input with mail icon, password field with lock icon and a <strong>"Forgot?"</strong> link for instant password reset</p>
+    </div>
+    <div class="feature-card">
+      <h4>➡️ Sign In</h4>
+      <p>Orange "Sign In" button triggers Firebase authentication. On success, redirects to the Home Dashboard</p>
+    </div>
+    <div class="feature-card">
+      <h4>🆕 Create New Account</h4>
+      <p>"Don't have an account?" prompt with an outlined orange <strong>"Create New Account"</strong> button navigates to the Registration Form</p>
+    </div>
+    <div class="feature-card">
+      <h4>🔒 Session Security</h4>
+      <p>Auto-logout after 2 hours of inactivity. Session stored securely — no credentials persisted in browser storage</p>
+    </div>
+    <div class="feature-card">
+      <h4>📜 Legal Links</h4>
+      <p>"Privacy Policy" and "Terms of Service" links at the bottom for compliance and transparency</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:1.5rem; color:#e8540a;">Registration Form — New Coach Sign-Up</h3>
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>📸 Profile Picture</h4>
+      <p><strong>Profile Setup</strong> section at the top — tap the avatar circle to upload a profile photo (camera icon prompt)</p>
+    </div>
+    <div class="feature-card">
+      <h4>👤 Personal Details</h4>
+      <p>Full Name, Email Address, Password &amp; Confirm Password (side-by-side), Date of Birth with calendar picker</p>
+    </div>
+    <div class="feature-card">
+      <h4>⚧ Gender Selection</h4>
+      <p>Male / Female radio button options clearly labeled under the <strong>GENDER</strong> heading</p>
+    </div>
+    <div class="feature-card">
+      <h4>⚽ Sports &amp; Contact</h4>
+      <p>"Sports to Coach" dropdown (e.g. Football) and WhatsApp Number field for communication</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Flow:</strong> New coaches complete the Registration Form → their profile goes to the academy owner for approval → once approved, they can sign in from the Login screen and access their assigned teams and venues.
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 2: HOME DASHBOARD -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 02</div>
+  <h2>Home Dashboard — Profile & Academy Overview</h2>
+  <span class="role-tag role-both">All Roles</span>
+  <p class="section-desc">
+    The home screen is the central hub. It shows the academy profile, quick action buttons, notification alerts, and training venues with check-in/out functionality. The bottom tab bar provides navigation to Teams, Scholarship, and Analytics.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Home Dashboard (Owner View)</div>
+      <div class="ss-hint">Login as an academy owner → Capture the full Home screen showing: academy logo & name, quick action buttons, and training venues.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Home Dashboard (Scrolled)</div>
+      <div class="ss-hint">Scroll down on the Home screen → Capture showing the training venues list with student counts and check-in buttons.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px; font-size:18px; color:#1a1a2e;">Dashboard Components</h3>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Academy Profile Strip</h4>
+        <p>Shows academy logo, name, sport type (Football/Cricket), and country. A green dot indicates an active session when the coach is checked in.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Notification Alerts</h4>
+        <p>Orange badge chips appear when there are pending approvals — new coaches, new students, or fee payments waiting for confirmation.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Quick Action Buttons</h4>
+        <p>Horizontal scroll of action chips: Add Venue, Coach Details, Quick Attendance, and Tasks. Coaches see: Quick Attendance, Tasks, and Apply Leave.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Bottom Tab Navigation</h4>
+        <p>Home | Teams | Scholarship (owner only) | Analysis — switch between major sections without losing context.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Coach View — Home</div>
+      <div class="ss-hint">Login as a regular coach → Capture the Home tab showing Quick Attendance, Tasks, and Apply Leave buttons.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Coach View — Venues</div>
+      <div class="ss-hint">Scroll down on the Coach Home → Capture the training venues section with check-in buttons.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 3: QUICK ACTIONS -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 03</div>
+  <h2>Quick Actions & Notifications</h2>
+  <span class="role-tag role-owner">Owner</span>
+  <p class="section-desc">
+    Owners see real-time notification badges on the home screen for items requiring their attention. Each badge is tappable and navigates directly to the relevant management screen.
+  </p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>🧑‍🏫 Coach Approval</h4>
+      <p>Badge shows count of new coach sign-ups waiting for approval or rejection</p>
+    </div>
+    <div class="feature-card">
+      <h4>🎓 Student Approval</h4>
+      <p>Badge shows count of new student registrations pending approval</p>
+    </div>
+    <div class="feature-card">
+      <h4>💰 Fee Payments</h4>
+      <p>Badge shows count of fee payments reported by coaches, awaiting owner confirmation</p>
+    </div>
+    <div class="feature-card">
+      <h4>📋 Task Assignments</h4>
+      <p>Task chip shows pending task count. Coaches and owners can manage assigned tasks</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Notification Badges</div>
+      <div class="ss-hint">Ensure there are pending coaches/students/payments → Capture Home screen showing orange notification badge chips.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Quick Action Buttons</div>
+      <div class="ss-hint">Capture the horizontal action chips row: Add Venue, Coach Details, Quick Attendance, Tasks.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 4: TRAINING VENUES -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 04</div>
+  <h2>Training Venues & Check-In / Check-Out</h2>
+  <span class="role-tag role-both">All Roles</span>
+  <p class="section-desc">
+    The venues section shows all training grounds with a compact list design. Coaches check in to start a session at a venue (one venue at a time). While checked in, an "Active Session" banner appears prominently. Other venues are dimmed until the coach checks out.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Venues — Not Checked In</div>
+      <div class="ss-hint">Before checking in. Capture the venue list showing all venues with "CHECK IN" buttons available.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Venues — Active Session</div>
+      <div class="ss-hint">After checking in to one venue. Capture showing the green "Session Active" banner with CHECK OUT button, the active venue highlighted, and other venues dimmed.</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Compact Venue List</h4>
+        <p>Each venue shows sport icon, venue name, and student count. Tap "CHECK IN" to start a session.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Active Session Banner</h4>
+        <p>When checked in, a green pulsing banner at the top shows the active venue name and a "CHECK OUT" button. All other check-in buttons are disabled.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>One Session at a Time</h4>
+        <p>A coach can only be checked in at one venue. This constraint is enforced visually — other venues appear dimmed.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Note:</strong> Check-in/out records are used for coach attendance tracking. Location data is captured automatically when checking in/out for verification.
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 5: TEAMS -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 05</div>
+  <h2>Teams — Player Management</h2>
+  <span class="role-tag role-both">All Roles</span>
+  <p class="section-desc">
+    The Teams tab is the main player management view. Coaches filter by Age Group and Venue using horizontal chip selectors, then see player cards organized by playing position.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Teams — Filter Chips</div>
+      <div class="ss-hint">Go to Teams tab → Select an Age Group chip and a Venue chip. Capture the filter panel with active chips highlighted orange.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Teams — Player Cards</div>
+      <div class="ss-hint">Scroll down to see player cards with name, Kalam ID, age group, competency badges, and action buttons.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px; font-size:18px;">Filter Panel</h3>
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>Age Group Chips</h4>
+      <p>Single-tap selection: U-5, U-7, U-9, U-11, U-13, U-15, U-17, U-19, U-21, Open. Active chip glows orange.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Venue Chips</h4>
+      <p>"All" + individual venue names. Appears after selecting age group. Scrolls horizontally.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px; font-size:18px;">Player Card</h3>
+  <p class="section-desc" style="margin-bottom:16px;">
+    Each player card shows profile avatar, name, and colored metadata chips (Kalam ID, age group, competency level). The card footer has action buttons:
+  </p>
+
+  <table class="summary-table">
+    <tr>
+      <th>Action</th>
+      <th>Description</th>
+      <th>Access</th>
+    </tr>
+    <tr>
+      <td><span class="accent">Edit</span></td>
+      <td>Edit student's profile details (personal info, sport config)</td>
+      <td>Owner only</td>
+    </tr>
+    <tr>
+      <td><span class="accent">Attendance</span></td>
+      <td>View student's attendance history with date range filter</td>
+      <td>All</td>
+    </tr>
+    <tr>
+      <td><span class="accent">Performance</span></td>
+      <td>Add or view match performance records</td>
+      <td>All</td>
+    </tr>
+    <tr>
+      <td><span class="accent">Fees</span></td>
+      <td>Record fee payment (only shown if fee tracking is enabled for the student)</td>
+      <td>All</td>
+    </tr>
+  </table>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Player Card — Owner</div>
+      <div class="ss-hint">Capture a player card showing avatar, name, meta chips, and action bar: Edit, Attendance, Performance, Fees.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Player Card — Coach</div>
+      <div class="ss-hint">Login as coach → Capture a player card showing Attendance, Performance, Fees buttons (no Edit).</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 6: ADD/EDIT STUDENT -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 06</div>
+  <h2>Add / Edit Student</h2>
+  <span class="role-tag role-owner">Owner</span>
+  <p class="section-desc">
+    The student form is a 2-step wizard with a progress indicator at the top. Step 1 collects personal details, Step 2 collects sport-specific configuration. The form uses modern tile selectors for gender and blood group selection.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Step 1 — Personal Details</div>
+      <div class="ss-hint">Tap "Add Student" → Capture Step 1 showing: profile photo upload, name, DOB/age, gender tile selector, parent info, address, blood group tiles.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Step 2 — Sport Configuration</div>
+      <div class="ss-hint">Tap "Next" → Capture Step 2 showing: playing position, preferred sport/foot, venue assignment, competency level, scholarship, fee amount fields.</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Step 1: Personal Details</h4>
+        <p>Profile photo upload, full name, date of birth (auto-calculates age), gender (icon tile selector), parent name, WhatsApp number, address, blood group (icon tile selector).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Step 2: Sport Configuration</h4>
+        <p>Playing position, preferred sport, preferred foot (Left/Right/Both), training venue, age category, competency level (Beginner/Intermediate/Advanced), scholarship tier (0%–100%), monthly fee amount.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Submit & Assign</h4>
+        <p>Student is created with a unique Kalam ID and assigned to the selected venue and age group.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 7: QUICK ATTENDANCE -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 07</div>
+  <h2>Quick Attendance</h2>
+  <span class="role-tag role-both">All Roles</span>
+  <p class="section-desc">
+    The Quick Attendance screen allows coaches to mark attendance for all students at a venue in seconds. Select a venue chip, then toggle each student's status with a single tap. Bulk actions let you mark everyone present or absent at once.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Quick Attendance — Venue Selection</div>
+      <div class="ss-hint">Navigate to Quick Attendance → Capture the venue chip panel and stats bar before marking attendance.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Quick Attendance — Marking</div>
+      <div class="ss-hint">Select a venue → Mark some students present/absent → Capture showing toggle indicators, bulk action buttons, and save button.</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Select Venue</h4>
+        <p>Tap a venue chip to load all approved students assigned to that training ground.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Mark Attendance</h4>
+        <p>Each student row shows avatar with initials, name, Kalam ID, and a Present(✓)/Absent(✗) toggle. Tap anywhere on the row to toggle status. Green = Present, Red = Absent.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Bulk Actions + Search</h4>
+        <p>"All Present" marks everyone present in one tap. Search bar filters by name or Kalam ID. Real-time stats bar shows Total/Present/Absent counts.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <h4>Save</h4>
+        <p>Floating save button shows unsaved count. Previously saved entries show a cloud icon. Tap "Save Attendance" to commit all changes.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>UX Highlight:</strong> The stats bar updates in real-time as you toggle students. Already-saved entries are marked with a cloud icon to prevent accidental re-saving.
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 8: STUDENT ATTENDANCE HISTORY -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 08</div>
+  <h2>Student Attendance History</h2>
+  <span class="role-tag role-both">All Roles</span>
+  <p class="section-desc">
+    View a specific student's attendance records over a date range. The screen opens as a full-screen dialog showing the student's name, a date range picker, and summary stats.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Attendance — Header & Stats</div>
+      <div class="ss-hint">Go to Teams → Tap "Attendance" on a student → Capture the header with name, date range picker, and Total/Present/Absent stats bar.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Attendance — History Cards</div>
+      <div class="ss-hint">Scroll down → Capture attendance cards with date, venue, status (green = Present, red = Absent).</div>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>Auto-Load on Open</h4>
+      <p>Automatically loads the current week's attendance when opened — no manual search needed</p>
+    </div>
+    <div class="feature-card">
+      <h4>Date Range Filter</h4>
+      <p>Chip-styled date range picker to query any custom period</p>
+    </div>
+    <div class="feature-card">
+      <h4>Stats Summary Bar</h4>
+      <p>Total, Present, Absent counts displayed in a compact stat bar</p>
+    </div>
+    <div class="feature-card">
+      <h4>Color-Coded Cards</h4>
+      <p>Green left border = Present, Red left border = Absent. Status badge with icon.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 9: COACH ATTENDANCE -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 09</div>
+  <h2>Coach Attendance View</h2>
+  <span class="role-tag role-owner">Owner</span>
+  <p class="section-desc">
+    Owners can monitor coach attendance with chip-based filters. Select a coach and date range to view their login/logout times, training topics, notes, and leave records with reasons.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Coach Attendance — Present</div>
+      <div class="ss-hint">Select a coach chip → Capture showing: coach chips, date range, stats bar, and a present-day card with topics, notes, login/logout times.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Coach Attendance — Leave</div>
+      <div class="ss-hint">Select a coach with leave → Capture a leave card showing: red border, "Leave" badge, date, and leave reason.</div>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>Coach Chip Selector</h4>
+      <p>All coaches displayed as scrollable chips. "(Self)" tag on your own profile. Active chip highlighted orange.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Login / Logout Times</h4>
+      <p>Exact login and logout timestamps with location pin buttons to view check-in/out locations on a map.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Session Details</h4>
+      <p>Topics covered and notes entered by the coach during the session.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Leave Tracking</h4>
+      <p>Leave days show a red card with the date and the reason submitted by the coach.</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <strong>Task Integration:</strong> If the coach has assigned tasks in the selected date range, a task banner appears showing pending/completed task counts with a tap to view details.
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 10: PERFORMANCE -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 10</div>
+  <h2>Student Performance Tracking</h2>
+  <span class="role-tag role-both">All Roles</span>
+  <p class="section-desc">
+    Track detailed match performance metrics for each student. Coaches can log goals, assists, passes, tackles, and more. A "Smart Fill" feature auto-populates ratings based on the student's history or competency level.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Performance — Form Top</div>
+      <div class="ss-hint">Tap "Performance" on a player → Capture the top half: match title, date, Smart Fill button, and attacking metrics (Goals, Assists, Shots).</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Performance — Form Bottom</div>
+      <div class="ss-hint">Scroll down → Capture the bottom half: defending metrics (Tackles, Clearance), physical stats, and the Submit button.</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px; font-size:18px;">Football Performance Metrics</h3>
+  <table class="summary-table">
+    <tr><th>Category</th><th>Metrics</th></tr>
+    <tr><td>Attacking</td><td>Goals, Assists, Shots on Target, Shots off Target</td></tr>
+    <tr><td>Passing</td><td>Accurate Pass, Chance Created, Accurate Crosses, Long Ball Passes</td></tr>
+    <tr><td>Defending</td><td>Tackles Won 1v1, Clearance, Interceptions, Blocks</td></tr>
+    <tr><td>Goalkeeping</td><td>Saves, Goals Conceded, Punches, Catches</td></tr>
+    <tr><td>Physical</td><td>Aerial Duels Won, Distance Run, Fouls Won, Fouls Committed</td></tr>
+  </table>
+
+  <div class="callout">
+    <strong>Smart Fill:</strong> One-tap auto-fills all metrics based on the student's previous performances or competency level. Saves coaches significant time when logging match data.
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 11: SCHOLARSHIP -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 11</div>
+  <h2>Scholarship & Payment Management</h2>
+  <span class="role-tag role-owner">Owner</span>
+  <p class="section-desc">
+    The Scholarship tab lets owners view students filtered by age group, venue, and type (Scholarship or Payment). Each student card shows their payment/scholarship status with options to activate or deactivate students.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Scholarship — Filters</div>
+      <div class="ss-hint">Go to Scholarship tab → Select age group, venue, and type chips → Capture the three filter chip rows and stats bar.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Scholarship — Results</div>
+      <div class="ss-hint">Scroll down → Capture student cards with payment status badges and activate/deactivate buttons.</div>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>Triple-Filter Chips</h4>
+      <p>Three rows: Age Group, Venue, and Type (Scholarship/Payment). Auto-searches when all three are selected.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Stats Summary</h4>
+      <p>Shows total count, paid vs. not-paid (or active scholarship count) in a stat bar.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Student Cards</h4>
+      <p>Avatar letter, name, age/gender chips, status badge (Active/Inactive), payment or scholarship chip.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Activate/Deactivate</h4>
+      <p>Quick action to deactivate a student (mark inactive) or re-activate them with one tap.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 12: ANALYTICS -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 12</div>
+  <h2>Player Analytics</h2>
+  <span class="role-tag role-both">All Roles</span>
+  <p class="section-desc">
+    The Analytics tab provides a data overview of all players born in a specific year. Coaches can filter by gender, venue, and sort by different criteria to analyze the player roster.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Analytics — Filters & Stats</div>
+      <div class="ss-hint">Go to Analysis tab → Select a birth year chip → Capture: year chips, secondary filters (Gender/Venue/Sort), and stats bar.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Analytics — Player Cards</div>
+      <div class="ss-hint">Scroll down → Capture player cards with serial numbers, gender-coded avatars, name, DOB, position, and venue.</div>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>Year Selection</h4>
+      <p>Horizontal chip row of birth years. Single tap loads all players born in that year.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Secondary Filters</h4>
+      <p>After results load: Gender (All/Male/Female), Venue, and Sort (Name/Gender/Venue/DOB) with ascending/descending toggle.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Gender-Coded Cards</h4>
+      <p>Blue left accent = Male, Pink left accent = Female. Color-coded avatars for quick scanning.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Real-time Stats</h4>
+      <p>Stats bar updates as you filter — showing filtered count, male count, female count, and total.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 13: FEES APPROVAL -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 13</div>
+  <h2>Fees Approval</h2>
+  <span class="role-tag role-owner">Owner</span>
+  <p class="section-desc">
+    When a coach records a fee payment from a student, it appears in the Fees Approval queue. Owners review and confirm each payment. The screen uses a clean card design with student info, amount, date, and a confirm button.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Fees — Pending List</div>
+      <div class="ss-hint">Navigate to Fees Approval → Capture showing: Home button, "N Pending" badge, and payment cards with student info and amount.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Fees — Card Detail</div>
+      <div class="ss-hint">Capture a close-up of a payment card showing avatar letter, name, age/coach chips, date, ₹ amount, and Confirm button.</div>
+    </div>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <h4>Payment Reported by Coach</h4>
+        <p>A coach taps "Fees" on a student card in Teams and records the payment amount + date.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <h4>Owner Reviews</h4>
+        <p>The payment appears in the approval queue with student name, age group, collecting coach, date, and amount.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <h4>Confirm Receipt</h4>
+        <p>Owner taps "Confirm" to acknowledge the payment was received. The card disappears from the queue.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 14: APPROVAL -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 14</div>
+  <h2>Coach & Student Approval</h2>
+  <span class="role-tag role-owner">Owner</span>
+  <p class="section-desc">
+    New coaches (who sign up) and new students (added by coaches) require owner approval. Both screens use a similar card-based design with approve/reject actions.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Coach Approval</div>
+      <div class="ss-hint">Navigate to Coach Approval → Capture showing: pending count badge, coach cards with name, phone, email, sport, and Approve/Reject buttons.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Student Approval</div>
+      <div class="ss-hint">Navigate to Student Approval → Capture showing: pending count badge, student cards with name, phone, address, assigned coach, and Approve/Reject buttons.</div>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>Desktop Table View</h4>
+      <p>On wider screens, data displays in a clean table format with sortable columns</p>
+    </div>
+    <div class="feature-card">
+      <h4>Mobile Card View</h4>
+      <p>On mobile, each pending item becomes a compact card with all details visible</p>
+    </div>
+    <div class="feature-card">
+      <h4>One-Tap Actions</h4>
+      <p>Green "Approve" and red "Reject" buttons with icons for quick decision-making</p>
+    </div>
+    <div class="feature-card">
+      <h4>Empty State</h4>
+      <p>When all items are processed, a friendly "All Caught Up" message appears with a checkmark</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 15: COACH TASKS -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 15</div>
+  <h2>Coach Tasks</h2>
+  <span class="role-tag role-both">All Roles</span>
+  <p class="section-desc">
+    Owners can assign tasks to coaches with deadlines. Coaches see their pending tasks and can mark them as completed. Task notifications appear on the Home screen action bar.
+  </p>
+
+  <div class="two-col">
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Tasks — Owner View</div>
+      <div class="ss-hint">Login as owner → Navigate to Tasks → Capture showing task list with titles, due dates, assigned coach, and status.</div>
+    </div>
+    <div class="screenshot-box">
+      <div class="ss-icon">📱</div>
+      <div class="ss-label">Screenshot: Tasks — Coach View</div>
+      <div class="ss-hint">Login as coach → Navigate to Tasks → Capture showing assigned tasks with pending/completed status and action buttons.</div>
+    </div>
+  </div>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>Task Assignment</h4>
+      <p>Owners create tasks with title, description, and due date, then assign to specific coaches</p>
+    </div>
+    <div class="feature-card">
+      <h4>Status Tracking</h4>
+      <p>Pending tasks show count badge on the Tasks button. Completed tasks are tracked in coach attendance view.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- SECTION 16: ROLES -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="section">
+  <div class="section-num">Section 16</div>
+  <h2>User Roles & Permissions</h2>
+  <p class="section-desc">
+    Kalam has two user roles with different access levels. The interface adapts dynamically — hiding or showing features based on the logged-in user's role.
+  </p>
+
+  <table class="summary-table">
+    <tr>
+      <th>Feature</th>
+      <th>Academy Owner</th>
+      <th>Coach</th>
+    </tr>
+    <tr><td>View Dashboard & Venues</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Check In/Out at Venues</td><td>✅</td><td>✅</td></tr>
+    <tr><td>View Teams & Players</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Add & Edit Students</td><td>✅</td><td>❌</td></tr>
+    <tr><td>Mark Attendance (Quick)</td><td>✅</td><td>✅</td></tr>
+    <tr><td>View Attendance History</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Add Performance Records</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Record Fee Payments</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Approve Fee Payments</td><td>✅</td><td>❌</td></tr>
+    <tr><td>Approve Coaches & Students</td><td>✅</td><td>❌</td></tr>
+    <tr><td>Manage Scholarships</td><td>✅</td><td>❌</td></tr>
+    <tr><td>View Analytics</td><td>✅</td><td>✅</td></tr>
+    <tr><td>Add Training Venues</td><td>✅</td><td>❌</td></tr>
+    <tr><td>View Coach Attendance</td><td>✅</td><td>❌</td></tr>
+    <tr><td>Apply Leave</td><td>❌</td><td>✅</td></tr>
+    <tr><td>Assign Tasks</td><td>✅</td><td>❌</td></tr>
+    <tr><td>View & Complete Tasks</td><td>✅</td><td>✅</td></tr>
+  </table>
+
+  <hr class="section-divider">
+
+  <h3 style="font-size:20px; color:#1a1a2e; margin-bottom:16px;">Design System</h3>
+  <p class="section-desc">
+    Kalam uses a consistent <strong>dark theme</strong> (black/dark gray background) with <strong>orange (#e94560 / #ff6b35) accents</strong> throughout. Key UX patterns include:
+  </p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <h4>Chip-Based Filters</h4>
+      <p>All filter selections use horizontal scrollable chips with orange active state — replacing traditional dropdown menus.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Card-Based Lists</h4>
+      <p>All data is displayed in dark gradient cards with colored left accents, metadata chips, and action bars.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Stats Summary Bars</h4>
+      <p>Compact stat bars with color-coded numbers summarize data at a glance before the detail cards.</p>
+    </div>
+    <div class="feature-card">
+      <h4>Mobile-First Responsive</h4>
+      <p>All screens designed mobile-first with breakpoints for tablets (768px) and desktop (1024px+).</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- ========================================== -->
+<!-- BACK COVER -->
+<!-- ========================================== -->
+<div class="page-break"></div>
+<div class="cover" style="min-height: 100vh;">
+  <div class="cover-logo">K</div>
+  <h1>Thank You</h1>
+  <div class="cover-divider"></div>
+  <p class="cover-subtitle">
+    Kalam — Sports Academy Management Platform<br><br>
+    For questions, demos, or support, contact the Kalam team.
+  </p>
+  <div style="margin-top: 48px;"></div>
+  <div class="cover-meta">
+    <span>© 2024–2026 Kalam. All Rights Reserved.</span>
+  </div>
+</div>
+
+<!-- Screenshot Upload Toolbar -->
+<div class="ss-toolbar" id="ssToolbar">
+  <div class="ss-count"><span id="ssCounter">0</span> / <span id="ssTotal">0</span> screenshots</div>
+  <button onclick="window.print()">📄 Print / Save PDF</button>
+</div>
+
+<!-- Hidden file input -->
+<input type="file" id="ssFileInput" accept="image/*" style="display:none">
+
+<script>
+(function() {
+  const boxes = document.querySelectorAll('.screenshot-box');
+  const fileInput = document.getElementById('ssFileInput');
+  const counter = document.getElementById('ssCounter');
+  const total = document.getElementById('ssTotal');
+  let activeBox = null;
+
+  total.textContent = boxes.length;
+  updateCount();
+
+  // Add replace hint span to each box
+  boxes.forEach(box => {
+    const hint = document.createElement('div');
+    hint.className = 'ss-replace-hint';
+    hint.textContent = '🔄 Replace';
+    box.appendChild(hint);
+  });
+
+  // Click handler for each box
+  boxes.forEach(box => {
+    box.addEventListener('click', function(e) {
+      activeBox = this;
+      fileInput.click();
+    });
+  });
+
+  // File selected
+  fileInput.addEventListener('change', function(e) {
+    if (!activeBox || !this.files || !this.files[0]) return;
+    const file = this.files[0];
+    const reader = new FileReader();
+    reader.onload = function(evt) {
+      // Check if image already exists, replace it
+      let img = activeBox.querySelector('img');
+      if (!img) {
+        img = document.createElement('img');
+        // Insert before the label
+        const label = activeBox.querySelector('.ss-label');
+        activeBox.insertBefore(img, label);
+      }
+      img.src = evt.target.result;
+      activeBox.classList.add('has-image');
+      updateCount();
+    };
+    reader.readAsDataURL(file);
+    // Reset so same file can be re-selected
+    this.value = '';
+  });
+
+  function updateCount() {
+    const filled = document.querySelectorAll('.screenshot-box.has-image').length;
+    counter.textContent = filled;
+  }
+})();
+</script>
+
+</body>
+</html>

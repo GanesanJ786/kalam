@@ -1,3 +1,11 @@
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
+<!--
+  Copyright (c) 2024-2026 Kalam. All Rights Reserved.
+  Unauthorized copying or distribution is strictly prohibited.
+-->
 <!-- ============================================ -->
 <!-- KALAM MY PROFILE - Black & Orange Sports Theme -->
 <!-- ============================================ -->
@@ -7,7 +15,7 @@
   <div class="strip-content">
     <div class="logo-badge">
       <div class="logo-ring">
-        <img class="academy-logo" *ngIf="!logo" src="../../assets/logo/kLogo.png" alt="academy logo" />
+        <img class="academy-logo" *ngIf="!logo" src="assets/logo/kalamLogoName.png" alt="academy logo" />
         <img class="academy-logo" *ngIf="logo" [src]="logo" alt="academy logo" />
       </div>
       <span class="live-dot" *ngIf="allBtnDisabled"></span>
@@ -15,8 +23,15 @@
     <div class="academy-meta">
       <h2 class="academy-name">{{academyName}}</h2>
       <div class="academy-subtitle">
-        <mat-icon class="subtitle-icon">sports_soccer</mat-icon>
-        <span>Football Academy</span>
+        <ng-container *ngFor="let sport of coachSports; let last = last">
+          <mat-icon class="subtitle-icon">{{getSportIcon(sport)}}</mat-icon>
+          <span>{{getSportNameLabel(sport)}}</span>
+          <span class="meta-divider" *ngIf="!last">·</span>
+        </ng-container>
+        <ng-container *ngIf="!coachSports || coachSports.length === 0">
+          <mat-icon class="subtitle-icon">sports</mat-icon>
+          <span>Sports Academy</span>
+        </ng-container>
         <span class="meta-divider">|</span>
         <mat-icon class="subtitle-icon">location_on</mat-icon>
         <span>India</span>
@@ -32,6 +47,19 @@
     </div> -->
   </div>
 </section>
+
+<!-- <section class="join-code-section" *ngIf="owner && academyJoinCode">
+  <div class="join-code-container">
+    <div class="join-code-meta">
+      <div class="join-code-label">Academy Joining Code</div>
+      <div class="join-code-value">{{academyJoinCode}}</div>
+    </div>
+    <button class="join-code-copy-btn" (click)="copyJoinCode()" type="button">
+      <mat-icon>content_copy</mat-icon>
+      <span>Copy</span>
+    </button>
+  </div>
+</section> -->
 
 <!-- Notification Alerts -->
 <section class="alerts-section" *ngIf="notApproved.length > 0 || newStudents.length > 0 || paidStudentList.length > 0">
@@ -56,90 +84,108 @@
 
 <!-- Quick Actions Bar -->
 <section class="actions-section">
-  <div class="actions-container" *ngIf="owner">
-    <button class="action-btn action-primary" (click)="addGround()">
-      <mat-icon>add_location_alt</mat-icon>
-      <span>Add Ground</span>
-    </button>
-    <button class="action-btn action-secondary" (click)="viewCoachData()">
-      <mat-icon>groups</mat-icon>
-      <span>Coach Details</span>
-    </button>
-    <button class="action-btn action-attendance" (click)="quickAttendance()">
-      <mat-icon>fact_check</mat-icon>
-      <span>Quick Attendance</span>
-    </button>
-    <button class="action-btn action-task" [class.action-task-alert]="pendingTaskCount > 0" (click)="coachTasks()">
-      <mat-icon>assignment</mat-icon>
-      <span>Tasks</span>
-      <span class="task-count-badge" *ngIf="pendingTaskCount > 0">{{pendingTaskCount}}</span>
-    </button>
-  </div>
-  <div class="actions-container actions-end" *ngIf="!owner">
-    <button class="action-btn action-attendance" (click)="quickAttendance()">
-      <mat-icon>fact_check</mat-icon>
-      <span>Quick Attendance</span>
-    </button>
-    <button class="action-btn action-task" [class.action-task-alert]="pendingTaskCount > 0" (click)="coachTasks()">
-      <mat-icon>assignment</mat-icon>
-      <span>Tasks</span>
-      <span class="task-count-badge" *ngIf="pendingTaskCount > 0">{{pendingTaskCount}}</span>
-    </button>
-    <button class="action-btn action-warn" (click)="applyLeave()">
-      <mat-icon>event_busy</mat-icon>
-      <span>Apply Leave</span>
-    </button>
+  <div class="actions-scroll-wrapper">
+    <div class="actions-track" *ngIf="owner">
+      <button class="action-chip action-primary" (click)="addGround()">
+        <span class="chip-icon-wrap"><mat-icon>add_location_alt</mat-icon></span>
+        <span class="chip-label">Add<br>Venue</span>
+      </button>
+      <button class="action-chip action-secondary" (click)="viewCoachData()">
+        <span class="chip-icon-wrap"><mat-icon>groups</mat-icon></span>
+        <span class="chip-label">Coach<br>Details</span>
+      </button>
+      <button class="action-chip action-attendance" (click)="quickAttendance()">
+        <span class="chip-icon-wrap"><mat-icon>fact_check</mat-icon></span>
+        <span class="chip-label">Quick<br>Attendance</span>
+      </button>
+      <button class="action-chip action-task" [class.action-task-alert]="pendingTaskCount > 0" (click)="coachTasks()">
+        <span class="chip-icon-wrap">
+          <mat-icon>assignment</mat-icon>
+          <span class="task-count-badge" *ngIf="pendingTaskCount > 0">{{pendingTaskCount}}</span>
+        </span>
+        <span class="chip-label">Tasks</span>
+      </button>
+    </div>
+    <div class="actions-track" *ngIf="!owner">
+      <button class="action-chip action-attendance" (click)="quickAttendance()">
+        <span class="chip-icon-wrap"><mat-icon>fact_check</mat-icon></span>
+        <span class="chip-label">Quick<br>Attendance</span>
+      </button>
+      <button class="action-chip action-task" [class.action-task-alert]="pendingTaskCount > 0" (click)="coachTasks()">
+        <span class="chip-icon-wrap">
+          <mat-icon>assignment</mat-icon>
+          <span class="task-count-badge" *ngIf="pendingTaskCount > 0">{{pendingTaskCount}}</span>
+        </span>
+        <span class="chip-label">Tasks</span>
+      </button>
+      <button class="action-chip action-warn" (click)="applyLeave()">
+        <span class="chip-icon-wrap"><mat-icon>event_busy</mat-icon></span>
+        <span class="chip-label">Apply<br>Leave</span>
+      </button>
+    </div>
   </div>
 </section>
 
 <!-- Grounds Section -->
 <section class="grounds-section">
-  <div class="section-header">
-    <div class="section-title-row">
-      <mat-icon class="section-icon">stadium</mat-icon>
-      <h3 class="section-title">Training Grounds</h3>
+
+  <!-- Active Session Banner — only visible when checked in somewhere -->
+  <div class="active-session-banner" *ngIf="getActiveGround() as active">
+    <div class="session-left">
+      <div class="session-pulse"></div>
+      <div class="session-info">
+        <span class="session-label">Session Active</span>
+        <span class="session-venue">{{active.groundName}}</span>
+      </div>
     </div>
-    <span class="ground-count">{{groundList.length}} Ground{{groundList.length !== 1 ? 's' : ''}}</span>
+    <button class="session-out-btn" (click)="out(active)">
+      <mat-icon>logout</mat-icon>
+      <span>CHECK OUT</span>
+    </button>
   </div>
 
-  <div class="grounds-grid">
-    <div *ngFor="let ground of groundList; let i = index" class="ground-card" [class.ground-active]="!ground.disableOutBtn">
-      <!-- Active indicator pulse -->
-      <div class="active-pulse" *ngIf="!ground.disableOutBtn"></div>
+  <!-- Section Header -->
+  <div class="section-header">
+    <div class="section-title-row">
+      <mat-icon class="section-icon">{{coachSports?.length ? getSportIcon(coachSports[0]) : 'stadium'}}</mat-icon>
+      <h3 class="section-title">Training Venues</h3>
+    </div>
+    <span class="ground-count">{{groundList.length}} Venue{{groundList.length !== 1 ? 's' : ''}}</span>
+  </div>
 
-      <div class="ground-card-header">
-        <div class="ground-icon-wrap">
-          <mat-icon class="ground-icon">sports_soccer</mat-icon>
+  <!-- Compact Venue List -->
+  <div class="venue-list">
+    <div *ngFor="let ground of groundList"
+         class="venue-row"
+         [class.venue-active]="!ground.disableOutBtn"
+         [class.venue-disabled]="allBtnDisabled && ground.disableOutBtn">
+
+      <div class="venue-row-left" (click)="allStudents.length > 0 ? viewAllStudents(ground.groundName) : null">
+        <div class="venue-icon-wrap" [class.icon-active]="!ground.disableOutBtn">
+          <mat-icon>{{getGroundSportIcon(ground.groundName)}}</mat-icon>
         </div>
-        <div class="ground-info">
-          <h4 class="ground-name">{{ground.groundName}}</h4>
-          <button class="students-link" *ngIf="allStudents.length > 0" (click)="viewAllStudents(ground.groundName)">
-            <mat-icon class="link-icon">people</mat-icon>
+        <div class="venue-meta">
+          <span class="venue-name">{{ground.groundName}}</span>
+          <span class="venue-students" *ngIf="allStudents.length > 0">
+            <mat-icon class="mini-icon">people</mat-icon>
             {{ground.totalStudent}} Student{{ground.totalStudent !== 1 ? 's' : ''}}
-          </button>
+          </span>
         </div>
       </div>
 
-      <div class="ground-card-actions">
-        <button class="ground-btn ground-btn-in"
-                [disabled]="ground.disableInBtn || allBtnDisabled"
-                (click)="checkIn(ground)">
-          <mat-icon>login</mat-icon>
-          <span>IN</span>
-        </button>
-        <button class="ground-btn ground-btn-out"
-                [disabled]="ground.disableOutBtn"
-                (click)="out(ground)">
-          <mat-icon>logout</mat-icon>
-          <span>OUT</span>
-        </button>
-      </div>
+      <!-- Check-in button (only when not checked in anywhere) -->
+      <button class="venue-checkin-btn"
+              *ngIf="ground.disableOutBtn"
+              [disabled]="ground.disableInBtn || allBtnDisabled"
+              (click)="checkIn(ground)">
+        <mat-icon>login</mat-icon>
+        <span>CHECK IN</span>
+      </button>
 
-      <!-- Status bar at bottom -->
-      <div class="ground-status" [class.status-active]="!ground.disableOutBtn">
-        <span *ngIf="!ground.disableOutBtn">● Session Active</span>
-        <span *ngIf="ground.disableOutBtn">○ No Active Session</span>
-      </div>
+      <!-- Active badge (when this is the checked-in venue) -->
+      <span class="venue-active-badge" *ngIf="!ground.disableOutBtn">
+        <span class="badge-dot"></span> Active
+      </span>
     </div>
   </div>
 

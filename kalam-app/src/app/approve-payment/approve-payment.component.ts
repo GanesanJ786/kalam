@@ -41,7 +41,6 @@ export class ApprovePaymentComponent implements OnInit {
     }, 500);
   }
 
-
   gotoHome() {
     this.router.navigate([`/home`]);
   }

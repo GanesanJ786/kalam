@@ -146,6 +146,26 @@ export class StudentAnalyticsComponent implements OnInit, OnDestroy {
     this.applyFiltersAndSort();
   }
 
+  selectYear(year: number) {
+    this.selectedYear = year;
+    this.search();
+  }
+
+  selectGender(val: string) {
+    this.filterGender = val;
+    this.applyFiltersAndSort();
+  }
+
+  selectVenue(val: string) {
+    this.filterGround = val;
+    this.applyFiltersAndSort();
+  }
+
+  selectSort(val: string) {
+    this.sortBy = val;
+    this.applyFiltersAndSort();
+  }
+
   toggleSortDirection() {
     this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
     this.applyFiltersAndSort();

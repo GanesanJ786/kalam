@@ -180,6 +180,27 @@ export class StudentscholarshipComponent implements OnInit, OnDestroy {
     })
   }
 
+  selectAge(val: string) {
+    this.ageType = val;
+    this.trySearch();
+  }
+
+  selectGround(val: string) {
+    this.groundName = val;
+    this.trySearch();
+  }
+
+  selectScholarship(val: string) {
+    this.scholarshipType = val;
+    this.trySearch();
+  }
+
+  trySearch() {
+    if (this.ageType && this.groundName && this.scholarshipType) {
+      this.search();
+    }
+  }
+
   genderMapper(gender: string) {
     if(gender == 'male') {
       return "(M)";

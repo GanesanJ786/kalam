@@ -72,6 +72,12 @@ export class QuickAttendanceComponent implements OnInit, OnDestroy {
     });
   }
 
+  selectGround(groundName: string): void {
+    if (this.selectedGround === groundName) return;
+    this.selectedGround = groundName;
+    this.onGroundChange();
+  }
+
   onGroundChange(): void {
     if (!this.selectedGround) return;
     this.loading = true;

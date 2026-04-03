@@ -185,142 +185,159 @@ $font-lg: 1.125rem;
   }
 }
 
-.vca-card-header {
+// ============================================
+// FILTER PANEL — Chip-based (matches my-teams)
+// ============================================
+.vca-filter-panel {
+  background: linear-gradient(160deg, $black-3 0%, $black-4 100%);
+  border: 1px solid $grey-1;
+  border-radius: $radius-lg;
+  padding: 0.65rem 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-bottom: 0.875rem;
+}
+
+.vca-filter-row {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  padding: 0.875rem 1.125rem 0.5rem;
-  border-bottom: 1px solid rgba($white, 0.04);
-  position: relative;
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 1.125rem;
-    right: 1.125rem;
-    height: 2px;
-    background: linear-gradient(90deg, rgba($orange, 0.5), transparent 70%);
-    border-radius: 1px;
-  }
-
-  .card-icon {
-    color: $orange;
-    font-size: 22px;
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-  }
-
-  h3 {
-    margin: 0;
-    color: $white;
-    font-size: $font-base;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    line-height: 1.3;
-  }
+  gap: 0.55rem;
 }
 
-.vca-card-body {
-  padding: 1rem 1.125rem 1.125rem;
+.vca-filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: $orange-light;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: 4.5rem;
 }
 
-// ============================================
-// GRID SYSTEM
-// ============================================
-.vca-row {
+.vca-filter-label-icon {
+  font-size: 15px;
+  width: 15px;
+  height: 15px;
+  color: $orange;
+}
+
+.vca-filter-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, $grey-1, transparent);
+  margin: 0 0.5rem;
+}
+
+.vca-chip-scroll {
   display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
+  gap: 0.35rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 0;
 
-  .vca-col-5 {
-    flex: 1 1 calc(40% - 0.375rem);
-    min-width: 140px;
-  }
-
-  .vca-col-7 {
-    flex: 1 1 calc(60% - 0.375rem);
-    min-width: 200px;
+  &::-webkit-scrollbar {
+    display: none;
   }
 }
 
-// ============================================
-// FORM FIELDS — Dark themed Material fields
-// ============================================
-:host {
-  .mat-mdc-form-field {
-    width: 100%;
+.vca-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 50px;
+  border: 1.5px solid rgba($white, 0.1);
+  background: rgba($white, 0.04);
+  color: rgba($white, 0.55);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
 
-    .mdc-text-field--filled {
-      background: $black-4 !important;
-      border-radius: $radius-sm $radius-sm 0 0 !important;
-      border-bottom: 2px solid $grey-1 !important;
-      transition: border-color 0.2s ease;
-      min-height: 52px;
-
-      &:hover {
-        border-bottom-color: $grey-2 !important;
-      }
-
-      &.mdc-text-field--focused {
-        border-bottom-color: $orange !important;
-      }
-    }
-
-    .mat-mdc-form-field-focus-overlay {
-      background: rgba($orange, 0.04) !important;
-    }
-
-    .mdc-floating-label {
-      color: $grey-3 !important;
-      font-size: $font-base !important;
-    }
-
-    .mdc-floating-label--float-above {
-      color: $orange-light !important;
-      font-size: $font-base !important;
-    }
-
-    .mat-mdc-input-element,
-    input.mat-mdc-input-element,
-    textarea.mat-mdc-input-element {
-      color: $white !important;
-      caret-color: $orange;
-      font-size: $font-base;
-    }
-
-    .mdc-line-ripple::after {
-      border-bottom-color: $orange !important;
-    }
-
-    .mat-mdc-form-field-hint {
-      color: $grey-2;
-      font-size: $font-xs;
-    }
-
-    .mat-mdc-form-field-subscript-wrapper {
-      padding: 0 !important;
-    }
-
-    .mat-mdc-form-field-infix {
-      min-height: 48px;
-      padding-top: 22px !important;
-      padding-bottom: 6px !important;
-    }
+  &:active {
+    transform: scale(0.94);
   }
 
-  .mat-mdc-select {
-    font-size: $font-base;
+  &:hover:not(.vca-chip-active) {
+    border-color: rgba($white, 0.2);
+    color: rgba($white, 0.85);
+    background: rgba($white, 0.08);
+  }
 
-    .mat-mdc-select-arrow {
-      color: $grey-3 !important;
+  &.vca-chip-active {
+    background: linear-gradient(135deg, $orange, $orange-dark);
+    border-color: transparent;
+    color: $white;
+    font-weight: 700;
+    box-shadow: 0 2px 10px $orange-glow;
+  }
+}
+
+// --- Inline Date Range Picker ---
+.vca-date-range-inline {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba($white, 0.04);
+  border: 1.5px solid rgba($white, 0.1);
+  border-radius: 50px;
+  padding: 0.2rem 0.35rem 0.2rem 0.75rem;
+  transition: border-color 0.2s ease;
+  flex: 1;
+  min-width: 0;
+  max-width: 280px;
+
+  &:focus-within {
+    border-color: rgba($orange, 0.5);
+    background: rgba($orange, 0.04);
+  }
+
+  .mat-date-range-input {
+    font-size: 0.72rem;
+    color: rgba($white, 0.85);
+    flex: 1;
+    min-width: 0;
+  }
+
+  input {
+    color: rgba($white, 0.85) !important;
+    font-size: 0.72rem !important;
+    font-weight: 600;
+    caret-color: $orange;
+
+    &::placeholder {
+      color: rgba($white, 0.35) !important;
     }
   }
 
   .mat-datepicker-toggle {
-    color: $orange-light !important;
+    color: $orange !important;
+    flex-shrink: 0;
+
+    button {
+      width: 28px !important;
+      height: 28px !important;
+
+      .mat-mdc-button-touch-target {
+        width: 28px !important;
+        height: 28px !important;
+      }
+    }
+
+    .mat-icon {
+      font-size: 18px !important;
+      width: 18px !important;
+      height: 18px !important;
+    }
   }
 }
 
@@ -765,14 +782,6 @@ $blue: #2979FF;
 }
 
 // ============================================
-// FILTER CARD — Accent border
-// ============================================
-.vca-filter-card {
-  border-top: 3px solid $orange;
-  box-shadow: 0 2px 16px rgba($orange, 0.08);
-}
-
-// ============================================
 // TASK BANNER — Compact tap-to-view card
 // ============================================
 $blue: #2979FF;
@@ -936,25 +945,31 @@ $yellow: #FFD600;
     padding-bottom: 1.5rem;
   }
 
-  .vca-card-header {
-    padding: 0.625rem 0.75rem 0.4rem;
+  .vca-filter-panel {
+    padding: 0.5rem 0.55rem;
+    gap: 0.4rem;
+  }
 
-    h3 {
-      font-size: $font-sm;
+  .vca-filter-label {
+    font-size: 0.6rem;
+    min-width: 3.8rem;
+  }
+
+  .vca-filter-chip {
+    padding: 0.25rem 0.55rem;
+    font-size: 0.62rem;
+  }
+
+  .vca-date-range-inline {
+    max-width: 220px;
+    padding: 0.15rem 0.25rem 0.15rem 0.55rem;
+
+    .mat-date-range-input {
+      font-size: 0.65rem;
     }
-  }
 
-  .vca-card-body {
-    padding: 0.75rem;
-  }
-
-  .vca-row {
-    gap: 0.5rem;
-
-    .vca-col-5,
-    .vca-col-7 {
-      flex: 1 1 100%;
-      min-width: 0;
+    input {
+      font-size: 0.65rem !important;
     }
   }
 
@@ -1013,17 +1028,6 @@ $yellow: #FFD600;
     font-size: 0.7rem;
   }
 
-  :host .mat-mdc-form-field {
-    .mdc-floating-label {
-      font-size: $font-sm !important;
-    }
-
-    .mat-mdc-input-element,
-    input.mat-mdc-input-element {
-      font-size: $font-sm;
-    }
-  }
-
   .vca-action-btn {
     width: 28px !important;
     height: 28px !important;
@@ -1052,15 +1056,8 @@ $yellow: #FFD600;
 
 // Small phones (360px – 479px)
 @media (min-width: 360px) and (max-width: 479px) {
-  .vca-row {
-    .vca-col-5 {
-      flex: 1 1 100%;
-      min-width: 0;
-    }
-    .vca-col-7 {
-      flex: 1 1 100%;
-      min-width: 0;
-    }
+  .vca-date-range-inline {
+    max-width: 240px;
   }
 }
 
@@ -1070,12 +1067,13 @@ $yellow: #FFD600;
     padding: 1rem 1.25rem 2rem;
   }
 
-  .vca-card-header {
-    padding: 1rem 1.25rem 0.5rem;
+  .vca-filter-panel {
+    padding: 0.75rem 1rem;
   }
 
-  .vca-card-body {
-    padding: 1rem 1.25rem 1.25rem;
+  .vca-filter-chip {
+    padding: 0.35rem 0.85rem;
+    font-size: 0.75rem;
   }
 
   .vca-stats-bar {
@@ -1118,26 +1116,31 @@ $yellow: #FFD600;
     border-radius: 20px;
   }
 
-  .vca-card-header {
-    padding: 1.125rem 1.5rem 0.625rem;
-
-    .card-icon {
-      font-size: 24px;
-      width: 24px;
-      height: 24px;
-    }
-
-    h3 {
-      font-size: $font-md;
-    }
+  .vca-filter-panel {
+    padding: 0.85rem 1.25rem;
+    border-radius: 20px;
   }
 
-  .vca-card-body {
-    padding: 1.125rem 1.5rem 1.5rem;
+  .vca-filter-label {
+    font-size: 0.72rem;
+    min-width: 5rem;
   }
 
-  .vca-row {
-    gap: 1rem;
+  .vca-filter-chip {
+    padding: 0.35rem 0.9rem;
+    font-size: 0.78rem;
+  }
+
+  .vca-date-range-inline {
+    max-width: 320px;
+
+    .mat-date-range-input {
+      font-size: 0.8rem;
+    }
+
+    input {
+      font-size: 0.8rem !important;
+    }
   }
 
   .vca-stats-bar {
@@ -1217,17 +1220,6 @@ $yellow: #FFD600;
       font-size: 42px;
       width: 42px;
       height: 42px;
-    }
-  }
-
-  :host .mat-mdc-form-field {
-    .mdc-floating-label {
-      font-size: $font-md !important;
-    }
-
-    .mat-mdc-input-element,
-    input.mat-mdc-input-element {
-      font-size: $font-md;
     }
   }
 

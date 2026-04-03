@@ -63,6 +63,7 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
       start: new UntypedFormControl(new Date(year, month, this.startDate)),
       end: new UntypedFormControl(new Date(year, month, this.endDate)),
     });
+    this.search();
   }
 
   cancel(){
