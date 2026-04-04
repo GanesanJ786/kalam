@@ -28,6 +28,7 @@ import { KalamService } from '../kalam.service';
 import { SportsIconMap } from '../constant';
 import * as moment from 'moment';
 import { LoaderService } from '../loader.service';
+import { SubscriptionService } from '../subscription.service';
 
 export interface RegistrationDetails {
   id?:string;
@@ -67,7 +68,8 @@ export class SignUpComponent implements OnInit {
     private kalamService: KalamService,
     private loaderService: LoaderService,
     private storage: AngularFireStorage, 
-    private _snackBar: MatSnackBar) {
+    private _snackBar: MatSnackBar,
+    private subscriptionService: SubscriptionService) {
     this.registerDeatils = {} as RegistrationDetails;
    }
   registrationForm!: UntypedFormGroup;
@@ -94,7 +96,7 @@ export class SignUpComponent implements OnInit {
     this.activatedRoute.queryParams
       .subscribe((params:any) => {
         if(params.source == 'edit') {
-          this.owner = this.kalamService.getCoachData().academyId ? false : true;
+          this.owner = this.kalamService.getCoachData().academyOwned === 'Y';
           this.title = "Edit Profile"
           this.editAccess = true;
           this.registerDeatils = {...this.registerDeatils, ...this.kalamService.getCoachData()};
@@ -376,8 +378,11 @@ export class SignUpComponent implements OnInit {
           coachForm.approved = true;
         }
         if (coachForm.academyOwned === 'Y') {
+          coachForm.academyId = `A${coachForm.kalamId}`;
           coachForm.academyJoinCode = await this.generateUniqueAcademyJoinCode(coachForm.academyName);
           await this.kalamService.setCoachProfile(coachForm);
+          // Create free trial subscription for new academy
+          await this.subscriptionService.createSubscription(coachForm.academyId, 'FREE_TRIAL', 'MONTHLY');
         } else {
           coachForm.academyJoinCode = this.ownerData?.academyJoinCode || coachForm.academyJoinCode;
           await this.kalamService.setCoachProfile(coachForm);

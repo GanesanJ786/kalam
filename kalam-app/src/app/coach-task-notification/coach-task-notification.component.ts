@@ -72,15 +72,11 @@ export class CoachTaskNotificationComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar
   ) {
     const coachData = this.kalamService.getCoachData();
-    this.isOwner = coachData.academyId ? false : true;
+    this.isOwner = this.kalamService.isAcademyOwner();
     this.myKalamId = coachData.kalamId;
     this.myName = coachData.name;
-    this.coachId = coachData.academyId
-      ? coachData.academyId.replace('A', '')
-      : coachData.kalamId;
-    this.academyId = this.isOwner
-      ? `A${coachData.kalamId}`
-      : coachData.academyId;
+    this.coachId = this.kalamService.getHeadCoachId();
+    this.academyId = this.kalamService.getAcademyId();
   }
 
   ngOnInit(): void {
@@ -198,7 +194,7 @@ export class CoachTaskNotificationComponent implements OnInit, OnDestroy {
    */
   private loadActiveTasks(): void {
     this.loadingTasks = true;
-    this.taskService.getActiveTasks(this.myKalamId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+    this.taskService.getActiveTasks(this.myKalamId, this.academyId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       const allTasks: CoachTask[] = res.map((document: any) => ({
         id: document.payload.doc.id,
         ...document.payload.doc.data() as {}
@@ -212,7 +208,7 @@ export class CoachTaskNotificationComponent implements OnInit, OnDestroy {
 
   private loadTaskHistory(): void {
     this.loadingHistory = true;
-    this.taskService.getTaskHistory(this.myKalamId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+    this.taskService.getTaskHistory(this.myKalamId, this.academyId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
       this.taskHistory = res.map((document: any) => ({
         id: document.payload.doc.id,
         ...document.payload.doc.data() as {}

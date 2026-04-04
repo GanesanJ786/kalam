@@ -144,7 +144,8 @@ export class StudentPerformanceComponent implements OnInit {
 
   loadPastPerformances() {
     if (this.data.kalamId) {
-      this.kalamService.getStudentPerformance(this.data.kalamId).pipe(take(1)).subscribe((res: any) => {
+      const academyId = this.kalamService.getAcademyId();
+      this.kalamService.getStudentPerformance(this.data.kalamId, academyId).pipe(take(1)).subscribe((res: any) => {
         this.pastPerformances = res.map((doc: any) => ({
           id: doc.payload.doc.id,
           ...doc.payload.doc.data() as {}

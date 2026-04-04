@@ -18,46 +18,193 @@
   background: #0D0D0D;
 }
 
-.header-title {
-  color: #FFFFFF;
-  font-weight: 700;
-  font-size: 1rem;
-  letter-spacing: 0.3px;
-}
-
-// --- Stats Bar ---
-.asg-stats-bar {
+// --- Header ---
+.asg-header {
   display: flex;
-  justify-content: center;
-  gap: 1rem;
+  align-items: center;
+  gap: 0.75rem;
   padding: 0.75rem 1rem;
-  background: #111111;
-  border-bottom: 1px solid #222222;
+  background: linear-gradient(135deg, #1A1A1A 0%, #0D0D0D 100%);
+  border-bottom: 1px solid #2A2A2A;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.asg-stat {
+.asg-back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid #333;
+  background: rgba(255, 255, 255, 0.04);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+
+  mat-icon {
+    color: #FF8A65;
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: rgba(255, 87, 34, 0.1);
+    border-color: #FF5722;
+  }
+}
+
+.asg-header-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.asg-header-subtitle {
+  display: block;
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #FF8A65;
+  font-weight: 600;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.asg-header-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+.asg-header-count {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 56px;
+  padding: 0.3rem 0.7rem;
+  background: rgba(255, 87, 34, 0.1);
+  border: 1px solid rgba(255, 87, 34, 0.2);
+  border-radius: 10px;
+  flex-shrink: 0;
 }
 
-.asg-stat-num {
-  font-size: 1.25rem;
+.asg-header-count-num {
+  font-size: 1.1rem;
   font-weight: 800;
   color: #FF8A65;
+  line-height: 1;
 }
 
-.asg-stat-label {
-  font-size: 0.65rem;
+.asg-header-count-label {
+  font-size: 0.55rem;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  color: rgba(255, 255, 255, 0.45);
-  margin-top: 2px;
+  color: rgba(255, 255, 255, 0.4);
+  margin-top: 1px;
 }
 
-.asg-stat-paid .asg-stat-num { color: #00C853; }
-.asg-stat-unpaid .asg-stat-num { color: #FF1744; }
+// --- Filter Bar ---
+.asg-filter-bar {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.65rem 1rem;
+  background: #111111;
+  border-bottom: 1px solid #1E1E1E;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.asg-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.4rem 0.85rem;
+  border-radius: 20px;
+  border: 1px solid #333;
+  background: rgba(255, 255, 255, 0.03);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .asg-chip-count {
+    font-weight: 800;
+    min-width: 16px;
+    height: 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    font-size: 0.62rem;
+    padding: 0 4px;
+  }
+
+  &.active {
+    border-color: #FF5722;
+    background: rgba(255, 87, 34, 0.12);
+    color: #FF8A65;
+
+    .asg-chip-count {
+      background: rgba(255, 87, 34, 0.25);
+      color: #FF8A65;
+    }
+  }
+
+  &:hover:not(.active) {
+    border-color: #444;
+    background: rgba(255, 255, 255, 0.05);
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  // Paid variant
+  &.chip-paid.active {
+    border-color: #00C853;
+    background: rgba(0, 200, 83, 0.1);
+    color: #00E676;
+
+    mat-icon { color: #00E676; }
+
+    .asg-chip-count {
+      background: rgba(0, 200, 83, 0.2);
+      color: #00E676;
+    }
+  }
+
+  // Unpaid variant
+  &.chip-unpaid.active {
+    border-color: #FF1744;
+    background: rgba(255, 23, 68, 0.1);
+    color: #FF5252;
+
+    mat-icon { color: #FF5252; }
+
+    .asg-chip-count {
+      background: rgba(255, 23, 68, 0.2);
+      color: #FF5252;
+    }
+  }
+}
 
 // --- Student Cards List ---
 .asg-list {
@@ -102,11 +249,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
 
   span {
     font-size: 1rem;
     font-weight: 800;
     color: #000;
+  }
+
+  &.avatar-paid {
+    border-color: #00C853;
+  }
+
+  &.avatar-unpaid {
+    border-color: #FF1744;
   }
 }
 
@@ -138,26 +295,38 @@
 // Payment Badge
 .asg-payment-badge {
   flex-shrink: 0;
-  font-size: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.58rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.3px;
-  padding: 2px 8px;
+  padding: 3px 8px;
   border-radius: 10px;
 
+  mat-icon {
+    font-size: 11px;
+    width: 11px;
+    height: 11px;
+  }
+
   &.paid {
-    background: rgba(0, 200, 83, 0.15);
-    color: #00C853;
+    background: rgba(0, 200, 83, 0.12);
+    color: #00E676;
+    border: 1px solid rgba(0, 200, 83, 0.2);
   }
 
   &.unpaid {
-    background: rgba(255, 23, 68, 0.15);
-    color: #FF1744;
+    background: rgba(255, 23, 68, 0.12);
+    color: #FF5252;
+    border: 1px solid rgba(255, 23, 68, 0.2);
   }
 
   &.free {
-    background: rgba(0, 200, 83, 0.15);
-    color: #00C853;
+    background: rgba(0, 200, 83, 0.12);
+    color: #00E676;
+    border: 1px solid rgba(0, 200, 83, 0.2);
   }
 }
 
@@ -244,13 +413,27 @@
 
 // --- Responsive ---
 @media (max-width: 359px) {
-  .asg-stats-bar {
+  .asg-header {
+    padding: 0.6rem 0.75rem;
     gap: 0.5rem;
+  }
+
+  .asg-header-title {
+    font-size: 0.9rem;
+  }
+
+  .asg-header-count-num {
+    font-size: 0.95rem;
+  }
+
+  .asg-filter-bar {
+    gap: 0.35rem;
     padding: 0.5rem 0.75rem;
   }
 
-  .asg-stat-num {
-    font-size: 1rem;
+  .asg-filter-chip {
+    padding: 0.3rem 0.65rem;
+    font-size: 0.65rem;
   }
 
   .asg-card {
@@ -292,6 +475,15 @@
   .asg-name {
     font-size: 0.95rem;
   }
+
+  .asg-header-title {
+    font-size: 1.15rem;
+  }
+
+  .asg-filter-chip {
+    padding: 0.45rem 1rem;
+    font-size: 0.78rem;
+  }
 }
 
 @media (min-width: 960px) {
@@ -300,7 +492,13 @@
     margin: 0 auto;
   }
 
-  .asg-stats-bar {
+  .asg-filter-bar {
+    max-width: 720px;
+    margin: 0 auto;
+    justify-content: center;
+  }
+
+  .asg-header {
     max-width: 720px;
     margin: 0 auto;
   }
@@ -308,12 +506,8 @@
 
 // Landscape
 @media (orientation: landscape) and (max-height: 500px) {
-  .asg-stats-bar {
+  .asg-filter-bar {
     padding: 0.4rem 1rem;
-  }
-
-  .asg-stat-num {
-    font-size: 1rem;
   }
 
   .asg-card {

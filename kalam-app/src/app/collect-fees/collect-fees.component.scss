@@ -1,0 +1,916 @@
+// ============================================
+// COLLECT FEES - Full-page Dark Theme
+// ============================================
+$orange: #FF5722;
+$orange-dark: #E64A19;
+$orange-light: #FF8A65;
+$orange-glow: rgba(255, 87, 34, 0.25);
+$black-1: #0D0D0D;
+$black-2: #121212;
+$black-3: #1A1A1A;
+$black-4: #222222;
+$black-5: #2A2A2A;
+$grey-dark: #333333;
+$grey-mid: #555555;
+$grey-light: #999999;
+$white: #FFFFFF;
+$green: #00C853;
+$green-dark: #009624;
+$red: #FF1744;
+$radius: 12px;
+$fast: 0.2s ease;
+$med: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: $black-2;
+}
+
+// ============================================
+// CONTENT WRAPPER (centers on large screens)
+// ============================================
+.cf-body {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+// ============================================
+// HEADER
+// ============================================
+.cf-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  background: $black-1;
+  border-bottom: 1px solid $black-3;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.cf-back-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid $grey-dark;
+  background: $black-4;
+  color: $grey-light;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all $fast;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    border-color: $orange;
+    color: $orange;
+  }
+}
+
+.cf-header-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.cf-header-title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: $white;
+  letter-spacing: 0.2px;
+}
+
+.cf-header-subtitle {
+  font-size: 0.65rem;
+  color: $orange-light;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.cf-header-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, $green, $green-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: $white;
+  }
+}
+
+// ============================================
+// SUMMARY STRIP
+// ============================================
+.cf-summary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  padding: 0.65rem 0.75rem;
+  background: $black-1;
+  border-bottom: 1px solid $black-3;
+}
+
+.cf-summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.cf-summary-num {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: $white;
+  line-height: 1.1;
+}
+
+.cf-summary-label {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: $grey-light;
+  margin-top: 0.1rem;
+}
+
+.cf-summary-unpaid .cf-summary-num {
+  color: $orange;
+}
+
+.cf-summary-paid .cf-summary-num {
+  color: $green;
+}
+
+.cf-summary-divider {
+  width: 1px;
+  height: 28px;
+  background: $grey-dark;
+}
+
+// ============================================
+// SEARCH
+// ============================================
+.cf-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.6rem 0.75rem 0.5rem;
+  background: $black-3;
+  border: 1px solid $grey-dark;
+  border-radius: 10px;
+  padding: 0 0.7rem;
+  transition: border-color $fast;
+
+  &:focus-within {
+    border-color: $orange;
+    box-shadow: 0 0 0 2px $orange-glow;
+  }
+}
+
+.cf-search-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: $grey-mid;
+  flex-shrink: 0;
+}
+
+.cf-search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: $white;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.55rem 0;
+  font-family: inherit;
+
+  &::placeholder {
+    color: $grey-mid;
+  }
+}
+
+.cf-search-clear {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: none;
+  background: $grey-dark;
+  color: $grey-light;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    background: $grey-mid;
+    color: $white;
+  }
+}
+
+// ============================================
+// FILTER CHIPS
+// ============================================
+.cf-filter-bar {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0 0.75rem;
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.cf-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: $black-4;
+  border: 1px solid $grey-dark;
+  color: $grey-light;
+  border-radius: 50px;
+  padding: 0.3rem 0.65rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $fast;
+  font-family: inherit;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+
+  &.active {
+    background: rgba(255, 87, 34, 0.12);
+    border-color: $orange;
+    color: $orange;
+  }
+
+  &.cf-chip-paid.active {
+    background: rgba(0, 200, 83, 0.12);
+    border-color: $green;
+    color: $green;
+  }
+
+  &.cf-chip-all.active {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: $grey-light;
+    color: $white;
+  }
+
+  &:hover:not(.active) {
+    border-color: $grey-mid;
+    color: $white;
+  }
+}
+
+.cf-chip-count {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 0.05rem 0.35rem;
+  border-radius: 50px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  min-width: 18px;
+  text-align: center;
+}
+
+// ============================================
+// GROUND FILTER
+// ============================================
+.cf-ground-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0 0.75rem;
+  margin-bottom: 0.65rem;
+  overflow: hidden;
+}
+
+.cf-ground-icon {
+  font-size: 16px;
+  width: 16px;
+  height: 16px;
+  color: $grey-mid;
+  flex-shrink: 0;
+}
+
+.cf-ground-scroll {
+  display: flex;
+  gap: 0.3rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.cf-ground-chip {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  background: $black-4;
+  border: 1px solid $grey-dark;
+  color: $grey-light;
+  border-radius: 50px;
+  padding: 0.22rem 0.6rem;
+  font-size: 0.65rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all $fast;
+  font-family: inherit;
+
+  &.active {
+    background: rgba(255, 87, 34, 0.12);
+    border-color: $orange;
+    color: $orange;
+  }
+
+  &:hover:not(.active) {
+    border-color: $grey-mid;
+    color: $white;
+  }
+}
+
+// ============================================
+// STUDENT CARDS LIST
+// ============================================
+.cf-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0 0.75rem 2rem;
+  flex: 1;
+}
+
+.cf-card {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.55rem 0.7rem;
+  background: $black-3;
+  border: 1px solid $grey-dark;
+  border-radius: $radius;
+  transition: all $fast;
+
+  &:hover {
+    border-color: rgba(255, 87, 34, 0.3);
+    background: $black-4;
+  }
+
+  &.cf-card-paid {
+    opacity: 0.5;
+    border-color: rgba(0, 200, 83, 0.15);
+  }
+}
+
+.cf-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $orange, $orange-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: $white;
+
+  &.cf-avatar-paid {
+    background: linear-gradient(135deg, $green, $green-dark);
+  }
+}
+
+.cf-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cf-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: $white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cf-meta {
+  font-size: 0.62rem;
+  color: $grey-light;
+  font-weight: 500;
+}
+
+.cf-action {
+  flex-shrink: 0;
+}
+
+.cf-collect-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  background: linear-gradient(135deg, $green, $green-dark);
+  color: $white;
+  border: none;
+  border-radius: 8px;
+  padding: 0.35rem 0.6rem;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.3px;
+  cursor: pointer;
+  transition: all $fast;
+  font-family: inherit;
+  box-shadow: 0 2px 8px rgba(0, 200, 83, 0.2);
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+
+  &:hover {
+    box-shadow: 0 3px 12px rgba(0, 200, 83, 0.35);
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: scale(0.96);
+  }
+}
+
+.cf-paid-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: $green;
+  font-size: 0.7rem;
+  font-weight: 700;
+
+  mat-icon {
+    font-size: 15px;
+    width: 15px;
+    height: 15px;
+  }
+}
+
+.cf-waiting-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  color: $orange-light;
+  font-size: 0.68rem;
+  font-weight: 600;
+
+  mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+// ============================================
+// EMPTY & LOADING
+// ============================================
+.cf-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem;
+  text-align: center;
+
+  mat-icon {
+    font-size: 42px;
+    width: 42px;
+    height: 42px;
+    color: $grey-dark;
+    margin-bottom: 0.4rem;
+  }
+
+  p {
+    color: $grey-light;
+    font-size: 0.82rem;
+    font-weight: 500;
+    margin: 0;
+  }
+}
+
+// ============================================
+// RESPONSIVE - small phones (≤359px)
+// ============================================
+@media (max-width: 359px) {
+  .cf-header {
+    padding: 0.5rem 0.6rem;
+    gap: 0.4rem;
+  }
+
+  .cf-header-title {
+    font-size: 0.92rem;
+  }
+
+  .cf-back-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .cf-header-badge {
+    width: 34px;
+    height: 34px;
+  }
+
+  .cf-summary {
+    padding: 0.5rem 0.6rem;
+  }
+
+  .cf-summary-num {
+    font-size: 1rem;
+  }
+
+  .cf-search-wrap,
+  .cf-filter-bar,
+  .cf-ground-bar,
+  .cf-list {
+    padding-left: 0.6rem;
+    padding-right: 0.6rem;
+  }
+
+  .cf-search-wrap {
+    margin-left: 0.6rem;
+    margin-right: 0.6rem;
+  }
+
+  .cf-chip {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.64rem;
+  }
+
+  .cf-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+
+  .cf-name {
+    font-size: 0.76rem;
+  }
+
+  .cf-collect-btn {
+    padding: 0.3rem 0.5rem;
+    font-size: 0.62rem;
+  }
+}
+
+// ============================================
+// RESPONSIVE - ≥480px (larger phones / phablets)
+// ============================================
+@media (min-width: 480px) {
+  .cf-header {
+    padding: 0.75rem 1.15rem;
+    gap: 0.75rem;
+  }
+
+  .cf-header-title {
+    font-size: 1.12rem;
+  }
+
+  .cf-header-subtitle {
+    font-size: 0.7rem;
+  }
+
+  .cf-back-btn {
+    width: 40px;
+    height: 40px;
+
+    mat-icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .cf-header-badge {
+    width: 42px;
+    height: 42px;
+  }
+
+  .cf-summary {
+    padding: 0.75rem 1.15rem;
+  }
+
+  .cf-summary-num {
+    font-size: 1.25rem;
+  }
+
+  .cf-summary-label {
+    font-size: 0.62rem;
+  }
+
+  .cf-search-wrap {
+    margin: 0.85rem 1.15rem 0.65rem;
+    padding: 0 0.85rem;
+  }
+
+  .cf-search-input {
+    font-size: 0.88rem;
+    padding: 0.65rem 0;
+  }
+
+  .cf-filter-bar {
+    padding: 0 1.15rem;
+    gap: 0.5rem;
+  }
+
+  .cf-chip {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.74rem;
+  }
+
+  .cf-ground-bar {
+    padding: 0 1.15rem;
+  }
+
+  .cf-ground-chip {
+    padding: 0.28rem 0.7rem;
+    font-size: 0.7rem;
+  }
+
+  .cf-list {
+    padding: 0 1.15rem 2rem;
+    gap: 0.45rem;
+  }
+
+  .cf-card {
+    padding: 0.65rem 0.85rem;
+    gap: 0.75rem;
+  }
+
+  .cf-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 0.9rem;
+  }
+
+  .cf-name {
+    font-size: 0.88rem;
+  }
+
+  .cf-meta {
+    font-size: 0.68rem;
+  }
+
+  .cf-collect-btn {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.72rem;
+  }
+}
+
+// ============================================
+// RESPONSIVE - ≥768px (tablets)
+// ============================================
+@media (min-width: 768px) {
+  .cf-header {
+    padding: 0.85rem 1.5rem;
+    gap: 0.85rem;
+  }
+
+  .cf-header-title {
+    font-size: 1.2rem;
+  }
+
+  .cf-header-subtitle {
+    font-size: 0.74rem;
+  }
+
+  .cf-summary {
+    padding: 0.85rem 1.5rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cf-summary-num {
+    font-size: 1.4rem;
+  }
+
+  .cf-summary-label {
+    font-size: 0.66rem;
+  }
+
+  .cf-summary-divider {
+    height: 34px;
+  }
+
+  .cf-search-wrap {
+    margin: 1rem 1.5rem 0.75rem;
+    border-radius: $radius;
+  }
+
+  .cf-search-input {
+    font-size: 0.9rem;
+    padding: 0.7rem 0;
+  }
+
+  .cf-filter-bar {
+    padding: 0 1.5rem;
+    gap: 0.55rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .cf-chip {
+    padding: 0.38rem 0.85rem;
+    font-size: 0.78rem;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .cf-chip-count {
+    font-size: 0.66rem;
+    padding: 0.08rem 0.4rem;
+  }
+
+  .cf-ground-bar {
+    padding: 0 1.5rem;
+    margin-bottom: 0.85rem;
+  }
+
+  .cf-ground-chip {
+    padding: 0.3rem 0.8rem;
+    font-size: 0.72rem;
+  }
+
+  .cf-list {
+    padding: 0 1.5rem 2rem;
+    gap: 0.5rem;
+  }
+
+  .cf-card {
+    padding: 0.7rem 1rem;
+    gap: 0.85rem;
+  }
+
+  .cf-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 0.95rem;
+  }
+
+  .cf-name {
+    font-size: 0.92rem;
+  }
+
+  .cf-meta {
+    font-size: 0.72rem;
+  }
+
+  .cf-collect-btn {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.76rem;
+    border-radius: 10px;
+
+    mat-icon {
+      font-size: 16px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .cf-paid-tag,
+  .cf-waiting-tag {
+    font-size: 0.76rem;
+  }
+
+  .cf-empty {
+    padding: 3.5rem 1.5rem;
+
+    mat-icon {
+      font-size: 52px;
+      width: 52px;
+      height: 52px;
+    }
+
+    p {
+      font-size: 0.9rem;
+    }
+  }
+}
+
+// ============================================
+// RESPONSIVE - ≥1024px (desktops)
+// ============================================
+@media (min-width: 1024px) {
+  .cf-header {
+    padding: 1rem 2rem;
+    gap: 1rem;
+  }
+
+  .cf-header-title {
+    font-size: 1.3rem;
+  }
+
+  .cf-header-subtitle {
+    font-size: 0.78rem;
+  }
+
+  .cf-back-btn {
+    width: 42px;
+    height: 42px;
+  }
+
+  .cf-header-badge {
+    width: 44px;
+    height: 44px;
+  }
+
+  .cf-summary {
+    padding: 1rem 2rem;
+    max-width: 540px;
+  }
+
+  .cf-summary-num {
+    font-size: 1.5rem;
+  }
+
+  .cf-summary-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.8px;
+  }
+
+  .cf-search-wrap {
+    margin: 1.25rem 2rem 0.85rem;
+  }
+
+  .cf-search-input {
+    font-size: 0.95rem;
+    padding: 0.75rem 0;
+  }
+
+  .cf-filter-bar {
+    padding: 0 2rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .cf-ground-bar {
+    padding: 0 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .cf-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+    padding: 0 2rem 2.5rem;
+  }
+
+  .cf-card {
+    padding: 0.75rem 1rem;
+  }
+
+  .cf-empty {
+    grid-column: 1 / -1;
+    padding: 4rem 2rem;
+
+    mat-icon {
+      font-size: 56px;
+      width: 56px;
+      height: 56px;
+    }
+
+    p {
+      font-size: 0.95rem;
+    }
+  }
+}

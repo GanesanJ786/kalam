@@ -1,0 +1,47 @@
+.upgrade-dialog {
+  max-width: 420px;
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+
+    mat-icon {
+      font-size: 28px;
+      height: 28px;
+      width: 28px;
+    }
+  }
+
+  .limit-message {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 16px;
+  }
+
+  .upgrade-info {
+    background: #f5f5f5;
+    border-radius: 8px;
+    padding: 12px 16px;
+
+    p {
+      margin: 0 0 8px;
+    }
+
+    ul {
+      margin: 0 0 8px;
+      padding-left: 20px;
+
+      li {
+        margin-bottom: 4px;
+      }
+    }
+
+    .price {
+      font-size: 16px;
+      color: #1976d2;
+      margin-bottom: 0;
+    }
+  }
+}

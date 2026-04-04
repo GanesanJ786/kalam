@@ -13,6 +13,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { KalamService } from '../kalam.service';
+import { MatDialog } from '@angular/material/dialog';
+import { AddGroundComponent } from '../add-ground/add-ground.component';
 
 @Component({
     selector: 'app-header',
@@ -25,12 +27,14 @@ export class HeaderComponent implements OnInit {
   @Input() title: string = "";
 
   loggedIn: boolean = false;
+  isOwner: boolean = false;
 
-  constructor(private router: Router, private kalamService: KalamService) { }
+  constructor(private router: Router, private kalamService: KalamService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     if(this.kalamService.getCoachData()) {
       this.loggedIn = true;
+      this.isOwner = this.kalamService.isAcademyOwner();
     }
   }
 
@@ -41,6 +45,16 @@ export class HeaderComponent implements OnInit {
 
    editProfile() {
     this.router.navigate([`/sign-up`],{ queryParams: { source: 'edit' }});
+   }
+
+   viewSubscription() {
+    this.router.navigate(['/subscription']);
+   }
+
+   addGround() {
+    this.dialog.open(AddGroundComponent, {
+      data: { groundName: '', groundAddress: '', dialogType: 'Ground' },
+    });
    }
 
 }

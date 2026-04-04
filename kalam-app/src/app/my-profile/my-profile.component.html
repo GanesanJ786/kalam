@@ -86,9 +86,9 @@
 <section class="actions-section">
   <div class="actions-scroll-wrapper">
     <div class="actions-track" *ngIf="owner">
-      <button class="action-chip action-primary" (click)="addGround()">
-        <span class="chip-icon-wrap"><mat-icon>add_location_alt</mat-icon></span>
-        <span class="chip-label">Add<br>Venue</span>
+      <button class="action-chip action-fees" (click)="collectFees()">
+        <span class="chip-icon-wrap"><mat-icon>payments</mat-icon></span>
+        <span class="chip-label">Collect<br>Fees</span>
       </button>
       <button class="action-chip action-secondary" (click)="viewCoachData()">
         <span class="chip-icon-wrap"><mat-icon>groups</mat-icon></span>
@@ -107,6 +107,10 @@
       </button>
     </div>
     <div class="actions-track" *ngIf="!owner">
+      <button class="action-chip action-fees" (click)="collectFees()">
+        <span class="chip-icon-wrap"><mat-icon>payments</mat-icon></span>
+        <span class="chip-label">Collect<br>Fees</span>
+      </button>
       <button class="action-chip action-attendance" (click)="quickAttendance()">
         <span class="chip-icon-wrap"><mat-icon>fact_check</mat-icon></span>
         <span class="chip-label">Quick<br>Attendance</span>

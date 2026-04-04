@@ -71,6 +71,10 @@ import { CoachTaskNotificationComponent } from './coach-task-notification/coach-
 import { CoachTaskDialogComponent } from './coach-task-dialog/coach-task-dialog.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AccountComponent } from './account/account.component';
+import { SubscriptionPageComponent } from './subscription-page/subscription-page.component';
+import { UpgradePromptDialogComponent } from './upgrade-prompt-dialog/upgrade-prompt-dialog.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
+import { CollectFeesComponent } from './collect-fees/collect-fees.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -98,7 +102,11 @@ import { AccountComponent } from './account/account.component';
         QuickAttendanceComponent,
         CoachTaskNotificationComponent,
         CoachTaskDialogComponent,
-        AccountComponent
+        AccountComponent,
+        SubscriptionPageComponent,
+        UpgradePromptDialogComponent,
+        LandingPageComponent,
+        CollectFeesComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

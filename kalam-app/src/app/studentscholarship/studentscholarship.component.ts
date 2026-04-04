@@ -58,7 +58,7 @@ export class StudentscholarshipComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private loaderService: LoaderService, public dialog: MatDialog,  private kalamService: KalamService) { 
    
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    this.owner = this.kalamService.isAcademyOwner();
     this.kalamService.getAllApprovedStudentCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
       this.allStudents = [...data];
       let currentMonth = moment().startOf("month").format('MMMM');

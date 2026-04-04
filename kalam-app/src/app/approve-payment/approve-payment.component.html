@@ -10,46 +10,70 @@
   <app-header [title]="title"></app-header>
   <div class="sf-content">
 
-    <!-- Top bar: Home button + pending count -->
-    <div class="ap-top-bar">
-      <button class="ap-home-btn" (click)="gotoHome()">
-        <mat-icon>arrow_back</mat-icon> Home
+    <!-- Header bar -->
+    <div class="ap-header-bar">
+      <button class="ap-back-btn" (click)="gotoHome()">
+        <mat-icon>arrow_back</mat-icon>
       </button>
-      <span class="ap-pending-badge" *ngIf="students?.length > 0">
-        {{students.length}} Pending
-      </span>
+      <div class="ap-header-info">
+        <span class="ap-header-subtitle">Payment Approvals</span>
+        <h2 class="ap-header-title">Pending Fees</h2>
+      </div>
+      <div class="ap-header-count" *ngIf="students?.length > 0">
+        <span class="ap-header-count-num">{{students.length}}</span>
+        <span class="ap-header-count-label">Pending</span>
+      </div>
+    </div>
+
+    <!-- Summary + Confirm All bar -->
+    <div class="ap-summary-bar" *ngIf="students?.length > 0">
+      <div class="ap-total-amount">
+        <span class="ap-total-label">Total Pending</span>
+        <span class="ap-total-value">₹{{totalAmount | number}}</span>
+        <span class="ap-total-count">{{students.length}} {{students.length === 1 ? 'student' : 'students'}}</span>
+      </div>
+      <button class="ap-confirm-all-btn" (click)="approveAll()" [disabled]="approvingAll">
+        <mat-icon>done_all</mat-icon>
+        <span>{{approvingAll ? 'Confirming...' : 'Confirm All'}}</span>
+      </button>
     </div>
 
     <!-- Payment cards -->
     <div class="ap-list" *ngIf="students?.length > 0">
-      <div class="ap-card" *ngFor="let student of students; let i = index">
+      <div class="ap-card" *ngFor="let student of students; let i = index"
+           [class.ap-card-approving]="student._approving">
+
+        <!-- Card top row -->
         <div class="ap-card-header">
           <div class="ap-avatar">
-            <span class="ap-avatar-letter">{{student.name?.charAt(0)}}</span>
+            <span>{{student.name?.charAt(0) | uppercase}}</span>
           </div>
           <div class="ap-info">
             <span class="ap-name">{{student.name}}</span>
             <div class="ap-meta">
-              <span class="ap-chip ap-chip-age">
-                <mat-icon>category</mat-icon> {{student.underAge}}
+              <span class="ap-chip ap-chip-age" *ngIf="student.underAge">
+                <mat-icon>straighten</mat-icon> {{student.underAge}}
               </span>
-              <span class="ap-chip ap-chip-coach">
+              <span class="ap-chip ap-chip-coach" *ngIf="student.fessCollectedBy">
                 <mat-icon>sports</mat-icon> {{student.fessCollectedBy}}
               </span>
             </div>
           </div>
-          <div class="ap-amount-badge">
+          <div class="ap-amount-col">
             <span class="ap-amount-label">Amount</span>
-            <span class="ap-amount-value">₹{{student.feesAmount}}</span>
+            <span class="ap-amount-value">₹{{student.feesAmount | number}}</span>
           </div>
         </div>
-        <div class="ap-card-actions">
+
+        <!-- Card bottom row -->
+        <div class="ap-card-footer">
           <div class="ap-date-info">
             <mat-icon>event</mat-icon>
             <span>{{student.feesPaidDate}}</span>
           </div>
-          <button class="ap-approve-btn" (click)="approve(student)">
-            <mat-icon>check_circle</mat-icon> Confirm
+          <button class="ap-confirm-btn" (click)="approve(student)" [disabled]="student._approving">
+            <mat-icon>check_circle</mat-icon>
+            <span>{{student._approving ? 'Confirmed' : 'Confirm'}}</span>
           </button>
         </div>
       </div>
@@ -57,9 +81,14 @@
 
     <!-- Empty state -->
     <div class="ap-empty" *ngIf="!students || students.length === 0">
-      <mat-icon class="ap-empty-icon">payments</mat-icon>
-      <p class="ap-empty-title">No pending payments</p>
-      <p class="ap-empty-sub">All fees have been confirmed</p>
+      <div class="ap-empty-icon-wrap">
+        <mat-icon>payments</mat-icon>
+      </div>
+      <p class="ap-empty-title">All Clear!</p>
+      <p class="ap-empty-sub">No pending payments to approve</p>
+      <button class="ap-empty-home-btn" (click)="gotoHome()">
+        <mat-icon>home</mat-icon> Back to Home
+      </button>
     </div>
 
   </div>

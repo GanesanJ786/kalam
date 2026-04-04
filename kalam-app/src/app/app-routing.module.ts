@@ -23,6 +23,8 @@ import { ApprovePaymentComponent } from './approve-payment/approve-payment.compo
 import { QuickAttendanceComponent } from './quick-attendance/quick-attendance.component';
 import { CoachTaskNotificationComponent } from './coach-task-notification/coach-task-notification.component';
 import { AccountComponent } from './account/account.component';
+import { SubscriptionPageComponent } from './subscription-page/subscription-page.component';
+import { CollectFeesComponent } from './collect-fees/collect-fees.component';
 
 import { AuthGuardService } from './auth-guard.service';
 
@@ -38,6 +40,8 @@ const routes: Routes = [
   { path: 'fees-approval', component: ApprovePaymentComponent, canActivate: [AuthGuardService]},
   { path: 'quick-attendance', component: QuickAttendanceComponent, canActivate: [AuthGuardService]},
   { path: 'coach-tasks', component: CoachTaskNotificationComponent, canActivate: [AuthGuardService]},
+  { path: 'collect-fees', component: CollectFeesComponent, canActivate: [AuthGuardService]},
+  { path: 'subscription', component: SubscriptionPageComponent, canActivate: [AuthGuardService]},
   { path: '**', redirectTo: 'login' }
 ];
 

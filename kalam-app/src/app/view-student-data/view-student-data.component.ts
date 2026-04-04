@@ -49,7 +49,8 @@ export class ViewStudentDataComponent implements OnInit {
 
   getStudentPerformance() {
     if(this.student.kalamId){
-      this.kalamService.getStudentPerformance(this.student.kalamId).pipe(take(1)).subscribe((res: any) => {
+      const academyId = this.kalamService.getAcademyId();
+      this.kalamService.getStudentPerformance(this.student.kalamId, academyId).pipe(take(1)).subscribe((res: any) => {
         let data = res.map((document: any) => {
           return {
             id: document.payload.doc.id,
@@ -98,8 +99,7 @@ export class ViewStudentDataComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      //console.log(result);
+      this.getStudentPerformance();
     });
   }
 

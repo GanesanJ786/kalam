@@ -72,7 +72,14 @@ export class TaskService {
   }
 
   /** Get pending (unresponded) tasks for a specific sub-coach */
-  getPendingTasks(coachKalamId: string) {
+  getPendingTasks(coachKalamId: string, academyId?: string) {
+    if (academyId) {
+      return this.fireStore.collection(this.collectionName, ref =>
+        ref.where('academyId', '==', academyId)
+           .where('assignedTo', '==', coachKalamId)
+           .where('status', '==', 'Pending')
+      ).snapshotChanges();
+    }
     return this.fireStore.collection(this.collectionName, ref =>
       ref.where('assignedTo', '==', coachKalamId)
          .where('status', '==', 'Pending')
@@ -84,7 +91,13 @@ export class TaskService {
    * Notifications remain visible until the sub-coach marks the task as Completed.
    * Firestore does not support != queries well, so we fetch all and filter client-side.
    */
-  getActiveTasks(coachKalamId: string) {
+  getActiveTasks(coachKalamId: string, academyId?: string) {
+    if (academyId) {
+      return this.fireStore.collection(this.collectionName, ref =>
+        ref.where('academyId', '==', academyId)
+           .where('assignedTo', '==', coachKalamId)
+      ).snapshotChanges();
+    }
     return this.fireStore.collection(this.collectionName, ref =>
       ref.where('assignedTo', '==', coachKalamId)
     ).snapshotChanges();
@@ -98,7 +111,13 @@ export class TaskService {
   }
 
   /** Get task history for a specific sub-coach */
-  getTaskHistory(coachKalamId: string) {
+  getTaskHistory(coachKalamId: string, academyId?: string) {
+    if (academyId) {
+      return this.fireStore.collection(this.collectionName, ref =>
+        ref.where('academyId', '==', academyId)
+           .where('assignedTo', '==', coachKalamId)
+      ).snapshotChanges();
+    }
     return this.fireStore.collection(this.collectionName, ref =>
       ref.where('assignedTo', '==', coachKalamId)
     ).snapshotChanges();

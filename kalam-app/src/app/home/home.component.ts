@@ -22,7 +22,7 @@ import { KalamService } from '../kalam.service';
 export class HomeComponent implements OnInit {
 
   constructor(private kalamService: KalamService) { 
-    this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    this.owner = this.kalamService.isAcademyOwner();
   }
   tabLoadTimes: Date[] = [];
   tabIndex:number = 0;
@@ -50,6 +50,8 @@ export class HomeComponent implements OnInit {
       this.title = "Scholarship/All Students" 
     }else if(event.index == 3) {
       this.title = "Analysis" 
+    }else if(event.index == 4) {
+      this.title = "Leaderboard" 
     }
   }
 

@@ -13,7 +13,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import {MatDialog, MAT_DIALOG_DATA as MAT_DIALOG_DATA, MatDialogRef as MatDialogRef} from '@angular/material/dialog';
+import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 import { KalamService } from '../kalam.service';
+import { SubscriptionService } from '../subscription.service';
+import { UpgradePromptDialogComponent } from '../upgrade-prompt-dialog/upgrade-prompt-dialog.component';
 
 export interface DialogData {
   dialogType?: string;
@@ -49,6 +53,9 @@ export class AddGroundComponent implements OnInit {
     private kalamService: KalamService,
     public dialogRef: MatDialogRef<AddGroundComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private subscriptionService: SubscriptionService,
+    private dialog: MatDialog,
+    private router: Router,
   ) {
     this.groundInfo = {} as DialogData;
   }
@@ -118,10 +125,22 @@ export class AddGroundComponent implements OnInit {
       return;
     }
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    let groudData = this.addGround.value;
-    groudData['academyId'] = coachId;
-    this.kalamService.addGroundDetails(groudData);
-    this.dialogRef.close();
+    const academyId = this.kalamService.getAcademyId();
+    this.subscriptionService.checkLimit(academyId, 'ground').pipe(take(1)).subscribe(result => {
+      if (!result.allowed) {
+        this.dialogRef.close();
+        this.dialog.open(UpgradePromptDialogComponent, {
+          data: { resourceType: 'ground', current: result.current, limit: result.limit, planName: result.planName }
+        }).afterClosed().subscribe(upgrade => {
+          if (upgrade) this.router.navigate(['/subscription']);
+        });
+        return;
+      }
+      let groudData = this.addGround.value;
+      groudData['academyId'] = coachId;
+      this.kalamService.addGroundDetails(groudData);
+      this.dialogRef.close();
+    });
   }
 
   saveTopics() {

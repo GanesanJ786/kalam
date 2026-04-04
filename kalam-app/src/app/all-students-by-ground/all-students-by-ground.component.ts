@@ -29,9 +29,11 @@ export class AllStudentsByGroundComponent implements OnInit {
 
   title: string = "List of Students in ";
   students: StudentDetails[] = [];
+  filteredStudents: StudentDetails[] = [];
   groundName: string | undefined;
   paidCount: number = 0;
   unpaidCount: number = 0;
+  activeFilter: 'all' | 'paid' | 'unpaid' = 'all';
   getSportIcon = getSportIcon;
 
   constructor(
@@ -75,6 +77,18 @@ export class AllStudentsByGroundComponent implements OnInit {
 
     this.paidCount = this.students.filter(s => s.payment === 'Paid' || s.payment === 'Free').length;
     this.unpaidCount = this.students.filter(s => s.payment === 'Not Paid').length;
+    this.filteredStudents = [...this.students];
+  }
+
+  filterBy(filter: 'all' | 'paid' | 'unpaid') {
+    this.activeFilter = filter;
+    if (filter === 'all') {
+      this.filteredStudents = [...this.students];
+    } else if (filter === 'paid') {
+      this.filteredStudents = this.students.filter(s => s.payment === 'Paid' || s.payment === 'Free');
+    } else {
+      this.filteredStudents = this.students.filter(s => s.payment === 'Not Paid');
+    }
   }
 
   callNum(num: string) {

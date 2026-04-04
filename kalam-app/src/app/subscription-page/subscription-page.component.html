@@ -1,0 +1,90 @@
+<div class="subscription-page">
+  <div class="header-row">
+    <button mat-icon-button (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h2>Subscription Plans</h2>
+  </div>
+
+  <!-- Current Plan Summary -->
+  <div class="current-plan-card" *ngIf="!loading">
+    <div class="plan-status">
+      <span class="status-badge" [ngClass]="currentSubscription?.status?.toLowerCase() || 'trial'">
+        {{getStatusLabel()}}
+      </span>
+    </div>
+    <div class="usage-summary">
+      <div class="usage-item">
+        <mat-icon>person</mat-icon>
+        <span>{{usage.coachCount}} coaches</span>
+      </div>
+      <div class="usage-item">
+        <mat-icon>school</mat-icon>
+        <span>{{usage.studentCount}} students</span>
+      </div>
+      <div class="usage-item">
+        <mat-icon>stadium</mat-icon>
+        <span>{{usage.groundCount}} grounds</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Billing Toggle -->
+  <div class="billing-toggle">
+    <span [class.active]="billingCycle === 'MONTHLY'" (click)="billingCycle = 'MONTHLY'">Monthly</span>
+    <span class="divider">|</span>
+    <span [class.active]="billingCycle === 'ANNUAL'" (click)="billingCycle = 'ANNUAL'">
+      Annual <small>(Save ~27%)</small>
+    </span>
+  </div>
+
+  <!-- Plan Cards -->
+  <div class="plans-grid" *ngIf="!loading">
+    <div class="plan-card" *ngFor="let plan of plans"
+         [class.current]="isCurrentPlan(plan)"
+         [class.recommended]="plan.id === 'STANDARD'">
+      <div class="plan-badge" *ngIf="plan.id === 'STANDARD'">Recommended</div>
+      <div class="plan-badge current-badge" *ngIf="isCurrentPlan(plan)">Current Plan</div>
+      <h3>{{plan.name}}</h3>
+      <div class="plan-price">
+        <span class="currency">₹</span>
+        <span class="amount">{{getPrice(plan)}}</span>
+        <span class="period">/month</span>
+      </div>
+      <div class="plan-total" *ngIf="billingCycle === 'ANNUAL'">
+        ₹{{getTotalPrice(plan)}}/year · Save ₹{{getSavings(plan)}}
+      </div>
+      <div class="plan-limits">
+        <div class="limit-item">
+          <mat-icon>person</mat-icon>
+          <span>{{plan.limits.maxCoaches >= 9999 ? 'Unlimited' : plan.limits.maxCoaches}} coaches</span>
+        </div>
+        <div class="limit-item">
+          <mat-icon>school</mat-icon>
+          <span>{{plan.limits.maxStudents >= 9999 ? 'Unlimited' : plan.limits.maxStudents}} students</span>
+        </div>
+        <div class="limit-item">
+          <mat-icon>stadium</mat-icon>
+          <span>{{plan.limits.maxGrounds >= 9999 ? 'Unlimited' : plan.limits.maxGrounds}} grounds</span>
+        </div>
+      </div>
+      <ul class="features">
+        <li *ngFor="let feature of plan.features">
+          <mat-icon>check</mat-icon> {{feature}}
+        </li>
+      </ul>
+      <button mat-raised-button
+              [color]="isCurrentPlan(plan) ? 'basic' : 'primary'"
+              [disabled]="!canSelect(plan)"
+              (click)="selectPlan(plan)">
+        <span *ngIf="isCurrentPlan(plan)">Current Plan</span>
+        <span *ngIf="!isCurrentPlan(plan) && !isDowngrade(plan)">Select Plan</span>
+        <span *ngIf="isDowngrade(plan)">Downgrade</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+  </div>
+</div>

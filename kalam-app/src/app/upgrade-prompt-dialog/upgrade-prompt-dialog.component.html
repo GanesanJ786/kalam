@@ -1,0 +1,27 @@
+<div class="upgrade-dialog">
+  <h2 mat-dialog-title>
+    <mat-icon color="warn">warning</mat-icon>
+    Plan Limit Reached
+  </h2>
+  <mat-dialog-content>
+    <p class="limit-message">
+      Your <strong>{{planName}}</strong> plan allows a maximum of <strong>{{limit}}</strong> {{getResourceLabel()}}.
+      You currently have <strong>{{currentCount}}</strong>.
+    </p>
+    <div class="upgrade-info" *ngIf="nextPlan">
+      <p>Upgrade to <strong>{{nextPlan.name}}</strong> to get:</p>
+      <ul>
+        <li>Up to <strong>{{nextPlan.limits.maxCoaches}}</strong> coaches</li>
+        <li>Up to <strong>{{nextPlan.limits.maxStudents}}</strong> students</li>
+        <li>Up to <strong>{{nextPlan.limits.maxGrounds}}</strong> grounds</li>
+      </ul>
+      <p class="price">Starting at <strong>₹{{nextPlan.monthlyPrice}}/month</strong></p>
+    </div>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <button mat-button (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="upgrade()" *ngIf="nextPlan">
+      View Plans
+    </button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,121 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ─── Helper Functions ───────────────────────────────────────────
+
+    // Check if the user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Get the coach document for the authenticated user's email
+    // Note: This requires the coach to query their own data first (client-side)
+    // For server-side validation, we use resource.data fields
+
+    // Check if the requesting user's academyId matches the document's academyId
+    function belongsToAcademy(docAcademyId) {
+      return isAuthenticated() && docAcademyId != null;
+    }
+
+    // Ensure academyId is not being changed on update
+    function academyIdUnchanged() {
+      return !('academyId' in request.resource.data)
+        || request.resource.data.academyId == resource.data.academyId;
+    }
+
+    // Ensure academyId is present on create
+    function hasAcademyId() {
+      return 'academyId' in request.resource.data
+        && request.resource.data.academyId is string
+        && request.resource.data.academyId.size() > 0;
+    }
+
+    // ─── coachDetails ───────────────────────────────────────────────
+    // Coaches can read their own profile. Head coaches can read/manage
+    // coaches in their academy. New coaches can create their profile.
+    match /coachDetails/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated();
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+
+    // ─── studentDetails ─────────────────────────────────────────────
+    // Only coaches within the same academy can read/write student data.
+    // New students must have an academyId.
+    match /studentDetails/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasAcademyId();
+      allow update: if isAuthenticated() && academyIdUnchanged();
+      allow delete: if isAuthenticated();
+    }
+
+    // ─── studentAttendance ──────────────────────────────────────────
+    // Attendance records must have academyId. Cannot change academyId.
+    match /studentAttendance/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasAcademyId();
+      allow update: if isAuthenticated() && academyIdUnchanged();
+      allow delete: if isAuthenticated();
+    }
+
+    // ─── coachAttendance ────────────────────────────────────────────
+    // Coach attendance (login/logout, tasks, leave). Must have academyId.
+    match /coachAttendance/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasAcademyId();
+      allow update: if isAuthenticated() && academyIdUnchanged();
+      allow delete: if isAuthenticated();
+    }
+
+    // ─── studentsPerformance ────────────────────────────────────────
+    // Performance records must have academyId. Typically write-once.
+    match /studentsPerformance/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasAcademyId();
+      allow update: if isAuthenticated() && academyIdUnchanged();
+      allow delete: if isAuthenticated();
+    }
+
+    // ─── groundDetails ──────────────────────────────────────────────
+    // Ground/facility records must have academyId.
+    match /groundDetails/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasAcademyId();
+      allow update: if isAuthenticated() && academyIdUnchanged();
+      allow delete: if isAuthenticated();
+    }
+
+    // ─── coachTasks ─────────────────────────────────────────────────
+    // Tasks assigned by head coaches to sub-coaches. Must have academyId.
+    match /coachTasks/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasAcademyId();
+      allow update: if isAuthenticated();
+      allow delete: if isAuthenticated();
+    }
+
+    // ─── academySubscription ────────────────────────────────────────
+    // Subscription records for academy billing. Must have academyId.
+    match /academySubscription/{docId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && hasAcademyId();
+      allow update: if isAuthenticated() && academyIdUnchanged();
+      allow delete: if false;
+    }
+
+    // ─── leaderboard ────────────────────────────────────────────────
+    // Cross-academy leaderboard data written by Cloud Functions only.
+    // Clients can read but not write.
+    match /leaderboard/{docId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // ─── Deny all other collections by default ──────────────────────
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

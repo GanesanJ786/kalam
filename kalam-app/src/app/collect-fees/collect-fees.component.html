@@ -1,0 +1,123 @@
+<!-- ============================================ -->
+<!-- COLLECT FEES - Full-page Component -->
+<!-- ============================================ -->
+
+<!-- Header Bar -->
+<div class="cf-header">
+  <button class="cf-back-btn" (click)="goBack()">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+  <div class="cf-header-meta">
+    <h1 class="cf-header-title">Fees Collection</h1>
+    <span class="cf-header-subtitle">
+      {{unpaidStudents.length}} unpaid · {{allStudents.length}} total
+    </span>
+  </div>
+  <div class="cf-header-badge">
+    <mat-icon>payments</mat-icon>
+  </div>
+</div>
+
+<div class="cf-body">
+  <!-- Summary Strip -->
+  <div class="cf-summary">
+    <div class="cf-summary-item cf-summary-unpaid">
+      <span class="cf-summary-num">{{unpaidStudents.length}}</span>
+      <span class="cf-summary-label">Unpaid</span>
+    </div>
+    <div class="cf-summary-divider"></div>
+    <div class="cf-summary-item cf-summary-paid">
+      <span class="cf-summary-num">{{paidStudentsCount}}</span>
+      <span class="cf-summary-label">Paid</span>
+    </div>
+    <div class="cf-summary-divider"></div>
+    <div class="cf-summary-item">
+      <span class="cf-summary-num">{{allStudents.length}}</span>
+      <span class="cf-summary-label">Total</span>
+    </div>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="cf-search-wrap">
+    <mat-icon class="cf-search-icon">search</mat-icon>
+    <input type="text" class="cf-search-input"
+           placeholder="Search student name..."
+           [(ngModel)]="searchQuery"
+           (input)="filter()">
+    <button class="cf-search-clear" *ngIf="searchQuery" (click)="searchQuery=''; filter()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <!-- Status Filter Chips -->
+  <div class="cf-filter-bar">
+    <button class="cf-chip cf-chip-unpaid" [class.active]="statusFilter === 'unpaid'" (click)="setStatusFilter('unpaid')">
+      <mat-icon>error_outline</mat-icon> Unpaid
+      <span class="cf-chip-count">{{unpaidStudents.length}}</span>
+    </button>
+    <button class="cf-chip cf-chip-paid" [class.active]="statusFilter === 'paid'" (click)="setStatusFilter('paid')">
+      <mat-icon>check_circle_outline</mat-icon> Paid
+      <span class="cf-chip-count">{{paidStudentsCount}}</span>
+    </button>
+    <button class="cf-chip cf-chip-all" [class.active]="statusFilter === 'all'" (click)="setStatusFilter('all')">
+      All
+      <span class="cf-chip-count">{{allStudents.length}}</span>
+    </button>
+  </div>
+
+  <!-- Ground Filter Chips -->
+  <div class="cf-ground-bar" *ngIf="groundNames.length > 1">
+    <mat-icon class="cf-ground-icon">location_on</mat-icon>
+    <div class="cf-ground-scroll">
+      <button class="cf-ground-chip" [class.active]="groundFilter === 'all'" (click)="setGroundFilter('all')">
+        All Venues
+      </button>
+      <button class="cf-ground-chip" *ngFor="let g of groundNames"
+              [class.active]="groundFilter === g"
+              (click)="setGroundFilter(g)">
+        {{g}}
+      </button>
+    </div>
+  </div>
+
+  <!-- Student Cards List -->
+  <div class="cf-list">
+    <div class="cf-card" *ngFor="let student of filteredStudents"
+         [class.cf-card-paid]="!student._feesUnpaid">
+      <div class="cf-avatar" [class.cf-avatar-paid]="!student._feesUnpaid">
+        <span>{{student.name?.charAt(0) | uppercase}}</span>
+      </div>
+      <div class="cf-info">
+        <span class="cf-name">{{student.name}}</span>
+        <span class="cf-meta">{{student.underAge}} · {{student.groundName}}</span>
+      </div>
+      <div class="cf-action">
+        <span class="cf-paid-tag" *ngIf="!student._feesUnpaid">
+          <mat-icon>check_circle</mat-icon> Paid
+        </span>
+        <span class="cf-waiting-tag" *ngIf="student.feesApproveWaiting">
+          <mat-icon>schedule</mat-icon> Pending
+        </span>
+        <button class="cf-collect-btn" *ngIf="student._feesUnpaid && !student.feesApproveWaiting"
+                (click)="collectFee(student)">
+          <mat-icon>currency_rupee</mat-icon> Collect
+        </button>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="cf-empty" *ngIf="!loading && filteredStudents.length === 0">
+      <mat-icon>search_off</mat-icon>
+      <p *ngIf="searchQuery">No students match "{{searchQuery}}"</p>
+      <p *ngIf="!searchQuery && statusFilter === 'unpaid'">All fees collected! Great job.</p>
+      <p *ngIf="!searchQuery && statusFilter === 'paid'">No paid students yet</p>
+      <p *ngIf="!searchQuery && statusFilter === 'all'">No students found</p>
+    </div>
+
+    <!-- Loading State -->
+    <div class="cf-empty" *ngIf="loading">
+      <mat-icon>hourglass_empty</mat-icon>
+      <p>Loading students...</p>
+    </div>
+  </div>
+</div>

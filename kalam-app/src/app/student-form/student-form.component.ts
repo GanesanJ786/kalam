@@ -24,6 +24,9 @@ import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
 import { CompetencyLevel, Scholarship, SelectItem } from '../constant';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { SubscriptionService } from '../subscription.service';
+import { UpgradePromptDialogComponent } from '../upgrade-prompt-dialog/upgrade-prompt-dialog.component';
 
 export interface StudentDetails {
   id?: string;
@@ -75,6 +78,7 @@ export interface StudentDetails {
   payment?: string;
   underType?: number;
   hideEve?: boolean;
+  _feesUnpaid?: boolean;
 }
 
 @Component({
@@ -145,7 +149,9 @@ export class StudentFormComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar,
     private activatedRoute: ActivatedRoute,
     private loaderService: LoaderService,
-    private storage: AngularFireStorage) {
+    private storage: AngularFireStorage,
+    private dialog: MatDialog,
+    private subscriptionService: SubscriptionService) {
     this.competencyLevel = CompetencyLevel;
     this.scholarship = Scholarship;
     this.studentDetails = {} as StudentDetails;
@@ -363,12 +369,29 @@ export class StudentFormComponent implements OnInit, OnDestroy {
       if(this.kalamService.getCoachData().academyOwned == "Y") {
         studentForm['approved'] = true;
       }
-      this.kalamService.setStudentDetails(studentForm);
-      this._snackBar.open("New student successfully added.", '', {
-        horizontalPosition: "center",
-        verticalPosition: "top",
-        duration: 4000,
+      // Check student limit before adding
+      const academyId = this.kalamService.getAcademyId();
+      this.subscriptionService.checkLimit(academyId, 'student').pipe(take(1)).subscribe(result => {
+        if (!result.allowed) {
+          this.loaderService.hide();
+          this.dialog.open(UpgradePromptDialogComponent, {
+            data: { resourceType: 'student', current: result.current, limit: result.limit, planName: result.planName }
+          }).afterClosed().subscribe(upgrade => {
+            if (upgrade) this.router.navigate(['/subscription']);
+          });
+          return;
+        }
+        this.kalamService.setStudentDetails(studentForm);
+        this._snackBar.open("New student successfully added.", '', {
+          horizontalPosition: "center",
+          verticalPosition: "top",
+          duration: 4000,
+        });
+        this.kalamService.editStudentData = [];
+        this.loaderService.hide();
+        this.router.navigate([`/home`]);
       });
+      return;
     }
     this.kalamService.editStudentData = [];
     this.loaderService.hide();

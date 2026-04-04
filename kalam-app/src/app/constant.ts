@@ -109,3 +109,83 @@ export function getSportLabel(sport: string): string {
 export const Logo = {
     logoUrl: ``
 }
+
+// ─── Subscription Plan Definitions ──────────────────────────────
+
+export type PlanId = 'FREE_TRIAL' | 'STARTER' | 'BASIC' | 'STANDARD' | 'PRO' | 'ENTERPRISE';
+
+export interface PlanLimits {
+    maxCoaches: number;
+    maxStudents: number;
+    maxGrounds: number;
+}
+
+export interface SubscriptionPlan {
+    id: PlanId;
+    name: string;
+    monthlyPrice: number;
+    annualPrice: number;
+    limits: PlanLimits;
+    features: string[];
+    trialDays?: number;
+}
+
+export const SUBSCRIPTION_PLANS: SubscriptionPlan[] = [
+    {
+        id: 'FREE_TRIAL',
+        name: 'Free Trial',
+        monthlyPrice: 0,
+        annualPrice: 0,
+        limits: { maxCoaches: 1, maxStudents: 15, maxGrounds: 1 },
+        features: ['Basic attendance', 'Student management', '30-day trial'],
+        trialDays: 30
+    },
+    {
+        id: 'STARTER',
+        name: 'Starter',
+        monthlyPrice: 999,
+        annualPrice: 8748,
+        limits: { maxCoaches: 2, maxStudents: 30, maxGrounds: 1 },
+        features: ['Attendance tracking', 'Student management', 'Email support']
+    },
+    {
+        id: 'BASIC',
+        name: 'Basic',
+        monthlyPrice: 1999,
+        annualPrice: 17508,
+        limits: { maxCoaches: 5, maxStudents: 100, maxGrounds: 3 },
+        features: ['All Starter features', 'Performance tracking', 'Excel export', 'Coach tasks']
+    },
+    {
+        id: 'STANDARD',
+        name: 'Standard',
+        monthlyPrice: 2999,
+        annualPrice: 26268,
+        limits: { maxCoaches: 10, maxStudents: 250, maxGrounds: 5 },
+        features: ['All Basic features', 'Analytics dashboard', 'Multi-ground support', 'Priority support']
+    },
+    {
+        id: 'PRO',
+        name: 'Pro',
+        monthlyPrice: 3999,
+        annualPrice: 35028,
+        limits: { maxCoaches: 20, maxStudents: 500, maxGrounds: 10 },
+        features: ['All Standard features', 'Advanced analytics', 'Scholarship management', 'Dedicated support']
+    },
+    {
+        id: 'ENTERPRISE',
+        name: 'Enterprise',
+        monthlyPrice: 6999,
+        annualPrice: 59988,
+        limits: { maxCoaches: 9999, maxStudents: 9999, maxGrounds: 9999 },
+        features: ['All Pro features', 'Unlimited coaches & students', 'Custom branding', 'SLA guarantee', 'Account manager']
+    }
+];
+
+export function getPlanById(planId: PlanId): SubscriptionPlan | undefined {
+    return SUBSCRIPTION_PLANS.find(p => p.id === planId);
+}
+
+export function getDefaultPlan(): SubscriptionPlan {
+    return SUBSCRIPTION_PLANS.find(p => p.id === 'FREE_TRIAL')!;
+}

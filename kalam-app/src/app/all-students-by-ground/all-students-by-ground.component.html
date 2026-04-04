@@ -9,32 +9,52 @@
 <ng-container>
     <ng-container> 
             <div mat-dialog-content class="dialog-fullscreen-content">
-                <div class="rf-header custm-logo">
-                    <button (click)="cancel()" class="backNav"><mat-icon>keyboard_arrow_left</mat-icon></button>
-                    <div class="header-title">{{title}} {{groundName}}</div>
+
+                <!-- Redesigned Header -->
+                <div class="asg-header">
+                    <button class="asg-back-btn" (click)="cancel()">
+                        <mat-icon>arrow_back</mat-icon>
+                    </button>
+                    <div class="asg-header-content">
+                        <span class="asg-header-subtitle">Batch Overview</span>
+                        <h2 class="asg-header-title">{{groundName}}</h2>
+                    </div>
+                    <div class="asg-header-count">
+                        <span class="asg-header-count-num">{{students.length}}</span>
+                        <span class="asg-header-count-label">Students</span>
+                    </div>
                 </div>
 
-                <!-- Stats Bar -->
-                <div class="asg-stats-bar">
-                    <div class="asg-stat">
-                        <span class="asg-stat-num">{{students.length}}</span>
-                        <span class="asg-stat-label">Total</span>
-                    </div>
-                    <div class="asg-stat asg-stat-paid">
-                        <span class="asg-stat-num">{{paidCount}}</span>
-                        <span class="asg-stat-label">Paid</span>
-                    </div>
-                    <div class="asg-stat asg-stat-unpaid">
-                        <span class="asg-stat-num">{{unpaidCount}}</span>
-                        <span class="asg-stat-label">Unpaid</span>
-                    </div>
+                <!-- Stats + Filter Bar -->
+                <div class="asg-filter-bar">
+                    <button class="asg-filter-chip"
+                            [class.active]="activeFilter === 'all'"
+                            (click)="filterBy('all')">
+                        <span class="asg-chip-label">All</span>
+                        <span class="asg-chip-count">{{students.length}}</span>
+                    </button>
+                    <button class="asg-filter-chip chip-paid"
+                            [class.active]="activeFilter === 'paid'"
+                            (click)="filterBy('paid')">
+                        <mat-icon>check_circle</mat-icon>
+                        <span class="asg-chip-label">Paid</span>
+                        <span class="asg-chip-count">{{paidCount}}</span>
+                    </button>
+                    <button class="asg-filter-chip chip-unpaid"
+                            [class.active]="activeFilter === 'unpaid'"
+                            (click)="filterBy('unpaid')">
+                        <mat-icon>cancel</mat-icon>
+                        <span class="asg-chip-label">Unpaid</span>
+                        <span class="asg-chip-count">{{unpaidCount}}</span>
+                    </button>
                 </div>
 
                 <!-- Student Cards List -->
                 <div class="asg-list">
-                    <div class="asg-card" *ngFor="let student of students; let i = index" (click)="viewStudent(student)">
+                    <div class="asg-card" *ngFor="let student of filteredStudents; let i = index" (click)="viewStudent(student)">
                         <div class="asg-card-left">
-                            <div class="asg-avatar">
+                            <div class="asg-avatar" [class.avatar-paid]="student.payment === 'Paid' || student.payment === 'Free'"
+                                 [class.avatar-unpaid]="student.payment === 'Not Paid'">
                                 <span>{{student.name.charAt(0) | uppercase}}</span>
                             </div>
                         </div>
@@ -45,15 +65,14 @@
                                       [class.paid]="student.payment === 'Paid'"
                                       [class.unpaid]="student.payment === 'Not Paid'"
                                       [class.free]="student.payment === 'Free'">
-                                    {{student.payment}}
+                                    <mat-icon *ngIf="student.payment === 'Paid' || student.payment === 'Free'">check_circle</mat-icon>
+                                    <mat-icon *ngIf="student.payment === 'Not Paid'">error</mat-icon>
+                                    {{student.payment === 'Free' ? 'SCHOLARSHIP' : student.payment}}
                                 </span>
                             </div>
                             <div class="asg-card-row-meta">
                                 <span class="asg-meta-item" *ngIf="student.underAge">
                                     <mat-icon>straighten</mat-icon>{{student.underAge}}
-                                </span>
-                                <span class="asg-meta-item" *ngIf="student.occupationStatus === 'student' && student.institutionName">
-                                    <mat-icon>school</mat-icon>{{student.institutionName}}
                                 </span>
                                 <span class="asg-meta-item" *ngIf="student.preferredSport">
                                     <mat-icon>{{getSportIcon(student.preferredSport)}}</mat-icon>{{student.preferredSport | titlecase}}
@@ -71,9 +90,11 @@
                     </div>
 
                     <!-- Empty state -->
-                    <div class="asg-empty" *ngIf="students.length === 0">
+                    <div class="asg-empty" *ngIf="filteredStudents.length === 0">
                         <mat-icon>group_off</mat-icon>
-                        <p>No students found for this ground</p>
+                        <p *ngIf="activeFilter === 'all'">No students found for this ground</p>
+                        <p *ngIf="activeFilter === 'paid'">No paid students</p>
+                        <p *ngIf="activeFilter === 'unpaid'">No unpaid students</p>
                     </div>
                 </div>
             </div>

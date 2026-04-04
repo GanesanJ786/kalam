@@ -24,6 +24,14 @@
                         <mat-icon>edit</mat-icon>
                         <span>Edit Profile</span>
                     </button>
+                    <button *ngIf="isOwner" (click)="addGround()" mat-menu-item>
+                        <mat-icon>add_location_alt</mat-icon>
+                        <span>Add Venue</span>
+                    </button>
+                    <button *ngIf="isOwner" (click)="viewSubscription()" mat-menu-item>
+                        <mat-icon>card_membership</mat-icon>
+                        <span>Subscription</span>
+                    </button>
                     <button (click)="logout()" mat-menu-item>
                         <mat-icon>power_settings_new</mat-icon>
                         <span>Logout</span>

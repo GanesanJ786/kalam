@@ -1,0 +1,108 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "coachAttendance",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "academyId", "order": "ASCENDING" },
+        { "fieldPath": "inCoachId", "order": "ASCENDING" },
+        { "fieldPath": "activeDate", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "coachAttendance",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "academyId", "order": "ASCENDING" },
+        { "fieldPath": "activeDate", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "studentAttendance",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "academyId", "order": "ASCENDING" },
+        { "fieldPath": "kalamId", "order": "ASCENDING" },
+        { "fieldPath": "name", "order": "ASCENDING" },
+        { "fieldPath": "loginDate", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "studentAttendance",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "kalamId", "order": "ASCENDING" },
+        { "fieldPath": "name", "order": "ASCENDING" },
+        { "fieldPath": "loginDate", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "studentAttendance",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "academyId", "order": "ASCENDING" },
+        { "fieldPath": "loginDate", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "studentAttendance",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "loginDate", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "studentDetails",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "coachId", "order": "ASCENDING" },
+        { "fieldPath": "underAge", "order": "ASCENDING" },
+        { "fieldPath": "approved", "order": "ASCENDING" },
+        { "fieldPath": "groundName", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "studentDetails",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "coachId", "order": "ASCENDING" },
+        { "fieldPath": "underAge", "order": "ASCENDING" },
+        { "fieldPath": "approved", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "studentDetails",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "coachId", "order": "ASCENDING" },
+        { "fieldPath": "inActive", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "coachTasks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "academyId", "order": "ASCENDING" },
+        { "fieldPath": "assignedTo", "order": "ASCENDING" },
+        { "fieldPath": "status", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "studentsPerformance",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "kalamId", "order": "ASCENDING" },
+        { "fieldPath": "academyId", "order": "ASCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "studentsPerformance",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "gameDate", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

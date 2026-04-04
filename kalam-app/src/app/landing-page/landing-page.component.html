@@ -1,0 +1,67 @@
+<div class="leaderboard-container">
+  <div class="leaderboard-tabs">
+    <button mat-button [class.active]="activeTab === 'attendance'" (click)="activeTab = 'attendance'">
+      <mat-icon>emoji_events</mat-icon> Top Attendance
+    </button>
+    <button mat-button [class.active]="activeTab === 'performance'" (click)="activeTab = 'performance'">
+      <mat-icon>sports_soccer</mat-icon> Top Performers
+    </button>
+    <button mat-button [class.active]="activeTab === 'academies'" (click)="activeTab = 'academies'">
+      <mat-icon>school</mat-icon> Top Academies
+    </button>
+  </div>
+
+  <div class="leaderboard-content" *ngIf="!loading && leaderboard">
+    <!-- Top Attendance -->
+    <div *ngIf="activeTab === 'attendance'" class="leaderboard-list">
+      <div class="leaderboard-item" *ngFor="let entry of attendanceList; let i = index">
+        <span class="rank" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">{{i + 1}}</span>
+        <span class="name">{{entry.name}}</span>
+        <span class="stat">{{entry.count}} sessions</span>
+      </div>
+      <div *ngIf="attendanceList.length === 0" class="empty-state">
+        <mat-icon>hourglass_empty</mat-icon>
+        <p>Leaderboard data will appear after the first daily aggregation.</p>
+      </div>
+    </div>
+
+    <!-- Top Performers -->
+    <div *ngIf="activeTab === 'performance'" class="leaderboard-list">
+      <div class="leaderboard-item" *ngFor="let entry of performerList; let i = index">
+        <span class="rank" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">{{i + 1}}</span>
+        <span class="name">{{entry.name}}</span>
+        <span class="stat">{{entry.goals}} goals · {{entry.assists}} assists ({{entry.games}} games)</span>
+      </div>
+      <div *ngIf="performerList.length === 0" class="empty-state">
+        <mat-icon>hourglass_empty</mat-icon>
+        <p>Performance data will appear after the first daily aggregation.</p>
+      </div>
+    </div>
+
+    <!-- Top Academies -->
+    <div *ngIf="activeTab === 'academies'" class="leaderboard-list">
+      <div class="leaderboard-item" *ngFor="let entry of academyList; let i = index">
+        <span class="rank" [class.gold]="i === 0" [class.silver]="i === 1" [class.bronze]="i === 2">{{i + 1}}</span>
+        <span class="name">{{entry.academyName}}</span>
+        <span class="stat">{{entry.studentCount}} students</span>
+      </div>
+      <div *ngIf="academyList.length === 0" class="empty-state">
+        <mat-icon>hourglass_empty</mat-icon>
+        <p>Academy rankings will appear after the first daily aggregation.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="loading">
+    <mat-spinner diameter="36"></mat-spinner>
+  </div>
+
+  <div *ngIf="!loading && !leaderboard" class="empty-state">
+    <mat-icon>emoji_events</mat-icon>
+    <p>Leaderboard data is not yet available. It updates daily.</p>
+  </div>
+
+  <div class="last-updated" *ngIf="leaderboard && leaderboard.updatedAt">
+    Updated: {{leaderboard.month}}
+  </div>
+</div>

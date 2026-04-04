@@ -80,7 +80,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.academyJoinCode = this.kalamService.getCoachData().academyJoinCode || '';
     this.coachSports = this.kalamService.getCoachData().toCoach || [];
     this.coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.owner = this.kalamService.getCoachData().academyId ? false : true;
+    this.owner = this.kalamService.isAcademyOwner();
     this.inCoachId = this.kalamService.getCoachData().kalamId;
 
     if(!this.owner) {
@@ -98,7 +98,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.kalamService.getGroundDetailsCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
       this.groundList = data;
 
-      this.kalamService.getCurrentCoachIn(this.inCoachId, moment().format("MM-DD-YYYY")).pipe(takeUntil(this.destroy$)).subscribe((coach: any) => {
+      this.kalamService.getCurrentCoachIn(this.inCoachId, moment().format("MM-DD-YYYY"), this.coachId).pipe(takeUntil(this.destroy$)).subscribe((coach: any) => {
         this.allBtnDisabled = false;
         let coachDataIn = coach.map((document: any) => {
           return {
@@ -107,7 +107,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           }
         });
 
-        this.kalamService.getCurrentCoachOut(this.inCoachId, moment().format("MM-DD-YYYY")).pipe(takeUntil(this.destroy$)).subscribe((coach: any) => {
+        this.kalamService.getCurrentCoachOut(this.inCoachId, moment().format("MM-DD-YYYY"), this.coachId).pipe(takeUntil(this.destroy$)).subscribe((coach: any) => {
           this.allBtnDisabled = false;
           let coachDataOut = coach.map((document: any) => {
             return {
@@ -222,7 +222,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         this.allStudents = data.filter((res: StudentDetails) => res.approved);
         this.groundList.forEach((element: any) => {
           element.totalStudent = this.allStudents.filter((res:any) => res.groundName == element.groundName).length;
-        })
+        });
       });
     }
   }
@@ -230,7 +230,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
   private loadPendingTaskCount(): void {
     if (!this.owner) {
       // Sub coach: count active tasks (Pending + Acknowledged) assigned to them
-      this.taskService.getActiveTasks(this.inCoachId).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
+      this.taskService.getActiveTasks(this.inCoachId, this.kalamService.getAcademyId()).pipe(takeUntil(this.destroy$)).subscribe((res: any) => {
         const allTasks = res.map((document: any) => ({
           ...document.payload.doc.data() as {}
         }));
@@ -449,6 +449,10 @@ export class MyProfileComponent implements OnInit, OnDestroy {
 
   coachTasks() {
     this.router.navigate(['/coach-tasks']);
+  }
+
+  collectFees() {
+    this.router.navigate(['/collect-fees']);
   }
 
   ngOnDestroy(): void {

@@ -71,6 +71,43 @@ export class KalamService {
     this._academyCoachesCache.clear();
   }
 
+  /**
+   * Returns the academy identifier (e.g. "A1234567") for the currently logged-in coach.
+   * Works for both head coaches and sub-coaches.
+   * Handles legacy head coaches who may not have academyId set yet.
+   */
+  getAcademyId(): string {
+    const coach = this.getCoachData();
+    if (coach?.academyId) {
+      return coach.academyId;
+    }
+    // Fallback for legacy head coaches without academyId
+    if (coach?.kalamId) {
+      return `A${coach.kalamId}`;
+    }
+    return '';
+  }
+
+  /**
+   * Returns the head coach's kalamId for the current academy.
+   * This is the value stored as "coachId" in student/attendance records.
+   */
+  getHeadCoachId(): string {
+    const coach = this.getCoachData();
+    if (coach?.academyId) {
+      return coach.academyId.replace('A', '');
+    }
+    return coach?.kalamId || '';
+  }
+
+  /**
+   * Returns true if the currently logged-in coach is the academy owner (head coach).
+   */
+  isAcademyOwner(): boolean {
+    const coach = this.getCoachData();
+    return coach?.academyOwned === 'Y';
+  }
+
   private mapDocs(res: any): any[] {
     return res.map((document: any) => ({
       id: document.payload.doc.id,
@@ -149,10 +186,14 @@ export class KalamService {
   }
 
   addStudentPerformace(studentPerformance: StudentPerformance) {
-    this.fireStore.collection('studentsPerformance').add({...studentPerformance});
+    const academyId = this.getAcademyId();
+    this.fireStore.collection('studentsPerformance').add({...studentPerformance, academyId});
   }
 
-  getStudentPerformance(kalamId: string) {
+  getStudentPerformance(kalamId: string, academyId?: string) {
+    if (academyId) {
+      return this.fireStore.collection(`studentsPerformance`, ref => ref.where('kalamId', '==', `${kalamId}`).where('academyId', '==', `${academyId}`)).snapshotChanges();
+    }
     return this.fireStore.collection(`studentsPerformance`, ref => ref.where('kalamId', '==', `${kalamId}`)).snapshotChanges();
   }
 
@@ -169,7 +210,8 @@ export class KalamService {
   }
 
   setStudentDetails(list: StudentDetails) {
-    this.fireStore.collection("studentDetails").add({...list});
+    const academyId = this.getAcademyId();
+    this.fireStore.collection("studentDetails").add({...list, academyId});
     this.invalidateStudentCache();
   }
 
@@ -366,8 +408,9 @@ export class KalamService {
   }
 
   addGroundDetails(ground: any) {
-    this.fireStore.collection("groundDetails").add({...ground});
-    this.invalidateGroundCache(ground.academyId);
+    const academyId = ground.academyId || this.getAcademyId();
+    this.fireStore.collection("groundDetails").add({...ground, academyId});
+    this.invalidateGroundCache(academyId);
   }
 
   getGroundDetails(academyId: any) {
@@ -388,23 +431,31 @@ export class KalamService {
   }
 
   coachAttendance(coachData: any) {
-    this.fireStore.collection("coachAttendance").add({...coachData});
+    const academyId = coachData.academyId || this.getAcademyId();
+    this.fireStore.collection("coachAttendance").add({...coachData, academyId});
   }
 
   getCoachAttendanceData(academyId: string | undefined) {
     return this.fireStore.collection('coachAttendance', ref => ref.where('academyId', '==', `${academyId}`)).snapshotChanges();
   }
 
-  getCurrentCoachIn(inCoachId: string | undefined, loginDate: string | undefined) {
+  getCurrentCoachIn(inCoachId: string | undefined, loginDate: string | undefined, academyId?: string) {
+    if (academyId) {
+      return this.fireStore.collection('coachAttendance', ref => ref.where('academyId', '==', `${academyId}`).where('inCoachId', '==', `${inCoachId}`).where("loginDate", "==", `${loginDate}`)).snapshotChanges();
+    }
     return this.fireStore.collection('coachAttendance', ref => ref.where('inCoachId', '==', `${inCoachId}`).where("loginDate", "==", `${loginDate}`)).snapshotChanges();
   }
 
-  getCurrentCoachOut(inCoachId: string | undefined, logoffDate: string | undefined) {
+  getCurrentCoachOut(inCoachId: string | undefined, logoffDate: string | undefined, academyId?: string) {
+    if (academyId) {
+      return this.fireStore.collection('coachAttendance', ref => ref.where('academyId', '==', `${academyId}`).where('inCoachId', '==', `${inCoachId}`).where("logoffDate", "==", `${logoffDate}`)).snapshotChanges();
+    }
     return this.fireStore.collection('coachAttendance', ref => ref.where('inCoachId', '==', `${inCoachId}`).where("logoffDate", "==", `${logoffDate}`)).snapshotChanges();
   }
 
   studentAttendance(stundent: any) {
-    this.fireStore.collection("studentAttendance").add({...stundent});
+    const academyId = stundent.academyId || this.getAcademyId();
+    this.fireStore.collection("studentAttendance").add({...stundent, academyId});
   }
 
   getStudentAttendanceData(academyId: string, loginDate: string) {
@@ -454,6 +505,14 @@ export class KalamService {
   }
 
   getSingleStudentAttendanceData(query:StudentDetails, dateRange: any) {
+    const academyId = this.getHeadCoachId();
+    if (academyId) {
+      return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`)
+      .where('kalamId', '==', `${query.kalamId}`)
+      .where("name", "==", `${query.name}`)
+      .where("loginDate", ">=", `${dateRange.start}`)
+      .where("loginDate", "<=", `${dateRange.end}`)).snapshotChanges();
+    }
     return this.fireStore.collection('studentAttendance', ref => ref.where('kalamId', '==', `${query.kalamId}`)
     .where("name", "==", `${query.name}`)
     .where("loginDate", ">=", `${dateRange.start}`)
@@ -461,12 +520,27 @@ export class KalamService {
   }
 
   getStudentAttendanceByCoachDatewise(query:any) {
+    const academyId = this.getHeadCoachId();
+    if (academyId) {
+      return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`)
+      .where('coachId', '==', `${query.inCoachId}`)
+      .where("groundName", "==", `${query.groundName}`)
+      .where("loginDate", "==", `${query.loginDate}`)).snapshotChanges();
+    }
     return this.fireStore.collection('studentAttendance', ref => ref.where('coachId', '==', `${query.inCoachId}`)
     .where("groundName", "==", `${query.groundName}`)
     .where("loginDate", "==", `${query.loginDate}`)).snapshotChanges();
   }
 
   getStudentAttendanceUpdate(query:any) {
+    const academyId = this.getHeadCoachId();
+    if (academyId) {
+      return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`)
+      .where('coachId', '==', `${query.coachId}`)
+      .where("name", "==", `${query.name}`)
+      .where("kalamId", "==", `${query.kalamId}`)
+      .where("loginDate", "==", `${query.loginDate}`)).snapshotChanges();
+    }
     return this.fireStore.collection('studentAttendance', ref => ref.where('coachId', '==', `${query.coachId}`)
     .where("name", "==", `${query.name}`)
     .where("kalamId", "==", `${query.kalamId}`)
@@ -474,6 +548,15 @@ export class KalamService {
   }
 
   getStudentAttendanceUpdateEvening(query:any) {
+    const academyId = this.getHeadCoachId();
+    if (academyId) {
+      return this.fireStore.collection('studentAttendance', ref => ref.where('academyId', '==', `${academyId}`)
+      .where('coachId', '==', `${query.coachId}`)
+      .where("name", "==", `${query.name}`)
+      .where("kalamId", "==", `${query.kalamId}`)
+      .where("evening", "==", true)
+      .where("loginDate", "==", `${query.loginDate}`)).snapshotChanges();
+    }
     return this.fireStore.collection('studentAttendance', ref => ref.where('coachId', '==', `${query.coachId}`)
     .where("name", "==", `${query.name}`)
     .where("kalamId", "==", `${query.kalamId}`)
