@@ -25,6 +25,8 @@ import { CoachTaskNotificationComponent } from './coach-task-notification/coach-
 import { AccountComponent } from './account/account.component';
 import { SubscriptionPageComponent } from './subscription-page/subscription-page.component';
 import { CollectFeesComponent } from './collect-fees/collect-fees.component';
+import { AcademyApprovalComponent } from './academy-approval/academy-approval.component';
+import { PromoBannerComponent } from './promo-banner/promo-banner.component';
 
 import { AuthGuardService } from './auth-guard.service';
 
@@ -42,6 +44,8 @@ const routes: Routes = [
   { path: 'coach-tasks', component: CoachTaskNotificationComponent, canActivate: [AuthGuardService]},
   { path: 'collect-fees', component: CollectFeesComponent, canActivate: [AuthGuardService]},
   { path: 'subscription', component: SubscriptionPageComponent, canActivate: [AuthGuardService]},
+  { path: 'academy-approval', component: AcademyApprovalComponent },
+  { path: 'promo', component: PromoBannerComponent },
   { path: '**', redirectTo: 'login' }
 ];
 

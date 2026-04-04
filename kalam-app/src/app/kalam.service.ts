@@ -595,4 +595,18 @@ export class KalamService {
   // getAllStudents(coachId:string) {
   //   return this.fireStore.collection('studentDetails', ref => ref.where('coachId', '==', `${coachId}`)).snapshotChanges();
   // }
+
+  getPendingAcademies() {
+    return this.fireStore.collection('coachDetails', ref =>
+      ref.where('academyOwned', '==', 'Y').where('academyApproved', '==', false)
+    ).snapshotChanges();
+  }
+
+  approveAcademy(docId: string) {
+    return this.fireStore.doc(`coachDetails/${docId}`).update({ academyApproved: true });
+  }
+
+  rejectAcademy(docId: string) {
+    return this.fireStore.doc(`coachDetails/${docId}`).delete();
+  }
 }

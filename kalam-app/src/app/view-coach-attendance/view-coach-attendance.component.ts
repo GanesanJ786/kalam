@@ -60,9 +60,9 @@ export class ViewCoachAttendanceComponent implements OnInit, OnDestroy {
       academyId: `A${this.kalamService.getCoachData().kalamId}`
     }
     this.kalamService.getAcademyCoachesCached(query).pipe(takeUntil(this.destroy$)).subscribe((obj:any) => {
-      this.coachList = [...obj];
-      // Add head coach (self) at start so they can view their own attendance
       const coachData = this.kalamService.getCoachData();
+      // Remove self from list to avoid duplicate, then add (Self) entry at start
+      this.coachList = obj.filter((c: any) => c.kalamId !== coachData.kalamId);
       this.coachList.unshift({
         kalamId: coachData.kalamId,
         name: `${coachData.name} (Self)`

@@ -49,6 +49,7 @@ export interface RegistrationDetails {
   academyId?: string;
   academyJoinCode?: string;
   approved?: boolean;
+  academyApproved?: boolean;
   logoUrl?: string;
 }
 
@@ -379,6 +380,7 @@ export class SignUpComponent implements OnInit {
         }
         if (coachForm.academyOwned === 'Y') {
           coachForm.academyId = `A${coachForm.kalamId}`;
+          coachForm.academyApproved = false;
           coachForm.academyJoinCode = await this.generateUniqueAcademyJoinCode(coachForm.academyName);
           await this.kalamService.setCoachProfile(coachForm);
           // Create free trial subscription for new academy
@@ -422,6 +424,19 @@ export class SignUpComponent implements OnInit {
       }
       this.kalamService.sendEmailer(request).subscribe((res:any) => {
         console.log("email sent to the owner");
+      })
+    }
+
+    // Notify company about new academy registration for approval
+    if(this.registrationForm.value.academyOwned === 'Y') {
+      const approvalRequest = {
+        "to": "adukalamapp@gmail.com",
+        "subject": `New Academy Registration - ${this.registrationForm.value.academyName}`,
+        "ownerName": "Kalam Admin",
+        "coachName": `${this.registrationForm.value.name} has registered a new academy "${this.registrationForm.value.academyName}". Email: ${this.registrationForm.value.emailId}. Please review and approve at https://kalam-in.web.app/academy-approval`
+      }
+      this.kalamService.sendEmailer(approvalRequest).subscribe((res:any) => {
+        console.log("approval email sent to company");
       })
     }
   }

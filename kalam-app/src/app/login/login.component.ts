@@ -85,6 +85,16 @@ export class LoginComponent implements OnInit {
       });
       if(data.length > 0) {
         if(data[0].approved) {
+          // Block academy owners whose academy has not been approved by Kalam admin
+          if(data[0].academyOwned === 'Y' && data[0].academyApproved === false) {
+            this._snackBar.open('Your academy registration is under review. You will receive a confirmation email once approved.', '', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              duration: 8000,
+              panelClass: ['red-snackbar']
+            });
+            return;
+          }
           this.kalamService.cacheCoachData(data[0]);
           // let coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
           // this.kalamService.getAllStudents(coachId).subscribe((res: any) => {

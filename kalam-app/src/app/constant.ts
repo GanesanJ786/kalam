@@ -94,6 +94,7 @@ export const SportsIconMap: SportIconItem[] = [
     { value: 'hockey', label: 'Hockey', icon: 'sports_hockey' },
     { value: 'chess', label: 'Chess', icon: 'psychology' },
     { value: 'fitness', label: 'Fitness', icon: 'fitness_center' },
+    { value: 'athletics', label: 'Athletics', icon: 'directions_run' },
 ];
 
 export function getSportIcon(sport: string): string {

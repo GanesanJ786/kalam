@@ -127,6 +127,7 @@ export class StudentFormComponent implements OnInit, OnDestroy {
     { value: 'chess', label: 'Chess', icon: 'psychology' },
     { value: 'hockey', label: 'Hockey', icon: 'sports_hockey' },
     { value: 'fitness', label: 'Fitness', icon: 'fitness_center' },
+    { value: 'athletics', label: 'Athletics', icon: 'directions_run' },
   ];
   genderOptions = [
     { value: 'male', label: 'Male', icon: 'male' },

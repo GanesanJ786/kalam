@@ -50,6 +50,7 @@
     "karma-coverage": "~2.1.0",
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
+    "puppeteer": "^24.40.0",
     "typescript": "~5.8.3"
   }
 }

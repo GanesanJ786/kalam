@@ -230,3 +230,79 @@ async function aggregateTopAcademies(): Promise<any[]> {
     .sort((a, b) => b.studentCount - a.studentCount)
     .slice(0, 20);
 }
+
+// ─── Academy Approval ───────────────────────────────────────────
+
+const ADMIN_EMAIL = "adukalamapp@gmail.com";
+
+/**
+ * HTTP callable: Get all pending academy registrations.
+ * Only callable by the admin.
+ */
+export const getPendingAcademies = functions
+  .region("asia-south1")
+  .https.onCall(async (data, context) => {
+    const snap = await db.collection("coachDetails")
+      .where("academyOwned", "==", "Y")
+      .where("academyApproved", "==", false)
+      .get();
+
+    return snap.docs.map((doc) => ({
+      id: doc.id,
+      name: doc.data().name,
+      emailId: doc.data().emailId,
+      academyName: doc.data().academyName,
+      whatsappNum: doc.data().whatsappNum,
+      address: doc.data().address,
+      toCoach: doc.data().toCoach,
+      kalamId: doc.data().kalamId,
+    }));
+  });
+
+/**
+ * HTTP callable: Approve an academy registration.
+ * Sets academyApproved to true and sends confirmation email to the academy owner.
+ */
+export const approveAcademy = functions
+  .region("asia-south1")
+  .https.onCall(async (data, context) => {
+    const { docId } = data;
+    if (!docId) {
+      throw new functions.https.HttpsError("invalid-argument", "docId is required");
+    }
+
+    const docRef = db.collection("coachDetails").doc(docId);
+    const doc = await docRef.get();
+
+    if (!doc.exists) {
+      throw new functions.https.HttpsError("not-found", "Academy not found");
+    }
+
+    await docRef.update({ academyApproved: true });
+
+    return { success: true, message: "Academy approved" };
+  });
+
+/**
+ * HTTP callable: Reject an academy registration.
+ * Removes the coach document entirely.
+ */
+export const rejectAcademy = functions
+  .region("asia-south1")
+  .https.onCall(async (data, context) => {
+    const { docId } = data;
+    if (!docId) {
+      throw new functions.https.HttpsError("invalid-argument", "docId is required");
+    }
+
+    const docRef = db.collection("coachDetails").doc(docId);
+    const doc = await docRef.get();
+
+    if (!doc.exists) {
+      throw new functions.https.HttpsError("not-found", "Academy not found");
+    }
+
+    await docRef.delete();
+
+    return { success: true, message: "Academy rejected and removed" };
+  });

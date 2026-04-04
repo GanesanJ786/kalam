@@ -75,6 +75,8 @@ import { SubscriptionPageComponent } from './subscription-page/subscription-page
 import { UpgradePromptDialogComponent } from './upgrade-prompt-dialog/upgrade-prompt-dialog.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
 import { CollectFeesComponent } from './collect-fees/collect-fees.component';
+import { AcademyApprovalComponent } from './academy-approval/academy-approval.component';
+import { PromoBannerComponent } from './promo-banner/promo-banner.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -106,7 +108,9 @@ import { CollectFeesComponent } from './collect-fees/collect-fees.component';
         SubscriptionPageComponent,
         UpgradePromptDialogComponent,
         LandingPageComponent,
-        CollectFeesComponent
+        CollectFeesComponent,
+        AcademyApprovalComponent,
+        PromoBannerComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

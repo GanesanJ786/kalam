@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1080">
+<title>Kalam Promo Banner</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1080px;
+    font-family: 'Inter', sans-serif;
+    background: #0a0e14;
+    color: #e0e0e0;
+  }
+  .banner {
+    width: 1080px;
+    background: linear-gradient(170deg, #0f1923 0%, #0a0e14 50%, #0d1117 100%);
+    position: relative; overflow: hidden;
+  }
+  /* Decorative orbs */
+  .banner::before {
+    content: '';
+    position: absolute; width: 700px; height: 700px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,152,0,0.06) 0%, transparent 65%);
+    top: -250px; right: -200px;
+  }
+  .banner::after {
+    content: '';
+    position: absolute; width: 500px; height: 500px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(76,175,80,0.04) 0%, transparent 65%);
+    bottom: 100px; left: -200px;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center; padding: 56px 80px 0;
+    position: relative; z-index: 1;
+  }
+  .logo-row {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    margin-bottom: 20px;
+  }
+  .logo-icon {
+    width: 76px; height: 76px;
+    background: linear-gradient(135deg, #ff9800, #e65100);
+    border-radius: 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px; color: #fff; font-weight: 900;
+    box-shadow: 0 8px 32px rgba(255,152,0,0.25);
+  }
+  .logo-text { font-size: 50px; font-weight: 900; color: #fff; letter-spacing: 5px; }
+  .tagline { font-size: 22px; color: #607d8b; letter-spacing: 1px; margin-bottom: 24px; }
+  .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #e65100, #bf360c);
+    color: #fff; font-size: 20px; font-weight: 700; letter-spacing: 3px;
+    padding: 10px 36px; border-radius: 30px;
+    box-shadow: 0 4px 20px rgba(230,81,0,0.3);
+  }
+
+  /* ── Hero ── */
+  .hero {
+    text-align: center; padding: 44px 80px 0;
+    position: relative; z-index: 1;
+  }
+  .offer-text {
+    font-size: 140px; font-weight: 900; line-height: 1;
+    background: linear-gradient(135deg, #ffb74d, #ff9800, #ff5722, #ff9800);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text; margin-bottom: 4px;
+    filter: drop-shadow(0 4px 12px rgba(255,152,0,0.15));
+  }
+  .offer-sub {
+    font-size: 40px; color: #90a4ae; font-weight: 400; margin-bottom: 40px;
+  }
+  .price-strip {
+    display: flex; align-items: center; justify-content: center; gap: 0;
+    margin: 0 80px;
+    background: rgba(255,255,255,0.03);
+    border: 2px solid rgba(255,152,0,0.2);
+    border-radius: 24px; overflow: hidden;
+  }
+  .price-strip .old-section {
+    flex: 1; padding: 32px; text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.06);
+  }
+  .price-strip .old-label { font-size: 18px; color: #555; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; }
+  .price-strip .old-val { font-size: 44px; color: #555; text-decoration: line-through; }
+  .price-strip .new-section {
+    flex: 1.5; padding: 32px; text-align: center;
+    background: rgba(76,175,80,0.04);
+  }
+  .price-strip .new-label { font-size: 18px; color: #4caf50; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600; }
+  .price-strip .new-val { font-size: 64px; font-weight: 900; color: #4caf50; }
+  .price-strip .new-val span { font-size: 22px; font-weight: 400; color: #78909c; }
+  .price-strip .save-section {
+    flex: 1; padding: 32px; text-align: center;
+    border-left: 1px solid rgba(255,255,255,0.06);
+  }
+  .price-strip .save-amount { font-size: 36px; font-weight: 800; color: #ff9800; }
+  .price-strip .save-label { font-size: 16px; color: #78909c; margin-top: 2px; }
+
+  /* ── Trial Badge ── */
+  .trial-strip {
+    margin: 28px 80px 0; position: relative; z-index: 1;
+    text-align: center;
+  }
+  .trial-badge {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: linear-gradient(135deg, rgba(33,150,243,0.1), rgba(33,150,243,0.05));
+    border: 1px solid rgba(33,150,243,0.2);
+    padding: 14px 36px; border-radius: 16px;
+  }
+  .trial-badge .material-icons { font-size: 30px; color: #2196f3; }
+  .trial-badge span { font-size: 24px; color: #90caf9; font-weight: 600; }
+  .trial-badge strong { color: #fff; font-size: 26px; }
+
+  /* ── Divider ── */
+  .divider {
+    width: 920px; height: 1px; margin: 32px auto;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  }
+
+  /* ── Included ── */
+  .included {
+    padding: 0 80px 8px; position: relative; z-index: 1;
+  }
+  .section-title {
+    font-size: 34px; font-weight: 800; color: #fff;
+    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title .material-icons { color: #ff9800; font-size: 38px; }
+  .inc-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+  }
+  .inc-card {
+    display: flex; align-items: center; gap: 18px;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid #1e2a35; border-radius: 16px;
+    padding: 24px 24px;
+    transition: border-color 0.2s;
+  }
+  .inc-icon {
+    width: 64px; height: 64px; flex-shrink: 0; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(255,152,0,0.08); border: 1px solid rgba(255,152,0,0.15);
+  }
+  .inc-icon .material-icons { font-size: 32px; color: #ff9800; }
+  .inc-card h3 { font-size: 24px; font-weight: 700; color: #fff; margin-bottom: 3px; }
+  .inc-card p { font-size: 19px; color: #78909c; line-height: 1.4; }
+
+  /* ── Plans ── */
+  .plans {
+    padding: 0 80px 8px; position: relative; z-index: 1;
+  }
+  .plans-row {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px;
+  }
+  .plan-pill {
+    background: rgba(255,255,255,0.025);
+    border: 1px solid #1e2a35; border-radius: 16px;
+    padding: 22px 16px; text-align: center; position: relative;
+  }
+  .plan-pill.pop {
+    border-color: #ff9800;
+    background: rgba(255,152,0,0.04);
+  }
+  .plan-pill.pop::before {
+    content: 'POPULAR';
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%);
+    background: linear-gradient(135deg, #ff9800, #e65100); color: #fff;
+    font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+    padding: 3px 14px; border-radius: 10px;
+  }
+  .plan-pill.ent {
+    border-color: rgba(33,150,243,0.3);
+    background: rgba(33,150,243,0.03);
+  }
+  .plan-pill .pl-name { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .plan-pill .pl-price { font-size: 30px; font-weight: 900; color: #ff9800; }
+  .plan-pill .pl-price span { font-size: 16px; font-weight: 400; color: #555; }
+  .plan-pill.ent .pl-price { color: #2196f3; }
+  .plan-pill .pl-limits {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .plan-pill .pl-lim {
+    font-size: 16px; color: #90a4ae; margin-bottom: 2px;
+    display: flex; align-items: center; justify-content: center; gap: 4px;
+  }
+  .plan-pill .pl-lim strong { color: #e0e0e0; }
+  .plan-pill .pl-lim .material-icons { font-size: 16px; color: #ff9800; }
+  .plan-pill.ent .pl-lim .material-icons { color: #2196f3; }
+  .plan-pill .pl-save {
+    display: inline-block; margin-top: 8px;
+    background: rgba(76,175,80,0.12); color: #4caf50;
+    font-size: 13px; font-weight: 700; padding: 2px 10px; border-radius: 8px;
+  }
+  .plans-note {
+    text-align: center; margin-top: 14px;
+    font-size: 19px; color: #607d8b;
+  }
+  .plans-note strong { color: #4caf50; }
+
+  /* ── Referral ── */
+  .referral {
+    margin: 24px 80px 0; position: relative; z-index: 1;
+    background: linear-gradient(135deg, #0d1f0d 0%, #111b11 100%);
+    border: 1px solid rgba(76,175,80,0.25); border-radius: 20px;
+    padding: 36px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ref-left { flex: 1; }
+  .ref-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(76,175,80,0.12); color: #4caf50;
+    font-size: 16px; font-weight: 700; letter-spacing: 2px;
+    padding: 6px 18px; border-radius: 20px; margin-bottom: 12px;
+  }
+  .ref-badge .material-icons { font-size: 20px; }
+  .ref-title { font-size: 34px; font-weight: 800; color: #fff; margin-bottom: 6px; }
+  .ref-desc { font-size: 22px; color: #90a4ae; line-height: 1.5; }
+  .ref-desc strong { color: #e0e0e0; }
+  .ref-right {
+    flex-shrink: 0; text-align: center;
+    background: rgba(76,175,80,0.08); border: 1px solid rgba(76,175,80,0.2);
+    border-radius: 16px; padding: 28px 36px;
+  }
+  .ref-pct { font-size: 72px; font-weight: 900; color: #4caf50; line-height: 1; }
+  .ref-pct-label { font-size: 20px; color: #81c784; font-weight: 600; letter-spacing: 1px; }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center; padding: 32px 80px 48px;
+    position: relative; z-index: 1;
+  }
+  .footer-line {
+    width: 920px; height: 1px; margin: 0 auto 24px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+  }
+  .footer .email {
+    font-size: 24px; color: #607d8b;
+  }
+  .footer .email strong {
+    color: #90a4ae; font-weight: 700;
+  }
+  .footer .email .material-icons {
+    font-size: 22px; vertical-align: middle; margin-right: 6px; color: #ff9800;
+  }
+</style>
+</head>
+<body>
+<div class="banner" id="banner">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="logo-row">
+      <div class="logo-icon">K</div>
+      <div class="logo-text">KALAM</div>
+    </div>
+    <div class="tagline">Sports Academy Management Platform</div>
+    <div class="badge">LIMITED TIME OFFER</div>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="offer-text">50% OFF</div>
+    <div class="offer-sub">on Initial Setup Fee</div>
+    <div class="price-strip">
+      <div class="old-section">
+        <div class="old-label">Was</div>
+        <div class="old-val">₹6,999</div>
+      </div>
+      <div class="new-section">
+        <div class="new-label">Now Only</div>
+        <div class="new-val">₹3,499 <span>one-time</span></div>
+      </div>
+      <div class="save-section">
+        <div class="save-amount">₹3,500</div>
+        <div class="save-label">You Save</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trial -->
+  <div class="trial-strip">
+    <div class="trial-badge">
+      <span class="material-icons">rocket_launch</span>
+      <span>Includes <strong>30-Day Free Trial</strong> to explore all features</span>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- What's Included -->
+  <div class="included">
+    <div class="section-title">
+      <span class="material-icons">verified</span>
+      What's Included
+    </div>
+    <div class="inc-grid">
+      <div class="inc-card">
+        <div class="inc-icon"><span class="material-icons">settings</span></div>
+        <div>
+          <h3>Academy Setup</h3>
+          <p>Complete configuration on Kalam</p>
+        </div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon"><span class="material-icons">calendar_month</span></div>
+        <div>
+          <h3>Subscription Plan</h3>
+          <p>Monthly or yearly plan included</p>
+        </div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon"><span class="material-icons">support_agent</span></div>
+        <div>
+          <h3>Onboarding Help</h3>
+          <p>Dedicated setup assistance</p>
+        </div>
+      </div>
+      <div class="inc-card">
+        <div class="inc-icon"><span class="material-icons">cloud_upload</span></div>
+        <div>
+          <h3>Data Migration</h3>
+          <p>Transfer existing student data</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Subscription Plans -->
+  <div class="plans">
+    <div class="section-title">
+      <span class="material-icons">workspace_premium</span>
+      Subscription Plans
+    </div>
+    <div class="plans-row">
+      <div class="plan-pill">
+        <div class="pl-name">Starter</div>
+        <div class="pl-price">₹999<span>/mo</span></div>
+        <div class="pl-limits">
+          <div class="pl-lim"><span class="material-icons">person</span> <strong>2</strong> Coaches</div>
+          <div class="pl-lim"><span class="material-icons">school</span> <strong>30</strong> Students</div>
+          <div class="pl-lim"><span class="material-icons">stadium</span> <strong>1</strong> Ground</div>
+        </div>
+        <div class="pl-save">₹8,748/yr</div>
+      </div>
+      <div class="plan-pill">
+        <div class="pl-name">Basic</div>
+        <div class="pl-price">₹1,999<span>/mo</span></div>
+        <div class="pl-limits">
+          <div class="pl-lim"><span class="material-icons">person</span> <strong>5</strong> Coaches</div>
+          <div class="pl-lim"><span class="material-icons">school</span> <strong>100</strong> Students</div>
+          <div class="pl-lim"><span class="material-icons">stadium</span> <strong>3</strong> Grounds</div>
+        </div>
+        <div class="pl-save">₹17,508/yr</div>
+      </div>
+      <div class="plan-pill pop">
+        <div class="pl-name">Standard</div>
+        <div class="pl-price">₹2,999<span>/mo</span></div>
+        <div class="pl-limits">
+          <div class="pl-lim"><span class="material-icons">person</span> <strong>10</strong> Coaches</div>
+          <div class="pl-lim"><span class="material-icons">school</span> <strong>250</strong> Students</div>
+          <div class="pl-lim"><span class="material-icons">stadium</span> <strong>5</strong> Grounds</div>
+        </div>
+        <div class="pl-save">₹26,268/yr</div>
+      </div>
+      <div class="plan-pill">
+        <div class="pl-name">Pro</div>
+        <div class="pl-price">₹3,999<span>/mo</span></div>
+        <div class="pl-limits">
+          <div class="pl-lim"><span class="material-icons">person</span> <strong>20</strong> Coaches</div>
+          <div class="pl-lim"><span class="material-icons">school</span> <strong>500</strong> Students</div>
+          <div class="pl-lim"><span class="material-icons">stadium</span> <strong>10</strong> Grounds</div>
+        </div>
+        <div class="pl-save">₹35,028/yr</div>
+      </div>
+      <div class="plan-pill ent">
+        <div class="pl-name">Enterprise</div>
+        <div class="pl-price">₹6,999<span>/mo</span></div>
+        <div class="pl-limits">
+          <div class="pl-lim"><span class="material-icons">all_inclusive</span> <strong>∞</strong> Coaches</div>
+          <div class="pl-lim"><span class="material-icons">all_inclusive</span> <strong>∞</strong> Students</div>
+          <div class="pl-lim"><span class="material-icons">all_inclusive</span> <strong>∞</strong> Grounds</div>
+        </div>
+        <div class="pl-save" style="background:rgba(33,150,243,0.12);color:#2196f3;">₹59,988/yr</div>
+      </div>
+    </div>
+    <div class="plans-note">Save up to <strong>27%</strong> with yearly billing</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Referral -->
+  <div class="referral">
+    <div class="ref-left">
+      <div class="ref-badge">
+        <span class="material-icons">card_giftcard</span>
+        REFERRAL BONUS
+      </div>
+      <div class="ref-title">Refer Another Academy</div>
+      <div class="ref-desc">
+        Recommend a new academy on the same plan &amp; get <strong>10% OFF</strong> your <strong>yearly subscription</strong>
+      </div>
+    </div>
+    <div class="ref-right">
+      <div class="ref-pct">10%</div>
+      <div class="ref-pct-label">OFF</div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="footer-line"></div>
+    <div class="email">
+      <span class="material-icons">mail</span>
+      <strong>adukalamapp@gmail.com</strong>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

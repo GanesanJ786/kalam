@@ -119,6 +119,16 @@ export class AccountComponent implements OnInit {
             return;
           }
 
+          // Block academy owners whose academy has not been approved by Kalam admin
+          if (data[0].academyOwned === 'Y' && data[0].academyApproved === false) {
+            this.openSnackBar(
+              'Your academy registration is under review. You will receive a confirmation email once approved.',
+              'red-snackbar',
+              8000
+            );
+            return;
+          }
+
           this.kalamService.cacheCoachData(data[0]);
           this.router.navigate(['/home']);
         },

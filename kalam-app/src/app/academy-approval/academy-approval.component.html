@@ -1,0 +1,84 @@
+<div class="aa-page">
+  <!-- Header -->
+  <div class="aa-header">
+    <button class="aa-back-btn" (click)="goBack()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <h1 class="aa-title">Academy Approvals</h1>
+  </div>
+
+  <!-- Admin Login Gate -->
+  <div class="aa-auth" *ngIf="!authenticated">
+    <div class="aa-auth-card">
+      <mat-icon class="aa-auth-icon">admin_panel_settings</mat-icon>
+      <h2>Admin Access Required</h2>
+      <p>Enter admin password to manage academy approvals</p>
+      <div class="aa-auth-input-wrap">
+        <input type="password" class="aa-auth-input"
+               placeholder="Admin password"
+               [(ngModel)]="adminPassword"
+               (keyup.enter)="authenticate()">
+        <button class="aa-auth-btn" (click)="authenticate()">
+          <mat-icon>lock_open</mat-icon> Verify
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Content -->
+  <div class="aa-body" *ngIf="authenticated">
+    <!-- Loading -->
+    <div class="aa-empty" *ngIf="loading">
+      <mat-icon>hourglass_empty</mat-icon>
+      <p>Loading pending academies...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div class="aa-empty" *ngIf="!loading && pendingAcademies.length === 0">
+      <mat-icon>check_circle_outline</mat-icon>
+      <p>No pending academy registrations</p>
+    </div>
+
+    <!-- Pending List -->
+    <div class="aa-list" *ngIf="!loading && pendingAcademies.length > 0">
+      <div class="aa-count">{{pendingAcademies.length}} pending approval{{pendingAcademies.length !== 1 ? 's' : ''}}</div>
+      <div class="aa-card" *ngFor="let academy of pendingAcademies">
+        <div class="aa-card-header">
+          <div class="aa-avatar">
+            <span>{{academy.academyName?.charAt(0) | uppercase}}</span>
+          </div>
+          <div class="aa-info">
+            <span class="aa-academy-name">{{academy.academyName}}</span>
+            <span class="aa-coach-name">{{academy.name}}</span>
+          </div>
+        </div>
+        <div class="aa-details">
+          <div class="aa-detail-row">
+            <mat-icon>email</mat-icon>
+            <span>{{academy.emailId}}</span>
+          </div>
+          <div class="aa-detail-row" *ngIf="academy.whatsappNum">
+            <mat-icon>phone</mat-icon>
+            <span>{{academy.whatsappNum}}</span>
+          </div>
+          <div class="aa-detail-row" *ngIf="academy.address">
+            <mat-icon>location_on</mat-icon>
+            <span>{{academy.address}}</span>
+          </div>
+          <div class="aa-detail-row" *ngIf="academy.toCoach?.length">
+            <mat-icon>sports</mat-icon>
+            <span>{{academy.toCoach.join(', ')}}</span>
+          </div>
+        </div>
+        <div class="aa-actions">
+          <button class="aa-approve-btn" (click)="approve(academy)">
+            <mat-icon>check_circle</mat-icon> Approve
+          </button>
+          <button class="aa-reject-btn" (click)="reject(academy)">
+            <mat-icon>cancel</mat-icon> Reject
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
