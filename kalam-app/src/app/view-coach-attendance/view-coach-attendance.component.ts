@@ -17,7 +17,7 @@ import { KalamService } from '../kalam.service';
 import { getSportIcon } from '../constant';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { MatDialog } from '@angular/material/dialog';
-import * as moment from 'moment';
+import moment from 'moment';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -84,15 +84,9 @@ export class ViewCoachAttendanceComponent implements OnInit, OnDestroy {
   }
 
   viewStudentAttendance(coach: any) {
-    this.kalamService.getStudentAttendanceByCoachDatewise(coach).pipe(take(1)).subscribe((coach:any) => {
-      let obj = coach.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
+    this.kalamService.getStudentAttendanceByCoachDatewise(coach).subscribe((data:any) => {
       const dialogRef = this.dialog.open(ViewStudentAttendanceDateWiseComponent, {
-        data: obj
+        data: data
       });
   
       dialogRef.afterClosed().subscribe(result => {
@@ -146,13 +140,7 @@ export class ViewCoachAttendanceComponent implements OnInit, OnDestroy {
       start: moment(this.attendanceRangeGroup.value.start).format('MM-DD-YYYY'),
       end: moment(this.attendanceRangeGroup.value.end).format('MM-DD-YYYY')
     }
-    this.kalamService.getACoachAttendanceData(query, dateRange).pipe(take(1)).subscribe((coach:any) => {
-      let coachData = coach.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
+    this.kalamService.getACoachAttendanceData(query, dateRange).subscribe((coachData:any) => {
 
       const filteredData = coachData.filter((item: any) => {
         const itemDate = new Date(this.kalamService.convertToISO(item.activeDate));

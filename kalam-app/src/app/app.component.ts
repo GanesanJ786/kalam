@@ -16,7 +16,7 @@ import { Keepalive } from '@ng-idle/keepalive';
 import { KalamService } from './kalam.service';
 import { ExportToExcelService } from './export-to-excel.service';
 import * as _ from 'lodash';
-import * as moment from 'moment';
+import moment from 'moment';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -91,13 +91,7 @@ export class AppComponent {
       end: moment().subtract(1,'months').endOf('month').format('MM-DD-YYYY')
     }
 
-    this.kalamService.getAcademyAllStudentAttendanceData("718906821407", dateRange).pipe(take(1)).subscribe((res: any) => {
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
+    this.kalamService.getAcademyAllStudentAttendanceData("718906821407", dateRange).subscribe((data: any) => {
 
       const filteredData = _.filter(data, (item) => {
         const itemDate = new Date(this.kalamService.convertToISO(item.loginDate));
@@ -157,13 +151,7 @@ export class AppComponent {
     }
 
     
-      this.kalamService.getAllCoachAttendanceData(query, dateRange).pipe(take(1)).subscribe((coach: any) => {
-          let coachData = coach.map((document: any) => {
-            return {
-              id: document.payload.doc.id,
-              ...document.payload.doc.data() as {}
-            }
-          });
+      this.kalamService.getAllCoachAttendanceData(query, dateRange).subscribe((coachData: any) => {
 
           const filteredData = _.filter(coachData, (item) => {
             const itemDate = new Date(this.kalamService.convertToISO(item.activeDate));

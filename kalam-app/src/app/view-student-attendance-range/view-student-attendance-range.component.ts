@@ -16,10 +16,9 @@ import { KalamService } from '../kalam.service';
 import { MAT_DIALOG_DATA as MAT_DIALOG_DATA, MatDialog, MatDialogRef as MatDialogRef } from '@angular/material/dialog';
 import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-students-by-ground.component';
 import { StudentDetails } from '../student-form/student-form.component';
-import * as moment from 'moment';
+import moment from 'moment';
 import { MatTableDataSource as MatTableDataSource } from '@angular/material/table';
 import * as _ from 'lodash';
-import { take } from 'rxjs/operators';
 
 const today = new Date();
 const month = today.getMonth();
@@ -76,13 +75,7 @@ export class ViewStudentAttendanceRangeComponent implements OnInit {
       start: moment(this.attendanceRangeGroup.value.start).format('MM-DD-YYYY'),
       end: moment(this.attendanceRangeGroup.value.end).format('MM-DD-YYYY')
     }
-    this.kalamService.getSingleStudentAttendanceData(this.student, obj).pipe(take(1)).subscribe((res: any) => {
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
+    this.kalamService.getSingleStudentAttendanceData(this.student, obj).subscribe((data: any) => {
 
       const filteredData = _.filter(data, (item) => {
         const itemDate = new Date(this.kalamService.convertToISO(item.loginDate));

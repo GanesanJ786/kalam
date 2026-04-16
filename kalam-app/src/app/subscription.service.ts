@@ -40,13 +40,13 @@ export class SubscriptionService {
     if (!this._subscriptionCache.has(academyId)) {
       const sub$ = this.fireStore.collection('academySubscription', ref =>
         ref.where('academyId', '==', academyId).limit(1)
-      ).snapshotChanges().pipe(
-        map(actions => {
-          if (actions.length === 0) return null;
-          const doc = actions[0];
+      ).get().pipe(
+        map(snapshot => {
+          if (snapshot.docs.length === 0) return null;
+          const doc = snapshot.docs[0];
           return {
-            id: doc.payload.doc.id,
-            ...doc.payload.doc.data() as any
+            id: doc.id,
+            ...doc.data() as any
           } as AcademySubscription;
         }),
         shareReplay({ bufferSize: 1, refCount: true })
@@ -72,20 +72,20 @@ export class SubscriptionService {
 
       const coaches$ = this.fireStore.collection('coachDetails', ref =>
         ref.where('academyId', '==', academyId)
-      ).snapshotChanges().pipe(
-        map(actions => actions.length)
+      ).get().pipe(
+        map(snapshot => snapshot.docs.length)
       );
 
       const students$ = this.fireStore.collection('studentDetails', ref =>
         ref.where('coachId', '==', coachId).where('inActive', '!=', true)
-      ).snapshotChanges().pipe(
-        map(actions => actions.length)
+      ).get().pipe(
+        map(snapshot => snapshot.docs.length)
       );
 
       const grounds$ = this.fireStore.collection('groundDetails', ref =>
         ref.where('academyId', '==', coachId)
-      ).snapshotChanges().pipe(
-        map(actions => actions.length)
+      ).get().pipe(
+        map(snapshot => snapshot.docs.length)
       );
 
       const usage$ = coaches$.pipe(

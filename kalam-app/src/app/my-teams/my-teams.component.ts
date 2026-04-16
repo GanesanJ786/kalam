@@ -16,7 +16,7 @@ import { SportsList, UnderAge, getSportIcon } from '../constant';
 import { KalamService } from '../kalam.service';
 import { LoaderService } from '../loader.service';
 import { StudentDetails } from '../student-form/student-form.component';
-import * as moment from 'moment';
+import moment from 'moment';
 import * as _ from "lodash";
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
@@ -66,14 +66,8 @@ export class MyTeamsComponent implements OnInit, OnDestroy {
   }
 
   getStudentAttendance() {
-    this.kalamService.getAllStudentAttendanceData(this.coachId, this.ageConvert(this.ageType), this.groundName).pipe(take(1)).subscribe((stud:any) => {
-      let stundentData = stud.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
-      this.allStudentAttendance =  _.sortBy(stundentData, ["ageType", "loginDate"]);
+    this.kalamService.getAllStudentAttendanceData(this.coachId, this.ageConvert(this.ageType), this.groundName).subscribe((data:any) => {
+      this.allStudentAttendance =  _.sortBy(data, ["ageType", "loginDate"]);
     })
   }
 
@@ -92,14 +86,8 @@ export class MyTeamsComponent implements OnInit, OnDestroy {
     
     this.loaderService.show();
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.kalamService.studentList({coachId: coachId, underAge: this.ageType, groundName: this.groundName}).pipe(take(1)).subscribe((res: any) => {
+    this.kalamService.studentList({coachId: coachId, underAge: this.ageType, groundName: this.groundName}).subscribe((data: any) => {
       this.loaderService.hide();
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
       this.studentList = data.sort((a:StudentDetails,b:StudentDetails) => a.playingPostion > b.playingPostion ? 1 : -1);
       this.checkAttendance();
     });
@@ -108,14 +96,8 @@ export class MyTeamsComponent implements OnInit, OnDestroy {
   getStudentListUnderAge() {
     this.loaderService.show();
     const coachId = this.kalamService.getCoachData().academyId ? this.kalamService.getCoachData().academyId?.replace("A","") : this.kalamService.getCoachData().kalamId;
-    this.kalamService.studentListUnderAge({coachId: coachId, underAge: this.ageType}).pipe(take(1)).subscribe((res: any) => {
+    this.kalamService.studentListUnderAge({coachId: coachId, underAge: this.ageType}).subscribe((data: any) => {
       this.loaderService.hide();
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
       
       /* AGE Age & Under age update by select age group and select "ALL" in ground
 
@@ -304,13 +286,7 @@ export class MyTeamsComponent implements OnInit, OnDestroy {
         loginDate: moment().format("MM-DD-YYYY"),
         coachId: this.kalamService.getCoachData().kalamId
       }
-      this.kalamService.getStudentAttendanceUpdate(query).pipe(take(1)).subscribe((stud:any) => {
-        let stundentData = stud.map((document: any) => {
-          return {
-            id: document.payload.doc.id,
-            ...document.payload.doc.data() as {}
-          }
-        })
+      this.kalamService.getStudentAttendanceUpdate(query).subscribe((stundentData:any) => {
         this.kalamService.editStudentAttendance(studentAttendance,stundentData[0].id);
         student["disableOutBtn"] = false;
         
@@ -345,13 +321,7 @@ export class MyTeamsComponent implements OnInit, OnDestroy {
           loginDate: moment().format("MM-DD-YYYY"),
           coachId: this.kalamService.getCoachData().kalamId
         }
-        this.kalamService.getStudentAttendanceUpdateEvening(query).pipe(take(1)).subscribe((stud:any) => {
-          let stundentData = stud.map((document: any) => {
-            return {
-              id: document.payload.doc.id,
-              ...document.payload.doc.data() as {}
-            }
-          })
+        this.kalamService.getStudentAttendanceUpdateEvening(query).subscribe((stundentData:any) => {
           this.kalamService.deleteStudentAttendance(stundentData[0].id);
           student["disableEveBtn"] = false;
          
@@ -363,13 +333,7 @@ export class MyTeamsComponent implements OnInit, OnDestroy {
           loginDate: moment().format("MM-DD-YYYY"),
           coachId: this.kalamService.getCoachData().kalamId
         }
-        this.kalamService.getStudentAttendanceUpdate(query).pipe(take(1)).subscribe((stud:any) => {
-          let stundentData = stud.map((document: any) => {
-            return {
-              id: document.payload.doc.id,
-              ...document.payload.doc.data() as {}
-            }
-          })
+        this.kalamService.getStudentAttendanceUpdate(query).subscribe((stundentData:any) => {
           this.kalamService.editStudentAttendance(studentAttendance,stundentData[0].id);
           student["disableInBtn"] = false;
           

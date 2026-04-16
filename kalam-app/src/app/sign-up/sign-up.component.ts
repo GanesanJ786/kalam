@@ -26,7 +26,7 @@ import { firstValueFrom } from 'rxjs';
 
 import { KalamService } from '../kalam.service';
 import { SportsIconMap } from '../constant';
-import * as moment from 'moment';
+import moment from 'moment';
 import { LoaderService } from '../loader.service';
 import { SubscriptionService } from '../subscription.service';
 
@@ -185,10 +185,6 @@ export class SignUpComponent implements OnInit {
 
     const res: any = await firstValueFrom(this.kalamService.getAcademyByJoiningCode(enteredCode));
     const owners = res
-      .map((document: any) => ({
-        id: document.payload.doc.id,
-        ...(document.payload.doc.data() as {})
-      }))
       .filter((coach: any) => coach.academyOwned === 'Y');
 
     if (!owners.length) {
@@ -572,8 +568,8 @@ export class SignUpComponent implements OnInit {
   }
 
   private async isCoachProfileAlreadyExists(email: string): Promise<boolean> {
-    const res: any = await firstValueFrom(this.kalamService.getCoachByEmail(email));
-    return !!res?.length;
+    const data: any = await firstValueFrom(this.kalamService.getCoachByEmail(email));
+    return !!data?.length;
   }
 
   private getFirebaseSignupErrorMessage(code?: string): string {

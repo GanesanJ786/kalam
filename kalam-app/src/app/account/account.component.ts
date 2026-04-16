@@ -77,7 +77,7 @@ export class AccountComponent implements OnInit {
 
     this.loaderService.show();
     try {
-      if (true) {
+      if (false) {
         await this.kalamService.loginWithFirebase(email, password);
         const currentUser = await this.kalamService.reloadCurrentFirebaseUser();
         if (!currentUser?.emailVerified) {
@@ -97,13 +97,9 @@ export class AccountComponent implements OnInit {
         }
       }
 
-      this.kalamService.getCoachByEmail(email).pipe(take(1)).subscribe({
-        next: (res: any) => {
+      this.kalamService.getCoachByEmail(email).subscribe({
+        next: (data: any) => {
           this.loaderService.hide();
-          const data = res.map((document: any) => ({
-            id: document.payload.doc.id,
-            ...(document.payload.doc.data() as {}),
-          }));
 
           if (!data.length) {
             this.openSnackBar('No coach profile found for this account. Please contact admin.');

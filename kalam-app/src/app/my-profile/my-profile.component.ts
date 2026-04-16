@@ -18,7 +18,7 @@ import { KalamService } from 'src/app/kalam.service';
 import { getSportIcon, getSportLabel as getSportNameLabel } from '../constant';
 import { AddGroundComponent } from '../add-ground/add-ground.component';
 import { RegistrationDetails } from '../sign-up/sign-up.component';
-import * as moment from 'moment';
+import moment from 'moment';
 import { StudentDetails } from '../student-form/student-form.component';
 import { AllStudentsByGroundComponent } from '../all-students-by-ground/all-students-by-ground.component';
 import { TaskService } from '../task.service';
@@ -84,13 +84,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.inCoachId = this.kalamService.getCoachData().kalamId;
 
     if(!this.owner) {
-      this.kalamService.getHeadCoache(this.coachId).pipe(take(1)).subscribe((res: any) => {
-        let data = res.map((document: any) => {
-          return {
-            id: document.payload.doc.id,
-            ...document.payload.doc.data() as {}
-          }
-        });
+      this.kalamService.getHeadCoache(this.coachId).pipe(take(1)).subscribe((data: any) => {
         this.logo = data.length > 0 && data[0].logoUrl ? data[0].logoUrl : "";
       })
     }
@@ -98,7 +92,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
     this.kalamService.getGroundDetailsCached(this.coachId).pipe(takeUntil(this.destroy$)).subscribe((data: any) => {
       this.groundList = data;
 
-      this.kalamService.getCurrentCoachIn(this.inCoachId, moment().format("MM-DD-YYYY"), this.coachId).pipe(takeUntil(this.destroy$)).subscribe((coach: any) => {
+      this.kalamService.getCurrentCoachIn(this.inCoachId, moment().format("MM-DD-YYYY"), this.coachId).pipe(take(1)).subscribe((coach: any) => {
         this.allBtnDisabled = false;
         let coachDataIn = coach.map((document: any) => {
           return {
@@ -107,7 +101,7 @@ export class MyProfileComponent implements OnInit, OnDestroy {
           }
         });
 
-        this.kalamService.getCurrentCoachOut(this.inCoachId, moment().format("MM-DD-YYYY"), this.coachId).pipe(takeUntil(this.destroy$)).subscribe((coach: any) => {
+        this.kalamService.getCurrentCoachOut(this.inCoachId, moment().format("MM-DD-YYYY"), this.coachId).pipe(take(1)).subscribe((coach: any) => {
           this.allBtnDisabled = false;
           let coachDataOut = coach.map((document: any) => {
             return {
@@ -382,6 +376,10 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         attendance.loginCoords = this.addressData._coords;
       }
       this.kalamService.coachAttendance(attendance);
+      // Immediately reflect check-in in the UI
+      ground['disableOutBtn'] = false;
+      ground['disableInBtn'] = true;
+      this.allBtnDisabled = true;
     });
 
     
@@ -414,6 +412,10 @@ export class MyProfileComponent implements OnInit, OnDestroy {
         attendance.logoutCoords = this.addressData._coords;
       }
       this.kalamService.coachAttendance(attendance);
+      // Immediately reflect check-out in the UI
+      ground['disableOutBtn'] = true;
+      ground['disableInBtn'] = false;
+      this.allBtnDisabled = false;
     });
     
   }

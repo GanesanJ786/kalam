@@ -75,14 +75,8 @@ export class LoginComponent implements OnInit {
       return;
     }
     this.loaderService.show();
-    this.kalamService.loginDetails(this.signInForm.value).pipe(take(1)).subscribe((res: any) => {
+    this.kalamService.loginDetails(this.signInForm.value).subscribe((data: any) => {
       this.loaderService.hide();
-      let data = res.map((document: any) => {
-        return {
-          id: document.payload.doc.id,
-          ...document.payload.doc.data() as {}
-        }
-      });
       if(data.length > 0) {
         if(data[0].approved) {
           // Block academy owners whose academy has not been approved by Kalam admin
